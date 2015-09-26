@@ -1,0 +1,26 @@
+Array
+(
+    [name] => a
+    [match_number] => 1
+    [team_number] => 1
+    [robot_moved] => on
+    [totes_auto] => 2
+    [cans_auto] => 3
+    [coopertition] => on
+    [coopertition_totes] => 2
+    [stacks_totes] => Array
+        (
+            [0] => 5
+            [1] => 5
+            [2] => 1
+        )
+
+    [capped_stack] => Array
+        (
+            [0] => 0
+            [1] => 2
+            [2] => 1
+        )
+
+    [score] => 123
+)
