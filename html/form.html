@@ -3,41 +3,38 @@
     <form id="scouting_form" action="scouting_submit.php" method="POST" novalidate>
         <fieldset>
             <legend>Info</legend>
-            <div class="aligned_controls">
-                <label for="name">Your Name:</label>
-                <input type="text" name="name" placeholder="Enter your name" required="required">
-                <br>
-                <label>Match #:</label>
-                <input type="number" name="match_number" placeholder="Enter the match number" required="required">
-                <br>
-                <label>Team #:</label>
-                <input type="number" name="team_number" placeholder="Enter the team number" required="required">
-                <br>
+            <div class="form-group">
+                <label for="name">Your name:</label>
+                <input name="name" type="text" class="form-control" placeholder="Enter your name" value="{{scouterName}}">
+                <label for=" match_number">Match #:</label>
+                <input name="match_number" type="text" class="form-control" placeholder="Enter the match number">
+                <label for="team_number">Team #:</label>
+                <input name="team_number" type="text" class="form-control" placeholder="Enter the team number">
             </div>
         </fieldset>
+
         <fieldset>
             <legend>Autonomous</legend>
-            <div class="aligned_controls">
+            <div class="form-group">
                 <label for="robot_moved">Did the robot move?</label>
-                <input type="checkbox" name="robot_moved" onchange="toggleAutonomous(this.checked)">
-                <br>
-                <div id="autonmous_container" class="aligned_controls">
+                <input name="robot_moved" type="checkbox" ng-model="robot_moved">
+                <div ng-show="robot_moved">
                     <label for="totes_auto">How many totes in auto zone?</label>
-                    <select name="totes_auto" id="totes_auto">
+                    <select name="totes_auto" id="totes_auto" class="form-control">
                         <option value="0" selected="selected">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
                     <label for="cans_auto">How many cans in auto zone?</label>
-                    <select name="cans_auto" class="cans_dropdown">
+                    <select name="cans_auto" class="form-control">
                         <option value="0" selected="selected">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
                     <label for="cans_auto_origin">Grabs how many cans from step?</label>
-                    <select name="cans_auto_origin">
+                    <select name="cans_auto_origin" class="form-control">
                         <option value="0" selected="selected">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -48,12 +45,12 @@
                     <input type="checkbox" name="in_auto_zone">
                 </div>
             </div>
+
         </fieldset>
+
         <fieldset>
             <legend>Coopertition</legend>
-            <div class="aligned_controls">
-                <!-- 					<label for="coopertition">Was coopertition attempted?</label> -->
-                <!-- 					<input type="checkbox" name="coopertition"/> -->
+            <div class="form-group">
                 <label for="coopertition_totes">How many totes?</label>
                 <select name="coopertition_totes" id="coopertition_totes">
                     <option value="0" selected="selected">0</option>
@@ -63,32 +60,40 @@
                 </select>
             </div>
         </fieldset>
+
         <fieldset>
             <legend>Totes</legend>
-            <div class="aligned_controls">
+            <div class="form-group">
                 <label for="totes_from_landfill">Totes from landfill?</label>
-                <input type="checkbox" name="totes_from_landfill">
+                <input type="checkbox" name="totes_from_landfill" />
                 <label for="totes_from_human">Totes from human player?</label>
-                <input type="checkbox" name="totes_from_human">
+                <input type="checkbox" name="totes_from_human" />
             </div>
         </fieldset>
+
         <fieldset>
             <legend>Cans</legend>
-            <div class="aligned_controls">
+            <div class="form-group">
                 <label for="cans_from_middle">Grab cans from middle?</label>
-                <input type="checkbox" name="cans_from_middle">
+                <input type="checkbox" name="cans_from_middle" />
             </div>
         </fieldset>
+
         <fieldset>
             <legend>Stacks</legend>
-            <div id="stack_row_container">
-                <label for="add_button">Click to add a stack</label>
-                <input type="button" value="Add" class="add_button" onclick="addStackRow()">
+            <div class="form-group">
+                <div class="form-group">
+                    <button type="button" class="btn btn-block" ng-click="addStack()" onclick="">Add Stack</button>
+                </div>
+                <div ng-repeat="row in stackRows">
+                    <div stack remove-stack="removeStack(row)"></div>
+                </div>
             </div>
         </fieldset>
+
         <fieldset>
             <legend>Misc.</legend>
-            <div class="aligned_controls">
+            <div class="form-group">
                 <label for="rating">Rating:</label>
                 <select name="rating">
                     <option value="1">1</option>
@@ -103,139 +108,17 @@
                     <option value="10">10</option>
                 </select>
             </div>
-            <div class="aligned_controls">
+            <div class="form-group">
                 <label for="score">Score:</label>
-                <input type="number" name="score" placeholder="Enter the alliance's score" required="required">
+                <input class="form-control" type="number" name="score" placeholder="Enter the alliance's score" required="required" />
             </div>
-            <div class="aligned_controls">
+            <div class="form-group">
                 <label>Comments:</label>
-                <br>
-                <textarea name="comments" rows="5" required="required"></textarea>
+                <br/>
+                <textarea class="form-control" name="comments" rows="5" required="required"></textarea>
             </div>
         </fieldset>
-        <div class="submit_button_container">
-            <input type="submit" value="Submit" class="submit_button">
-        </div>
-    </form>
 
-    <fieldset>
-        <legend>Info</legend>
-        <div class="form-group">
-            <label for="name">Your name:</label>
-            <input name="name" type="text" class="form-control" placeholder="Enter your name" value="{{scouterName}}">
-            <label for=" match_number ">Match #:</label>
-            <input name="match_number " type="text " class="form-control " placeholder="Enter the match number ">
-            <label for="team_number ">Team #:</label>
-            <input name="team_number " type="text " class="form-control " placeholder="Enter the team number ">
-        </div>
-    </fieldset>
-
-    <fieldset>
-        <legend>Autonomous</legend>
-        <div class="form-group ">
-            <label for="robot_moved ">Did the robot move?</label>
-            <input name="robot_moved " type="checkbox " ng-model="robot_moved ">
-            <div ng-show="robot_moved ">
-                <label for="totes_auto ">How many totes in auto zone?</label>
-                <select name="totes_auto " id="totes_auto " class="form-control ">
-                    <option value="0 " selected="selected ">0</option>
-                    <option value="1 ">1</option>
-                    <option value="2 ">2</option>
-                    <option value="3 ">3</option>
-                </select>
-                <label for="cans_auto ">How many cans in auto zone?</label>
-                <select name="cans_auto " class="form-control ">
-                    <option value="0 " selected="selected ">0</option>
-                    <option value="1 ">1</option>
-                    <option value="2 ">2</option>
-                    <option value="3 ">3</option>
-                </select>
-                <label for="cans_auto_origin ">Grabs how many cans from step?</label>
-                <select name="cans_auto_origin " class="form-control ">
-                    <option value="0 " selected="selected ">0</option>
-                    <option value="1 ">1</option>
-                    <option value="2 ">2</option>
-                    <option value="3 ">3</option>
-                    <option value="4 ">4</option>
-                </select>
-                <label for="in_auto_zone ">Did it finish in the auto zone?</label>
-                <input type="checkbox " name="in_auto_zone ">
-            </div>
-        </div>
-
-    </fieldset>
-
-    <fieldset>
-        <legend>Coopertition</legend>
-        <div class="form-group ">
-            <label for="coopertition_totes ">How many totes?</label>
-            <select name="coopertition_totes " id="coopertition_totes ">
-                <option value="0 " selected="selected ">0</option>
-                <option value="1 ">1</option>
-                <option value="2 ">2</option>
-                <option value="3 ">3</option>
-            </select>
-        </div>
-    </fieldset>
-
-    <fieldset>
-        <legend>Totes</legend>
-        <div class="form-group ">
-            <label for="totes_from_landfill ">Totes from landfill?</label>
-            <input type="checkbox " name="totes_from_landfill " />
-            <label for="totes_from_human ">Totes from human player?</label>
-            <input type="checkbox " name="totes_from_human " />
-        </div>
-    </fieldset>
-
-    <fieldset>
-        <legend>Cans</legend>
-        <div class="form-group ">
-            <label for="cans_from_middle ">Grab cans from middle?</label>
-            <input type="checkbox " name="cans_from_middle " />
-        </div>
-    </fieldset>
-
-    <fieldset>
-        <legend>Stacks</legend>
-        <div class="form-group ">
-            <div class="form-group ">
-                <button class="btn btn-block " ng-click="addStack() ">Add Stack</button>
-            </div>
-            <div ng-repeat="row in stackRows ">
-                <div stack remove-stack="removeStack(row) "></div>
-            </div>
-        </div>
-    </fieldset>
-
-    <fieldset>
-        <legend>Misc.</legend>
-        <div class="form-group">
-            <label for="rating">Rating:</label>
-            <select name="rating">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="score">Score:</label>
-            <input class="form-control" type="number" name="score" placeholder="Enter the alliance's score" required="required" />
-        </div>
-        <div class="form-group">
-            <label>Comments:</label>
-            <br/>
-            <textarea class="form-control" name="comments" rows="5" required="required"></textarea>
-        </div>
-    </fieldset>
-
-
+        <button class="btn btn-primary" type="submit">Submit</button>
     </form>
 </div>

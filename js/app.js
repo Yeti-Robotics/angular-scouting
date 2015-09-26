@@ -14,12 +14,6 @@ app.controller('MainController', function ($scope, $http, $location) {
         $scope.data = response.data;
     });
 
-    $scope.change = function (item) {
-        return item + '-changed';
-    };
-
-    $scope.$route = $http;
-
     $scope.role = "What is your role?";
     $scope.path = "/";
 
