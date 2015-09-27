@@ -5,22 +5,22 @@
                 <th> Choose your prediction</th>
                 <th>
                 </th>
-                <th> ByteCoins: {{byteCoins - wageredByteCoins}}
+                <th> ByteCoins: {{byteCoins - currentWager.wageredByteCoins}}
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>
-                    <button class="btn btn-primary" ng-click="currentWager.wagerType = 'alliance'"> Predict a match winner
+                    <button class="btn btn-primary" ng-click="changeWager('alliance')"> Predict a match winner
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-primary" ng-click="currentWager.wagerType = 'closeMatch'"> Predict a close game
+                    <button class="btn btn-primary" ng-click="changeWager('closeMatch')"> Predict a close game
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-primary" ng-click="currentWager.wagerType = 'points'"> Predict minimum points in a match
+                    <button class="btn btn-primary" ng-click="changeWager('points')"> Predict minimum points in a match
                     </button>
                 </td>
             </tr>
@@ -29,13 +29,13 @@
 
     <fieldset>
         <legend>General</legend>
-        <label for="wageredByteCoins">How many ByteCoins would you like to wager?</label>
         <div class="row">
             <div class="col-md-6">
-                <input type='range' name="wageredByteCoins" value="0" min="0" max="200" ng-model="wageredByteCoins" />
+                <label for="wageredByteCoins">How many ByteCoins would you like to wager?</label>
+                <input type='range' name="wageredByteCoins" value="0" min="0" max="200" ng-model="currentWager.wageredByteCoins" />
             </div>
             <div class="col-md-2">
-                <pre>{{wageredByteCoins}}</pre>
+                <pre>{{currentWager.wageredByteCoins}}</pre>
             </div>
         </div>
         <label for="match">What match do you want to wager for?</label>
@@ -44,7 +44,9 @@
         </select>
     </fieldset>
 
-    <fieldset ng-show="{{currentWager.wagerType === 'alliance'}}">
+    <ol style="visibility:hidden;"></ol>
+
+    <fieldset ng-show="currentWager.wagerType === 'alliance'">
         <legend>Make a wager on an alliance!</legend>
         <label for="alliancePredicted">Who do you think will win?</label>
         <select class="form-control" name="alliancePredicted" id="alliancePredicted">
@@ -52,12 +54,28 @@
             <option value="blue">Blue Alliance</option>
         </select>
     </fieldset>
-    <fieldset ng-show="{{currentWager.wagerType === 'closeMatch'}}">
-        <legend></legend>
-        <input type="text" class="form-control">
+    <fieldset ng-show="currentWager.wagerType === 'closeMatch'">
+        <legend>Predict a close game</legend>
+        <label for="pointsWithen">How many points do you think the alliances will be withen?</label>
+        <input type="number" name="pointsWithen" class="form-control" ng-model="currentWager.withenPoints">
     </fieldset>
-    <fieldset ng-show="{{currentWager.wagerType === 'points'}}">
-        <legend></legend>
-        <input type="text" class="form-control">
+    <fieldset ng-show="currentWager.wagerType === 'points'">
+        <legend>Wager on points scored</legend>
+        <label for="pointsPredicted">How many points do you think that alliance will score AT LEAST?</label>
+        <input type="number" name="pointsPredicted" class="form-control" ng-model="currentWager.pointsPredicted">
+        <label for="alliancePredicted">Which alliance will score these points??</label>
+        <select class="form-control" name="alliancePredicted" id="alliancePredicted" ng-model="currentWager.alliancePredicted">
+            <option value="red">Red Alliance</option>
+            <option value="blue">Blue Alliance</option>
+        </select>
+    </fieldset>
+
+    <ol style="visibility:hidden;"></ol>
+
+    <fieldset ng-show="currentWager.wagerType">
+        <div class="row">
+            <div class="col-md-6"><pre>Possible points to win</pre></div>
+            <div class="col-md-2"><pre>{{currentWager.getValue()}}</pre></div>
+        </div>
     </fieldset>
 </div>

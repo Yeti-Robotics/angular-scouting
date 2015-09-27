@@ -43,6 +43,8 @@ app.controller('MainController', function ($scope, $http, $location) {
 });
 
 app.controller('FormController', function ($scope) {
+    'use strict';
+
     $scope.scouterName = Scouter.name;
 
     $scope.stackRows = [];
@@ -59,12 +61,16 @@ app.controller('FormController', function ($scope) {
 });
 
 app.controller("ListController", function ($scope, $http) {
+    'use strict';
+
     $http.get('php/list.php').then(function (response) {
         $scope.data = response.data;
     });
 });
 
 app.controller("JoeBannanas", function ($scope, $http) {
+    'use strict';
+
     $scope.id = Scouter.id;
 
     $scope.byteCoins = Scouter.byteCoins;
@@ -99,16 +105,26 @@ app.controller("JoeBannanas", function ($scope, $http) {
         //something like, "Sorry, we " + error + ", maybe try again?"
     };
 
-    $scope.wageredByteCoins = 0;
-
     $scope.currentWager = {
         wagerType: "",
+        wageredByteCoins: 0,
         alliancePredicted: false,
         matchPredicted: false,
         withenPoints: false,
-        pointsPredicted: false
+        pointsPredicted: false,
+        getValue: function () {
+            if (this.wagerType === "alliance") {
+                return this.wageredByteCoins * 2;
+            } else if (this.wagerType === "closeMatch") {
+                return this.wageredByteCoins / this.withenPoints;
+            } else if (this.wagerType === "points") {
+                if (this.pointsPredicted > 110) {
+                    return (this.wageredByteCoins * Math.log(this.pointsPredicted) / 2); //Actually VERY NICE scale, thanks math ;)
+                }
+            }
+            return 0;
+        }
     };
-
 
     //Templates
     $scope.allianceWager = {
@@ -125,12 +141,15 @@ app.controller("JoeBannanas", function ($scope, $http) {
         matchPredicted: 0
     };
 
+    $scope.changeWager = function (type) {
+        $scope.currentWager.wagerType = type;
+    };
 
     $scope.sendAllianceWager = function () {
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
             $http.post("php/wager.php", {
                 wagerType: "alliance",
-                points: $scope.pointsWagered,
+                points: $scope.currentWager.wageredByteCoins,
                 alliance: $scope.current.alliancePredicted,
                 match: $scope.currentWager.matchPredicted
             }).then(function (response) {
@@ -145,7 +164,7 @@ app.controller("JoeBannanas", function ($scope, $http) {
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.withenPoints && $scope.currentWager.matchPredicted) {
             $http.post("php/wager.php", {
                 wagerType: "closeMatch",
-                points: $scope.pointsWagered,
+                points: $scope.currentWager.wageredByteCoins,
                 match: $scope.closeMatchWager.matchPredicted,
                 withenPoints: $scope.closeMatchWager.withenPoints
             }).then(function (response) {
@@ -160,7 +179,7 @@ app.controller("JoeBannanas", function ($scope, $http) {
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.pointsPredicted && $scope.currentWager.matchPredicted) {
             $http.post("php/wager.php", {
                 wagerType: "points",
-                points: $scope.pointsWagered,
+                points: $scope.currentWager.wageredByteCoins,
                 pointsInGame: $scope.allianceWager.pointsPredicted,
                 match: $scope.currentWager.matchPredicted
             }).then(function (response) {
@@ -173,6 +192,7 @@ app.controller("JoeBannanas", function ($scope, $http) {
 });
 
 app.directive('stack', function () {
+    'use strict';
     return {
         templateUrl: 'html/stack.html',
         scope: {
