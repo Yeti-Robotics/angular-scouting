@@ -1,3 +1,63 @@
 <div class="container-fluid">
+    <table class="table">
+        <thead>
+            <tr>
+                <th> Choose your prediction</th>
+                <th>
+                </th>
+                <th> ByteCoins: {{byteCoins - wageredByteCoins}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <button class="btn btn-primary" ng-click="currentWager.wagerType = 'alliance'"> Predict a match winner
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-primary" ng-click="currentWager.wagerType = 'closeMatch'"> Predict a close game
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-primary" ng-click="currentWager.wagerType = 'points'"> Predict minimum points in a match
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
+    <fieldset>
+        <legend>General</legend>
+        <label for="wageredByteCoins">How many ByteCoins would you like to wager?</label>
+        <div class="row">
+            <div class="col-md-6">
+                <input type='range' name="wageredByteCoins" value="0" min="0" max="200" ng-model="wageredByteCoins" />
+            </div>
+            <div class="col-md-2">
+                <pre>{{wageredByteCoins}}</pre>
+            </div>
+        </div>
+        <label for="match">What match do you want to wager for?</label>
+        <select class="form-control" name="match" id="match">
+            <option ng-repeat="match in NCRE.Schedule" value="{{match.matchNumber}}">{{"Match:" + match.matchNumber + " " + toOptionLabel(match.Teams)}}</option>
+        </select>
+    </fieldset>
+
+    <fieldset ng-show="{{currentWager.wagerType === 'alliance'}}">
+        <legend>Make a wager on an alliance!</legend>
+        <label for="alliancePredicted">Who do you think will win?</label>
+        <select class="form-control" name="alliancePredicted" id="alliancePredicted">
+            <option value="red">Red Alliance</option>
+            <option value="blue">Blue Alliance</option>
+        </select>
+    </fieldset>
+    <fieldset ng-show="{{currentWager.wagerType === 'closeMatch'}}">
+        <legend></legend>
+        <input type="text" class="form-control">
+    </fieldset>
+    <fieldset ng-show="{{currentWager.wagerType === 'points'}}">
+        <legend></legend>
+        <input type="text" class="form-control">
+    </fieldset>
 </div>
