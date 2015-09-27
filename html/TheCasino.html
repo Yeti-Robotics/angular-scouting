@@ -44,7 +44,7 @@
         </select>
     </fieldset>
 
-    <fieldset ng-show="{{currentWager.wagerType === 'alliance'}}">
+    <fieldset ng-show="currentWager.wagerType === 'alliance'">
         <legend>Make a wager on an alliance!</legend>
         <label for="alliancePredicted">Who do you think will win?</label>
         <select class="form-control" name="alliancePredicted" id="alliancePredicted">
@@ -52,11 +52,11 @@
             <option value="blue">Blue Alliance</option>
         </select>
     </fieldset>
-    <fieldset ng-show="{{currentWager.wagerType === 'closeMatch'}}">
+    <fieldset ng-show="currentWager.wagerType === 'closeMatch'">
         <legend></legend>
         <input type="text" class="form-control">
     </fieldset>
-    <fieldset ng-show="{{currentWager.wagerType === 'points'}}">
+    <fieldset ng-show="currentWager.wagerType === 'points'">
         <legend></legend>
         <input type="text" class="form-control">
     </fieldset>
