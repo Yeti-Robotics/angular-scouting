@@ -54,11 +54,13 @@
             <option value="blue">Blue Alliance</option>
         </select>
     </fieldset>
+
     <fieldset ng-show="currentWager.wagerType === 'closeMatch'">
         <legend>Predict a close game</legend>
         <label for="pointsWithen">How many points do you think the alliances will be withen?</label>
         <input type="number" name="pointsWithen" class="form-control" ng-model="currentWager.withenPoints">
     </fieldset>
+
     <fieldset ng-show="currentWager.wagerType === 'points'">
         <legend>Wager on points scored</legend>
         <label for="pointsPredicted">How many points do you think that alliance will score AT LEAST?</label>
