@@ -1,15 +1,14 @@
 <div class="container-fluid">
-
-    <form id="scouting_form" action="scouting_submit.php" method="POST" novalidate>
+    <form id="scouting_form" ng-submit="submit()">
         <fieldset>
             <legend>Info</legend>
             <div class="form-group">
                 <label for="name">Your name:</label>
-                <input name="name" type="text" class="form-control" placeholder="Enter your name" value="{{scouterName}}">
+                <input ng-model="formData.name" type="text" class="form-control" placeholder="Enter your name" value="{{scouterName}}">
                 <label for=" match_number">Match #:</label>
-                <input name="match_number" type="text" class="form-control" placeholder="Enter the match number">
+                <input ng-model="formData.match_number" type="number" class="form-control" placeholder="Enter the match number">
                 <label for="team_number">Team #:</label>
-                <input name="team_number" type="text" class="form-control" placeholder="Enter the team number">
+                <input ng-model="formData.team_number" type="number" class="form-control" placeholder="Enter the team number">
             </div>
         </fieldset>
 
@@ -17,24 +16,24 @@
             <legend>Autonomous</legend>
             <div class="form-group">
                 <label for="robot_moved">Did the robot move?</label>
-                <input name="robot_moved" type="checkbox" ng-model="robot_moved">
-                <div ng-show="robot_moved">
+                <input ng-model="formData.robot_moved" type="checkbox" ng-model="robot_moved">
+                <div ng-show="formData.robot_moved">
                     <label for="totes_auto">How many totes in auto zone?</label>
-                    <select name="totes_auto" id="totes_auto" class="form-control">
+                    <select ng-model="formData.totes_auto"  id="totes_auto" class="form-control">
                         <option value="0" selected="selected">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
                     <label for="cans_auto">How many cans in auto zone?</label>
-                    <select name="cans_auto" class="form-control">
+                    <select ng-model="formData.cans_auto"class="form-control">
                         <option value="0" selected="selected">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
                     <label for="cans_auto_origin">Grabs how many cans from step?</label>
-                    <select name="cans_auto_origin" class="form-control">
+                    <select ng-model="formData.cans_auto_origin" class="form-control">
                         <option value="0" selected="selected">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -42,7 +41,7 @@
                         <option value="4">4</option>
                     </select>
                     <label for="in_auto_zone">Did it finish in the auto zone?</label>
-                    <input type="checkbox" name="in_auto_zone">
+                    <input type="checkbox" ng-model="formData.in_auto_zone">
                 </div>
             </div>
 
@@ -52,7 +51,7 @@
             <legend>Coopertition</legend>
             <div class="form-group">
                 <label for="coopertition_totes">How many totes?</label>
-                <select name="coopertition_totes" id="coopertition_totes">
+                <select ng-model="formData.coopertition_totes" id="coopertition_totes">
                     <option value="0" selected="selected">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -65,9 +64,9 @@
             <legend>Totes</legend>
             <div class="form-group">
                 <label for="totes_from_landfill">Totes from landfill?</label>
-                <input type="checkbox" name="totes_from_landfill" />
+                <input type="checkbox" ng-model="formData.totes_from_landfill" />
                 <label for="totes_from_human">Totes from human player?</label>
-                <input type="checkbox" name="totes_from_human" />
+                <input type="checkbox" ng-model="formData.totes_from_human" />
             </div>
         </fieldset>
 
@@ -75,7 +74,7 @@
             <legend>Cans</legend>
             <div class="form-group">
                 <label for="cans_from_middle">Grab cans from middle?</label>
-                <input type="checkbox" name="cans_from_middle" />
+                <input type="checkbox" ng-model="formData.cans_from_middle" />
             </div>
         </fieldset>
 
@@ -85,9 +84,10 @@
                 <div class="form-group">
                     <button type="button" class="btn btn-block" ng-click="addStack()" onclick="">Add Stack</button>
                 </div>
-                <div ng-repeat="row in stackRows">
+                <div ng-repeat="row in stackRows.rows track by $index">
                     <div stack remove-stack="removeStack(row)"></div>
                 </div>
+                {{stackRows.rows}}
             </div>
         </fieldset>
 
@@ -95,7 +95,7 @@
             <legend>Misc.</legend>
             <div class="form-group">
                 <label for="rating">Rating:</label>
-                <select name="rating">
+                <select ng-model="formData.rating">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -110,12 +110,12 @@
             </div>
             <div class="form-group">
                 <label for="score">Score:</label>
-                <input class="form-control" type="number" name="score" placeholder="Enter the alliance's score" required="required" />
+                <input class="form-control" type="number" ng-model="formData.score" placeholder="Enter the alliance's score" />
             </div>
             <div class="form-group">
                 <label>Comments:</label>
                 <br/>
-                <textarea class="form-control" name="comments" rows="5" required="required"></textarea>
+                <textarea class="form-control" ng-model="formData.comments" rows="5"></textarea>
             </div>
         </fieldset>
 

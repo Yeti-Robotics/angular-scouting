@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-xs-4">
                 <label for="stacks_totes">Totes:</label>
-                <select name="stacks_totes[]" class="form-control">
+                <select ng-model="row.stacks_totes" ng-init="row.stacks_totes='0'" class="form-control" ng-change="$parent.stackRows.rows[stackRows.rows.indexOf(row)].stacks_totes = row.stacks_totes">
                     <option value="0" selected="selected">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -12,18 +12,20 @@
                     <option value="5">5</option>
                     <option value="6">6</option>
                 </select>
+                {{row.stacks_totes}}
             </div>
             <div class="col-xs-4">
                 <label for="capped_stack">Cap:</label>
-                <select name="capped_stack[]" class="form-control">
+                <select ng-model="row.capped_stack" ng-init="row.capped_stack='0'" class="form-control" ng-change="$parent.stackRows.rows[stackRows.rows.indexOf(row)].capped_stack = row.capped_stack">
                     <option value="0" selected="selected">No cap</option>
                     <option value="1">Cap w/o litter</option>
                     <option value="2">Cap w/ litter</option>
                 </select>
+                {{row.capped_stack}}
             </div>
             <div class="col-xs-4">
                 <label for="cap_height">Cap height:</label>
-                <select name="cap_height[]" class="form-control">
+                <select ng-model="row.cap_height" ng-init="row.cap_height='0'" class="form-control" ng-change="$parent.stackRows.rows[stackRows.rows.indexOf(row)].cap_height = row.cap_height">
                     <option value="0" selected="selected">(No cap)</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -32,6 +34,7 @@
                     <option value="5">5</option>
                     <option value="6">6</option>
                 </select>
+                {{row.cap_height}}
             </div>
         </div>
     </div>
