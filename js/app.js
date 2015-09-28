@@ -28,8 +28,10 @@ app.controller('MainController', function ($scope, $http, $location) {
                 pswd: Scouter.pswd
             })
             .then(function (response) {
-                if (!response.error) {
-                    Scouter.name = response.name;
+                console.log(response);
+                var result = response.data;
+                if (result) {
+                    Scouter.name = result;
                     if ($scope.role === 'Scouter') {
                         $location.path("/form");
                     } else if ($scope.role === 'Wagerer') {
@@ -106,12 +108,12 @@ app.controller("JoeBannanas", function ($scope, $http) {
     };
 
     $scope.currentWager = {
-        wagerType: "",
+        wagerType: '',
         wageredByteCoins: 0,
-        alliancePredicted: false,
-        matchPredicted: false,
-        withenPoints: false,
-        pointsPredicted: false,
+        alliancePredicted: '',
+        matchPredicted: 0,
+        withenPoints: 0,
+        pointsPredicted: 0,
         getValue: function () {
             if (this.wagerType === "alliance") {
                 return this.wageredByteCoins * 2;

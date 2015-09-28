@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.11
+-- version 4.4.14
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 23, 2015 at 02:33 AM
--- Server version: 5.6.21
--- PHP Version: 5.6.3
+-- Generation Time: Sep 28, 2015 at 12:38 AM
+-- Server version: 5.6.26
+-- PHP Version: 5.6.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -15,7 +15,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-
 --
 -- Database: `scouting`
 --
@@ -34,6 +33,19 @@ CREATE TABLE IF NOT EXISTS `pit_scouting` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `pic_num` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `scouters`
+--
+
+CREATE TABLE IF NOT EXISTS `scouters` (
+  `id` smallint(6) NOT NULL,
+  `name` tinytext NOT NULL,
+  `pswd` tinytext NOT NULL,
+  `byteCoins` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
