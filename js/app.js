@@ -129,14 +129,25 @@ app.controller("JoeBannanas", function ($scope, $http) {
         //something like, "Sorry, we " + error + ", maybe try again?"
     };
 
-    $scope.wageredByteCoins = 0;
-
     $scope.currentWager = {
-        wagerType: "",
-        alliancePredicted: false,
-        matchPredicted: false,
-        withenPoints: false,
-        pointsPredicted: false
+         wagerType: '',
+-        wageredByteCoins: 0,
+-        alliancePredicted: '',
+-        matchPredicted: 0,
+-        withenPoints: 0,
+-        minPointsPredicted: 0,
+-        getValue: function () {
+-            if (this.wagerType === "alliance") {
+-                return this.wageredByteCoins * 2;
+-            } else if (this.wagerType === "closeMatch") {
+-                return this.wageredByteCoins / this.withenPoints;
+-            } else if (this.wagerType === "points") {
+-                if (this.pointsPredicted > 110) {
+-                    return (this.wageredByteCoins * Math.log(this.minPointsPredicted) / 2); //Actually VERY NICE scale, thanks math ;)
+-                }
+-            }
+-            return 0;
+-        }
     };
 
 
@@ -160,8 +171,8 @@ app.controller("JoeBannanas", function ($scope, $http) {
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
             $http.post("php/wager.php", {
                 wagerType: "alliance",
-                points: $scope.pointsWagered,
-                alliance: $scope.current.alliancePredicted,
+                points: $scope.currentWager.wageredByteCoins,
+                alliance: $scope.currentWager.alliancePredicted,
                 match: $scope.currentWager.matchPredicted
             }).then(function (response) {
                 $scope.reportSuccess();
@@ -175,9 +186,9 @@ app.controller("JoeBannanas", function ($scope, $http) {
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.withenPoints && $scope.currentWager.matchPredicted) {
             $http.post("php/wager.php", {
                 wagerType: "closeMatch",
-                points: $scope.pointsWagered,
-                match: $scope.closeMatchWager.matchPredicted,
-                withenPoints: $scope.closeMatchWager.withenPoints
+                points: $scope.currentWager.wageredByteCoins,
+                match: $scope.currentWager.matchPredicted,
+                withenPoints: $scope.currentWager.withenPoints
             }).then(function (response) {
                 $scope.reportSuccess();
             }, function (response) {
@@ -190,8 +201,8 @@ app.controller("JoeBannanas", function ($scope, $http) {
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.pointsPredicted && $scope.currentWager.matchPredicted) {
             $http.post("php/wager.php", {
                 wagerType: "points",
-                points: $scope.pointsWagered,
-                pointsInGame: $scope.allianceWager.pointsPredicted,
+                points: $scope.currentWager.wageredByteCoins,
+                pointsInGame: $scope.currentWager.minPointsPredicted,
                 match: $scope.currentWager.matchPredicted
             }).then(function (response) {
                 $scope.reportSuccess();
