@@ -131,23 +131,23 @@ app.controller("JoeBannanas", function ($scope, $http) {
 
     $scope.currentWager = {
          wagerType: '',
--        wageredByteCoins: 0,
--        alliancePredicted: '',
--        matchPredicted: 0,
--        withenPoints: 0,
--        minPointsPredicted: 0,
--        getValue: function () {
--            if (this.wagerType === "alliance") {
--                return this.wageredByteCoins * 2;
--            } else if (this.wagerType === "closeMatch") {
--                return this.wageredByteCoins / this.withenPoints;
--            } else if (this.wagerType === "points") {
--                if (this.pointsPredicted > 110) {
--                    return (this.wageredByteCoins * Math.log(this.minPointsPredicted) / 2); //Actually VERY NICE scale, thanks math ;)
--                }
--            }
--            return 0;
--        }
+        wageredByteCoins: 0,
+        alliancePredicted: '',
+        matchPredicted: 0,
+        withenPoints: 0,
+        minPointsPredicted: 0,
+        getValue: function () {
+            if (this.wagerType === "alliance") {
+                return this.wageredByteCoins * 2;
+            } else if (this.wagerType === "closeMatch") {
+                return this.wageredByteCoins / this.withenPoints;
+            } else if (this.wagerType === "points") {
+                if (this.pointsPredicted > 110) {
+                    return (this.wageredByteCoins * Math.log(this.minPointsPredicted) / 2); //Actually VERY NICE scale, thanks math ;)
+                }
+            }
+            return 0;
+        }
     };
 
 
