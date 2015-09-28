@@ -4,7 +4,7 @@
             <legend>Info</legend>
             <div class="form-group">
                 <label for="name">Your name:</label>
-                <input ng-model="formData.name" type="text" class="form-control" placeholder="Enter your name" value="{{scouterName}}">
+                <input ng-model="formData.name" type="text" class="form-control" placeholder="Enter your name">
                 <label for=" match_number">Match #:</label>
                 <input ng-model="formData.match_number" type="number" class="form-control" placeholder="Enter the match number">
                 <label for="team_number">Team #:</label>
@@ -19,14 +19,14 @@
                 <input ng-model="formData.robot_moved" type="checkbox" ng-model="robot_moved">
                 <div ng-show="formData.robot_moved">
                     <label for="totes_auto">How many totes in auto zone?</label>
-                    <select ng-model="formData.totes_auto"  id="totes_auto" class="form-control">
+                    <select ng-model="formData.totes_auto" id="totes_auto" class="form-control">
                         <option value="0" selected="selected">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
                     <label for="cans_auto">How many cans in auto zone?</label>
-                    <select ng-model="formData.cans_auto"class="form-control">
+                    <select ng-model="formData.cans_auto" class="form-control">
                         <option value="0" selected="selected">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>

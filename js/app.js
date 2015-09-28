@@ -20,9 +20,6 @@ app.controller('MainController', function ($scope, $http, $location) {
         $scope.role = role;
     };
 
-    $scope.scouterId = '';
-    $scope.scouterPswd = '';
-
     $scope.goToPath = function () {
         Scouter.id = $scope.scouterId;
         Scouter.pswd = $scope.scouterPswd;
@@ -48,33 +45,36 @@ app.controller('MainController', function ($scope, $http, $location) {
 
 app.controller('FormController', function ($scope, $http) {
     'use strict';
-    
-    $scope.scouterName = Scouter.name;
 
-    $scope.stackRows = {rows:[]};
-    
-    $scope.formData = {};
-    
-//    $scope.stacks_totes = '0';
-//    $scope.capped_stack = '0';
-//    $scope.cap_height = '0';
-    
+    $scope.stackRows = {
+        rows: []
+    };
+
+    $scope.formData = {
+        name: Scouter.name
+    };
+
+    //    $scope.stacks_totes = '0';
+    //    $scope.capped_stack = '0';
+    //    $scope.cap_height = '0';
+
     $scope.addStack = function () {
-        $scope.stackRows.rows.push({stacks_totes:'0', capped_stack:'0', cap_height:'0'});
+        $scope.stackRows.rows.push({
+            stacks_totes: '0',
+            capped_stack: '0',
+            cap_height: '0'
+        });
     };
 
     $scope.removeStack = function (stack) {
         var rowNum = $scope.stackRows.rows.indexOf(stack);
         $scope.stackRows.rows.splice(rowNum, 1);
     };
-    
-    $scope.submit = function() {
-//        $scope.formData.stackRows = $scope.stackRows.rows;
-        $http.post('php/submit.php', $scope.formData).then(function(response) {
-            console.log(response.data);
-        }, function(response) {
-            console.log("data: " + response.data + "\n error code: " + response.status
-                        + "\n error text: " + response.statusText);
+
+    $scope.submit = function () {
+        //        $scope.formData.stackRows = $scope.stackRows.rows;
+        $http.post('php/submit.php', $scope.formData).then(function (response) {}, function (response) {
+            console.log("data: " + response.data + "\n error code: " + response.status + "\n error text: " + response.statusText);
         });
         $('input, select, textarea').removeClass('ng-dirty ng-touched ng-valid-parse');
         $('input, select, textarea').addClass('ng-pristine ng-untouched ng-valid');
@@ -86,7 +86,7 @@ app.controller('FormController', function ($scope, $http) {
 
 app.controller("ListController", function ($scope, $http) {
     'use strict';
-    
+
     $http.get('php/list.php').then(function (response) {
         $scope.data = response.data;
     });
@@ -94,9 +94,8 @@ app.controller("ListController", function ($scope, $http) {
 
 app.controller("JoeBannanas", function ($scope, $http) {
     'use strict';
-    
-    $scope.id = Scouter.id;
 
+    $scope.id = Scouter.id;
     $scope.byteCoins = Scouter.byteCoins;
 
     $scope.refreshByteCoins = function () {
@@ -104,7 +103,8 @@ app.controller("JoeBannanas", function ($scope, $http) {
             id: Scouter.id,
             pswd: Scouter.pswd
         }).then(function (response) {
-            Scouter.byteCoins = response.byteCoins;
+            Scouter.byteCoins = response.data;
+            $scope.byteCoins = response.data;
         }, function (response) {
             $scope.reportError("could not properly get your number of Byte Coins");
         });
@@ -130,24 +130,26 @@ app.controller("JoeBannanas", function ($scope, $http) {
     };
 
     $scope.currentWager = {
-         wagerType: '',
--        wageredByteCoins: 0,
--        alliancePredicted: '',
--        matchPredicted: 0,
--        withenPoints: 0,
--        minPointsPredicted: 0,
--        getValue: function () {
--            if (this.wagerType === "alliance") {
--                return this.wageredByteCoins * 2;
--            } else if (this.wagerType === "closeMatch") {
--                return this.wageredByteCoins / this.withenPoints;
--            } else if (this.wagerType === "points") {
--                if (this.pointsPredicted > 110) {
--                    return (this.wageredByteCoins * Math.log(this.minPointsPredicted) / 2); //Actually VERY NICE scale, thanks math ;)
--                }
--            }
--            return 0;
--        }
+        wagerType: '',
+        wageredByteCoins: 0,
+        alliancePredicted: '',
+        matchPredicted: 0,
+        withenPoints: 0,
+        minPointsPredicted: 0,
+        getValue: function () {
+
+            if (this.wagerType === "alliance") {
+
+                return this.wageredByteCoins * 2;
+            } else if (this.wagerType === "closeMatch") {
+                return this.wageredByteCoins / this.withenPoints;
+            } else if (this.wagerType === "points") {
+                if (this.pointsPredicted > 110) {
+                    return (this.wageredByteCoins * Math.log(this.minPointsPredicted) / 2); //Actually VERY NICE scale, thanks math ;)
+                }
+            }
+            return 0;
+        }
     };
 
 

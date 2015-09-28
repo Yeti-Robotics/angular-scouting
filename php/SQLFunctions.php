@@ -40,7 +40,7 @@ function byteCoinsToAdd($db, $id) {
         $stmt->execute();
         $result = $stmt->get_result();
         if($results) {
-            $matchs = json_decode(file_get_contents(../json/NCRE.json));
+            $matchs = json_decode(file_get_contents("../json/NCRE.json"));
             $byteCoinsToAdd = 0;
             
             while($row = $result->fetch_array()) {
@@ -76,11 +76,11 @@ function byteCoinsToAdd($db, $id) {
                         case 'minPoints':
                             if($row["alliancePredicted"] == 'red') {
                                 if ($matchData["scoreRedFinal"] > $row["minPointsPredicted"]) {
-                                    $byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])) / 2
+                                    $byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])) / 2);
                                 }
                             } else {
                                 if ($matchData["scoreBlueFinal"] > $row["minPointsPredicted"]) {
-                                    $byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])) / 2
+                                    $byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])) / 2);
                                 }
                             }
                             break;
@@ -108,17 +108,17 @@ function addByteCoins($db, $id, $pswd, $byteCoins) {
 function getByteCoins($db, $id, $pswd) {
     $query = "SELECT byteCoins FROM scouters WHERE id = ?";
     if(checkPassword($db, $id, $pswd)) {
-            //addByteCoins(getByteCoinsToAdd($db, $id));
-            if($stmt = $db->prepare($query)) {
+        //addByteCoins(getByteCoinsToAdd($db, $id));
+        if($stmt = $db->prepare($query)) {
             $stmt->bind_param("i", $id);
             $stmt->execute();
             $result = $stmt->get_result();
             while($row = $result->fetch_array()) {
                 $db->close();
-                die($row[0]);
+                die(json_encode($row[0]));
             }
         }
     }
-}
+    die("Getting Byte Coins failed");
 }
 ?>
