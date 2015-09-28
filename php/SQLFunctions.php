@@ -23,7 +23,8 @@ function getName($db, $id, $pswd) {
             $stmt->execute();
             $result = $stmt->get_result();
             while($row = $result->fetch_array()) {
-                return $row[0];
+                $db->close();
+                die($row[0]);
             }
         }
     }

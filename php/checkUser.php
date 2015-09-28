@@ -2,12 +2,9 @@
     include("connect.php");
     include("SQLFunctions.php");
 
-    if((!empty($_POST["id"])) && (!empty($_POST["pswd"]))) {
-        $name = "" + getName($db, $_POST["id"], $_POST["pswd"]);
-        $db->close();
-        if (!empty($name)) {
-            die($name);
-        }
+    $params = json_decode(file_get_contents('php://input'), true);
+    if((!empty($params["id"])) && (!empty($params["pswd"]))) {
+        getName($db, $params["id"], $params["pswd"]);
     }
 echo false;
 ?>

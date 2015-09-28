@@ -20,15 +20,17 @@ app.controller('MainController', function ($scope, $http, $location) {
         $scope.role = role;
     };
 
+    $scope.scouterId = '';
+    $scope.scouterPswd = '';
+
     $scope.goToPath = function () {
-        Scouter.id = $("#scouterid").val();
-        Scouter.pswd = $("#password").val();
+        Scouter.id = $scope.scouterId;
+        Scouter.pswd = $scope.scouterPswd;
         $http.post('/php/checkUser.php', {
                 id: Scouter.id,
                 pswd: Scouter.pswd
             })
             .then(function (response) {
-                console.log(response);
                 var result = response.data;
                 if (result) {
                     Scouter.name = result;
