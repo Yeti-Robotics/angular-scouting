@@ -80,7 +80,7 @@ app.controller('FormController', function ($scope, $http) {
         $('input, select, textarea').addClass('ng-pristine ng-untouched ng-valid');
         $('input, select, textarea').val('');
         $scope.formData = {};
-    }
+    };
 
 });
 
@@ -115,6 +115,7 @@ app.controller("JoeBannanas", function ($scope, $http) {
         $scope.NCRE = response.data;
     });
 
+
     $scope.toOptionLabel = function (teams) {
         return teams[0].teamNumber + "-" + teams[1].teamNumber + "-" +
             teams[2].teamNumber + " vs " + teams[3].teamNumber + "-" +
@@ -137,9 +138,7 @@ app.controller("JoeBannanas", function ($scope, $http) {
         withenPoints: 0,
         minPointsPredicted: 0,
         getValue: function () {
-
             if (this.wagerType === "alliance") {
-
                 return this.wageredByteCoins * 2;
             } else if (this.wagerType === "closeMatch") {
                 return this.wageredByteCoins / this.withenPoints;
@@ -152,6 +151,9 @@ app.controller("JoeBannanas", function ($scope, $http) {
         }
     };
 
+    $scope.changeWager = function (wagerType) {
+        $scope.currentWager.wagerType = wagerType;
+    };
 
     //Templates
     $scope.allianceWager = {
@@ -169,43 +171,40 @@ app.controller("JoeBannanas", function ($scope, $http) {
     };
 
 
-    $scope.sendAllianceWager = function () {
+    $scope.sendWager = function () {
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
             $http.post("php/wager.php", {
+                associatedId: Scouter.id,
                 wagerType: "alliance",
-                points: $scope.currentWager.wageredByteCoins,
-                alliance: $scope.currentWager.alliancePredicted,
-                match: $scope.currentWager.matchPredicted
+                wageredByteCoins: $scope.currentWager.wageredByteCoins,
+                matchPredicted: $scope.currentWager.matchPredicted,
+                alliancePredicted: $scope.currentWager.alliancePredicted
             }).then(function (response) {
                 $scope.reportSuccess();
             }, function (response) {
 
             });
-        }
-    };
-
-    $scope.sendCloseMatchWager = function () {
-        if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.withenPoints && $scope.currentWager.matchPredicted) {
+        } else if ($scope.currentWager.wagerType === "closeMatch" && $scope.currentWager.withenPoints && $scope.currentWager.matchPredicted) {
             $http.post("php/wager.php", {
+                associatedId: Scouter.id,
                 wagerType: "closeMatch",
-                points: $scope.currentWager.wageredByteCoins,
-                match: $scope.currentWager.matchPredicted,
+                wageredByteCoins: $scope.currentWager.wageredByteCoins,
+                matchPredicted: $scope.currentWager.matchPredicted,
                 withenPoints: $scope.currentWager.withenPoints
             }).then(function (response) {
                 $scope.reportSuccess();
             }, function (response) {
 
             });
-        }
-    };
-
-    $scope.sendPointsWager = function () {
-        if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.pointsPredicted && $scope.currentWager.matchPredicted) {
+        } else if ($scope.currentWager.wagerType === "points" && $scope.currentWager.pointsPredicted && $scope.currentWager.matchPredicted) {
             $http.post("php/wager.php", {
+                associatedId: Scouter.id,
                 wagerType: "points",
-                points: $scope.currentWager.wageredByteCoins,
-                pointsInGame: $scope.currentWager.minPointsPredicted,
-                match: $scope.currentWager.matchPredicted
+                wageredByteCoins: $scope.currentWager.wageredByteCoins,
+                matchPredicted: $scope.currentWager.matchPredicted,
+                alliancePredicted: $scope.currentWager.alliancePredicted,
+                withenPoints: $scope.currentWager.withenPoints
+
             }).then(function (response) {
                 $scope.reportSuccess();
             }, function (response) {

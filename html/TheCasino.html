@@ -63,7 +63,7 @@
 
     <fieldset ng-show="currentWager.wagerType === 'points'">
         <legend>Wager on points scored</legend>
-        <label for="pointsPredicted">How many points do you think that alliance will score AT LEAST?</label>
+        <label for="pointsPredicted">How many points do you think that alliance will score AT LEAST? (must be > 110)</label>
         <input type="number" name="pointsPredicted" class="form-control" ng-model="currentWager.pointsPredicted">
         <label for="alliancePredicted">Which alliance will score these points??</label>
         <select class="form-control" name="alliancePredicted" id="alliancePredicted" ng-model="currentWager.alliancePredicted">
