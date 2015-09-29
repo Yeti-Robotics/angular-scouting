@@ -34,7 +34,7 @@ function getName($db, $id, $pswd) {
 }
 
 function byteCoinsToAdd($db, $id) {
-    $query = "SELECT * FROM wagers WHERE id = ?";
+    $query = "SELECT * FROM wagers WHERE associatedId = ?";
     if($stmt = $db->prepare($query)) {
         $stmt->bind_param("i", $id);
         $stmt->execute();
