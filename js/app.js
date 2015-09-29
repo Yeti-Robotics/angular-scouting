@@ -141,7 +141,7 @@ app.controller("JoeBannanas", function ($scope, $http) {
             if (this.wagerType === "alliance") {
                 return this.wageredByteCoins * 2;
             } else if (this.wagerType === "closeMatch") {
-                return this.wageredByteCoins / this.withenPoints;
+                return this.wageredByteCoins / this.withenPoints; //Terrible scale, need to fix
             } else if (this.wagerType === "points") {
                 if (this.pointsPredicted > 110) {
                     return (this.wageredByteCoins * Math.log(this.minPointsPredicted) / 2); //Actually VERY NICE scale, thanks math ;)
@@ -176,6 +176,7 @@ app.controller("JoeBannanas", function ($scope, $http) {
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
             postObject = {
                 associatedId: Scouter.id,
+                pswd: Scouter.pswd,
                 wagerType: "alliance",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,
@@ -184,14 +185,16 @@ app.controller("JoeBannanas", function ($scope, $http) {
         } else if ($scope.currentWager.wagerType === "closeMatch" && $scope.currentWager.withenPoints && $scope.currentWager.matchPredicted) {
             postObject = {
                 associatedId: Scouter.id,
+                pswd: Scouter.pswd,
                 wagerType: "closeMatch",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,
                 withenPoints: $scope.currentWager.withenPoints
             };
         } else if ($scope.currentWager.wagerType === "points" && $scope.currentWager.pointsPredicted && $scope.currentWager.matchPredicted) {
-            postObject ={
+            postObject = {
                 associatedId: Scouter.id,
+                pswd: Scouter.pswd,
                 wagerType: "points",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,
@@ -206,7 +209,6 @@ app.controller("JoeBannanas", function ($scope, $http) {
         }, function (response) {
             $scope.reportError("Failed to send Wager.");
         });
-        }
     };
 });
 

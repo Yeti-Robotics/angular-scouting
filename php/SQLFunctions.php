@@ -80,7 +80,7 @@ function byteCoinsToAdd($db, $id) {
                                 }
                             } else {
                                 if ($matchData["scoreBlueFinal"] > $row["minPointsPredicted"]) {
-                                    $byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])) / 2);
+                                    $byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])));
                                 }
                             }
                             break;
@@ -103,6 +103,9 @@ function addByteCoins($db, $id, $pswd, $byteCoins) {
         }
     }
     die ("Adding Byte Coins failed");
+}
+
+function removeByteCoins($db, $id, $pswd, $byteCoins) {
 }
 
 function getByteCoins($db, $id, $pswd) {
