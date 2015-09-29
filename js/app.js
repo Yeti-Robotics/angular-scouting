@@ -172,44 +172,40 @@ app.controller("JoeBannanas", function ($scope, $http) {
 
 
     $scope.sendWager = function () {
+        var postObject = {};
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
-            $http.post("php/wager.php", {
+            postObject = {
                 associatedId: Scouter.id,
                 wagerType: "alliance",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,
                 alliancePredicted: $scope.currentWager.alliancePredicted
-            }).then(function (response) {
-                $scope.reportSuccess();
-            }, function (response) {
-
-            });
+            };
         } else if ($scope.currentWager.wagerType === "closeMatch" && $scope.currentWager.withenPoints && $scope.currentWager.matchPredicted) {
-            $http.post("php/wager.php", {
+            postObject = {
                 associatedId: Scouter.id,
                 wagerType: "closeMatch",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,
                 withenPoints: $scope.currentWager.withenPoints
-            }).then(function (response) {
-                $scope.reportSuccess();
-            }, function (response) {
-
-            });
+            };
         } else if ($scope.currentWager.wagerType === "points" && $scope.currentWager.pointsPredicted && $scope.currentWager.matchPredicted) {
-            $http.post("php/wager.php", {
+            postObject ={
                 associatedId: Scouter.id,
                 wagerType: "points",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,
                 alliancePredicted: $scope.currentWager.alliancePredicted,
                 withenPoints: $scope.currentWager.withenPoints
-
-            }).then(function (response) {
-                $scope.reportSuccess();
-            }, function (response) {
-
-            });
+            };
+        } else {
+            return;
+        }
+        $http.post("php/wager.php", postObject).then(function (response) {
+            $scope.reportSuccess(postObject);
+        }, function (response) {
+            $scope.reportError("Failed to send Wager.");
+        });
         }
     };
 });
