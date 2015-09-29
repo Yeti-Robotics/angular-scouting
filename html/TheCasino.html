@@ -39,7 +39,7 @@
             </div>
         </div>
         <label for="match">What match do you want to wager for?</label>
-        <select class="form-control" name="match" id="match">
+        <select class="form-control" name="match" id="match" ng-model="currentWager.matchPredicted">
             <option ng-repeat="match in NCRE.Schedule" value="{{match.matchNumber}}">{{"Match:" + match.matchNumber + " " + toOptionLabel(match.Teams)}}</option>
         </select>
     </fieldset>
@@ -49,7 +49,7 @@
     <fieldset ng-show="currentWager.wagerType === 'alliance'">
         <legend>Make a wager on an alliance!</legend>
         <label for="alliancePredicted">Who do you think will win?</label>
-        <select class="form-control" name="alliancePredicted" id="alliancePredicted">
+        <select class="form-control" name="alliancePredicted" id="alliancePredicted" ng-model="currentWager.alliancePredicted">
             <option value="red">Red Alliance</option>
             <option value="blue">Blue Alliance</option>
         </select>
