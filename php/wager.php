@@ -13,6 +13,8 @@ if($postData["wagerType"] == "alliance") {
 	$stmt->execute();
     }
     else {
+      header($_SERVER['SERVER_PROTOCOL'] . ' 500 SQL Error', true, 500);
+
         die("Failed to upload alliance");
     }
 }
@@ -28,6 +30,8 @@ if($postData["wagerType"] == "alliance") {
 		$postData["withenPoints"]);
 	$stmt->execute();
     } else {
+      header($_SERVER['SERVER_PROTOCOL'] . ' 500 SQL Error', true, 500);
+
         die("Failed to upload closeMatch");
     }
 } else if ($postData["wagerType"] == "points") {
