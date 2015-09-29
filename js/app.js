@@ -26,13 +26,14 @@ app.controller('MainController', function ($scope, $http, $location) {
     $scope.goToPath = function () {
         Scouter.id = $scope.scouterId;
         Scouter.pswd = $scope.scouterPswd;
-        $http.post('/php/checkUser.php', {
+        $http.post('php/checkUser.php', {
                 id: Scouter.id,
                 pswd: Scouter.pswd
             })
             .then(function (response) {
                 var result = response.data;
                 if (result) {
+                    console.log(result);
                     Scouter.name = result;
                     if ($scope.role === 'Scouter') {
                         $location.path("/form");
