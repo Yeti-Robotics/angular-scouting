@@ -84,10 +84,9 @@
                 <div class="form-group">
                     <button type="button" class="btn btn-block" ng-click="addStack()" onclick="">Add Stack</button>
                 </div>
-                <div ng-repeat="row in stackRows.rows track by $index">
+                <div ng-repeat="row in formData.stackRows.rows">
                     <div stack remove-stack="removeStack(row)"></div>
                 </div>
-                {{stackRows.rows}}
             </div>
         </fieldset>
 

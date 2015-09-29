@@ -33,7 +33,6 @@ app.controller('MainController', function ($scope, $http, $location) {
             .then(function (response) {
                 var result = response.data;
                 if (result) {
-                    console.log(result);
                     Scouter.name = result;
                     if ($scope.role === 'Scouter') {
                         $location.path("/form");
@@ -51,27 +50,28 @@ app.controller('FormController', function ($scope, $http) {
     'use strict';
     
     $scope.scouterName = Scouter.name;
-
-    $scope.stackRows = {rows:[]};
     
-    $scope.formData = {};
-    
-//    $scope.stacks_totes = '0';
-//    $scope.capped_stack = '0';
-//    $scope.cap_height = '0';
+    $scope.formData = {
+        stackRows:{
+            rows:[]
+        }
+    };
     
     $scope.addStack = function () {
-        $scope.stackRows.rows.push({stacks_totes:'0', capped_stack:'0', cap_height:'0'});
+        $scope.formData.stackRows.rows.push({
+            stacks_totes:'0', 
+            capped_stack:'0', 
+            cap_height:'0'
+        });
     };
 
     $scope.removeStack = function (stack) {
-        var rowNum = $scope.stackRows.rows.indexOf(stack);
-        $scope.stackRows.rows.splice(rowNum, 1);
+        var rowNum = $scope.formData.stackRows.rows.indexOf(stack);
+        $scope.formData.stackRows.rows.splice(rowNum, 1);
     };
     
     $scope.submit = function() {
-//        $scope.formData.stackRows = $scope.stackRows.rows;
-        $http.post('php/submit.php', $scope.formData).then(function(response) {
+        $http.post('php/formSubmit.php', $scope.formData).then(function(response) {
             console.log(response.data);
         }, function(response) {
             console.log("data: " + response.data + "\n error code: " + response.status
@@ -80,7 +80,12 @@ app.controller('FormController', function ($scope, $http) {
         $('input, select, textarea').removeClass('ng-dirty ng-touched ng-valid-parse');
         $('input, select, textarea').addClass('ng-pristine ng-untouched ng-valid');
         $('input, select, textarea').val('');
-        $scope.formData = {};
+        $('[ng-model="formData.name"]').val($scope.scouterName);
+        $scope.formData = {
+            stackRows:{
+                rows:[]
+            }
+        };
     }
 
 });
