@@ -44,6 +44,7 @@ if($postData["wagerType"] == "alliance") {
 	$stmt->execute();
     }
     else {
+    	header($_SERVER['SERVER_PROTOCOL'] . ' 500 SQL Error', true, 500);
         die("Failed to upload points");
     }
 }
