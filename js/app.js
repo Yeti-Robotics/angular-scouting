@@ -48,20 +48,20 @@ app.controller('MainController', function ($scope, $http, $location) {
 
 app.controller('FormController', function ($scope, $http) {
     'use strict';
-    
+
     $scope.scouterName = Scouter.name;
-    
+
     $scope.formData = {
-        stackRows:{
-            rows:[]
+        stackRows: {
+            rows: []
         }
     };
-    
+
     $scope.addStack = function () {
         $scope.formData.stackRows.rows.push({
-            stacks_totes:'0', 
-            capped_stack:'0', 
-            cap_height:'0'
+            stacks_totes: '0',
+            capped_stack: '0',
+            cap_height: '0'
         });
     };
 
@@ -69,21 +69,20 @@ app.controller('FormController', function ($scope, $http) {
         var rowNum = $scope.formData.stackRows.rows.indexOf(stack);
         $scope.formData.stackRows.rows.splice(rowNum, 1);
     };
-    
-    $scope.submit = function() {
-        $http.post('php/formSubmit.php', $scope.formData).then(function(response) {
+
+    $scope.submit = function () {
+        $http.post('php/formSubmit.php', $scope.formData).then(function (response) {
             console.log(response.data);
-        }, function(response) {
-            console.log("data: " + response.data + "\n error code: " + response.status
-                        + "\n error text: " + response.statusText);
+        }, function (response) {
+            console.log("data: " + response.data + "\n error code: " + response.status + "\n error text: " + response.statusText);
         });
         $('input, select, textarea').removeClass('ng-dirty ng-touched ng-valid-parse');
         $('input, select, textarea').addClass('ng-pristine ng-untouched ng-valid');
         $('input, select, textarea').val('');
         $('[ng-model="formData.name"]').val($scope.scouterName);
         $scope.formData = {
-            stackRows:{
-                rows:[]
+            stackRows: {
+                rows: []
             }
         };
     }
@@ -92,7 +91,10 @@ app.controller('FormController', function ($scope, $http) {
 
 app.controller("ListController", function ($scope, $http) {
     'use strict';
-    
+
+    $scope.sortType = 'rating';
+    $scope.sortReverse = false;
+
     $http.get('php/list.php').then(function (response) {
         $scope.data = response.data;
     });
@@ -100,7 +102,7 @@ app.controller("ListController", function ($scope, $http) {
 
 app.controller("JoeBannanas", function ($scope, $http) {
     'use strict';
-    
+
     $scope.id = Scouter.id;
 
     $scope.byteCoins = Scouter.byteCoins;
@@ -136,7 +138,7 @@ app.controller("JoeBannanas", function ($scope, $http) {
     };
 
     $scope.currentWager = {
-         wagerType: '',
+        wagerType: '',
         wageredByteCoins: 0,
         alliancePredicted: '',
         matchPredicted: 0,
