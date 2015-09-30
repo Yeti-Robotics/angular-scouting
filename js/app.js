@@ -106,21 +106,10 @@ app.controller("JoeBannanas", function ($scope, $http) {
             Scouter.byteCoins = response.data;
             $scope.byteCoins = response.data;
         }, function (response) {
-            $scope.reportError("could not properly get your number of Byte Coins");
+            $scope.reportError("Could not properly get your number of Byte Coins. Are you logged in?");
         });
     };
     $scope.refreshByteCoins();
-
-    $http.get("json/NCRE.json").then(function (response) {
-        $scope.NCRE = response.data;
-    });
-
-
-    $scope.toOptionLabel = function (teams) {
-        return teams[0].teamNumber + "-" + teams[1].teamNumber + "-" +
-            teams[2].teamNumber + " vs " + teams[3].teamNumber + "-" +
-            teams[4].teamNumber + "-" + teams[5].teamNumber;
-    };
 
     $scope.reportSuccess = function (wager) {
         $scope.refreshByteCoins();
@@ -128,6 +117,21 @@ app.controller("JoeBannanas", function ($scope, $http) {
 
     $scope.reportError = function (error) {
         //something like, "Sorry, we " + error + ", maybe try again?"
+        $scope.lastError = error;
+        $("#errorModal").modal('show');
+    };
+
+    $http.get("json/NCRE.json").then(function (response) {
+        $scope.NCRE = response.data;
+    }, function (response) {
+        $scope.reportError("Failed to get match data");
+    });
+
+
+    $scope.toOptionLabel = function (teams) {
+        return teams[0].teamNumber + "-" + teams[1].teamNumber + "-" +
+            teams[2].teamNumber + " vs " + teams[3].teamNumber + "-" +
+            teams[4].teamNumber + "-" + teams[5].teamNumber;
     };
 
     $scope.currentWager = {
@@ -141,10 +145,10 @@ app.controller("JoeBannanas", function ($scope, $http) {
             if (this.wagerType === "alliance") {
                 return this.wageredByteCoins * 2;
             } else if (this.wagerType === "closeMatch") {
-                return this.wageredByteCoins / this.withenPoints; //Terrible scale, need to fix
+                return ((parseInt(this.wageredByteCoins, 10) / this.withenPoints) * 3) + parseInt(this.wageredByteCoins, 10); //Terrible scale, need to fix
             } else if (this.wagerType === "points") {
-                if (this.pointsPredicted > 110) {
-                    return (this.wageredByteCoins * Math.log(this.minPointsPredicted) / 2); //Actually VERY NICE scale, thanks math ;)
+                if (this.minPointsPredicted > 110) {
+                    return (parseInt(this.wageredByteCoins, 10) * Math.log(this.minPointsPredicted) / 2); //Actually VERY NICE scale, thanks math ;)
                 }
             }
             return 0;
@@ -161,7 +165,7 @@ app.controller("JoeBannanas", function ($scope, $http) {
         matchPredicted: 0
     };
     $scope.closeMatchWager = {
-        withenPoints: 0, //can be set to >300 for any. people will get points if the scored points are less then the number set here (for predicting close games)
+        withenPoints: 0, //People will get points if the scored points are less then the number set here (for predicting close games)
         matchPredicted: 0
     };
     $scope.pointsWager = {
@@ -202,7 +206,7 @@ app.controller("JoeBannanas", function ($scope, $http) {
                 withenPoints: $scope.currentWager.withenPoints
             };
         } else {
-            return;
+            $scope.reportError("Incorrect wager format. Did you fill all of the fields?");
         }
         $http.post("php/wager.php", postObject).then(function (response) {
             $scope.reportSuccess(postObject);

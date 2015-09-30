@@ -1,4 +1,19 @@
 <div class="container-fluid">
+    <style>
+        .modal-header {
+            background-color: #d9534f;
+        }
+    </style>
+    <div id="errorModal" class="modal fade">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>Error</div>
+                <div class="modal-body">{{lastError}}</div>
+            </div>
+        </div>
+    </div>
+
     <table class="table">
         <thead>
             <tr>
@@ -64,7 +79,7 @@
     <fieldset ng-show="currentWager.wagerType === 'points'">
         <legend>Wager on points scored</legend>
         <label for="pointsPredicted">How many points do you think that alliance will score AT LEAST? (must be > 110)</label>
-        <input type="number" name="pointsPredicted" class="form-control" ng-model="currentWager.pointsPredicted">
+        <input type="number" name="pointsPredicted" class="form-control" ng-model="currentWager.minPointsPredicted">
         <label for="alliancePredicted">Which alliance will score these points??</label>
         <select class="form-control" name="alliancePredicted" id="alliancePredicted" ng-model="currentWager.alliancePredicted">
             <option value="red">Red Alliance</option>

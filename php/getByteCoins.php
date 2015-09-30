@@ -6,5 +6,5 @@
     if((!empty($params["id"])) && (!empty($params["pswd"]))) {
         getByteCoins($db, $params["id"], $params["pswd"]);
     }
-echo false;
+    header($_SERVER['SERVER_PROTOCOL'] . ' 500 SQL Error', true, 500);
 ?>
