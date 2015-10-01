@@ -19,21 +19,21 @@
                 <input ng-model="formData.robot_moved" type="checkbox" ng-model="robot_moved">
                 <div ng-show="formData.robot_moved">
                     <label for="totes_auto">How many totes in auto zone?</label>
-                    <select ng-model="formData.totes_auto"  id="totes_auto" class="form-control">
+                    <select ng-model="formData.totes_auto" ng-init="formData.totes_auto = '0'" class="form-control">
                         <option value="0" selected="selected">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
                     <label for="cans_auto">How many cans in auto zone?</label>
-                    <select ng-model="formData.cans_auto"class="form-control">
+                    <select ng-model="formData.cans_auto" ng-init="formData.cans_auto = '0'" class="form-control">
                         <option value="0" selected="selected">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
                     <label for="cans_auto_origin">Grabs how many cans from step?</label>
-                    <select ng-model="formData.cans_auto_origin" class="form-control">
+                    <select ng-model="formData.cans_auto_origin" ng-init="formData.cans_auto_origin = '0'" class="form-control">
                         <option value="0" selected="selected">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -51,7 +51,7 @@
             <legend>Coopertition</legend>
             <div class="form-group">
                 <label for="coopertition_totes">How many totes?</label>
-                <select ng-model="formData.coopertition_totes" id="coopertition_totes">
+                <select ng-model="formData.coopertition_totes">
                     <option value="0" selected="selected">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -89,7 +89,6 @@
                 </div>
             </div>
         </fieldset>
-
         <fieldset>
             <legend>Misc.</legend>
             <div class="form-group">

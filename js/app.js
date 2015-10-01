@@ -10,7 +10,12 @@ var Scouter = {
 var app;
 app = angular.module('app', ['ngRoute']);
 
-app.controller('MainController', function ($scope, $http, $location) {
+app.run(function($rootScope) {
+    $rootScope.loggedIn = false;
+    $rootScope.showRedirectMessage = false;
+});
+
+app.controller('MainController', function ($rootScope, $scope, $http, $location) {
     'use strict';
 
     $scope.role = "What is your role?";
@@ -22,7 +27,16 @@ app.controller('MainController', function ($scope, $http, $location) {
 
     $scope.scouterId = '';
     $scope.scouterPswd = '';
-
+    
+    $scope.validateLogin = function() {
+        if (!$rootScope.loggedIn) {
+            $location.path("/");
+            $rootScope.showRedirectMessage = true;
+        } else {
+            $rootScope.showRedirectMessage = false;
+        }
+    }
+    
     $scope.goToPath = function () {
         Scouter.id = $scope.scouterId;
         Scouter.pswd = $scope.scouterPswd;
@@ -33,6 +47,8 @@ app.controller('MainController', function ($scope, $http, $location) {
             .then(function (response) {
                 var result = response.data;
                 if (result) {
+                    $rootScope.showRedirectMessage = false;
+                    $rootScope.loggedIn = true;
                     Scouter.name = result;
                     if ($scope.role === 'Scouter') {
                         $location.path("/form");
@@ -43,19 +59,28 @@ app.controller('MainController', function ($scope, $http, $location) {
                     //return an error or something
                 }
             });
+    
     };
 });
 
-app.controller('FormController', function ($scope, $http) {
+app.controller('FormController', function ($rootScope, $scope, $http) {
     'use strict';
 
     $scope.scouterName = Scouter.name;
+    $scope.validateLogin();
+    
 
     $scope.formData = {
         stackRows: {
             rows: []
-        }
+        },
+        name: $scope.scouterName
     };
+    
+    $(document).ready(function() {
+        $('[ng-model="formData.name"]').addClass('ng-dirty ng-touched ng-valid-parse');
+        $('[ng-model="formData.name"]').removeClass('ng-pristine ng-untouched ng-valid');
+    });
 
     $scope.addStack = function () {
         $scope.formData.stackRows.rows.push({
@@ -80,30 +105,39 @@ app.controller('FormController', function ($scope, $http) {
         $('input, select, textarea').addClass('ng-pristine ng-untouched ng-valid');
         $('input, select, textarea').val('');
         $('[ng-model="formData.name"]').val($scope.scouterName);
+        $('[ng-model="formData.name"]').addClass('ng-dirty ng-touched ng-valid-parse');
+        $('[ng-model="formData.name"]').removeClass('ng-pristine ng-untouched ng-valid');
         $scope.formData = {
             stackRows: {
                 rows: []
-            }
+            },
+            name: $scope.scouterName
         };
     }
 
 });
 
-app.controller("ListController", function ($scope, $http) {
+app.controller("ListController", function ($rootScope, $scope, $http) {
     'use strict';
 
     $scope.sortType = 'rating';
     $scope.sortReverse = false;
+    $scope.validateLogin();
+    
+    
 
     $http.get('php/list.php').then(function (response) {
         $scope.data = response.data;
     });
 });
 
-app.controller("JoeBannanas", function ($scope, $http) {
+app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
     'use strict';
 
     $scope.id = Scouter.id;
+    
+    
+    $scope.validateLogin();
 
     $scope.byteCoins = Scouter.byteCoins;
 
