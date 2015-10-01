@@ -7,6 +7,15 @@
         .slider-selection {
             background: #0AA2F4;
         }
+
+        .slider-handle.custom {
+            background: transparent none;
+            background: url("images/ByteCoin.png") 0px 0px/20px 20px;
+        }
+
+        .slider-handle.custom::before {
+            color: transparent;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -72,7 +81,7 @@
                 <label for="wageredByteCoins">How many ByteCoins would you like to wager?</label>
             </div>
             <div class="col-md-2">
-                <input id="byteCoinsWagered" data-slider-id='byteCoinsWageredSlider' type="text" data-slider-min="0" data-slider-max="200" data-slider-step="1" data-slider-value="0" name="wageredByteCoins" ng-model="currentWager.wageredByteCoins" />
+                <input id="byteCoinsWagered" type="text" data-slider-min="0" data-slider-max="200" data-slider-step="1" data-slider-value="0" name="wageredByteCoins" data-slider-handle="custom" ng-model="currentWager.wageredByteCoins" />
             </div>
         </div>
         <br>
@@ -100,7 +109,7 @@
                 <label for="pointsWithen">How many points do you think the alliances will be withen?</label>
             </div>
             <div class="col-md-2">
-                <input id="withenPoints" data-slider-id='withenPointsSlider' type="text" data-slider-min="0" data-slider-max="200" data-slider-step="1" data-slider-value="200" name="pointsWithen" ng-model="currentWager.withenPoints" />
+                <input id="withenPoints" type="text" data-slider-min="0" data-slider-max="200" data-slider-step="1" data-slider-value="200" name="pointsWithen" ng-model="currentWager.withenPoints" />
             </div>
         </div>
     </fieldset>
