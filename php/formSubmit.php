@@ -3,8 +3,8 @@ include("connect.php");
 
 $query = "INSERT INTO scout_data (team, match_number,
 		 robot_moved, totes_auto, cans_auto, coopertition,
-		 coopertition_totes, score, comments, rating, name, 
-		cans_from_middle, totes_from_landfill, totes_from_human, cans_auto_origin, in_auto_zone) 
+		 coopertition_totes, score, comments, rating, name,
+		cans_from_middle, totes_from_landfill, totes_from_human, cans_auto_origin, in_auto_zone)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $postData = json_decode(file_get_contents("php://input"), true);
@@ -45,10 +45,10 @@ if($stmt = $db->prepare($query)){
 	} else {
 		$in_auto_zone = 0;
 	}
-    
+
     echo(json_encode($postData));
-    
-    $stmt->bind_param("iiiiiiiisisiiiii", 
+
+    $stmt->bind_param("iiiiiiiisisiiiii",
 		$postData["team_number"],
 		$postData["match_number"],
 		$robot_moved,
@@ -65,10 +65,10 @@ if($stmt = $db->prepare($query)){
 		$totes_from_human,
 		$postData["cans_auto_origin"],
 		$in_auto_zone);
-	
+
 	$stmt->execute();
 	$insert_id = $stmt->insert_id;
-    
+
     if(count($postData["stackRows"]["rows"]) > 0) {
         foreach ($postData["stackRows"]["rows"] as $stack) {
             $stack_query = "INSERT INTO stacks (scout_data_id, totes, cap_state, cap_height)

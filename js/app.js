@@ -10,7 +10,8 @@ var Scouter = {
 var app;
 app = angular.module('app', ['ngRoute']);
 
-app.run(function($rootScope) {
+app.run(function ($rootScope) {
+    'use strict';
     $rootScope.loggedIn = false;
     $rootScope.showRedirectMessage = false;
 });
@@ -25,18 +26,15 @@ app.controller('MainController', function ($rootScope, $scope, $http, $location)
         $scope.role = role;
     };
 
-    $scope.scouterId = '';
-    $scope.scouterPswd = '';
-    
-    $scope.validateLogin = function() {
+    $scope.validateLogin = function () {
         if (!$rootScope.loggedIn) {
             $location.path("/");
             $rootScope.showRedirectMessage = true;
         } else {
             $rootScope.showRedirectMessage = false;
         }
-    }
-    
+    };
+
     $scope.goToPath = function () {
         Scouter.id = $scope.scouterId;
         Scouter.pswd = $scope.scouterPswd;
@@ -59,25 +57,23 @@ app.controller('MainController', function ($rootScope, $scope, $http, $location)
                     //return an error or something
                 }
             });
-    
     };
 });
 
 app.controller('FormController', function ($rootScope, $scope, $http) {
     'use strict';
 
-    $scope.scouterName = Scouter.name;
     $scope.validateLogin();
-    
+
 
     $scope.formData = {
         stackRows: {
             rows: []
         },
-        name: $scope.scouterName
+        name: Scouter.name
     };
-    
-    $(document).ready(function() {
+
+    $(document).ready(function () {
         $('[ng-model="formData.name"]').addClass('ng-dirty ng-touched ng-valid-parse');
         $('[ng-model="formData.name"]').removeClass('ng-pristine ng-untouched ng-valid');
     });
@@ -113,19 +109,14 @@ app.controller('FormController', function ($rootScope, $scope, $http) {
             },
             name: $scope.scouterName
         };
-    }
+    };
 
 });
 
 app.controller("ListController", function ($rootScope, $scope, $http) {
     'use strict';
-
     $scope.sortType = 'rating';
     $scope.sortReverse = false;
-    $scope.validateLogin();
-    
-    
-
     $http.get('php/list.php').then(function (response) {
         $scope.data = response.data;
     });
@@ -133,12 +124,10 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 
 app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
     'use strict';
-
     $scope.id = Scouter.id;
-    
-    
     $scope.validateLogin();
 
+    $scope.id = Scouter.id;
     $scope.byteCoins = Scouter.byteCoins;
 
     $scope.refreshByteCoins = function () {
@@ -146,22 +135,13 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
             id: Scouter.id,
             pswd: Scouter.pswd
         }).then(function (response) {
-            Scouter.byteCoins = response.byteCoins;
+            Scouter.byteCoins = response.data;
+            $scope.byteCoins = response.data;
         }, function (response) {
-            $scope.reportError("could not properly get your number of Byte Coins");
+            $scope.reportError("Could not properly get your number of Byte Coins. Are you logged in?");
         });
     };
     $scope.refreshByteCoins();
-
-    $http.get("json/NCRE.json").then(function (response) {
-        $scope.NCRE = response.data;
-    });
-
-    $scope.toOptionLabel = function (teams) {
-        return teams[0].teamNumber + "-" + teams[1].teamNumber + "-" +
-            teams[2].teamNumber + " vs " + teams[3].teamNumber + "-" +
-            teams[4].teamNumber + "-" + teams[5].teamNumber;
-    };
 
     $scope.reportSuccess = function (wager) {
         $scope.refreshByteCoins();
@@ -169,6 +149,21 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
 
     $scope.reportError = function (error) {
         //something like, "Sorry, we " + error + ", maybe try again?"
+        $scope.lastError = error;
+        $("#errorModal").modal('show');
+    };
+
+    $http.get("json/NCRE.json").then(function (response) {
+        $scope.NCRE = response.data;
+    }, function (response) {
+        $scope.reportError("Failed to get match data");
+    });
+
+
+    $scope.toOptionLabel = function (teams) {
+        return teams[0].teamNumber + "-" + teams[1].teamNumber + "-" +
+            teams[2].teamNumber + " vs " + teams[3].teamNumber + "-" +
+            teams[4].teamNumber + "-" + teams[5].teamNumber;
     };
 
     $scope.currentWager = {
@@ -182,16 +177,19 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
             if (this.wagerType === "alliance") {
                 return this.wageredByteCoins * 2;
             } else if (this.wagerType === "closeMatch") {
-                return this.wageredByteCoins / this.withenPoints;
+                return ((parseInt(this.wageredByteCoins, 10) / parseInt(this.withenPoints, 10)) * 3) + parseInt(this.wageredByteCoins, 10); //Terrible scale, need to fix
             } else if (this.wagerType === "points") {
-                if (this.pointsPredicted > 110) {
-                    return (this.wageredByteCoins * Math.log(this.minPointsPredicted) / 2); //Actually VERY NICE scale, thanks math ;)
+                if (this.minPointsPredicted > 110) {
+                    return (parseInt(this.wageredByteCoins, 10) * Math.log(this.minPointsPredicted) / 2); //Actually VERY NICE scale, thanks math ;)
                 }
             }
             return 0;
         }
     };
 
+    $scope.changeWager = function (wagerType) {
+        $scope.currentWager.wagerType = wagerType;
+    };
 
     //Templates
     $scope.allianceWager = {
@@ -199,7 +197,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
         matchPredicted: 0
     };
     $scope.closeMatchWager = {
-        withenPoints: 0, //can be set to >300 for any. people will get points if the scored points are less then the number set here (for predicting close games)
+        withenPoints: 0, //People will get points if the scored points are less then the number set here (for predicting close games)
         matchPredicted: 0
     };
     $scope.pointsWager = {
@@ -209,49 +207,44 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
     };
 
 
-    $scope.sendAllianceWager = function () {
+    $scope.sendWager = function () {
+        var postObject = {};
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
-            $http.post("php/wager.php", {
+            postObject = {
+                associatedId: Scouter.id,
+                pswd: Scouter.pswd,
                 wagerType: "alliance",
-                points: $scope.currentWager.wageredByteCoins,
-                alliance: $scope.currentWager.alliancePredicted,
-                match: $scope.currentWager.matchPredicted
-            }).then(function (response) {
-                $scope.reportSuccess();
-            }, function (response) {
-
-            });
-        }
-    };
-
-    $scope.sendCloseMatchWager = function () {
-        if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.withenPoints && $scope.currentWager.matchPredicted) {
-            $http.post("php/wager.php", {
+                wageredByteCoins: $scope.currentWager.wageredByteCoins,
+                matchPredicted: $scope.currentWager.matchPredicted,
+                alliancePredicted: $scope.currentWager.alliancePredicted
+            };
+        } else if ($scope.currentWager.wagerType === "closeMatch" && $scope.currentWager.withenPoints && $scope.currentWager.matchPredicted) {
+            postObject = {
+                associatedId: Scouter.id,
+                pswd: Scouter.pswd,
                 wagerType: "closeMatch",
-                points: $scope.currentWager.wageredByteCoins,
-                match: $scope.currentWager.matchPredicted,
+                wageredByteCoins: $scope.currentWager.wageredByteCoins,
+                matchPredicted: $scope.currentWager.matchPredicted,
                 withenPoints: $scope.currentWager.withenPoints
-            }).then(function (response) {
-                $scope.reportSuccess();
-            }, function (response) {
-
-            });
-        }
-    };
-
-    $scope.sendPointsWager = function () {
-        if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.pointsPredicted && $scope.currentWager.matchPredicted) {
-            $http.post("php/wager.php", {
+            };
+        } else if ($scope.currentWager.wagerType === "points" && $scope.currentWager.pointsPredicted && $scope.currentWager.matchPredicted) {
+            postObject = {
+                associatedId: Scouter.id,
+                pswd: Scouter.pswd,
                 wagerType: "points",
-                points: $scope.currentWager.wageredByteCoins,
-                pointsInGame: $scope.currentWager.minPointsPredicted,
-                match: $scope.currentWager.matchPredicted
-            }).then(function (response) {
-                $scope.reportSuccess();
-            }, function (response) {
-
-            });
+                wageredByteCoins: $scope.currentWager.wageredByteCoins,
+                matchPredicted: $scope.currentWager.matchPredicted,
+                alliancePredicted: $scope.currentWager.alliancePredicted,
+                withenPoints: $scope.currentWager.withenPoints
+            };
+        } else {
+            $scope.reportError("Incorrect wager format. Did you fill all of the fields?");
         }
+        $http.post("php/wager.php", postObject).then(function (response) {
+            $scope.reportSuccess(postObject);
+        }, function (response) {
+            $scope.reportError("Failed to send Wager.");
+        });
     };
 });
 
