@@ -10,7 +10,13 @@ var Scouter = {
 var app;
 app = angular.module('app', ['ngRoute']);
 
-app.controller('MainController', function ($scope, $http, $location) {
+app.run(function ($rootScope) {
+    'use strict';
+    $rootScope.loggedIn = false;
+    $rootScope.showRedirectMessage = false;
+});
+
+app.controller('MainController', function ($rootScope, $scope, $http, $location) {
     'use strict';
 
     $scope.role = "What is your role?";
@@ -20,16 +26,27 @@ app.controller('MainController', function ($scope, $http, $location) {
         $scope.role = role;
     };
 
+    $scope.validateLogin = function () {
+        if (!$rootScope.loggedIn) {
+            $location.path("/");
+            $rootScope.showRedirectMessage = true;
+        } else {
+            $rootScope.showRedirectMessage = false;
+        }
+    };
+
     $scope.goToPath = function () {
         Scouter.id = $scope.scouterId;
         Scouter.pswd = $scope.scouterPswd;
-        $http.post('/php/checkUser.php', {
+        $http.post('php/checkUser.php', {
                 id: Scouter.id,
                 pswd: Scouter.pswd
             })
             .then(function (response) {
                 var result = response.data;
                 if (result) {
+                    $rootScope.showRedirectMessage = false;
+                    $rootScope.loggedIn = true;
                     Scouter.name = result;
                     if ($scope.role === 'Scouter') {
                         $location.path("/form");
@@ -43,23 +60,26 @@ app.controller('MainController', function ($scope, $http, $location) {
     };
 });
 
-app.controller('FormController', function ($scope, $http) {
+app.controller('FormController', function ($rootScope, $scope, $http) {
     'use strict';
 
-    $scope.stackRows = {
-        rows: []
-    };
+    $scope.validateLogin();
+
 
     $scope.formData = {
+        stackRows: {
+            rows: []
+        },
         name: Scouter.name
     };
 
-    //    $scope.stacks_totes = '0';
-    //    $scope.capped_stack = '0';
-    //    $scope.cap_height = '0';
+    $(document).ready(function () {
+        $('[ng-model="formData.name"]').addClass('ng-dirty ng-touched ng-valid-parse');
+        $('[ng-model="formData.name"]').removeClass('ng-pristine ng-untouched ng-valid');
+    });
 
     $scope.addStack = function () {
-        $scope.stackRows.rows.push({
+        $scope.formData.stackRows.rows.push({
             stacks_totes: '0',
             capped_stack: '0',
             cap_height: '0'
@@ -67,33 +87,45 @@ app.controller('FormController', function ($scope, $http) {
     };
 
     $scope.removeStack = function (stack) {
-        var rowNum = $scope.stackRows.rows.indexOf(stack);
-        $scope.stackRows.rows.splice(rowNum, 1);
+        var rowNum = $scope.formData.stackRows.rows.indexOf(stack);
+        $scope.formData.stackRows.rows.splice(rowNum, 1);
     };
 
     $scope.submit = function () {
-        //        $scope.formData.stackRows = $scope.stackRows.rows;
-        $http.post('php/submit.php', $scope.formData).then(function (response) {}, function (response) {
+        $http.post('php/formSubmit.php', $scope.formData).then(function (response) {
+            console.log(response.data);
+        }, function (response) {
             console.log("data: " + response.data + "\n error code: " + response.status + "\n error text: " + response.statusText);
         });
         $('input, select, textarea').removeClass('ng-dirty ng-touched ng-valid-parse');
         $('input, select, textarea').addClass('ng-pristine ng-untouched ng-valid');
         $('input, select, textarea').val('');
-        $scope.formData = {};
+        $('[ng-model="formData.name"]').val($scope.scouterName);
+        $('[ng-model="formData.name"]').addClass('ng-dirty ng-touched ng-valid-parse');
+        $('[ng-model="formData.name"]').removeClass('ng-pristine ng-untouched ng-valid');
+        $scope.formData = {
+            stackRows: {
+                rows: []
+            },
+            name: $scope.scouterName
+        };
     };
 
 });
 
-app.controller("ListController", function ($scope, $http) {
+app.controller("ListController", function ($rootScope, $scope, $http) {
     'use strict';
-
+    $scope.sortType = 'rating';
+    $scope.sortReverse = false;
     $http.get('php/list.php').then(function (response) {
         $scope.data = response.data;
     });
 });
 
-app.controller("JoeBannanas", function ($scope, $http) {
+app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
     'use strict';
+    $scope.id = Scouter.id;
+    $scope.validateLogin();
 
     $scope.id = Scouter.id;
     $scope.byteCoins = Scouter.byteCoins;
@@ -145,7 +177,7 @@ app.controller("JoeBannanas", function ($scope, $http) {
             if (this.wagerType === "alliance") {
                 return this.wageredByteCoins * 2;
             } else if (this.wagerType === "closeMatch") {
-                return ((parseInt(this.wageredByteCoins, 10) / this.withenPoints) * 3) + parseInt(this.wageredByteCoins, 10); //Terrible scale, need to fix
+                return ((parseInt(this.wageredByteCoins, 10) / parseInt(this.withenPoints, 10)) * 3) + parseInt(this.wageredByteCoins, 10); //Terrible scale, need to fix
             } else if (this.wagerType === "points") {
                 if (this.minPointsPredicted > 110) {
                     return (parseInt(this.wageredByteCoins, 10) * Math.log(this.minPointsPredicted) / 2); //Actually VERY NICE scale, thanks math ;)

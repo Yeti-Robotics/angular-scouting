@@ -1,5 +1,11 @@
 <div class="container-fluid">
     <h1>Welcome To the Yeti Scouting page</h1>
+    <div ng-show="showRedirectMessage" role="alert" class="alert alert-danger alert-dismissible">
+        <button type="button" data-dismiss="alert" aria-label="Close" class="close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>You must be logged in to scout or place a bet</strong>
+    </div>
     <div class="row">
         <div class="col-lg-6">
             <div class="input-group">

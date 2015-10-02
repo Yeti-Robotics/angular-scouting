@@ -24,7 +24,7 @@ function getName($db, $id, $pswd) {
             $result = $stmt->get_result();
             while($row = $result->fetch_array()) {
                 $db->close();
-                die($row[0]);
+                return $row[0];
             }
         }
     }
