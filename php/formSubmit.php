@@ -78,6 +78,7 @@ if(checkPassword($db, $postData["id"], $postData["pswd"])) {
                 }
             }
         }
+        updateQualificationWagers();
     }
 }
 $db->close();
