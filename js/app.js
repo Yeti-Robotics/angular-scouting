@@ -69,7 +69,9 @@ app.controller('FormController', function ($rootScope, $scope, $http) {
         stackRows: {
             rows: []
         },
-        name: Scouter.name
+        name: Scouter.name,
+        id: Scouter.id,
+        pswd: Scouter.pswd
     };
 
     $(document).ready(function () {
