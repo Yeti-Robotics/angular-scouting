@@ -3,13 +3,8 @@ include("connect.php");
 
 $query = "INSERT INTO scout_data (team, match_number,
 		 robot_moved, totes_auto, cans_auto, coopertition,
-<<<<<<< HEAD
-		 coopertition_totes, score, comments, rating, name, 
-		cans_from_middle, totes_from_landfill, totes_from_human, cans_auto_origin, in_auto_zone) 
-=======
 		 coopertition_totes, score, comments, rating, name,
 		cans_from_middle, totes_from_landfill, totes_from_human, cans_auto_origin, in_auto_zone)
->>>>>>> wagering
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $postData = json_decode(file_get_contents("php://input"), true);
@@ -103,6 +98,4 @@ if($stmt = $db->prepare($query)){
 $db->close();
 <<<<<<< HEAD
 ?>
-=======
-?>
->>>>>>> wagering
+    ======= ?> >>>>>>> wagering
