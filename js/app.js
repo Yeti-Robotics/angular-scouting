@@ -12,7 +12,7 @@ app = angular.module('app', ['ngRoute']);
 
 app.run(function ($rootScope) {
     'use strict';
-    $rootScope.loggedIn = false;
+    $rootScope.loggedIn = true;
     $rootScope.showRedirectMessage = false;
 });
 
@@ -27,12 +27,12 @@ app.controller('MainController', function ($rootScope, $scope, $http, $location)
     };
 
     $scope.validateLogin = function () {
-        if (!$rootScope.loggedIn) {
+        /*if (!$rootScope.loggedIn) {
             $location.path("/");
             $rootScope.showRedirectMessage = true;
         } else {
             $rootScope.showRedirectMessage = false;
-        }
+        }*/
     };
 
     $scope.goToPath = function () {
@@ -75,8 +75,8 @@ app.controller('FormController', function ($rootScope, $scope, $http) {
     };
 
     $(document).ready(function () {
-        $('[ng-model="formData.name"]').addClass('ng-dirty ng-touched ng-valid-parse');
-        $('[ng-model="formData.name"]').removeClass('ng-pristine ng-untouched ng-valid');
+        $('#scouting_form').validate();
+        console.log('Inititalize validation');
     });
 
     $scope.addStack = function () {
@@ -93,23 +93,22 @@ app.controller('FormController', function ($rootScope, $scope, $http) {
     };
 
     $scope.submit = function () {
-        $http.post('php/formSubmit.php', $scope.formData).then(function (response) {
-            console.log(response.data);
-        }, function (response) {
-            console.log("data: " + response.data + "\n error code: " + response.status + "\n error text: " + response.statusText);
-        });
-        $('input, select, textarea').removeClass('ng-dirty ng-touched ng-valid-parse');
-        $('input, select, textarea').addClass('ng-pristine ng-untouched ng-valid');
-        $('input, select, textarea').val('');
-        $('[ng-model="formData.name"]').val($scope.scouterName);
-        $('[ng-model="formData.name"]').addClass('ng-dirty ng-touched ng-valid-parse');
-        $('[ng-model="formData.name"]').removeClass('ng-pristine ng-untouched ng-valid');
-        $scope.formData = {
-            stackRows: {
-                rows: []
-            },
-            name: $scope.scouterName
-        };
+        if ($('#scouting_form').valid()) {
+            console.log("valid");
+            $http.post('php/formSubmit.php', $scope.formData).then(function (response) {
+                console.log("submitted");
+                console.log(response);
+                $('#scouting_form').trigger('reset');
+                $('body').scrollTop(0);
+            }, function (response) {
+                console.log("Error during submission");
+                console.log(response);
+            });
+
+
+        } else {
+            console.log("Not valid");
+        }
     };
 });
 

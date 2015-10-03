@@ -1,14 +1,24 @@
 <div class="container-fluid">
+    <div id="success_message" class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Success!</strong> Now do it again.
+    </div>
     <form id="scouting_form" ng-submit="submit()">
         <fieldset>
             <legend>Info</legend>
             <div class="form-group">
-                <label for="name">Your name:</label>
-                <input ng-model="formData.name" type="text" class="form-control" placeholder="Enter your name">
-                <label for=" match_number">Match #:</label>
-                <input ng-model="formData.match_number" type="number" class="form-control" placeholder="Enter the match number">
-                <label for="team_number">Team #:</label>
-                <input ng-model="formData.team_number" type="number" class="form-control" placeholder="Enter the team number">
+                <div>
+                    <label for="name">Your name:</label>
+                    <input id="name" ng-model="formData.name" type="text" class="form-control" placeholder="Enter your name" required>
+                </div>
+                <div>
+                    <label for="match_number">Match #:</label>
+                    <input id="match_number" ng-model="formData.match_number" type="number" class="form-control" placeholder="Enter the match number" required>
+                </div>
+                <div>
+                    <label for="team_number">Team #:</label>
+                    <input id="team_number" ng-model="formData.team_number" type="number" class="form-control" placeholder="Enter the team number" required>
+                </div>
             </div>
         </fieldset>
 
@@ -51,7 +61,7 @@
             <legend>Coopertition</legend>
             <div class="form-group">
                 <label for="coopertition_totes">How many totes?</label>
-                <select ng-model="formData.coopertition_totes">
+                <select ng-model="formData.coopertition_totes" ng-init="formData.coopertition_totes = '0'">
                     <option value="0" selected="selected">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -93,8 +103,8 @@
             <legend>Misc.</legend>
             <div class="form-group">
                 <label for="rating">Rating:</label>
-                <select ng-model="formData.rating">
-                    <option value="1">1</option>
+                <select id="rating" ng-model="formData.rating" ng-init="formData.rating = '1'" required>
+                    <option value="1" selected="selected">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -108,7 +118,7 @@
             </div>
             <div class="form-group">
                 <label for="score">Score:</label>
-                <input class="form-control" type="number" ng-model="formData.score" placeholder="Enter the alliance's score" />
+                <input id="score" class="form-control" type="number" ng-model="formData.score" placeholder="Enter the alliance's score" required/>
             </div>
             <div class="form-group">
                 <label>Comments:</label>
