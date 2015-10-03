@@ -3,8 +3,13 @@ include("connect.php");
 
 $query = "INSERT INTO scout_data (team, match_number,
 		 robot_moved, totes_auto, cans_auto, coopertition,
+<<<<<<< HEAD
+		 coopertition_totes, score, comments, rating, name, 
+		cans_from_middle, totes_from_landfill, totes_from_human, cans_auto_origin, in_auto_zone) 
+=======
 		 coopertition_totes, score, comments, rating, name,
 		cans_from_middle, totes_from_landfill, totes_from_human, cans_auto_origin, in_auto_zone)
+>>>>>>> wagering
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $postData = json_decode(file_get_contents("php://input"), true);
@@ -45,10 +50,17 @@ if($stmt = $db->prepare($query)){
 	} else {
 		$in_auto_zone = 0;
 	}
+<<<<<<< HEAD
+    
+    echo(json_encode($postData));
+    
+    $stmt->bind_param("iiiiiiiisisiiiii", 
+=======
 
     echo(json_encode($postData));
 
     $stmt->bind_param("iiiiiiiisisiiiii",
+>>>>>>> wagering
 		$postData["team_number"],
 		$postData["match_number"],
 		$robot_moved,
@@ -65,10 +77,17 @@ if($stmt = $db->prepare($query)){
 		$totes_from_human,
 		$postData["cans_auto_origin"],
 		$in_auto_zone);
+<<<<<<< HEAD
+	
+	$stmt->execute();
+	$insert_id = $stmt->insert_id;
+    
+=======
 
 	$stmt->execute();
 	$insert_id = $stmt->insert_id;
 
+>>>>>>> wagering
     if(count($postData["stackRows"]["rows"]) > 0) {
         foreach ($postData["stackRows"]["rows"] as $stack) {
             $stack_query = "INSERT INTO stacks (scout_data_id, totes, cap_state, cap_height)
@@ -82,4 +101,8 @@ if($stmt = $db->prepare($query)){
     }
 }
 $db->close();
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> wagering

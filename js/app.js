@@ -65,7 +65,6 @@ app.controller('FormController', function ($rootScope, $scope, $http) {
 
     $scope.validateLogin();
 
-
     $scope.formData = {
         stackRows: {
             rows: []
@@ -110,7 +109,6 @@ app.controller('FormController', function ($rootScope, $scope, $http) {
             name: $scope.scouterName
         };
     };
-
 });
 
 app.controller("ListController", function ($rootScope, $scope, $http) {
@@ -124,6 +122,7 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 
 app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
     'use strict';
+
     $scope.id = Scouter.id;
     $scope.validateLogin();
 
@@ -180,7 +179,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
                 return ((parseInt(this.wageredByteCoins, 10) / parseInt(this.withenPoints, 10)) * 3) + parseInt(this.wageredByteCoins, 10); //Terrible scale, need to fix
             } else if (this.wagerType === "points") {
                 if (this.minPointsPredicted > 110) {
-                    return (parseInt(this.wageredByteCoins, 10) * Math.log(this.minPointsPredicted) / 2); //Actually VERY NICE scale, thanks math ;)
+                    return (parseInt(this.wageredByteCoins, 10) * Math.log(parseInt(this.minPointsPredicted, 10)) / 2); //Actually VERY NICE scale, thanks math ;)
                 }
             }
             return 0;
@@ -190,7 +189,6 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
     $scope.changeWager = function (wagerType) {
         $scope.currentWager.wagerType = wagerType;
     };
-
     //Templates
     $scope.allianceWager = {
         alliancePredicted: '',
@@ -205,7 +203,6 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
         minPointsPredicted: 0, //only applies to allinaces, negative if less than
         matchPredicted: 0
     };
-
 
     $scope.sendWager = function () {
         var postObject = {};

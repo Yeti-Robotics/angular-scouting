@@ -42,7 +42,7 @@ function byteCoinsToAdd($db, $id) {
         if($results) {
             $matchs = json_decode(file_get_contents("../json/NCRE.json"));
             $byteCoinsToAdd = 0;
-            
+
             while($row = $result->fetch_array()) {
                 if(strtotime($matchs["Schedule"][$row["matchPredicted"]]["startTime"]) < strtotime("now")) {
                     $options = array("timeout"=>2);
