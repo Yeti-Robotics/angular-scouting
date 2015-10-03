@@ -247,6 +247,15 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
     };
 });
 
+app.controller("LeaderboardsController", function ($scope, $http) {
+    'use strict';
+    $scope.sortType = 'byteCoins';
+    $scope.sortReverse = true;
+    $http.get('php/leaderboards.php').then(function (response) {
+        $scope.data = response.data;
+    });
+});
+
 app.directive('stack', function () {
     'use strict';
     return {
@@ -272,6 +281,9 @@ app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
     }).when("/list", {
         templateUrl: 'html/list.html',
         controller: 'ListController'
+    }).when("/leaderboards", {
+        templateUrl: 'html/leaderboards.html',
+        controller: 'LeaderboardsController'
     }).otherwise({
         redirectTo: '/'
     });
