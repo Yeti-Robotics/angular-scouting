@@ -104,8 +104,6 @@ app.controller('FormController', function ($rootScope, $scope, $http) {
                 console.log("Error during submission");
                 console.log(response);
             });
-
-
         } else {
             console.log("Not valid");
         }
@@ -124,11 +122,7 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
     'use strict';
 
-    $scope.id = Scouter.id;
     $scope.validateLogin();
-
-    $scope.id = Scouter.id;
-    $scope.byteCoins = Scouter.byteCoins;
 
     $scope.refreshByteCoins = function () {
         $http.post("php/getByteCoins.php", {
@@ -136,7 +130,6 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
             pswd: Scouter.pswd
         }).then(function (response) {
             Scouter.byteCoins = response.data;
-            $scope.byteCoins = response.data;
         }, function (response) {
             $scope.reportError("Could not properly get your number of Byte Coins. Are you logged in?");
         });
