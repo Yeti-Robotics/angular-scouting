@@ -10,10 +10,21 @@ var Scouter = {
 var app;
 app = angular.module('app', ['ngRoute']);
 
-app.run(function ($rootScope) {
+app.run(function ($rootScope, $location) {
     'use strict';
-    $rootScope.loggedIn = true;
+    $rootScope.loggedIn = false;
     $rootScope.showRedirectMessage = false;
+    
+    $rootScope.$watch(function() {
+        return $location.path();
+    }, function() {
+        if (!$rootScope.loggedIn) {
+            $location.path("/");
+            $rootScope.showRedirectMessage = true;
+        } else {
+            $rootScope.showRedirectMessage = false;
+        }
+    });
 });
 
 app.controller('MainController', function ($rootScope, $scope, $http, $location) {
@@ -24,15 +35,6 @@ app.controller('MainController', function ($rootScope, $scope, $http, $location)
 
     $scope.changeRole = function (role) {
         $scope.role = role;
-    };
-
-    $scope.validateLogin = function () {
-        /*if (!$rootScope.loggedIn) {
-            $location.path("/");
-            $rootScope.showRedirectMessage = true;
-        } else {
-            $rootScope.showRedirectMessage = false;
-        }*/
     };
 
     $scope.goToPath = function () {
@@ -62,8 +64,6 @@ app.controller('MainController', function ($rootScope, $scope, $http, $location)
 
 app.controller('FormController', function ($rootScope, $scope, $http) {
     'use strict';
-
-    $scope.validateLogin();
 
     $scope.formData = {
         stackRows: {
@@ -121,8 +121,6 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 
 app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
     'use strict';
-
-    $scope.validateLogin();
 
     $scope.refreshByteCoins = function () {
         $http.post("php/getByteCoins.php", {
