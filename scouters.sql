@@ -58,7 +58,7 @@ INSERT INTO `scouters` (`name`, `id`, `pswd`, `byteCoins`) VALUES
 ,('Antonio Mendoza',15,'485',200)
 ,('Nathen Munyak',16,'245',200)
 ,('Tanisha Paul',22,'435',200)
-,('Sam Perlmutter',23,'556',200)
+,('Sam Perlmutter',23,'23',200)
 ,('Sophia Schwinghammer',25,'912',200)
 ,('Ben Sellers',20,'968',200)
 ,('William Sommerville',26,'915',200)
