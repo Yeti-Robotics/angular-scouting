@@ -1,8 +1,4 @@
 <div class="container-fluid">
-    <div id="success_message" class="alert alert-success alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <strong>Success!</strong> Now do it again.
-    </div>
     <form id="scouting_form" ng-submit="submit()">
         <fieldset>
             <legend>Info</legend>
@@ -127,6 +123,8 @@
             </div>
         </fieldset>
 
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <div class="form-group">
+            <button class="btn btn-primary btn-block" type="submit">Submit</button>
+        </div>
     </form>
 </div>
