@@ -7,6 +7,10 @@ var Scouter = {
     byteCoins: 0
 };
 
+var Requests = {
+    teamNumber: 0
+};
+
 var app;
 app = angular.module('app', ['ngRoute']);
 
@@ -14,10 +18,10 @@ app.run(function ($rootScope, $location) {
     'use strict';
     $rootScope.loggedIn = false;
     $rootScope.showRedirectMessage = false;
-    
-    $rootScope.$watch(function() {
+
+    $rootScope.$watch(function () {
         return $location.path();
-    }, function() {
+    }, function () {
         if (!$rootScope.loggedIn) {
             $location.path("/");
             $rootScope.showRedirectMessage = true;
@@ -247,6 +251,29 @@ app.controller("LeaderboardsController", function ($scope, $http) {
     });
 });
 
+app.controller("TeamInfoController", function ($scope, $http) {
+    'use strict';
+    $scope.team = {
+        number: 0,
+        avgStackHeight: 0,
+        avgStacksPerMatch: 0,
+        heighestStackMade: 0,
+        rating: 0
+    }
+
+    $scope.stacks = [];
+
+    $http.post("php/team.php", {
+        teamNumber: Requests.teamNumber
+    }).then(function (response) {
+        $scope.team = response.team,
+            $scope.stacks = response.stacks;
+    }, function (response) {
+        $scope.team = {},
+            $scope.stacks = []
+    });
+});
+
 app.directive('stack', function () {
     'use strict';
     return {
@@ -275,6 +302,9 @@ app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
     }).when("/leaderboards", {
         templateUrl: 'html/leaderboards.html',
         controller: 'LeaderboardsController'
+    }).when("/teamInfo", {
+        templateUrl: 'html/team.html',
+        controller: 'TeamInfoController'
     }).otherwise({
         redirectTo: '/'
     });
