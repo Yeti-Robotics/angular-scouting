@@ -8,7 +8,7 @@ var Scouter = {
 };
 
 var Requests = {
-    teamNumber: 0
+    teamNumber: 3506
 };
 
 var app;
@@ -105,6 +105,7 @@ app.controller('FormController', function ($rootScope, $scope, $http) {
                 $('#scouting_form').trigger('reset');
                 $('body').scrollTop(0);
                 $("#scouting_form").before('<div id="success_message" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"<span aria-hidden="true">&times;</span></button><strong>Success!</strong> Now do it again.</div>');
+                $scope.formData.stackRows.rows = [];
             }, function (response) {
                 console.log("Error during submission");
                 console.log(response);
@@ -161,6 +162,12 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
     'use strict';
     $scope.sortType = 'rating';
     $scope.sortReverse = false;
+
+    $scope.teamRedirect = function(teamNumber) {
+        Requests.teamNumber = teamNumber;
+        $location.path('/teamInfo');
+    }
+    
     $http.get('php/list.php').then(function (response) {
         $scope.data = response.data;
     });
@@ -295,6 +302,7 @@ app.controller("LeaderboardsController", function ($scope, $http) {
 
 app.controller("TeamInfoController", function ($scope, $http) {
     'use strict';
+    
     $scope.team = {
         number: 0,
         avgStackHeight: 0,
@@ -304,12 +312,31 @@ app.controller("TeamInfoController", function ($scope, $http) {
     }
 
     $scope.stacks = [];
+    
+    $scope.commentSection = {
+        comments: []
+    }
 
     $http.post("php/team.php", {
         teamNumber: Requests.teamNumber
     }).then(function (response) {
-        $scope.team = response.team,
-            $scope.stacks = response.stacks;
+        $scope.stacks = response.stacks;
+        for (var i = 0; i < response.data.commentSection['comments'].length; i++ ) {
+            $scope.commentSection.comments.push({
+                commentText: response.data.commentSection['comments'][i],
+                timeStamp: response.data.commentSection['timestamps'][i],
+                name: response.data.commentSection['names'][i],
+                matchNumber: response.data.commentSection['matchNumbers'][i]
+            });
+        }
+        console.log(response.data);
+        $scope.team = response.data.teamSection;
+        $scope.stacks = response.data.stacksSection;
+        $scope.toteSupplys = response.data.toteSupplySection;
+        $scope.coopTotes = response.data.coopSection;
+        $scope.autoSection = response.data.autoSection;
+        
+        
     }, function (response) {
         $scope.team = {},
             $scope.stacks = []
