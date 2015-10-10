@@ -19,16 +19,16 @@ app.run(function ($rootScope, $location) {
     $rootScope.loggedIn = false;
     $rootScope.showRedirectMessage = false;
 
-//    $rootScope.$watch(function () {
-//        return $location.path();
-//    }, function () {
-//        if (!$rootScope.loggedIn) {
-//            $location.path("/");
-//            $rootScope.showRedirectMessage = true;
-//        } else {
-//            $rootScope.showRedirectMessage = false;
-//        }
-//    });
+    $rootScope.$watch(function () {
+        return $location.path();
+    }, function () {
+        if (!$rootScope.loggedIn) {
+            $location.path("/");
+            $rootScope.showRedirectMessage = true;
+        } else {
+            $rootScope.showRedirectMessage = false;
+        }
+    });
 });
 
 app.controller('MainController', function ($rootScope, $scope, $http, $location) {
@@ -105,6 +105,7 @@ app.controller('FormController', function ($rootScope, $scope, $http) {
                 $('#scouting_form').trigger('reset');
                 $('body').scrollTop(0);
                 $("#scouting_form").before('<div id="success_message" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"<span aria-hidden="true">&times;</span></button><strong>Success!</strong> Now do it again.</div>');
+                $scope.formData.stackRows.rows = [];
             }, function (response) {
                 console.log("Error during submission");
                 console.log(response);

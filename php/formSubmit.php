@@ -76,9 +76,9 @@ if($stmt = $db->prepare($query)) {
             $stack_query = "INSERT INTO stacks (scout_data_id, totes, cap_state, cap_height)
                     VALUES (?, ?, ?, ?)";
             if ($stack_stmt = $db->prepare($stack_query)) {
-                $stack_stmt->bind_param("iiii", $insert_id, $stack["stacks_totes"], $stack["capped_stack"], $stack["cap_height"]);
+                $stack_stmt->bind_param("iiii", $insert_id,  intval($stack["stacks_totes"]), intval($stack["capped_stack"]), intval($stack["cap_height"]));
                 $stack_stmt->execute();
-                echo("Stack height: ".$stack["stacks_totes"].", Cap state: ".$stack["capped_stack"].", Cap height: ".$stack["cap_height"]."\n\n");
+//                echo("Stack height: ".$stack["stacks_totes"].", Cap state: ".$stack["capped_stack"].", Cap height: ".$stack["cap_height"]."\n\n");
             }
         }
     }
