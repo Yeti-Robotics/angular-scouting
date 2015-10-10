@@ -1,8 +1,9 @@
 <div class="container-fluid">
-    <h1>Team</h1>
-    <h3>Overall Results</h3>
-    <table class="table table-hover">
-        <thead>
+    <h2 class="page_header">Team </h2>
+    <br/>
+    <fieldset>
+        <legend>Overall Results</legend>
+        <table class="table table-striped" >
             <tr>
                 <th>Team</th>
                 <th>Avg. Stack Height</th>
@@ -10,15 +11,62 @@
                 <th>Highest Stack Made</th>
                 <th>Rating</th>
             </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{team.number}}</td>
-                <td>{{team.avgStackHeight}}</td>
-                <td>{{team.avgStacksPerMatch}}</td>
-                <td>{{team.heighestStackMade}}</td>
-                <td>{{team.rating}}</td>
+            <tr class="team_row">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
-        </tbody>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>Teleop</legend>
+        <h4>Stacks</h4>
+        <table class="table table-striped" >
+            <tr>
+                <th>Match Number</th>
+                <th>Stack Height</th>
+                <th>Cap Height</th>
+                <th>Number of Stacks</th>
+            </tr>
+        </table>
+        <h4>Origin of totes</h4>
+        <table class="table table-striped" >
+            <tr>
+                <th>Match Number</th>
+                <th>Totes Landfill?</th>
+                <th>Totes Human Player?</th>
+            </tr>
+        </table>
+    </fieldset>
+    <h3>Autonomous</h3>
+    <table class="table table-striped" >
+        <tr>
+            <th>Match Number</th>
+            <th>Robot Moved</th>
+            <th>Number of totes moved</th>
+            <th>Number of cans moved</th>
+            <th>Where did cans come from?</th>
+            <th>Finishes in Auto Zone?</th>
+        </tr>
     </table>
+    <h3>Coopertition</h3>
+    <table class="table table-striped" >
+        <tr>
+            <th>Match Number</th>
+            <th>Co-op Totes</th>
+        </tr>
+    </table>
+
+    <fieldset>
+        <legend>Comments:</legend>
+        <div class="container-fluid" ng-repeat="comment in commentSection.comments">
+            <div class="row">
+                <p>{{comment.commentText}}</p>
+                <p>-- {{comment.name}}, {{comment.timeStamp}} for match #{{comment.matchNumber}}</p>
+            </div>
+        </div>
+    </fieldset>
+
 </div>

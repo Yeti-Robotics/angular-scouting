@@ -8,7 +8,7 @@ var Scouter = {
 };
 
 var Requests = {
-    teamNumber: 0
+    teamNumber: 3506
 };
 
 var app;
@@ -19,16 +19,16 @@ app.run(function ($rootScope, $location) {
     $rootScope.loggedIn = false;
     $rootScope.showRedirectMessage = false;
 
-    $rootScope.$watch(function () {
-        return $location.path();
-    }, function () {
-        if (!$rootScope.loggedIn) {
-            $location.path("/");
-            $rootScope.showRedirectMessage = true;
-        } else {
-            $rootScope.showRedirectMessage = false;
-        }
-    });
+//    $rootScope.$watch(function () {
+//        return $location.path();
+//    }, function () {
+//        if (!$rootScope.loggedIn) {
+//            $location.path("/");
+//            $rootScope.showRedirectMessage = true;
+//        } else {
+//            $rootScope.showRedirectMessage = false;
+//        }
+//    });
 });
 
 app.controller('MainController', function ($rootScope, $scope, $http, $location) {
@@ -119,6 +119,13 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
     'use strict';
     $scope.sortType = 'rating';
     $scope.sortReverse = false;
+    
+    $(document).ready(function() {
+        $("td")/*.children()*/.click(function() {
+            console.log(/*$(this).children().first().html()*/'hi');
+        });
+    });
+    
     $http.get('php/list.php').then(function (response) {
         $scope.data = response.data;
     });
@@ -253,6 +260,7 @@ app.controller("LeaderboardsController", function ($scope, $http) {
 
 app.controller("TeamInfoController", function ($scope, $http) {
     'use strict';
+    
     $scope.team = {
         number: 0,
         avgStackHeight: 0,
@@ -262,12 +270,26 @@ app.controller("TeamInfoController", function ($scope, $http) {
     }
 
     $scope.stacks = [];
+    
+    $scope.commentSection = {
+        comments: []
+    }
 
     $http.post("php/team.php", {
         teamNumber: Requests.teamNumber
     }).then(function (response) {
-        $scope.team = response.team,
-            $scope.stacks = response.stacks;
+        $scope.team = response.data['teamNumber'],
+        $scope.stacks = response.stacks;
+        
+        for (var i = 0; i < response.data.commentSection['comments'].length; i++ ) {
+            $scope.commentSection.comments.push({
+                commentText: response.data.commentSection['comments'][i],
+                timeStamp: response.data.commentSection['timestamps'][i],
+                name: response.data.commentSection['names'][i],
+                matchNumber: response.data.commentSection['matchNumbers'][i]
+            });
+        }
+        
     }, function (response) {
         $scope.team = {},
             $scope.stacks = []
