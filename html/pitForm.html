@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <form id="pitForm" enctype="multipart/form-data" ng-submit="submit()">
+        <fieldset>
+            <div class="input-group">
+                <span class="input-group-addon">Team #</span>
+                <input ng-model="pitFormData.teamNumber" class="form-control" type='number' name='teamnumber' id='teamnumber' placeholder='Enter Team Number here' required>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Your name</span>
+                <input ng-model="pitFormData.name" class="form-control" id="scouter_name" type="text" name='scouter_name' placeholder='Please enter your name' required>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Upload Pictures here</legend>
+            <img ng-model="pitFormData.picture" class="img-responsive" alt="Please Upload a File!" id='displayarea'>
+            <br>
+            <br>
+            <input class="form-control" type="file" id='robotimage' name="RobotPicture">
+            <br>
+        </fieldset>
+        <fieldset>
+            <legend>Type Your comments here</legend>
+            <textarea ng-model="pitFormData.comment" class="form-control" id="comments" rows="3" cols="40" name='comments' placeholder='Enter comments about the team here'></textarea>
+            <br>
+        </fieldset>
+        <button class="btn btn-block btn-primary" type="submit">Submit</button>
+    </form>
+</div>

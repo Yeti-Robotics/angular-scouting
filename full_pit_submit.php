@@ -2,7 +2,7 @@
 	include('connect.php');
 	include('functions.php');
 	
-	//Picture submition
+	//Picture submission
 	$teamNumber = $_POST['teamnumber'];
 	$picNum = 0;
 
@@ -20,7 +20,7 @@
 		header("Location: http://" . $_SERVER['HTTP_HOST'] . "/pit.php");
 	}
 	
-	//Comments submition
+	//Comments submission
 	if(!empty($_POST["comments"]) && $_FILES["RobotPicture"]["size"] == 0) {
 		$query = "INSERT INTO pit_scouting (team_number, pit_comments, scouter_name)
 					VALUES (?, ?, ?)";

@@ -19,16 +19,16 @@ app.run(function ($rootScope, $location) {
     $rootScope.loggedIn = false;
     $rootScope.showRedirectMessage = false;
 
-    $rootScope.$watch(function () {
-        return $location.path();
-    }, function () {
-        if (!$rootScope.loggedIn) {
-            $location.path("/");
-            $rootScope.showRedirectMessage = true;
-        } else {
-            $rootScope.showRedirectMessage = false;
-        }
-    });
+    //    $rootScope.$watch(function () {
+    //        return $location.path();
+    //    }, function () {
+    //        if (!$rootScope.loggedIn) {
+    //            $location.path("/");
+    //            $rootScope.showRedirectMessage = true;
+    //        } else {
+    //            $rootScope.showRedirectMessage = false;
+    //        }
+    //    });
 });
 
 app.controller('MainController', function ($rootScope, $scope, $http, $location) {
@@ -113,6 +113,48 @@ app.controller('FormController', function ($rootScope, $scope, $http) {
             console.log("Not valid");
         }
     };
+});
+
+app.controller('PitFormController', function ($scope, $http) {
+    'use strict';
+
+    $(document).ready(function () {
+        $('#pitForm').validate();
+        console.log('Inititalize validation');
+
+        var reader = new FileReader();
+        var fileInput = document.getElementById('robotimage');
+
+        reader.onload = function () {
+            var rawData = reader.result;
+            $("#displayarea").attr("src", rawData);
+        }
+
+        fileInput.onchange = function (e) {
+            reader.readAsDataURL(e.target.files[0]);
+        };
+    });
+
+    $scope.pitFormData = {};
+
+    $scope.submit = function () {
+        if ($('#pitForm').valid()) {
+            console.log("valid");
+            $http.post('php/pitFormSubmit.php', $scope.pitFormData).then(function (response) {
+                console.log("submitted");
+                console.log(response);
+                $('#pitForm').trigger('reset');
+                $('body').scrollTop(0);
+                $("#pitForm").before('<div id="success_message" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"<span aria-hidden="true">&times;</span></button><strong>Success!</strong> Now do it again.</div>');
+            }, function (response) {
+                console.log("Error during submission");
+                console.log(response);
+            });
+        } else {
+            console.log("Not valid");
+        }
+    }
+
 });
 
 app.controller("ListController", function ($rootScope, $scope, $http) {
@@ -305,6 +347,9 @@ app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
     }).when("/teamInfo", {
         templateUrl: 'html/team.html',
         controller: 'TeamInfoController'
+    }).when("/pitForm", {
+        templateUrl: 'html/pitForm.html',
+        controller: 'PitFormController'
     }).otherwise({
         redirectTo: '/'
     });
