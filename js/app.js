@@ -115,16 +115,15 @@ app.controller('FormController', function ($rootScope, $scope, $http) {
     };
 });
 
-app.controller("ListController", function ($rootScope, $scope, $http) {
+app.controller("ListController", function ($rootScope, $scope, $http, $location) {
     'use strict';
     $scope.sortType = 'rating';
     $scope.sortReverse = false;
-    
-    $(document).ready(function() {
-        $("td")/*.children()*/.click(function() {
-            console.log(/*$(this).children().first().html()*/'hi');
-        });
-    });
+
+    $scope.teamRedirect = function(teamNumber) {
+        Requests.teamNumber = teamNumber;
+        $location.path('/teamInfo');
+    }
     
     $http.get('php/list.php').then(function (response) {
         $scope.data = response.data;
@@ -278,9 +277,7 @@ app.controller("TeamInfoController", function ($scope, $http) {
     $http.post("php/team.php", {
         teamNumber: Requests.teamNumber
     }).then(function (response) {
-        $scope.team = response.data['teamNumber'],
         $scope.stacks = response.stacks;
-        
         for (var i = 0; i < response.data.commentSection['comments'].length; i++ ) {
             $scope.commentSection.comments.push({
                 commentText: response.data.commentSection['comments'][i],
@@ -289,6 +286,11 @@ app.controller("TeamInfoController", function ($scope, $http) {
                 matchNumber: response.data.commentSection['matchNumbers'][i]
             });
         }
+        console.log(response.data);
+        $scope.team = response.data.teamSection;
+        $scope.stacks = response.data.stacksSection;
+        $scope.toteSupplys = response.data.toteSupplySection;
+        $scope.coopTotes = response.data.coopSection;
         
     }, function (response) {
         $scope.team = {},

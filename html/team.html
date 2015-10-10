@@ -12,11 +12,11 @@
                 <th>Rating</th>
             </tr>
             <tr class="team_row">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{team.teamNumber}}</td>
+                <td>{{team.avgStackHeight}}</td>
+                <td>{{team.avgStacksperMatch}}</td>
+                <td>{{team.heighestStackMade}}</td>
+                <td>{{team.rating}}</td>
             </tr>
         </table>
     </fieldset>
@@ -30,6 +30,12 @@
                 <th>Cap Height</th>
                 <th>Number of Stacks</th>
             </tr>
+            <tr ng-repeat="stack in stacks">
+                <td>{{stack.matchNumber}}</td>
+                <td>{{stack.stackHeight}}</td>
+                <td>{{stack.capHeight}}</td>
+                <td>{{stack.numberOfStacks}}</td>
+            </tr>
         </table>
         <h4>Origin of totes</h4>
         <table class="table table-striped" >
@@ -37,6 +43,11 @@
                 <th>Match Number</th>
                 <th>Totes Landfill?</th>
                 <th>Totes Human Player?</th>
+            </tr>
+            <tr ng-repeat="supply in toteSupplys">
+                <td>{{supply.matchNumber}}</td>
+                <td>{{supply.totesLandfill}}</td>
+                <td>{{supply.totesHumanPlayer}}</td>
             </tr>
         </table>
     </fieldset>
@@ -57,6 +68,10 @@
             <th>Match Number</th>
             <th>Co-op Totes</th>
         </tr>
+        <tr ng-repeat="coopTote in coopTotes">
+            <td>{{coopTote.matchNumber}}</td>
+            <td>{{coopTote.coopTotes}}</td>
+        </tr>
     </table>
 
     <fieldset>
@@ -65,6 +80,7 @@
             <div class="row">
                 <p>{{comment.commentText}}</p>
                 <p>-- {{comment.name}}, {{comment.timeStamp}} for match #{{comment.matchNumber}}</p>
+                <hr/>
             </div>
         </div>
     </fieldset>
