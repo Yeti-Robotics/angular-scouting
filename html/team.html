@@ -61,6 +61,14 @@
             <th>Where did cans come from?</th>
             <th>Finishes in Auto Zone?</th>
         </tr>
+         <tr ng-repeat="auto in autoSection">
+            <td>{{auto.matchNumber}}</td>
+            <td>{{auto.robotMoved}}</td>
+            <td>{{auto.numberOfTotesMoved}}</td>
+            <td>{{auto.numberOfCansMoved}}</td>
+            <td>{{auto.whereDidCansComeFrom}}</td>
+            <td>{{auto.finishesInAutoZone}}</td>
+        </tr>
     </table>
     <h3>Coopertition</h3>
     <table class="table table-striped" >

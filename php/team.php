@@ -144,6 +144,29 @@ WHERE t1.team=?";
         die("Failed to upload points");
      }
 
+    	$query = "SELECT match_number AS 'matchNumber', if(robot_moved, 'yes', 'no') AS 'robotMoved', totes_auto AS 'numberOfTotesMoved', cans_auto AS 'numberOfCansMoved', if(cans_auto_origin, 'step', 'auto zone') AS 'whereDidCansComeFrom', if(in_auto_zone, 'yes', 'no') AS 'finishesInAutoZone'
+				FROM scout_data
+				WHERE team=?";
+    if($stmt = $db->prepare($query)){
+        $stmt->bind_param("i", $postData["teamNumber"]);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $response['autoSection'][] = [
+                    'matchNumber' => $row['matchNumber'],
+                    'robotMoved' => $row['robotMoved'],
+                    'numberOfTotesMoved' => $row['numberOfTotesMoved'],
+                    'numberOfCansMoved' => $row['numberOfCansMoved'],
+                    'whereDidCansComeFrom' => $row['whereDidCansComeFrom'],
+                    'finishesInAutoZone' => $row['finishesInAutoZone'],
+                ];
+            }
+        }
+     } else {
+        header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
+        die("Failed to upload points");
+     }
 die(json_encode($response));
 } else {
     header($_SERVER['SERVER_PROTOCOL'] . '403 No headers', true, 403);

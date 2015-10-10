@@ -291,6 +291,8 @@ app.controller("TeamInfoController", function ($scope, $http) {
         $scope.stacks = response.data.stacksSection;
         $scope.toteSupplys = response.data.toteSupplySection;
         $scope.coopTotes = response.data.coopSection;
+        $scope.autoSection = response.data.autoSection;
+        
         
     }, function (response) {
         $scope.team = {},
