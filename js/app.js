@@ -163,10 +163,10 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
     $scope.sortType = 'rating';
     $scope.sortReverse = false;
 
-    $scope.teamRedirect = function(teamNumber) {
-        Requests.teamNumber = teamNumber;
-        $location.path('/teamInfo');
-    }
+//    $scope.teamRedirect = function(teamNumber) {
+//        Requests.teamNumber = teamNumber;
+//        $location.path('/teamInfo');
+//    }
     
     $http.get('php/list.php').then(function (response) {
         $scope.data = response.data;
@@ -300,8 +300,10 @@ app.controller("LeaderboardsController", function ($scope, $http) {
     });
 });
 
-app.controller("TeamInfoController", function ($scope, $http) {
+app.controller("TeamController", function ($scope, $http, $routeParams) {
     'use strict';
+    
+    console.log(' team number ' + $routeParams.teamNumber);
     
     $scope.team = {
         number: 0,
@@ -371,9 +373,9 @@ app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
     }).when("/leaderboards", {
         templateUrl: 'html/leaderboards.html',
         controller: 'LeaderboardsController'
-    }).when("/teamInfo", {
+    }).when("/team/:teamNumber", {
         templateUrl: 'html/team.html',
-        controller: 'TeamInfoController'
+        controller: 'TeamController'
     }).when("/pitForm", {
         templateUrl: 'html/pitForm.html',
         controller: 'PitFormController'

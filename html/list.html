@@ -25,8 +25,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="row in data | orderBy:sortType:sortReverse" ng-click="teamRedirect(row.team)">
-                <td>{{row.team}}</td>
+            <tr ng-repeat="row in data | orderBy:sortType:sortReverse" >
+                <td><a href="#/team/{{row.team}}">{{row.team}}</a></td>
                 <td>{{row.avgStackHeight}}</td>
                 <td>{{row.avgStacksPerMatch}}</td>
                 <td>{{row.highestStackMade}}</td>

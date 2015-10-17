@@ -1,13 +1,13 @@
 <?php
 include ("connect.php");
 header('Content-Type: application/json');
-$postData = json_decode(file_get_contents("php://input"), true);
-$comments = [];
-$timestamps = [];
-$names = [];
-$matchNumber = [];
+$teamNumber = $_GET["teamNumber"];
+$comments = array();
+$timestamps = array();
+$names = array();
+$matchNumber = array();
 $team = 0;
-if($postData["teamNumber"]) {
+if($teamNumber) {
     $response = array();
     $query = "SELECT t1.team AS Team, ROUND(t1.avg_height,2) AS 'Avg. Stack Height', ROUND(t2.avg_stacks,2) AS 'Avg. Stacks per Match', MAX(t4.totes) AS 'Highest Stack Made', ROUND(rating,2) AS 'Rating'
 FROM (SELECT team, AVG(totes) AS avg_height, totes
@@ -31,8 +31,9 @@ LEFT JOIN (SELECT team, totes
 				ORDER BY match_number, totes) AS t4 ON t4.team=t1.team
 WHERE t1.team=?";
 	if($stmt = $db->prepare($query)){
-		$stmt->bind_param("ii", $postData["teamNumber"], $postData["teamNumber"]);
+		$stmt->bind_param("ii", $teamNumber, $teamNumber);
         $stmt->execute();
+        print_r($stmt);
         $result = $stmt->get_result();
         if ($result) {
             die(json_encode($result));
@@ -40,12 +41,12 @@ WHERE t1.team=?";
             while ($row = $result->fetch_assoc()) {
                 $team = $row["team"];
             }
-            $response['commentSection'] = [
+            $response['commentSection'][] = array(
                 'comments' => $comments,
                 'timestamps' => $timestamps,
                 'names' => $names,
-                'matchNumbers' => $matchNumber
-            ];
+                'matchNumbers' => $matchNumber,
+            );
         }
     } else {
         header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
@@ -74,18 +75,18 @@ LEFT JOIN (SELECT team, totes
 				ORDER BY match_number, totes) AS t4 ON t4.team=t1.team
 WHERE t1.team=?";
      if($stmt = $db->prepare($query)){
-        $stmt->bind_param("ii", $postData["teamNumber"], $postData["teamNumber"]);
+        $stmt->bind_param("ii", $teamNumber, $teamNumber);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result) {
             if ($row = $result->fetch_assoc()) {
-                $response['teamSection'] = [
+                $response['teamSection'][] = array(
                     'teamNumber' => $row['Team'],
                     'avgStackHeight' => $row['avgStackHeight'],
                     'avgStacksperMatch' => $row['avgStacksperMatch'],
                     'heighestStackMade' => $row['heighestStackMade'],
                     'rating' => $row['rating']
-                ];
+                );
             }
         }
      } else {
@@ -100,17 +101,17 @@ WHERE t1.team=?";
 			    GROUP BY totes, cap_height, match_number
 				ORDER BY match_number, totes";
     if($stmt = $db->prepare($query)){
-        $stmt->bind_param("i", $postData["teamNumber"]);
+        $stmt->bind_param("i", $teamNumber);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result) {
             while ($row = $result->fetch_assoc()) {
-                $response['stacksSection'][] = [
+                $response['stacksSection'][] = array(
                     'matchNumber' => $row['matchNumber'],
                     'stackHeight' => $row['stackHeight'],
                     'capHeight' => $row['capHeight'],
                     'numberOfStacks' => $row['numberOfStacks']
-                ];
+                );
             }
         }
      } else {
@@ -122,16 +123,16 @@ WHERE t1.team=?";
 				FROM `scout_data`
 				WHERE team=?";
     if($stmt = $db->prepare($query)){
-        $stmt->bind_param("i", $postData["teamNumber"]);
+        $stmt->bind_param("i", $teamNumber);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result) {
             while ($row = $result->fetch_assoc()) {
-                $response['toteSupplySection'][] = [
+                $response['toteSupplySection'][] = array(
                     'matchNumber' => $row['matchNumber'],
                     'totesLandfill' => $row['totesLandfill'],
                     'totesHumanPlayer' => $row['totesHumanPlayer']
-                ];
+                );
             }
         }
      } else {
@@ -144,15 +145,15 @@ WHERE t1.team=?";
 				WHERE team = ?
 				ORDER BY match_number";
     if($stmt = $db->prepare($query)){
-        $stmt->bind_param("i", $postData["teamNumber"]);
+        $stmt->bind_param("i", $teamNumber);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result) {
             while ($row = $result->fetch_assoc()) {
-                $response['coopSection'][] = [
+                $response['coopSection'][] = array(
                     'matchNumber' => $row['matchNumber'],
                     'coopTotes' => $row['co-opTotes']
-                ];
+                );
             }
         }
      } else {
@@ -164,19 +165,19 @@ WHERE t1.team=?";
 				FROM scout_data
 				WHERE team=?";
     if($stmt = $db->prepare($query)){
-        $stmt->bind_param("i", $postData["teamNumber"]);
+        $stmt->bind_param("i", $teamNumber);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result) {
             while ($row = $result->fetch_assoc()) {
-                $response['autoSection'][] = [
+                $response['autoSection'][] = array(
                     'matchNumber' => $row['matchNumber'],
                     'robotMoved' => $row['robotMoved'],
                     'numberOfTotesMoved' => $row['numberOfTotesMoved'],
                     'numberOfCansMoved' => $row['numberOfCansMoved'],
                     'whereDidCansComeFrom' => $row['whereDidCansComeFrom'],
                     'finishesInAutoZone' => $row['finishesInAutoZone'],
-                ];
+                );
             }
         }
      } else {
