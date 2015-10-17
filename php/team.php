@@ -33,13 +33,13 @@ WHERE t1.team=?";
 	if($stmt = $db->prepare($query)){
 		$stmt->bind_param("ii", $teamNumber, $teamNumber);
         $stmt->execute();
-        print_r($stmt);
         $result = $stmt->get_result();
         if ($result) {
-            die(json_encode($result));
+            
             $response["team"] = array();
             while ($row = $result->fetch_assoc()) {
-                $team = $row["team"];
+                //print_r($row);
+                $team = $row["Team"];
             }
             $response['commentSection'][] = array(
                 'comments' => $comments,
