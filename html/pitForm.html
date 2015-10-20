@@ -11,18 +11,23 @@
             </div>
         </fieldset>
         <fieldset>
-            <legend>Upload Pictures here</legend>
-            <img ng-model="pitFormData.picture" class="img-responsive" alt="Please Upload a File!" id='displayarea'>
-            <br>
-            <br>
-            <input class="form-control" type="file" id='robotimage' name="RobotPicture">
-            <br>
+           <legend>Upload Pictures here</legend>
+            <div class="form-group">
+                <div class="form-group">
+                    <button class="btn btn-block" type="button" ng-click="addPicture()">Add Picture</button>
+                </div>
+                <div ng-repeat="picture in pitFormData.pictureRows.pictures">
+                    <div picture onchange="angular.element(this).scope().updateDisplay(this.children[0].children[1].children[0], angular.element(this).scope().picture)" remove-picture="removePicture(picture)"></div>
+                </div>
+            </div>
         </fieldset>
         <fieldset>
             <legend>Type Your comments here</legend>
             <textarea ng-model="pitFormData.comment" class="form-control" id="comments" rows="3" cols="40" name='comments' placeholder='Enter comments about the team here'></textarea>
             <br>
         </fieldset>
-        <button class="btn btn-block btn-primary" type="submit">Submit</button>
+        <div class="form-group">
+            <button class="btn btn-block btn-primary" type="submit">Submit</button>
+        </div>
     </form>
 </div>

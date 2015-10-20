@@ -8,7 +8,8 @@ var Scouter = {
 };
 
 var Requests = {
-    teamNumber: 3506
+    teamNumber: 3506,
+    pitTeamNumber: 0
 };
 
 var app;
@@ -122,21 +123,39 @@ app.controller('PitFormController', function ($scope, $http) {
     $(document).ready(function () {
         $('#pitForm').validate();
         console.log('Inititalize validation');
-
-        var reader = new FileReader();
-        var fileInput = document.getElementById('robotimage');
-
-        reader.onload = function () {
-            var rawData = reader.result;
-            $("#displayarea").attr("src", rawData);
-        }
-
-        fileInput.onchange = function (e) {
-            reader.readAsDataURL(e.target.files[0]);
-        };
     });
 
-    $scope.pitFormData = {};
+    $scope.pitFormData = {
+        pictureRows: {
+            pictures: []
+        },
+        name: Scouter.name,
+        id: Scouter.id,
+        pswd: Scouter.pswd
+    };
+    
+    $scope.updateDisplay = function(picture, item) {
+        var rowNum = $scope.pitFormData.pictureRows.pictures.indexOf(item);
+        var reader = new FileReader();
+        var file = picture.files[0];
+		reader.readAsDataURL(file);
+        reader.onload = function() {
+            $scope.pitFormData.pictureRows.pictures[rowNum].src = reader.result;
+            $(picture).parent().prev().children().attr("src", reader.result);
+        }
+    };
+    
+    $scope.addPicture = function () {
+        $scope.pitFormData.pictureRows.pictures.push({
+            src: ''
+        });
+    };
+
+    $scope.removePicture = function (picture) {
+        console.log("deleted");
+        var rowNum = $scope.pitFormData.pictureRows.pictures.indexOf(picture);
+        $scope.pitFormData.pictureRows.pictures.splice(rowNum, 1);
+    };
 
     $scope.submit = function () {
         if ($('#pitForm').valid()) {
@@ -354,6 +373,16 @@ app.directive('stack', function () {
         }
     };
 });
+
+app.directive('picture', function() {
+    'use strict';
+    return {
+        templateUrl: 'html/picture.html',
+        scope: {
+            removePicture: '&'
+        }
+    }
+})
 
 app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
     'use strict';
