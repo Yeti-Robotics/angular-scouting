@@ -16,8 +16,8 @@
                 <div class="form-group">
                     <button class="btn btn-block" type="button" ng-click="addPicture()">Add Picture</button>
                 </div>
-                <div ng-repeat="picture in pitFormData.pictureRows.pictures">
-                    <div picture onchange="angular.element(this).scope().updateDisplay(this.children[0].children[1].children[0], angular.element(this).scope().picture)" remove-picture="removePicture(picture)"></div>
+                <div ng-repeat="picture in picNum">
+                    <div picture onchange="angular.element(this).scope().updateDisplay(this.children[0].children[1].children[0], angular.element(this).scope().$index); angular.element(this).scope().unrequireComments()" remove-picture="removePicture(picture)"></div>
                 </div>
             </div>
         </fieldset>

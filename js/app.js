@@ -105,7 +105,9 @@ app.controller('FormController', function ($rootScope, $scope, $http) {
                 console.log(response);
                 $('#scouting_form').trigger('reset');
                 $('body').scrollTop(0);
-                $("#scouting_form").before('<div id="success_message" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"<span aria-hidden="true">&times;</span></button><strong>Success!</strong> Now do it again.</div>');
+                if ($('#scouting_form').prev().attr('id') != "success_message") {
+                    $("#scouting_form").before('<div id="success_message" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"<span aria-hidden="true">&times;</span></button><strong>Success!</strong> Now do it again.</div>');
+                }
                 $scope.formData.stackRows.rows = [];
             }, function (response) {
                 console.log("Error during submission");
@@ -123,49 +125,91 @@ app.controller('PitFormController', function ($scope, $http) {
     $(document).ready(function () {
         $('#pitForm').validate();
         console.log('Inititalize validation');
+        if ($(".robotimage").length == 0 && $("#comments").val() == '') {
+            $("#comments").each(function() {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "You must submit a comment and/or at least one picture."
+                    }
+                });
+            });
+        }
     });
+    
+    $scope.unrequireComments = function() {
+        $("#comments").rules("remove", "required");
+    }
 
     $scope.pitFormData = {
-        pictureRows: {
-            pictures: []
-        },
         name: Scouter.name,
         id: Scouter.id,
         pswd: Scouter.pswd
     };
     
-    $scope.updateDisplay = function(picture, item) {
-        var rowNum = $scope.pitFormData.pictureRows.pictures.indexOf(item);
+    $scope.pictures = [];
+    
+    $scope.picNum = [];
+    
+    $scope.updateDisplay = function(picture, rowNum) {
         var reader = new FileReader();
         var file = picture.files[0];
+        if ($scope.pictures[rowNum] == null) {
+            $scope.pictures.push(file);
+        } else {
+            $scope.pictures[rowNum] = file;
+        }
 		reader.readAsDataURL(file);
         reader.onload = function() {
-            $scope.pitFormData.pictureRows.pictures[rowNum].src = reader.result;
             $(picture).parent().prev().children().attr("src", reader.result);
         }
     };
     
+    var num = 0;
+    
     $scope.addPicture = function () {
-        $scope.pitFormData.pictureRows.pictures.push({
-            src: ''
-        });
+        $scope.picNum.push(num);
+        num++;
     };
 
     $scope.removePicture = function (picture) {
-        console.log("deleted");
-        var rowNum = $scope.pitFormData.pictureRows.pictures.indexOf(picture);
-        $scope.pitFormData.pictureRows.pictures.splice(rowNum, 1);
+        var rowNum = $scope.picNum.indexOf(picture);
+        $scope.picNum.splice(rowNum, 1);
+        $scope.pictures.splice(rowNum, 1);
     };
 
     $scope.submit = function () {
         if ($('#pitForm').valid()) {
             console.log("valid");
-            $http.post('php/pitFormSubmit.php', $scope.pitFormData).then(function (response) {
+            var formData = new FormData();
+            for (var i = 0; i < $scope.pictures.length; i++) {
+                formData.append('files[]', $scope.pictures[i]);
+            }
+            for(var key in $scope.pitFormData) {
+                if ($scope.pitFormData.hasOwnProperty(key)) {
+                    formData.append(key, $scope.pitFormData[key]);
+                }
+            }
+            $http.post("php/pitFormSubmit.php", formData, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            }).then(function (response) {
                 console.log("submitted");
                 console.log(response);
                 $('#pitForm').trigger('reset');
                 $('body').scrollTop(0);
-                $("#pitForm").before('<div id="success_message" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"<span aria-hidden="true">&times;</span></button><strong>Success!</strong> Now do it again.</div>');
+                $scope.pitFormData = {
+                    name: Scouter.name,
+                    id: Scouter.id,
+                    pswd: Scouter.pswd
+                };
+                $scope.pictures = [];
+                $scope.picNum = [];
+                if ($('#pitForm').prev().attr('id') != "success_message") {
+                    $("#pitForm").before('<div id="success_message" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"<span aria-hidden="true">&times;</span></button><strong>Success!</strong> Now do it again.</div>');
+                }
             }, function (response) {
                 console.log("Error during submission");
                 console.log(response);
@@ -382,7 +426,7 @@ app.directive('picture', function() {
             removePicture: '&'
         }
     }
-})
+});
 
 app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
     'use strict';
