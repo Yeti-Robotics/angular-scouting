@@ -1,7 +1,8 @@
 <?php
 include ("connect.php");
+include ("../functions.php");
 header('Content-Type: application/json');
-$teamNumber = $_GET["teamNumber"];
+$teamNumber = isset($_GET["teamNumber"]) ? $_GET["teamNumber"] : -1;
 $comments = array();
 $timestamps = array();
 $names = array();
@@ -9,44 +10,21 @@ $matchNumber = array();
 $team = 0;
 if($teamNumber) {
     $response = array();
-    $query = "SELECT t1.team AS Team, ROUND(t1.avg_height,2) AS 'Avg. Stack Height', ROUND(t2.avg_stacks,2) AS 'Avg. Stacks per Match', MAX(t4.totes) AS 'Highest Stack Made', ROUND(rating,2) AS 'Rating'
-FROM (SELECT team, AVG(totes) AS avg_height, totes
-FROM stacks
-LEFT JOIN scout_data ON scout_data.scout_data_id=stacks.scout_data_id
-GROUP BY team) AS t1
-LEFT JOIN (SELECT team, COUNT(totes > 0) / COUNT(DISTINCT match_number) AS avg_stacks
-FROM stacks
-RIGHT JOIN scout_data ON scout_data.scout_data_id = stacks.scout_data_id
-GROUP BY team
-ORDER BY team DESC) AS t2 ON t1.team = t2.team
-LEFT JOIN (SELECT AVG(rating) AS rating, team
-					FROM scout_data
-					GROUP BY team) AS t3 ON t1.team=t3.team
-
-LEFT JOIN (SELECT team, totes
-				FROM stacks
-				LEFT JOIN scout_data ON scout_data.scout_data_id = stacks.scout_data_id
-				WHERE totes > 0 AND team = ?
-			    GROUP BY totes, cap_height, match_number
-				ORDER BY match_number, totes) AS t4 ON t4.team=t1.team
-WHERE t1.team=?";
+    $query = "SELECT team, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, name, match_number
+			FROM scout_data
+			WHERE team = ?";
 	if($stmt = $db->prepare($query)){
-		$stmt->bind_param("ii", $teamNumber, $teamNumber);
+		$stmt->bind_param("i", $teamNumber);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result) {
             
-            $response["team"] = array();
+           // $response["team"] = array();
             while ($row = $result->fetch_assoc()) {
                 //print_r($row);
-                $team = $row["Team"];
+                $row['timestamp'] = timeAgo($row['timestamp']);
+                $response['commentSection'][] = $row;
             }
-            $response['commentSection'][] = array(
-                'comments' => $comments,
-                'timestamps' => $timestamps,
-                'names' => $names,
-                'matchNumbers' => $matchNumber,
-            );
         }
     } else {
         header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
@@ -80,7 +58,7 @@ WHERE t1.team=?";
         $result = $stmt->get_result();
         if ($result) {
             if ($row = $result->fetch_assoc()) {
-                $response['teamSection'][] = array(
+                $response['teamSection'] = array(
                     'teamNumber' => $row['Team'],
                     'avgStackHeight' => $row['avgStackHeight'],
                     'avgStacksperMatch' => $row['avgStacksperMatch'],

@@ -12,11 +12,11 @@
                 <th>Rating</th>
             </tr>
             <tr class="team_row">
-                <td>{{team.teamNumber}}</td>
-                <td>{{team.avgStackHeight}}</td>
-                <td>{{team.avgStacksperMatch}}</td>
-                <td>{{team.heighestStackMade}}</td>
-                <td>{{team.rating}}</td>
+                <td>{{data.teamSection.teamNumber}}</td>
+                <td>{{data.teamSection.avgStackHeight}}</td>
+                <td>{{data.teamSection.avgStacksperMatch}}</td>
+                <td>{{data.teamSection.heighestStackMade}}</td>
+                <td>{{data.teamSection.rating}}</td>
             </tr>
         </table>
     </fieldset>
@@ -30,7 +30,7 @@
                 <th>Cap Height</th>
                 <th>Number of Stacks</th>
             </tr>
-            <tr ng-repeat="stack in stacks">
+            <tr ng-repeat="stack in data.stacksSection">
                 <td>{{stack.matchNumber}}</td>
                 <td>{{stack.stackHeight}}</td>
                 <td>{{stack.capHeight}}</td>
@@ -44,7 +44,7 @@
                 <th>Totes Landfill?</th>
                 <th>Totes Human Player?</th>
             </tr>
-            <tr ng-repeat="supply in toteSupplys">
+            <tr ng-repeat="supply in data.toteSupplySection">
                 <td>{{supply.matchNumber}}</td>
                 <td>{{supply.totesLandfill}}</td>
                 <td>{{supply.totesHumanPlayer}}</td>
@@ -61,7 +61,7 @@
             <th>Where did cans come from?</th>
             <th>Finishes in Auto Zone?</th>
         </tr>
-         <tr ng-repeat="auto in autoSection">
+         <tr ng-repeat="auto in data.autoSection">
             <td>{{auto.matchNumber}}</td>
             <td>{{auto.robotMoved}}</td>
             <td>{{auto.numberOfTotesMoved}}</td>
@@ -76,7 +76,7 @@
             <th>Match Number</th>
             <th>Co-op Totes</th>
         </tr>
-        <tr ng-repeat="coopTote in coopTotes">
+        <tr ng-repeat="coopTote in data.coopSection">
             <td>{{coopTote.matchNumber}}</td>
             <td>{{coopTote.coopTotes}}</td>
         </tr>
@@ -84,10 +84,10 @@
 
     <fieldset>
         <legend>Comments:</legend>
-        <div class="container-fluid" ng-repeat="comment in commentSection.comments">
+        <div class="container-fluid" ng-repeat="comment in data.commentSection">
             <div class="row">
-                <p>{{comment.commentText}}</p>
-                <p>-- {{comment.name}}, {{comment.timeStamp}} for match #{{comment.matchNumber}}</p>
+                <p>{{comment.comments}}</p>
+                <p>-- {{comment.name}}, {{comment.timeStamp}} for match #{{comment.match_number}}, {{comment.timestamp}}</p>
                 <hr/>
             </div>
         </div>
