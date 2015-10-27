@@ -221,6 +221,21 @@ app.controller('PitFormController', function ($scope, $http) {
 
 });
 
+app.controller('PitController', function ($scope, $http, $routeParams) {
+    'use strict';
+    
+    $scope.teamNumber = $routeParams.teamNumber;
+    
+    $http.get('php/getPitData.php', {
+        params: {
+            teamNumber: $routeParams.teamNumber
+        }
+    }).then(function(response) {
+        $scope.data = response.data;
+        console.log($scope.data);
+    });
+});
+
 app.controller("ListController", function ($rootScope, $scope, $http) {
     'use strict';
     $scope.sortType = 'rating';
@@ -455,6 +470,9 @@ app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
     }).when("/pitForm", {
         templateUrl: 'html/pitForm.html',
         controller: 'PitFormController'
+    }).when("/pit/:teamNumber", {
+        templateUrl: 'html/pit.html',
+        controller: 'PitController'
     }).otherwise({
         redirectTo: '/'
     });
