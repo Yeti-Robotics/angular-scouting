@@ -5,25 +5,20 @@ $teamNumber = $_POST['teamNumber'];
 $scouterName = $_POST['name'];
 $comment = isset($_POST['comment']) ? $_POST['comment'] : null;
 
-//echo("\n\n\nisset: ".json_encode(file_exists("pics/")));
-
 if(isset($_FILES["files"])) {
     $picNums = array();
-    if(!file_exists("pics/")) {
-        mkdir("pics/");
+    if(!file_exists("../pics/")) {
+        mkdir("../pics/");
     }
-    if(!file_exists("pics/$teamNumber")) {
-        mkdir("pics/$teamNumber");
+    if(!file_exists("../pics/$teamNumber")) {
+        mkdir("../pics/$teamNumber");
     }
     foreach ($_FILES['files']['tmp_name'] as $picture) {
-        $dir = scandir("pics/$teamNumber");
+        $dir = scandir("../pics/$teamNumber");
         array_splice($dir, 0, 2);
         $dirLength = count($dir);
         $picNums[] = $dirLength + 1;
-        var_dump($picNums);
-        echo("\n\nLast array item: " . $picNums[count($picNums) - 1]);
-        echo("\n\n-----------------------------------------------\n\n");
-        resizeImage($picture, "pics/$teamNumber/" . $picNums[count($picNums) - 1] . ".jpg");
+        resizeImage($picture, "../pics/$teamNumber/" . $picNums[count($picNums) - 1] . ".jpg");
     }
 }
 

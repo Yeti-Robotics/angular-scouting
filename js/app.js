@@ -221,10 +221,44 @@ app.controller('PitFormController', function ($scope, $http) {
 
 });
 
-app.controller('PitController', function ($scope, $http, $routeParams) {
+app.controller('PitController', function ($scope, $http, $routeParams, $location) {
     'use strict';
     
     $scope.teamNumber = $routeParams.teamNumber;
+    
+    $scope.teamLink = function() {
+        $('#errorModal').on('hidden.bs.modal', function () {
+            $location.path("/team/" + $scope.teamNumber);
+            $scope.$apply();
+        });
+    }
+    
+    $scope.pitData = {
+        pictures: [],
+        comments: []
+    }
+    
+    $scope.picIndex;
+    
+    $scope.noComments = false;
+    
+    $scope.noPictures = false;
+    
+    $scope.nextPicture = function() {
+        if ($scope.picIndex < ($scope.pitData.pictures.length - 1)) {
+            $scope.picIndex++;
+        } else {
+            $scope.picIndex = 0;
+        }
+    }
+    
+    $scope.previousPicture = function() {
+        if ($scope.picIndex > 0) {
+            $scope.picIndex--;
+        } else {
+            $scope.picIndex = $scope.pitData.pictures.length - 1;
+        }
+    }
     
     $http.get('php/getPitData.php', {
         params: {
@@ -232,7 +266,35 @@ app.controller('PitController', function ($scope, $http, $routeParams) {
         }
     }).then(function(response) {
         $scope.data = response.data;
-        console.log($scope.data);
+        if (response.data.commentSection != null) {
+            for (var i = 0; i < response.data.commentSection.length; i++) {
+                $scope.pitData.comments.push({
+                    comment: response.data.commentSection[i]['Pit Scouters Comments'],
+                    commenter: response.data.commentSection[i]['Pit Scouter'],
+                    timeStamp: response.data.commentSection[i]['timestamp']
+                });
+            }
+        } else {
+            $scope.noComments = true;
+        }
+        if (response.data.pics != null) {
+            for (var i = 0; i < response.data.pics.length; i++) {
+                $scope.pitData.pictures.push({
+                    pictureNumber: response.data.pics[i]['Picture Number'],
+                    photographer: response.data.pics[i]['Pit Scouter'],
+                    timeStamp: response.data.pics[i]['timestamp']
+                });
+            }
+            $scope.picIndex = 0;
+        } else {
+            $scope.noPictures = true;
+        }
+        
+        $(document).ready(function() {
+            if ($scope.noComments && $scope.noPictures) {
+                $("#errorModal").modal("show");
+            }
+        });
     });
 });
 
@@ -382,6 +444,8 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
     'use strict';
     
     console.log(' team number ' + $routeParams.teamNumber);
+    
+    $scope.teamNumber = $routeParams.teamNumber;
     
     $scope.team = {
         number: 0,
