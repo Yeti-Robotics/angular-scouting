@@ -55,10 +55,16 @@ app.controller('MainController', function ($rootScope, $scope, $http, $location)
                     $rootScope.showRedirectMessage = false;
                     $rootScope.loggedIn = true;
                     Scouter.name = result;
-                    if ($scope.role === 'Scouter') {
-                        $location.path("/form");
-                    } else if ($scope.role === 'Wagerer') {
-                        $location.path("/wager");
+                    switch ($scope.role) {
+                        case 'Scouter':
+                            $location.path("/form");
+                            break;
+                        case 'Wagerer':
+                            $location.path("/wager");
+                            break;
+                        case 'Pit Scouter':
+                            $location.path("/pitForm");
+                            break;
                     }
                 } else {
                     //return an error or something
@@ -198,7 +204,6 @@ app.controller('PitFormController', function ($scope, $http) {
             }).then(function (response) {
                 console.log("submitted");
                 console.log(response.data);
-                $('#pitForm').trigger('reset');
                 $('body').scrollTop(0);
                 $scope.pitFormData = {
                     name: Scouter.name,
