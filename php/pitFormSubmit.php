@@ -1,6 +1,6 @@
 <?php
 include('connect.php');
-include('../functions.php');
+include('functions.php');
 $teamNumber = $_POST['teamNumber'];
 $scouterName = $_POST['name'];
 $comment = isset($_POST['comment']) ? $_POST['comment'] : null;

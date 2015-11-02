@@ -1,6 +1,6 @@
 <?php
 include('connect.php');
-include('../functions.php');
+include('functions.php');
 header('Content-Type: application/json');
 
 $teamNumber = isset($_GET["teamNumber"]) ? $_GET["teamNumber"] : 0;

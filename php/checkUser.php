@@ -1,6 +1,6 @@
 <?php
     include("connect.php");
-    include("SQLFunctions.php");
+    include("functions.php");
 
     $params = json_decode(file_get_contents('php://input'), true);
 

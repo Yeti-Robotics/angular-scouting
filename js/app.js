@@ -8,7 +8,7 @@ var Scouter = {
 };
 
 var Requests = {
-    teamNumber: 3506,
+    teamNumber: 0,
     pitTeamNumber: 0
 };
 
