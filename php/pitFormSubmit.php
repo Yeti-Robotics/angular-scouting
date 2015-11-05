@@ -24,7 +24,7 @@ if(isset($_FILES["files"])) {
 
 //Comments submission
 if($comment != null && !isset($_FILES["files"])) {
-    $query = "INSERT INTO pit_scouting (team_number, pit_comments, scouter_name)
+    $query = "INSERT INTO pit_comments (team_number, pit_comments, scouter_name)
                 VALUES (?, ?, ?)";
     if($stmt = $db->prepare($query)){
         $stmt->bind_param("iss", $teamNumber, 
@@ -40,7 +40,7 @@ if($comment != null && !isset($_FILES["files"])) {
 }
 
 if (isset($_FILES["files"]) && $comment == null) {
-    $query = "INSERT INTO pit_scouting (team_number, scouter_name, pic_num)
+    $query = "INSERT INTO pit_pictures (team_number, scouter_name, pic_num)
                 VALUES (?, ?, ?)";
     foreach ($picNums as $picNum) {
         if($stmt = $db->prepare($query)) {
@@ -59,7 +59,7 @@ if (isset($_FILES["files"]) && $comment == null) {
 
 if (isset($_FILES["files"]) && $comment != null) {
     //Insert pictures into database
-    $query = "INSERT INTO pit_scouting (team_number, scouter_name, pic_num)
+    $query = "INSERT INTO pit_pictures (team_number, scouter_name, pic_num)
                 VALUES (?, ?, ?)";
     foreach ($picNums as $picNum) {
         if($stmt = $db->prepare($query)) {
@@ -76,7 +76,7 @@ if (isset($_FILES["files"]) && $comment != null) {
     }
     
     //Insert comment into database
-    $query = "INSERT INTO pit_scouting (team_number, pit_comments, scouter_name)
+    $query = "INSERT INTO pit_comments (team_number, pit_comments, scouter_name)
                 VALUES (?, ?, ?)";
     if($stmt = $db->prepare($query)){
         $stmt->bind_param("iss", $teamNumber, 
