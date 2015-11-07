@@ -32,7 +32,7 @@ app.run(function ($rootScope, $location) {
     //    });
 });
 
-app.controller('MainController', function ($rootScope, $scope, $http, $location) {
+app.controller('LoginController', function ($rootScope, $scope, $http, $location) {
     'use strict';
 
     $scope.role = "What is your role?";
@@ -56,20 +56,43 @@ app.controller('MainController', function ($rootScope, $scope, $http, $location)
                     $rootScope.loggedIn = true;
                     Scouter.name = result;
                     switch ($scope.role) {
-                        case 'Scouter':
-                            $location.path("/form");
-                            break;
-                        case 'Wagerer':
-                            $location.path("/wager");
-                            break;
-                        case 'Pit Scouter':
-                            $location.path("/pitForm");
-                            break;
+                    case 'Scouter':
+                        $location.path("/form");
+                        break;
+                    case 'Wagerer':
+                        $location.path("/wager");
+                        break;
+                    case 'Pit Scouter':
+                        $location.path("/pitForm");
+                        break;
                     }
                 } else {
                     //return an error or something
                 }
             });
+    };
+});
+
+app.controller('RegisterController', function ($scope, $http, $location) {
+    'use strict';
+
+    $scope.password = '';
+    $scope.confirmPassword = '';
+    $scope.username = '';
+
+    $scope.validate = function () {
+        return $scope.username.length > 0 && $scope.password.length > 0 && $scope.password === $scope.confirmPassword;
+    };
+
+    $scope.register = function () {
+        console.log('registered');
+        $http.post('php/register.php', {
+            username: $scope.username,
+            password: $scope.password
+        }).then(function (response) {
+            //            $location.path("#/login");
+            console.log(response.data);
+        });
     };
 });
 
@@ -132,7 +155,7 @@ app.controller('PitFormController', function ($scope, $http) {
         $('#pitForm').validate();
         console.log('Inititalize validation');
         if ($(".robotimage").length == 0 && $("#comments").val() == '') {
-            $("#comments").each(function() {
+            $("#comments").each(function () {
                 $(this).rules("add", {
                     required: true,
                     messages: {
@@ -142,8 +165,8 @@ app.controller('PitFormController', function ($scope, $http) {
             });
         }
     });
-    
-    $scope.unrequireComments = function() {
+
+    $scope.unrequireComments = function () {
         $("#comments").rules("remove", "required");
     }
 
@@ -152,12 +175,12 @@ app.controller('PitFormController', function ($scope, $http) {
         id: Scouter.id,
         pswd: Scouter.pswd
     };
-    
+
     $scope.pictures = [];
-    
+
     $scope.picNum = [];
-    
-    $scope.updateDisplay = function(picture, rowNum) {
+
+    $scope.updateDisplay = function (picture, rowNum) {
         var reader = new FileReader();
         var file = picture.files[0];
         if ($scope.pictures[rowNum] == null) {
@@ -165,14 +188,14 @@ app.controller('PitFormController', function ($scope, $http) {
         } else {
             $scope.pictures[rowNum] = file;
         }
-		reader.readAsDataURL(file);
-        reader.onload = function() {
+        reader.readAsDataURL(file);
+        reader.onload = function () {
             $(picture).parent().prev().children().attr("src", reader.result);
         }
     };
-    
+
     var num = 0;
-    
+
     $scope.addPicture = function () {
         $scope.picNum.push(num);
         num++;
@@ -191,7 +214,7 @@ app.controller('PitFormController', function ($scope, $http) {
             for (var i = 0; i < $scope.pictures.length; i++) {
                 formData.append('files[]', $scope.pictures[i]);
             }
-            for(var key in $scope.pitFormData) {
+            for (var key in $scope.pitFormData) {
                 if ($scope.pitFormData.hasOwnProperty(key)) {
                     formData.append(key, $scope.pitFormData[key]);
                 }
@@ -228,48 +251,48 @@ app.controller('PitFormController', function ($scope, $http) {
 
 app.controller('PitController', function ($scope, $http, $routeParams, $location) {
     'use strict';
-    
+
     $scope.teamNumber = $routeParams.teamNumber;
-    
-    $scope.teamLink = function() {
+
+    $scope.teamLink = function () {
         $('#errorModal').on('hidden.bs.modal', function () {
             $location.path("/team/" + $scope.teamNumber);
             $scope.$apply();
         });
     }
-    
+
     $scope.pitData = {
         pictures: [],
         comments: []
     }
-    
+
     $scope.picIndex;
-    
+
     $scope.noComments = false;
-    
+
     $scope.noPictures = false;
-    
-    $scope.nextPicture = function() {
+
+    $scope.nextPicture = function () {
         if ($scope.picIndex < ($scope.pitData.pictures.length - 1)) {
             $scope.picIndex++;
         } else {
             $scope.picIndex = 0;
         }
     }
-    
-    $scope.previousPicture = function() {
+
+    $scope.previousPicture = function () {
         if ($scope.picIndex > 0) {
             $scope.picIndex--;
         } else {
             $scope.picIndex = $scope.pitData.pictures.length - 1;
         }
     }
-    
+
     $http.get('php/getPitData.php', {
         params: {
             teamNumber: $routeParams.teamNumber
         }
-    }).then(function(response) {
+    }).then(function (response) {
         $scope.data = response.data;
         if (response.data.commentSection != null) {
             for (var i = 0; i < response.data.commentSection.length; i++) {
@@ -294,8 +317,8 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
         } else {
             $scope.noPictures = true;
         }
-        
-        $(document).ready(function() {
+
+        $(document).ready(function () {
             if ($scope.noComments && $scope.noPictures) {
                 $("#errorModal").modal("show");
             }
@@ -308,11 +331,11 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
     $scope.sortType = 'rating';
     $scope.sortReverse = false;
 
-//    $scope.teamRedirect = function(teamNumber) {
-//        Requests.teamNumber = teamNumber;
-//        $location.path('/teamInfo');
-//    }
-    
+    //    $scope.teamRedirect = function(teamNumber) {
+    //        Requests.teamNumber = teamNumber;
+    //        $location.path('/teamInfo');
+    //    }
+
     $http.get('php/list.php').then(function (response) {
         $scope.data = response.data;
     });
@@ -447,11 +470,11 @@ app.controller("LeaderboardsController", function ($scope, $http) {
 
 app.controller("TeamController", function ($scope, $http, $routeParams) {
     'use strict';
-    
+
     console.log(' team number ' + $routeParams.teamNumber);
-    
+
     $scope.teamNumber = $routeParams.teamNumber;
-    
+
     $scope.team = {
         number: 0,
         avgStackHeight: 0,
@@ -461,34 +484,36 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
     }
 
     $scope.stacks = [];
-    
+
     $scope.commentSection = {
         comments: []
     }
 
     $http.get("php/team.php", {
-        params: {teamNumber: $routeParams.teamNumber}
-        
+        params: {
+            teamNumber: $routeParams.teamNumber
+        }
+
     }).then(function (response) {
         $scope.data = response.data;
         console.log($scope.data);
-//        $scope.stacks = response.stacks;
-//        for (var i = 0; i < response.data.commentSection['comments'].length; i++ ) {
-//            $scope.commentSection.comments.push({
-//                commentText: response.data.commentSection['comments'][i],
-//                timeStamp: response.data.commentSection['timestamps'][i],
-//                name: response.data.commentSection['names'][i],
-//                matchNumber: response.data.commentSection['matchNumbers'][i]
-//            });
-//        }
-//        console.log(response.data);
-//        $scope.team = response.data.teamSection;
-//        $scope.stacks = response.data.stacksSection;
-//        $scope.toteSupplys = response.data.toteSupplySection;
-//        $scope.coopTotes = response.data.coopSection;
-//        $scope.autoSection = response.data.autoSection;
-//        
-        
+        //        $scope.stacks = response.stacks;
+        //        for (var i = 0; i < response.data.commentSection['comments'].length; i++ ) {
+        //            $scope.commentSection.comments.push({
+        //                commentText: response.data.commentSection['comments'][i],
+        //                timeStamp: response.data.commentSection['timestamps'][i],
+        //                name: response.data.commentSection['names'][i],
+        //                matchNumber: response.data.commentSection['matchNumbers'][i]
+        //            });
+        //        }
+        //        console.log(response.data);
+        //        $scope.team = response.data.teamSection;
+        //        $scope.stacks = response.data.stacksSection;
+        //        $scope.toteSupplys = response.data.toteSupplySection;
+        //        $scope.coopTotes = response.data.coopSection;
+        //        $scope.autoSection = response.data.autoSection;
+        //        
+
     }, function (response) {
         $scope.team = {},
             $scope.stacks = []
@@ -505,7 +530,7 @@ app.directive('stack', function () {
     };
 });
 
-app.directive('picture', function() {
+app.directive('picture', function () {
     'use strict';
     return {
         templateUrl: 'html/picture.html',
@@ -539,6 +564,12 @@ app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
     }).when("/pit/:teamNumber", {
         templateUrl: 'html/pit.html',
         controller: 'PitController'
+    }).when("/login", {
+        templateUrl: 'html/login.html',
+        controller: 'LoginController'
+    }).when("/register", {
+        templateUrl: 'html/register.html',
+        controller: 'RegisterController'
     }).otherwise({
         redirectTo: '/'
     });
