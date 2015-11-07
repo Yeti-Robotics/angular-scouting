@@ -4,6 +4,9 @@
             cursor: ns-resize;
         }
     </style>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Filter by team number" ng-model="search.team">
+    </div>
     <table class="table table-hover">
         <thead>
             <tr>
@@ -25,7 +28,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="row in data | orderBy:sortType:sortReverse" >
+            <tr ng-repeat="row in data | orderBy:sortType:sortReverse | filter:search:strict" >
                 <td><a href="#/team/{{row.team}}">{{row.team}}</a></td>
                 <td>{{row.avgStackHeight}}</td>
                 <td>{{row.avgStacksPerMatch}}</td>
