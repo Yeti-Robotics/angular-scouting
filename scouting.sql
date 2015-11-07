@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2015 at 05:38 PM
+-- Generation Time: Nov 07, 2015 at 07:01 PM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -54,10 +54,10 @@ CREATE TABLE IF NOT EXISTS `pit_pictures` (
 --
 
 CREATE TABLE IF NOT EXISTS `scouters` (
-  `id` smallint(6) NOT NULL,
+  `id` int(6) NOT NULL,
   `name` tinytext NOT NULL,
   `pswd` tinytext NOT NULL,
-  `byteCoins` int(11) NOT NULL
+  `byteCoins` int(11) NOT NULL DEFAULT '200'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -117,6 +117,12 @@ ALTER TABLE `pit_pictures`
   ADD PRIMARY KEY (`pit_scout_data_id`);
 
 --
+-- Indexes for table `scouters`
+--
+ALTER TABLE `scouters`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `scout_data`
 --
 ALTER TABLE `scout_data`
@@ -143,6 +149,11 @@ ALTER TABLE `pit_comments`
 --
 ALTER TABLE `pit_pictures`
   MODIFY `pit_scout_data_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `scouters`
+--
+ALTER TABLE `scouters`
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `scout_data`
 --
