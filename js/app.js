@@ -519,9 +519,6 @@ app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
     'use strict';
 
     $routeProvider.when('/', {
-        templateUrl: 'html/home.html',
-        controller: 'MainController'
-    }).when('/form', {
         templateUrl: 'html/form.html',
         controller: 'FormController'
     }).when('/wager', {
