@@ -3,8 +3,8 @@ include ("connect.php");
 header('Content-Type: application/json');
 $query = "SELECT t1.team AS 'team', ROUND(t1.avg_height,2) AS 'avgStackHeight', ROUND(t2.avg_stacks,2) AS 'avgStacksPerMatch', IFNULL(MAX(max_totes), 0) AS 'highestStackMade', ROUND(rating,2) AS 'rating'
 FROM (SELECT team, AVG(totes) AS avg_height, totes
-FROM stacks
-LEFT JOIN scout_data ON scout_data.scout_data_id=stacks.scout_data_id
+FROM scout_data
+LEFT JOIN stacks ON scout_data.scout_data_id=stacks.scout_data_id
 GROUP BY team) AS t1
 LEFT JOIN (SELECT team, COUNT(totes > 0) / COUNT(DISTINCT match_number) AS avg_stacks
 FROM stacks
