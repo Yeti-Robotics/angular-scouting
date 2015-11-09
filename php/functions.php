@@ -45,7 +45,7 @@ function checkForUser($db, $username) {
         		return true;
         	} else {
         		$db->close();
-        		return true;
+        		return false;
         	}
 	}
 }
