@@ -8,7 +8,7 @@ function checkPassword($db, $id, $pswd) {
         $stmt->execute();
         $result = $stmt->get_result();
         while($row = $result->fetch_array()) {
-            if($row[0] == $pswd) {
+            if($row[0] == md5($pswd)) {
                 return true;
             }
         }
