@@ -34,6 +34,22 @@ function getName($db, $id, $pswd) {
     }
 }
 
+function checkForUser($db, $username) {
+	$query = "SELECT name FROM `scouters WHERE name = ?";
+	if($stmt = $db->prepare($query)) {
+		$stmt->bind_param("s", $username);
+        	$stmt->execute();
+        	$stmt->store_result();
+        	if($stmt->num_rows > 0) {
+        		$db->close();
+        		return true;
+        	} else {
+        		$db->close();
+        		return true;
+        	}
+	}
+}
+
 function updateQualificationWagers($db, $matchNum) {
     $query = "SELECT * FROM `wagers` WHERE matchPredicted = ?";
     $options = array("timeout"=>2);
