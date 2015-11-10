@@ -68,7 +68,6 @@ if($stmt = $db->prepare($query)) {
     $stmt->execute();
     if ($stmt->error) {
         header('HTTP/1.1 500 SQL Error', true, 500);
-        header('HTTP/1.1 500 SQL Error', true, 500);
         $db->close();
 	    die('{"message":"'.$stmt->error.'"}');
     }
