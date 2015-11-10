@@ -118,7 +118,7 @@ function updateQualificationWagers($db, $matchNum) {
             }
         }
     }
-    die ("Adding Byte Coins failed");
+    error_log("Adding Byte Coins failed");
 }
 
 function getByteCoins($db, $id, $pswd) {

@@ -1,7 +1,9 @@
 <?php
 include("connect.php");
+include("functions.php");
 header('Content-Type: application/json');
 $postData = json_decode(file_get_contents("php://input"), true);
+updateQualificationWagers($db, $postData["match_number"]);
 $query = "INSERT INTO scout_data (team, match_number,
          robot_moved, totes_auto, cans_auto, coopertition,
          coopertition_totes, score, comments, rating, name,
