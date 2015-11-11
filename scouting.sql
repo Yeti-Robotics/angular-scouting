@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2015 at 07:01 PM
+-- Generation Time: Nov 11, 2015 at 03:31 AM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -14,6 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `scouting`
@@ -56,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `pit_pictures` (
 CREATE TABLE IF NOT EXISTS `scouters` (
   `id` int(6) NOT NULL,
   `name` tinytext NOT NULL,
+  `username` text NOT NULL,
   `pswd` tinytext NOT NULL,
   `byteCoins` int(11) NOT NULL DEFAULT '200'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -85,6 +87,18 @@ CREATE TABLE IF NOT EXISTS `scout_data` (
   `totes_from_human` tinyint(1) NOT NULL,
   `cans_auto_origin` tinyint(4) NOT NULL,
   `in_auto_zone` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sessions`
+--
+
+CREATE TABLE IF NOT EXISTS `sessions` (
+  `id` int(11) NOT NULL,
+  `token` text NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

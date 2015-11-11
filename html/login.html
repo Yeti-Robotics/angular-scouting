@@ -1,32 +1,15 @@
 <div class="container-fluid">
     <h1>Welcome To the Yeti Scouting page</h1>
-    <div ng-show="showRedirectMessage" role="alert" class="alert alert-danger alert-dismissible">
-        <button type="button" data-dismiss="alert" aria-label="Close" class="close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <strong>You must be logged in to scout or place a bet</strong>
-    </div>
-            <div class="form-group">
-                <div class="input-group">
-                    <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ role }} <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#/" ng-click="changeRole('Scouter')">Scouter</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#/" ng-click="changeRole('Wagerer')">Wagerer</a></li>
-                            <li class="divider" role="sperator"></li>
-                            <li><a href="#/" ng-click="changeRole('Pit Scouter')">Pit Scouter</a></li>
-                        </ul>
-                    </div>
-                    <input type="number" name="scouter" class="form-control" id="scouterid" aria-label="..." placeholder="ID number" ng-model='scouterId'>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <input type="password" name="password" class="form-control" id="password" aria-label="..." placeholder="Enter your Scouting password here" ng-model="scouterPswd">
-            </div>
-<div class="form-group">
-    <button type="button" ng-click="goToPath()" class="btn btn-block btn-primary">Log in</button>
-    <a href="#/register" class="btn btn-block btn-info">Register</a>
-</div>
+    <form id="loginForm" ng-submit="login()">
+        <div class="form-group">
+            <input type="text" name="scouter" class="form-control" id="username" aria-label="..." placeholder="Username" ng-model='scouterId' required>
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" class="form-control" id="password" aria-label="..." placeholder="Password" ng-model="scouterPswd" required>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-block btn-primary">Log in</button>
+            <a href="#/register" class="btn btn-block btn-info">Register</a>
+        </div>
+    </form>
 </div>
