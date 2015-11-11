@@ -2,22 +2,18 @@
 
 function validateToken($db, $token) {
     $query = "SELECT * FROM sessions WHERE token = ?";
-    if (gettype($token) == "string") {
-        if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("s", $token);
-            $stmt->store_result();
-        	if($stmt->num_rows > 0) {
-        		return true;
-        	} else {
-        		return false;
-        	}
+    if($stmt = $db->prepare($query)) {
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+        $stmt->store_result();
+        if($stmt->num_rows > 0) {
+            return true;
         } else {
-            header('HTTP/1.1 500 SQL Error', true, 500);
-            die ( '{"message":"Failed creating statement"}' );
+            return false;
         }
-    }
-    else {
-        return false;
+    } else {
+        header('HTTP/1.1 500 SQL Error', true, 500);
+        die ( '{"message":"Failed creating statement"}' );
     }
 }
 
@@ -42,6 +38,42 @@ function getSessionUser($db, $token) {
 }
 
 function startSession($db, $username, $pswd) {
+    $query = "SELECT * FROM sessions WHERE id = ?";
+    $token = ($pswd . md5(time()));
+    if (checkPassword($db, $username, $pswd)) {
+        if($stmt = $db->prepare($query)) {
+            $stmt->bind_param("i", getUserId($db, $username, $pswd));
+            $stmt->execute();
+            $stmt->store_result();
+            if($stmt->num_rows > 0) {
+                $query = "UPDATE sessions SET token = ? WHERE id = ?";
+                if($stmt = $db->prepare($query)) {
+                    $stmt->bind_param("si", $token, getUserId($db, $username, $pswd));
+                    $stmt->execute();
+                    return $token;
+                } else {
+                    header('HTTP/1.1 500 SQL Error', true, 500);
+                    die ( '{"message":"Failed creating statement"}' );
+                }
+            } else {
+                $query = "INSERT INTO sessions (id, token) VALUES (?, ?)";
+                if($stmt = $db->prepare($query)) {
+                    $stmt->bind_param("is", getUserId($db, $username, $pswd), $token);
+                    $stmt->execute();
+                    return $token;
+                } else {
+                    header('HTTP/1.1 500 SQL Error', true, 500);
+                    die ( '{"message":"Failed creating statement"}' );
+                }
+            }
+        } else {
+            header('HTTP/1.1 500 SQL Error', true, 500);
+            die ( '{"message":"Failed creating statement"}' );
+        }
+    } else {
+        return false;
+    }
+    
     $query = "INSERT INTO sessions (id, token) VALUES (?, ?)";
     $token = ($pswd . md5(time()));
     if (checkPassword($db, $username, $pswd)) {

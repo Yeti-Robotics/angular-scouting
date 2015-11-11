@@ -16,13 +16,28 @@ app.run(function ($rootScope, $location, $http, $window) {
     $rootScope.$watch(function () {
         return $location.path();
     }, function () {
+        $http.get('php/validateSession.php', {
+            params: {
+                token: $window.sessionStorage["token"]
+            }
+        }).then(function(response) {
+            if (response.data == 'false') {
+                $window.sessionStorage.removeItem('token');
+                $location.path('/login');
+            }
+        }, function (response) {
+            console.log(response.data);
+        });
         if ($location.path() == '/wager') {
             $http.get('php/validateSession.php', {
                 params: {
                     token: $window.sessionStorage["token"]
                 }
             }).then(function(response) {
-                console.log(response.data);
+                if (response.data == 'false') {
+                    $window.sessionStorage.removeItem('token');
+                    $location.path('/login');
+                }
             }, function (response) {
                 console.log(response.data);
             });
