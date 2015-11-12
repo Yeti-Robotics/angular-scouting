@@ -1,7 +1,7 @@
 <?php
 include ("connect.php");
 header('Content-Type: application/json');
-$query = "SELECT id, name, byteCoins FROM `scouters`";
+$query = "SELECT name, byteCoins FROM `scouters`";
 if ($result = $db->query($query)) {
     $output = array();
     while ($row = $result->fetch_assoc()) {
