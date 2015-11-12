@@ -4,7 +4,7 @@
 
     $params = json_decode(file_get_contents('php://input'), true);
 
-    if(getName($db, $params["id"], md5($params["pswd"]))) {
+    if(getName($db, $params["username"], md5($params["pswd"]))) {
         die(json_encode(array(
             "name" => getName($db, $params["id"], md5($params["pswd"])),
             "token" => startSession($db, $params["id"], md5($params["pswd"]))
