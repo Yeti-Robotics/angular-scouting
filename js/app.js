@@ -64,7 +64,7 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
 
     $scope.login = function () {
         $http.post('php/checkUser.php', {
-            id: $scope.scouterId,
+            username: $scope.scouterUsername,
             pswd: $scope.scouterPswd
         }).then(function (response) {
             var result = response.data;
@@ -72,7 +72,7 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
                 console.log(result);
                 $window.sessionStorage["token"] = result.token;
                 $rootScope.user.name = result;
-                $rootScope.user.username = $scope.scouterId;
+                $rootScope.user.username = $scope.scouterUsername;
                 $rootScope.user.password = $scope.scouterPswd;
                 $location.path('/wager');
             } else {
@@ -90,6 +90,7 @@ app.controller('RegisterController', function ($scope, $http, $location) {
     $scope.password = '';
     $scope.confirmPassword = '';
     $scope.username = '';
+    $scope.name = '';
 
     $scope.validate = function () {
         return $scope.username.length > 0 && $scope.password.length > 0 && $scope.password === $scope.confirmPassword;
@@ -99,6 +100,7 @@ app.controller('RegisterController', function ($scope, $http, $location) {
         console.log('registered');
         $http.post('php/register.php', {
             username: $scope.username,
+            name: $scope.name,
             password: $scope.password
         }).then(function (response) {
             //            $location.path("#/login");
@@ -114,9 +116,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
         stackRows: {
             rows: []
         },
-        name: $window.sessionStorage["name"],
-        id: $window.sessionStorage["username"],
-        pswd: $window.sessionStorage["password"]
+        name: $window.sessionStorage["name"]
     };
 
     $(document).ready(function () {
@@ -182,9 +182,7 @@ app.controller('PitFormController', function ($scope, $http, $window) {
     }
 
     $scope.pitFormData = {
-        name: $window.sessionStorage["name"],
-        id: $window.sessionStorage["username"],
-        pswd: $window.sessionStorage["password"]
+        name: $window.sessionStorage["name"]
     };
 
     $scope.pictures = [];
@@ -240,9 +238,7 @@ app.controller('PitFormController', function ($scope, $http, $window) {
                 console.log(response.data);
                 $('body').scrollTop(0);
                 $scope.pitFormData = {
-                    name: $window.sessionStorage["name"],
-                    id: $window.sessionStorage["username"],
-                    pswd: $window.sessionStorage["password"]
+                    name: $window.sessionStorage["name"]
                 };
                 $scope.pictures = [];
                 $scope.picNum = [];
@@ -251,7 +247,7 @@ app.controller('PitFormController', function ($scope, $http, $window) {
                 }
             }, function (response) {
                 console.log("Error during submission");
-                console.log(response);
+                console.log(response.message);
             });
         } else {
             console.log("Not valid");
@@ -352,7 +348,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 
     $scope.refreshByteCoins = function () {
         $http.post("php/getByteCoins.php", {
-            id: $window.sessionStorage["username"],
+            username: $window.sessionStorage["username"],
             pswd: $window.sessionStorage["password"]
         }).then(function (response) {
             $window.sessionStorage["byteCoins"] = response.data;
