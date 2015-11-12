@@ -38,7 +38,7 @@ function getSessionUser($db, $token) {
 }
 
 function startSession($db, $username, $pswdHash) {
-    $query = "SELECT * FROM sessions WHERE id = ?";
+    $query = "SELECT * FROM sessions WHERE username = ?";
     $token = ($pswdHash . md5(time()));
     if (checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
@@ -74,7 +74,7 @@ function startSession($db, $username, $pswdHash) {
         return false;
     }
     
-    $query = "INSERT INTO sessions (id, token) VALUES (?, ?)";
+    $query = "INSERT INTO sessions (username, token) VALUES (?, ?)";
     $token = ($pswdHash . md5(time()));
     if (checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
@@ -91,26 +91,8 @@ function startSession($db, $username, $pswdHash) {
     }
 }
 
-function getUserId($db, $username, $pswdHash) {
-    $query = "SELECT id FROM `scouters` WHERE username = ?";
-    if (checkPassword($db, $username, $pswdHash)) {
-        if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("s", $username);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            while($row = $result->fetch_array()) {
-                return $row[0];
-            }
-        }
-    }
-    else {
-        return false;
-    }
-}
-
 function checkPassword($db, $username, $pswdHash) {
-    $query = "SELECT pswd FROM `scouters` WHERE username = ?";
-
+    $query = "SELECT pswdHash FROM `scouters` WHERE username = ?";
     if($stmt = $db->prepare($query)) {
         $stmt->bind_param("s", $username);
         $stmt->execute();
@@ -142,7 +124,7 @@ function getName($db, $username, $pswdHash) {
 }
 
 function checkForUser($db, $username) {
-	$query = "SELECT name FROM scouters WHERE name = ?";
+	$query = "SELECT * FROM scouters WHERE username = ?";
 	if($stmt = $db->prepare($query)) {
 		$stmt->bind_param("s", $username);
         	$stmt->execute();
