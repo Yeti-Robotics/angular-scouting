@@ -37,18 +37,18 @@ function getSessionUser($db, $token) {
     }
 }
 
-function startSession($db, $username, $pswd) {
+function startSession($db, $username, $pswdHash) {
     $query = "SELECT * FROM sessions WHERE id = ?";
-    $token = ($pswd . md5(time()));
-    if (checkPassword($db, $username, $pswd)) {
+    $token = ($pswdHash . md5(time()));
+    if (checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("i", getUserId($db, $username, $pswd));
+            $stmt->bind_param("i", getUserId($db, $username, $pswdHash));
             $stmt->execute();
             $stmt->store_result();
             if($stmt->num_rows > 0) {
                 $query = "UPDATE sessions SET token = ? WHERE id = ?";
                 if($stmt = $db->prepare($query)) {
-                    $stmt->bind_param("si", $token, getUserId($db, $username, $pswd));
+                    $stmt->bind_param("si", $token, getUserId($db, $username, $pswdHash));
                     $stmt->execute();
                     return $token;
                 } else {
@@ -58,7 +58,7 @@ function startSession($db, $username, $pswd) {
             } else {
                 $query = "INSERT INTO sessions (id, token) VALUES (?, ?)";
                 if($stmt = $db->prepare($query)) {
-                    $stmt->bind_param("is", getUserId($db, $username, $pswd), $token);
+                    $stmt->bind_param("is", getUserId($db, $username, $pswdHash), $token);
                     $stmt->execute();
                     return $token;
                 } else {
@@ -75,10 +75,10 @@ function startSession($db, $username, $pswd) {
     }
     
     $query = "INSERT INTO sessions (id, token) VALUES (?, ?)";
-    $token = ($pswd . md5(time()));
-    if (checkPassword($db, $username, $pswd)) {
+    $token = ($pswdHash . md5(time()));
+    if (checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("is", getUserId($db, $username, $pswd), $token);
+            $stmt->bind_param("is", getUserId($db, $username, $pswdHash), $token);
             $stmt->execute();
             return $token;
         } else {
@@ -91,9 +91,9 @@ function startSession($db, $username, $pswd) {
     }
 }
 
-function getUserId($db, $username, $pswd) {
+function getUserId($db, $username, $pswdHash) {
     $query = "SELECT id FROM `scouters` WHERE username = ?";
-    if (checkPassword($db, $username, $pswd)) {
+    if (checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
             $stmt->bind_param("s", $username);
             $stmt->execute();
@@ -108,7 +108,7 @@ function getUserId($db, $username, $pswd) {
     }
 }
 
-function checkPassword($db, $username, $pswd) {
+function checkPassword($db, $username, $pswdHash) {
     $query = "SELECT pswd FROM `scouters` WHERE username = ?";
 
     if($stmt = $db->prepare($query)) {
@@ -116,7 +116,7 @@ function checkPassword($db, $username, $pswd) {
         $stmt->execute();
         $result = $stmt->get_result();
         while($row = $result->fetch_array()) {
-            if($row[0] == $pswd) {
+            if($row[0] == $pswdHash) {
                 return true;
             }
         }
@@ -124,9 +124,9 @@ function checkPassword($db, $username, $pswd) {
     }
 }
 
-function getName($db, $username, $pswd) {
+function getName($db, $username, $pswdHash) {
     $query = "SELECT name FROM `scouters` WHERE username = ?";
-    if (checkPassword($db, $username, $pswd)) {
+    if (checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
             $stmt->bind_param("s", $username);
             $stmt->execute();
@@ -228,10 +228,9 @@ function updateQualificationWagers($db, $matchNum) {
     error_log("Adding Byte Coins failed");
 }
 
-function getByteCoins($db, $username, $pswd) {
+function getByteCoins($db, $username, $pswdHash) {
     $query = "SELECT byteCoins FROM scouters WHERE username = ?";
-    if(checkPassword($db, $username, $pswd)) {
-        //addByteCoins(getByteCoinsToAdd($db, $id));
+    if(checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
             $stmt->bind_param("s", $id);
             $stmt->execute();
