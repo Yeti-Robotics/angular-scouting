@@ -18,7 +18,7 @@ function validateToken($db, $token) {
 }
 
 function getSessionUser($db, $token) {
-    $query = "SELECT name FROM sessions LEFT JOIN scouters ON sessions.id = scouters.id WHERE token = ?";
+    $query = "SELECT name FROM sessions LEFT JOIN scouters ON sessions.username = scouters.username WHERE token = ?";
     if (validateToken($db, $token)) {
         if($stmt = $db->prepare($query)) {
             $stmt->bind_param("s", $token);
@@ -42,13 +42,13 @@ function startSession($db, $username, $pswdHash) {
     $token = ($pswdHash . md5(time()));
     if (checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("i", getUserId($db, $username, $pswdHash));
+            $stmt->bind_param("s", $username);
             $stmt->execute();
             $stmt->store_result();
             if($stmt->num_rows > 0) {
-                $query = "UPDATE sessions SET token = ? WHERE id = ?";
+                $query = "UPDATE sessions SET token = ? WHERE username = ?";
                 if($stmt = $db->prepare($query)) {
-                    $stmt->bind_param("si", $token, getUserId($db, $username, $pswdHash));
+                    $stmt->bind_param("ss", $token, $username);
                     $stmt->execute();
                     return $token;
                 } else {
@@ -58,7 +58,7 @@ function startSession($db, $username, $pswdHash) {
             } else {
                 $query = "INSERT INTO sessions (id, token) VALUES (?, ?)";
                 if($stmt = $db->prepare($query)) {
-                    $stmt->bind_param("is", getUserId($db, $username, $pswdHash), $token);
+                    $stmt->bind_param("ss", $username, $token);
                     $stmt->execute();
                     return $token;
                 } else {
@@ -78,7 +78,7 @@ function startSession($db, $username, $pswdHash) {
     $token = ($pswdHash . md5(time()));
     if (checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("is", getUserId($db, $username, $pswdHash), $token);
+            $stmt->bind_param("ss", $username, $token);
             $stmt->execute();
             return $token;
         } else {
@@ -214,7 +214,7 @@ function getByteCoins($db, $username, $pswdHash) {
     $query = "SELECT byteCoins FROM scouters WHERE username = ?";
     if(checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("s", $id);
+            $stmt->bind_param("s", $username);
             $stmt->execute();
             $result = $stmt->get_result();
             while($row = $result->fetch_array()) {
