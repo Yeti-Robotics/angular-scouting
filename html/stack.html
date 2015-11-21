@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-xs-4">
                 <label for="stacks_totes">Totes:</label>
-                <select name="stacks_totes[]" class="form-control">
+                <select ng-model="$parent.row.stacks_totes" class="form-control">
                     <option value="0" selected="selected">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -15,7 +15,7 @@
             </div>
             <div class="col-xs-4">
                 <label for="capped_stack">Cap:</label>
-                <select name="capped_stack[]" class="form-control">
+                <select ng-model="$parent.row.capped_stack" class="form-control">
                     <option value="0" selected="selected">No cap</option>
                     <option value="1">Cap w/o litter</option>
                     <option value="2">Cap w/ litter</option>
@@ -23,7 +23,7 @@
             </div>
             <div class="col-xs-4">
                 <label for="cap_height">Cap height:</label>
-                <select name="cap_height[]" class="form-control">
+                <select ng-model="$parent.row.cap_height" class="form-control">
                     <option value="0" selected="selected">(No cap)</option>
                     <option value="1">1</option>
                     <option value="2">2</option>

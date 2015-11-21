@@ -3,9 +3,8 @@
     include("functions.php");
 
     $params = json_decode(file_get_contents('php://input'), true);
-
     if((!empty($params["id"])) && (!empty($params["pswd"]))) {
-        echo(getName($db, $params["id"], $params["pswd"]));
+        getByteCoins($db, $params["id"], $params["pswd"]);
     }
-echo false;
+    header($_SERVER['SERVER_PROTOCOL'] . ' 500 SQL Error', true, 500);
 ?>

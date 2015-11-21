@@ -1,17 +1,35 @@
 <div class="container-fluid">
+    <style>
+        th {
+            cursor: ns-resize;
+        }
+    </style>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Filter by team number" ng-model="search.team">
+    </div>
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>Team</th>
-                <th>Avg. Stack Height</th>
-                <th>Avg. Stacks per Match</th>
-                <th>Highest Stack Made</th>
-                <th>Rating</th>
+                <th ng-click="sortType = 'team'; sortReverse = !sortReverse">Team
+                    <span ng-show="sortType == 'team' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                    <span ng-show="sortType == 'team' && sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
+                <th ng-click="sortType = 'avgStackHeight'; sortReverse = !sortReverse">Avg. Stack Height
+                    <span ng-show="sortType == 'avgStackHeight' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                    <span ng-show="sortType == 'avgStackHeight' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
+                <th ng-click="sortType = 'avgStacksPerMatch'; sortReverse = !sortReverse">Avg. Stacks per Match
+                    <span ng-show="sortType == 'avgStacksPerMatch' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                    <span ng-show="sortType == 'avgStacksPerMatch' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
+                <th ng-click="sortType = 'highestStackMade'; sortReverse = !sortReverse">Highest Stack Made
+                    <span ng-show="sortType == 'highestStackMade' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                    <span ng-show="sortType == 'highestStackMade' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
+                <th ng-click="sortType = 'rating'; sortReverse = !sortReverse">Rating
+                    <span ng-show="sortType == 'rating' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                    <span ng-show="sortType == 'rating' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="row in data">
-                <td>{{row.team}}</td>
+            <tr ng-repeat="row in data | orderBy:sortType:sortReverse | filter:search:strict" >
+                <td><a href="#/team/{{row.team}}">{{row.team}}</a></td>
                 <td>{{row.avgStackHeight}}</td>
                 <td>{{row.avgStacksPerMatch}}</td>
                 <td>{{row.highestStackMade}}</td>

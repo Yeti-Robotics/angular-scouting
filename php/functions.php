@@ -1,4 +1,5 @@
 <?php
+
 function checkPassword($db, $id, $pswd) {
     $query = "SELECT pswd FROM `scouters` WHERE id = ?";
 
@@ -7,7 +8,7 @@ function checkPassword($db, $id, $pswd) {
         $stmt->execute();
         $result = $stmt->get_result();
         while($row = $result->fetch_array()) {
-            if($row[0] == $pswd) {
+            if($row[0] == md5($pswd)) {
                 return true;
             }
         }
@@ -31,6 +32,22 @@ function getName($db, $id, $pswd) {
     else {
         return false;
     }
+}
+
+function checkForUser($db, $username) {
+	$query = "SELECT name FROM `scouters WHERE name = ?";
+	if($stmt = $db->prepare($query)) {
+		$stmt->bind_param("s", $username);
+        	$stmt->execute();
+        	$stmt->store_result();
+        	if($stmt->num_rows > 0) {
+        		$db->close();
+        		return true;
+        	} else {
+        		$db->close();
+        		return false;
+        	}
+	}
 }
 
 function updateQualificationWagers($db, $matchNum) {
@@ -101,7 +118,7 @@ function updateQualificationWagers($db, $matchNum) {
             }
         }
     }
-    die ("Adding Byte Coins failed");
+    error_log("Adding Byte Coins failed");
 }
 
 function getByteCoins($db, $id, $pswd) {
@@ -119,6 +136,157 @@ function getByteCoins($db, $id, $pswd) {
         }
     }
     die("Getting Byte Coins failed");
+}
+
+function getTeamStacksTable($db, $team){
+	$query = "SELECT match_number AS 'Match Number', totes AS 'Stack Height', cap_height AS 'Cap Height', COUNT(totes) AS 'Number of Stacks'
+				FROM stacks
+				LEFT JOIN scout_data ON scout_data.scout_data_id = stacks.scout_data_id
+				WHERE totes > 0 AND team = ?
+			    GROUP BY totes, cap_height, match_number
+				ORDER BY match_number, totes";
+	if($stmt = $db->prepare($query)){
+		$stmt->bind_param("i", $team);
+		$stmt->execute();
+		return $stmt->get_result();
+	} else{
+		return null;
+	}
+}
+
+function getTeamAutoTable($db, $team){
+	$query = "SELECT match_number AS 'Match Number', if(robot_moved, 'yes', 'no') AS 'Robot Moved', totes_auto AS 'Number of totes moved', cans_auto AS 'Number of cans moved', if(cans_auto_origin, 'step', 'auto zone') AS 'Where did cans come from?', if(in_auto_zone, 'yes', 'no') AS 'Finishes in Auto Zone?'
+				FROM scout_data
+				WHERE team=?";
+	if($stmt = $db->prepare($query)){
+		$stmt->bind_param("i", $team);
+		$stmt->execute();
+		return $stmt->get_result();
+	} else{
+		return null;
+	}
+}
+
+function getTeamRankings($db, $team){
+	$query = "SELECT t1.team AS Team, ROUND(t1.avg_height,2) AS 'Avg. Stack Height', ROUND(t2.avg_stacks,2) AS 'Avg. Stacks per Match', MAX(t4.totes) AS 'Highest Stack Made', ROUND(rating,2) AS 'Rating'
+FROM (SELECT team, AVG(totes) AS avg_height, totes
+FROM stacks
+LEFT JOIN scout_data ON scout_data.scout_data_id=stacks.scout_data_id
+GROUP BY team) AS t1
+LEFT JOIN (SELECT team, COUNT(totes > 0) / COUNT(DISTINCT match_number) AS avg_stacks
+FROM stacks
+RIGHT JOIN scout_data ON scout_data.scout_data_id = stacks.scout_data_id
+GROUP BY team
+ORDER BY team DESC) AS t2 ON t1.team = t2.team
+LEFT JOIN (SELECT AVG(rating) AS rating, team
+					FROM scout_data
+					GROUP BY team) AS t3 ON t1.team=t3.team
+                    
+LEFT JOIN (SELECT team, totes
+				FROM stacks
+				LEFT JOIN scout_data ON scout_data.scout_data_id = stacks.scout_data_id
+				WHERE totes > 0 AND team = ?
+			    GROUP BY totes, cap_height, match_number
+				ORDER BY match_number, totes) AS t4 ON t4.team=t1.team
+WHERE t1.team=?";
+	if($stmt = $db->prepare($query)){
+		$stmt->bind_param("ii", $team, $team);
+		$stmt->execute();
+		return $stmt->get_result();
+	} else{
+		return null;
+	}
+}
+
+function getTeamTotesOriginTable($db, $team){
+	$query = "SELECT match_number AS 'Match Number', if(totes_from_landfill, 'yes', 'no') AS 'Totes Landfill?', if(totes_from_human, 'yes', 'no') AS 'Totes Human Player?'
+				FROM `scout_data`
+				WHERE team=?";
+	if($stmt = $db->prepare($query)){
+		$stmt->bind_param("i", $team);
+		$stmt->execute();
+		return $stmt->get_result();
+	} else{
+		return null;
+	}
+}
+
+function timeAgo($timestamp){
+	$difference = time() - $timestamp;
+	$periods = array("second", "minute", "hour", "day", "week", "month", "years", "decade");
+	$lengths = array("60","60","24","7","4.35","12","10");
+	for($j = 0; $difference >= $lengths[$j]; $j++) {
+		$difference /= $lengths[$j];
+	}
+	$difference = round($difference);
+	if($difference != 1) $periods[$j].= "s";
+	$text = "$difference $periods[$j] ago";
+	return $text;
+}
+
+function getTeamCoopertition($db, $team){
+	$query = "SELECT match_number AS 'Match Number', coopertition_totes AS 'Co-op Totes'
+				FROM scout_data
+				WHERE team = ?
+				ORDER BY match_number";
+	if($stmt = $db->prepare($query)){
+		$stmt->bind_param("i", $team);
+		$stmt->execute();
+		return $stmt->get_result();
+	} else{
+		return null;
+	}
+}
+
+function makeImageHTML($imgCode) {
+	return "<img src='" . $imgCode . "' alt='php did not work'>";
+}
+
+function makeDir($team, $pic) {
+	return "pics/" . $team . "/" . $pic . ".txt";
+}
+
+function getPic($team, $pic) {
+	$file = file(makeDir($team, $pic));
+	return $file[0];
+}
+
+function getPitComments($db, $team) {
+	$query = "SELECT team_number AS 'Team', pit_comments AS 'Pit Scouters Comments', scouter_name AS 'Pit Scouter', UNIX_TIMESTAMP(timestamp) AS timestamp
+				FROM pit_comments
+				WHERE team_number = ? AND pit_comments != ''";
+	//Time stamps?
+	if($stmt = $db->prepare($query)) {
+		$stmt->bind_param("i", $team);
+		$stmt->execute();
+		return $stmt->get_result();
+	}
+	else {
+		return null;
+	}
+}
+
+function getPicInfo($db, $team) {
+    $dir = scandir("../pics/$team");
+    array_splice($dir, 0, 2);
+    for ($i = 0; $i < count($dir); $i++) {
+        $dir[$i] = intval(substr($dir[$i], 0, -4));
+    }
+	$query = "SELECT team_number AS 'Team', scouter_name AS 'Pit Scouter', pic_num AS 'Picture Number', UNIX_TIMESTAMP(timestamp) AS timestamp
+				FROM pit_pictures
+				WHERE team_number = ?";
+    for ($i = 0; $i < count($dir); $i++) {
+        $query .= " " . ($i == 0 ? "AND (" : "OR ") . "pic_num = $dir[$i]" . ($i == (count($dir) - 1) ? ")" : "");
+    }
+	//Time stamps?
+	if($stmt = $db->prepare($query)) {
+		$stmt->bind_param("i", $team);
+		$stmt->execute();
+		return $stmt->get_result();
+	}
+	else {
+		return null;
+	}
 }
 
 function resizeImage($src, $dst) {

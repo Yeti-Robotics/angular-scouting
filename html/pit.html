@@ -1,0 +1,61 @@
+<div id="errorModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #d9534f">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>Error <span class="glyphicon glyphicon-exclamation-sign"></span>
+            </div>
+            <div class="modal-body">
+                Nobody has scouted for this team yet, please try again later.
+                <br>
+                <button type="button" data-dismiss="modal" ng-click="teamLink()" class="btn btn-link">
+                    <span class="lead">View this team's match data</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <h2 class="page-header">Team {{teamNumber}}
+    <br/>
+    <a class="small" ng-href="#/team/{{teamNumber}}">Team {{teamNumber}}'s match data</a>
+    </h2>
+    <div class="container-fluid" ng-show="!noPictures">
+        <div class="row" ng-show="pitData.pictures.length > 1">
+            <div class="col-xs-4">
+                <button type="button" ng-click="previousPicture()" class="pull-left btn btn-link">
+                    <span class="glyphicon glyphicon-arrow-left"></span> Previous Picture
+                </button>
+            </div>
+            <div class="col-xs-4 col-xs-offset-4">
+                <button type="button" ng-click="nextPicture()" class="pull-right btn btn-link">
+                    Next Picture
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                </button>
+            </div>
+        </div>
+        <div class="center-block">
+            <img id="pitPicture" ng-src="pics/{{teamNumber}}/{{pitData.pictures[picIndex].pictureNumber}}.jpg" class="img-responsive" alt="What? Where's the picture?!?">
+            <small>Taken by {{pitData.pictures[picIndex].photographer}} {{pitData.pictures[picIndex].timeStamp}}</small>
+        </div>
+    </div>
+    <div class="container-fluid" ng-show="noPictures">
+        <p class="lead text-danger">No pictures are available of this team's pit</p>
+    </div>
+    <br/>
+    <fieldset>
+        <legend>Comments</legend>
+        <div class="container-fluid" ng-repeat="comment in pitData.comments">
+            <div class="row">
+                <p>{{comment.comment}}</p>
+                <p>-- {{comment.commenter}}, {{comment.timeStamp}}
+                    <hr/>
+            </div>
+        </div>
+        <div class="container-fluid" ng-show="noComments">
+            <p class="text-danger lead">No comments are available for this team's pit</p>
+        </div>
+    </fieldset>
+</div>

@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <form id="pitForm" enctype="multipart/form-data" ng-submit="submit()">
+        <fieldset>
+            <div class="input-group">
+                <span class="input-group-addon">Team #</span>
+                <input ng-model="pitFormData.teamNumber" class="form-control" type='number' name='teamnumber' id='teamnumber' placeholder='Enter Team Number here' required>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Your name</span>
+                <input ng-model="pitFormData.name" class="form-control" id="scouter_name" type="text" name='scouter_name' placeholder='Please enter your name' required>
+            </div>
+        </fieldset>
+        <fieldset>
+           <legend>Upload Pictures here</legend>
+            <div class="form-group">
+                <div class="form-group">
+                    <button class="btn btn-block" type="button" ng-click="addPicture()">Add Picture</button>
+                </div>
+                <div ng-repeat="picture in picNum">
+                    <div picture onchange="angular.element(this).scope().updateDisplay(this.children[0].children[1].children[0], angular.element(this).scope().$index); angular.element(this).scope().unrequireComments()" remove-picture="removePicture(picture)"></div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Type Your comments here</legend>
+            <textarea ng-model="pitFormData.comment" class="form-control" id="comments" rows="3" cols="40" name='comments' placeholder='Enter comments about the team here'></textarea>
+            <br>
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-block btn-primary" type="submit">Submit</button>
+        </div>
+    </form>
+</div>
