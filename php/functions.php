@@ -148,10 +148,8 @@ function checkForUser($db, $username) {
         	$stmt->execute();
         	$stmt->store_result();
         	if($stmt->num_rows > 0) {
-        		$db->close();
         		return true;
         	} else {
-        		$db->close();
         		return false;
         	}
 	}
