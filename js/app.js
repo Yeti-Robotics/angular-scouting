@@ -13,22 +13,27 @@ app.run(function ($rootScope, $location, $http, $window) {
         byteCoins: 0
     };
     
+    $rootScope.validateLogin = function() {
+        $http.get('php/validateSession.php', {
+            params: {
+                token: $window.sessionStorage["token"]
+            }
+        }).then(function(response) {
+            if (response.data == 'false') {
+                $window.sessionStorage.removeItem('token');
+                $location.path('/login');
+            }
+        }, function (response) {
+            $window.sessionStorage.removeItem('token');
+            $location.path('/login');
+        });
+    };
+    
     $rootScope.$watch(function () {
         return $location.path();
     }, function () {
         if ($location.path() == '/wager') {
-            $http.get('php/validateSession.php', {
-                params: {
-                    token: $window.sessionStorage["token"]
-                }
-            }).then(function(response) {
-                if (response.data == 'false') {
-                    $window.sessionStorage.removeItem('token');
-                    $location.path('/login');
-                }
-            }, function (response) {
-                console.log(response.data);
-            });
+             $rootScope.validateLogin();
         }
     });
 });
@@ -40,12 +45,12 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
         $('#loginForm').validate();
         $('#username').rules("add", {
             messages: {
-                required: "Invalid username"
+                required: "Username cannot be empty"
             }
         });
         $('#password').rules("add", {
             messages: {
-                required: "Invalid password"
+                required: "Password cannot be empty"
             }
         });
     });
@@ -56,18 +61,16 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
             pswd: $scope.scouterPswd
         }).then(function (response) {
             var result = response.data;
-            if (result) {
-                console.log(result);
-                $window.sessionStorage["token"] = result.token;
-                $rootScope.user.name = result;
-                $rootScope.user.username = $scope.scouterId;
-                $rootScope.user.password = $scope.scouterPswd;
-                $location.path('/wager');
-            } else {
-                //return an error or something
-            }
+            console.log(result);
+            $window.sessionStorage["token"] = result.token;
+            $rootScope.user.name = result;
+            $rootScope.user.username = $scope.scouterId;
+            $rootScope.user.password = $scope.scouterPswd;
+            $location.path('/wager');
         }, function(response) {
-            console.log(response.data);
+            $("#loginForm").validate().showErrors({
+                "loginFields": "Invalid username/password"
+            })
         });
     };
 });
@@ -82,16 +85,42 @@ app.controller('RegisterController', function ($scope, $http, $location) {
     $scope.validate = function () {
         return $scope.username.length > 0 && $scope.password.length > 0 && $scope.password === $scope.confirmPassword;
     };
+    
+    $(document).ready(function() {
+        $("#registerForm").validate();
+        $("#username").rules("add", {
+            messages: {
+                required: "You must have a username!"
+            }
+        });
+        $("#password").rules("add", {
+            messages: {
+                required: "You must have a password!"
+            }
+        });
+    });
 
     $scope.register = function () {
-        console.log('registered');
-        $http.post('php/register.php', {
-            username: $scope.username,
-            password: $scope.password
-        }).then(function (response) {
-            //            $location.path("#/login");
-            console.log(response.data);
-        });
+        if ($scope.validate()) {
+            console.log('registered');
+            $http.post('php/register.php', {
+                username: $scope.username,
+                password: $scope.password
+            }).then(function (response) {
+                $location.path("#/login");
+                console.log(response.data);
+            }, function(response) {
+                console.log(response.data);
+                $("#registerForm").validate().showErrors({
+                    "username": "Username already taken"
+                });
+            });
+        } else {
+            $("#registerForm").validate().showErrors({
+                "password": "Passwords do not match",
+                "confirmPassword": "Passwords do not match"
+            });
+        }
     };
 });
 
@@ -413,6 +442,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
     };
 
     $scope.sendWager = function () {
+        $rootScope.validateLogin();
         var postObject = {};
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
             postObject = {

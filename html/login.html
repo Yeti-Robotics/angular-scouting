@@ -1,11 +1,15 @@
 <div class="container-fluid">
     <h1>Welcome To the Yeti Scouting page</h1>
     <form id="loginForm" ng-submit="login()">
-        <div class="form-group">
-            <input type="text" name="scouter" class="form-control" id="username" aria-label="..." placeholder="Username" ng-model='scouterId' required>
-        </div>
-        <div class="form-group">
-            <input type="password" name="password" class="form-control" id="password" aria-label="..." placeholder="Password" ng-model="scouterPswd" required>
+        <div name="loginFields" required>
+            <div class="form-group">
+               <label for="username">Username</label>
+                <input type="text" name="username" class="form-control" id="username" aria-label="..." placeholder="Username" ng-model='scouterId' required>
+            </div>
+            <div class="form-group">
+               <label for="password">Password</label>
+                <input type="password" name="password" class="form-control" id="password" aria-label="..." placeholder="Password" ng-model="scouterPswd" required>
+            </div>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-block btn-primary">Log in</button>
