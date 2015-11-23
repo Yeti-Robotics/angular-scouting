@@ -13,6 +13,15 @@ app.run(function ($rootScope, $location, $http, $window) {
         byteCoins: 0
     };
     
+    $rootScope.loggedIn = (!$window.sessionStorage.token == null);
+    
+    $rootScope.log = function() {
+        if ($rootScope.loggedIn) {
+            $window.sessionStorage.removeItem('token');
+        }
+        $rootScope.loggedIn = !$rootScope.loggedIn;
+    };
+    
     $rootScope.validateLogin = function() {
         $http.get('php/validateSession.php', {
             params: {
@@ -21,10 +30,12 @@ app.run(function ($rootScope, $location, $http, $window) {
         }).then(function(response) {
             if (response.data == 'false') {
                 $window.sessionStorage.removeItem('token');
+                $rootScope.loggedIn = false;
                 $location.path('/login');
             }
         }, function (response) {
             $window.sessionStorage.removeItem('token');
+            $rootScope.loggedIn = false;
             $location.path('/login');
         });
     };
@@ -66,6 +77,7 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
             $rootScope.user.name = result;
             $rootScope.user.username = $scope.scouterId;
             $rootScope.user.password = $scope.scouterPswd;
+            $rootScope.loggedIn = true;
             $location.path('/wager');
         }, function(response) {
             $("#loginForm").validate().showErrors({
