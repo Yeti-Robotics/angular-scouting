@@ -1,75 +1,89 @@
 /*global angular, $*/
 
-var Scouter = {
-    id: 0,
-    name: '',
-    pswd: '',
-    byteCoins: 0
-};
-
-var Requests = {
-    teamNumber: 0,
-    pitTeamNumber: 0
-};
-
 var app;
 app = angular.module('app', ['ngRoute']);
 
-app.run(function ($rootScope, $location) {
+app.run(function ($rootScope, $location, $http, $window) {
     'use strict';
-    $rootScope.loggedIn = false;
-    $rootScope.showRedirectMessage = false;
-
-    //    $rootScope.$watch(function () {
-    //        return $location.path();
-    //    }, function () {
-    //        if (!$rootScope.loggedIn) {
-    //            $location.path("/");
-    //            $rootScope.showRedirectMessage = true;
-    //        } else {
-    //            $rootScope.showRedirectMessage = false;
-    //        }
-    //    });
+    
+    $rootScope.user = {
+        username: '',
+        password: '',
+        name: '',
+        byteCoins: 0
+    };
+    
+    $rootScope.loggedIn = (!$window.sessionStorage.token == null);
+    
+    $rootScope.log = function() {
+        if ($rootScope.loggedIn) {
+            $window.sessionStorage.removeItem('token');
+        }
+        $rootScope.loggedIn = !$rootScope.loggedIn;
+    };
+    
+    $rootScope.validateLogin = function() {
+        $http.get('php/validateSession.php', {
+            params: {
+                token: $window.sessionStorage["token"]
+            }
+        }).then(function(response) {
+            if (response.data == 'false') {
+                $window.sessionStorage.removeItem('token');
+                $rootScope.loggedIn = false;
+                $location.path('/login');
+            }
+        }, function (response) {
+            $window.sessionStorage.removeItem('token');
+            $rootScope.loggedIn = false;
+            $location.path('/login');
+        });
+    };
+    
+    $rootScope.$watch(function () {
+        return $location.path();
+    }, function () {
+        if ($location.path() == '/wager') {
+             $rootScope.validateLogin();
+        }
+    });
 });
 
-app.controller('LoginController', function ($rootScope, $scope, $http, $location) {
+app.controller('LoginController', function ($rootScope, $scope, $http, $location, $window) {
     'use strict';
+    
+    $(document).ready(function() {
+        $('#loginForm').validate();
+        $('#username').rules("add", {
+            messages: {
+                required: "Username cannot be empty"
+            }
+        });
+        $('#password').rules("add", {
+            messages: {
+                required: "Password cannot be empty"
+            }
+        });
+    });
 
-    $scope.role = "What is your role?";
-    $scope.path = "/";
-
-    $scope.changeRole = function (role) {
-        $scope.role = role;
-    };
-
-    $scope.goToPath = function () {
-        Scouter.id = $scope.scouterId;
-        Scouter.pswd = $scope.scouterPswd;
+    $scope.login = function () {
         $http.post('php/checkUser.php', {
-                id: Scouter.id,
-                pswd: Scouter.pswd
+            id: $scope.scouterId,
+            pswd: $scope.scouterPswd
+        }).then(function (response) {
+            var result = response.data;
+            console.log(result);
+            $window.sessionStorage["token"] = result.token;
+            $rootScope.user.name = result;
+            $rootScope.user.username = $scope.scouterId;
+            $rootScope.user.password = $scope.scouterPswd;
+            $rootScope.loggedIn = true;
+            $location.path('/wager');
+        }, function(response) {
+            $("#loginForm").validate().showErrors({
+                "loginFields": "Invalid username/password"
             })
-            .then(function (response) {
-                var result = response.data;
-                if (result) {
-                    $rootScope.showRedirectMessage = false;
-                    $rootScope.loggedIn = true;
-                    Scouter.name = result;
-                    switch ($scope.role) {
-                    case 'Scouter':
-                        $location.path("/form");
-                        break;
-                    case 'Wagerer':
-                        $location.path("/wager");
-                        break;
-                    case 'Pit Scouter':
-                        $location.path("/pitForm");
-                        break;
-                    }
-                } else {
-                    //return an error or something
-                }
-            });
+        });
     };
 });
 
@@ -83,29 +97,55 @@ app.controller('RegisterController', function ($scope, $http, $location) {
     $scope.validate = function () {
         return $scope.username.length > 0 && $scope.password.length > 0 && $scope.password === $scope.confirmPassword;
     };
+    
+    $(document).ready(function() {
+        $("#registerForm").validate();
+        $("#username").rules("add", {
+            messages: {
+                required: "You must have a username!"
+            }
+        });
+        $("#password").rules("add", {
+            messages: {
+                required: "You must have a password!"
+            }
+        });
+    });
 
     $scope.register = function () {
-        console.log('registered');
-        $http.post('php/register.php', {
-            username: $scope.username,
-            password: $scope.password
-        }).then(function (response) {
-            //            $location.path("#/login");
-            console.log(response.data);
-        });
+        if ($scope.validate()) {
+            console.log('registered');
+            $http.post('php/register.php', {
+                username: $scope.username,
+                password: $scope.password
+            }).then(function (response) {
+                $location.path("#/login");
+                console.log(response.data);
+            }, function(response) {
+                console.log(response.data);
+                $("#registerForm").validate().showErrors({
+                    "username": "Username already taken"
+                });
+            });
+        } else {
+            $("#registerForm").validate().showErrors({
+                "password": "Passwords do not match",
+                "confirmPassword": "Passwords do not match"
+            });
+        }
     };
 });
 
-app.controller('FormController', function ($rootScope, $scope, $http) {
+app.controller('FormController', function ($rootScope, $scope, $http, $window) {
     'use strict';
-
+    
     $scope.formData = {
         stackRows: {
             rows: []
         },
-        name: Scouter.name,
-        id: Scouter.id,
-        pswd: Scouter.pswd
+        name: $window.sessionStorage["name"],
+        id: $window.sessionStorage["username"],
+        pswd: $window.sessionStorage["password"]
     };
 
     $(document).ready(function () {
@@ -148,7 +188,7 @@ app.controller('FormController', function ($rootScope, $scope, $http) {
     };
 });
 
-app.controller('PitFormController', function ($scope, $http) {
+app.controller('PitFormController', function ($scope, $http, $window) {
     'use strict';
 
     $(document).ready(function () {
@@ -171,9 +211,9 @@ app.controller('PitFormController', function ($scope, $http) {
     }
 
     $scope.pitFormData = {
-        name: Scouter.name,
-        id: Scouter.id,
-        pswd: Scouter.pswd
+        name: $window.sessionStorage["name"],
+        id: $window.sessionStorage["username"],
+        pswd: $window.sessionStorage["password"]
     };
 
     $scope.pictures = [];
@@ -229,9 +269,9 @@ app.controller('PitFormController', function ($scope, $http) {
                 console.log(response.data);
                 $('body').scrollTop(0);
                 $scope.pitFormData = {
-                    name: Scouter.name,
-                    id: Scouter.id,
-                    pswd: Scouter.pswd
+                    name: $window.sessionStorage["name"],
+                    id: $window.sessionStorage["username"],
+                    pswd: $window.sessionStorage["password"]
                 };
                 $scope.pictures = [];
                 $scope.picNum = [];
@@ -331,25 +371,20 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
     $scope.sortType = 'rating';
     $scope.sortReverse = false;
 
-    //    $scope.teamRedirect = function(teamNumber) {
-    //        Requests.teamNumber = teamNumber;
-    //        $location.path('/teamInfo');
-    //    }
-
     $http.get('php/list.php').then(function (response) {
         $scope.data = response.data;
     });
 });
 
-app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
+app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
     'use strict';
 
     $scope.refreshByteCoins = function () {
         $http.post("php/getByteCoins.php", {
-            id: Scouter.id,
-            pswd: Scouter.pswd
+            id: $window.sessionStorage["username"],
+            pswd: $window.sessionStorage["password"]
         }).then(function (response) {
-            Scouter.byteCoins = response.data;
+            $window.sessionStorage["byteCoins"] = response.data;
         }, function (response) {
             $scope.reportError("Could not properly get your number of Byte Coins. Are you logged in?");
         });
@@ -419,11 +454,12 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
     };
 
     $scope.sendWager = function () {
+        $rootScope.validateLogin();
         var postObject = {};
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
             postObject = {
-                associatedId: Scouter.id,
-                pswd: Scouter.pswd,
+                associatedId: $window.sessionStorage["username"],
+                pswd: $window.sessionStorage["password"],
                 wagerType: "alliance",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,
@@ -431,8 +467,8 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
             };
         } else if ($scope.currentWager.wagerType === "closeMatch" && $scope.currentWager.withenPoints && $scope.currentWager.matchPredicted) {
             postObject = {
-                associatedId: Scouter.id,
-                pswd: Scouter.pswd,
+                associatedId: $window.sessionStorage["username"],
+                pswd: $window.sessionStorage["password"],
                 wagerType: "closeMatch",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,
@@ -440,8 +476,8 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http) {
             };
         } else if ($scope.currentWager.wagerType === "points" && $scope.currentWager.pointsPredicted && $scope.currentWager.matchPredicted) {
             postObject = {
-                associatedId: Scouter.id,
-                pswd: Scouter.pswd,
+                associatedId: $window.sessionStorage["username"],
+                pswd: $window.sessionStorage["password"],
                 wagerType: "points",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,

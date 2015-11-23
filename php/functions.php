@@ -1,14 +1,122 @@
 <?php
 
-function checkPassword($db, $id, $pswd) {
-    $query = "SELECT pswd FROM `scouters` WHERE id = ?";
+function validateToken($db, $token) {
+    $query = "SELECT * FROM sessions WHERE token = ?";
+    if($stmt = $db->prepare($query)) {
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+        $stmt->store_result();
+        if($stmt->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        header('HTTP/1.1 500 SQL Error', true, 500);
+        die ( '{"message":"Failed creating statement"}' );
+    }
+}
+
+function getSessionUser($db, $token) {
+    $query = "SELECT name FROM sessions LEFT JOIN scouters ON sessions.id = scouters.id WHERE token = ?";
+    if (validateToken($db, $token)) {
+        if($stmt = $db->prepare($query)) {
+            $stmt->bind_param("s", $token);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while($row = $result->fetch_array()) {
+                return $row[0];
+            }
+        } else {
+            header('HTTP/1.1 500 SQL Error', true, 500);
+            die ( '{"message":"Failed creating statement"}' );
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+function startSession($db, $username, $pswdHash) {
+    $query = "SELECT * FROM sessions WHERE id = ?";
+    $token = ($pswdHash . md5(time()));
+    if (checkPassword($db, $username, $pswdHash)) {
+        if($stmt = $db->prepare($query)) {
+            $stmt->bind_param("i", getUserId($db, $username, $pswdHash));
+            $stmt->execute();
+            $stmt->store_result();
+            if($stmt->num_rows > 0) {
+                $query = "UPDATE sessions SET token = ? WHERE id = ?";
+                if($stmt = $db->prepare($query)) {
+                    $stmt->bind_param("si", $token, getUserId($db, $username, $pswdHash));
+                    $stmt->execute();
+                    return $token;
+                } else {
+                    header('HTTP/1.1 500 SQL Error', true, 500);
+                    die ( '{"message":"Failed creating statement"}' );
+                }
+            } else {
+                $query = "INSERT INTO sessions (id, token) VALUES (?, ?)";
+                if($stmt = $db->prepare($query)) {
+                    $stmt->bind_param("is", getUserId($db, $username, $pswdHash), $token);
+                    $stmt->execute();
+                    return $token;
+                } else {
+                    header('HTTP/1.1 500 SQL Error', true, 500);
+                    die ( '{"message":"Failed creating statement"}' );
+                }
+            }
+        } else {
+            header('HTTP/1.1 500 SQL Error', true, 500);
+            die ( '{"message":"Failed creating statement"}' );
+        }
+    } else {
+        return false;
+    }
+    
+    $query = "INSERT INTO sessions (id, token) VALUES (?, ?)";
+    $token = ($pswdHash . md5(time()));
+    if (checkPassword($db, $username, $pswdHash)) {
+        if($stmt = $db->prepare($query)) {
+            $stmt->bind_param("is", getUserId($db, $username, $pswdHash), $token);
+            $stmt->execute();
+            return $token;
+        } else {
+            header('HTTP/1.1 500 SQL Error', true, 500);
+            die ( '{"message":"Failed creating statement"}' );
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+function getUserId($db, $username, $pswdHash) {
+    $query = "SELECT id FROM `scouters` WHERE username = ?";
+    if (checkPassword($db, $username, $pswdHash)) {
+        if($stmt = $db->prepare($query)) {
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while($row = $result->fetch_array()) {
+                return $row[0];
+            }
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+function checkPassword($db, $username, $pswdHash) {
+    $query = "SELECT pswd FROM `scouters` WHERE username = ?";
 
     if($stmt = $db->prepare($query)) {
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
         while($row = $result->fetch_array()) {
-            if($row[0] == md5($pswd)) {
+            if($row[0] == $pswdHash) {
                 return true;
             }
         }
@@ -16,15 +124,14 @@ function checkPassword($db, $id, $pswd) {
     }
 }
 
-function getName($db, $id, $pswd) {
-    $query = "SELECT name FROM `scouters` WHERE id = ?";
-    if (checkPassword($db, $id, $pswd)) {
+function getName($db, $username, $pswdHash) {
+    $query = "SELECT name FROM `scouters` WHERE username = ?";
+    if (checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("i", $id);
+            $stmt->bind_param("s", $username);
             $stmt->execute();
             $result = $stmt->get_result();
             while($row = $result->fetch_array()) {
-                $db->close();
                 return $row[0];
             }
         }
@@ -35,16 +142,14 @@ function getName($db, $id, $pswd) {
 }
 
 function checkForUser($db, $username) {
-	$query = "SELECT name FROM `scouters WHERE name = ?";
+	$query = "SELECT name FROM scouters WHERE name = ?";
 	if($stmt = $db->prepare($query)) {
 		$stmt->bind_param("s", $username);
         	$stmt->execute();
         	$stmt->store_result();
         	if($stmt->num_rows > 0) {
-        		$db->close();
         		return true;
         	} else {
-        		$db->close();
         		return false;
         	}
 	}
@@ -121,12 +226,11 @@ function updateQualificationWagers($db, $matchNum) {
     error_log("Adding Byte Coins failed");
 }
 
-function getByteCoins($db, $id, $pswd) {
-    $query = "SELECT byteCoins FROM scouters WHERE id = ?";
-    if(checkPassword($db, $id, $pswd)) {
-        //addByteCoins(getByteCoinsToAdd($db, $id));
+function getByteCoins($db, $username, $pswdHash) {
+    $query = "SELECT byteCoins FROM scouters WHERE username = ?";
+    if(checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("i", $id);
+            $stmt->bind_param("s", $id);
             $stmt->execute();
             $result = $stmt->get_result();
             while($row = $result->fetch_array()) {
