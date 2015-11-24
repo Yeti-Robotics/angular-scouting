@@ -163,7 +163,7 @@ function updateQualificationWagers($db, $matchNum) {
     $request->setOptions($options);
     $request->addHeaders(array(
                                "Accept" => "application/json",
-                               "Authorization" => base64_encode("user:token")
+                               "Authorization" => base64_encode($authUser . ":" . $authToken)
                                ));
     $request->send();
     $responsejson = json_decode($request->getResponseBody(), true)["Matches"];
