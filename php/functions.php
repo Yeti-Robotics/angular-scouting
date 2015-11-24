@@ -158,7 +158,8 @@ function checkForUser($db, $username) {
 function updateQualificationWagers($db, $matchNum) {
     $query = "SELECT * FROM `wagers` WHERE matchPredicted = ?";
     $options = array("timeout"=>2);
-    $request = new HttpRequest("https://frc-api.usfirst.org/v2.0/2015/matches/NCRE?tournamentLevel=qual&matchNumber=" . $matchNum);
+    include("../config/config.php");
+    $request = new HttpRequest("https://frc-api.usfirst.org/v2.0/2015/matches/" . $tournamentKey . "?tournamentLevel=qual&matchNumber=" . $matchNum);
     $request->setOptions($options);
     $request->addHeaders(array(
                                "Accept" => "application/json",
