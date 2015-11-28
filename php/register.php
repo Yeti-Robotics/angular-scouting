@@ -4,7 +4,7 @@ include('functions.php');
 header('Content-Type: application/json');
 $postData = json_decode(file_get_contents("php://input"), true);
 if(checkForUser($db, $postData["username"]) == false) {
-	$query = "INSERT INTO scouters (name, pswd) VALUES (?, ?)";
+	$query = "INSERT INTO scouters (username, pswd) VALUES (?, ?)";
 	if($stmt = $db->prepare($query)) {
 	    $stmt->bind_param("ss", $postData["username"], md5($postData["password"]));
 	    $stmt->execute();
