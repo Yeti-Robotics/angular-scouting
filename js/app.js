@@ -74,9 +74,8 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
             var result = response.data;
             console.log(result);
             $window.sessionStorage["token"] = result.token;
-            $rootScope.user.name = result;
+            $rootScope.user.name = result.name;
             $rootScope.user.username = $scope.scouterId;
-            $rootScope.user.password = $scope.scouterPswd;
             $rootScope.loggedIn = true;
             $location.path('/wager');
         }, function(response) {
@@ -150,9 +149,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
         stackRows: {
             rows: []
         },
-        name: $window.sessionStorage["name"],
-        id: $window.sessionStorage["username"],
-        pswd: $window.sessionStorage["password"]
+        name: $rootScope.user.name;
     };
 
     $(document).ready(function () {
@@ -218,9 +215,8 @@ app.controller('PitFormController', function ($scope, $http, $window) {
     }
 
     $scope.pitFormData = {
-        name: $window.sessionStorage["name"],
-        id: $window.sessionStorage["username"],
-        pswd: $window.sessionStorage["password"]
+        name: $rootScope.user.name,
+        token: $window.sessionStorage["token"]
     };
 
     $scope.pictures = [];
@@ -276,9 +272,8 @@ app.controller('PitFormController', function ($scope, $http, $window) {
                 console.log(response.data);
                 $('body').scrollTop(0);
                 $scope.pitFormData = {
-                    name: $window.sessionStorage["name"],
-                    id: $window.sessionStorage["username"],
-                    pswd: $window.sessionStorage["password"]
+                    name: $rootScope.user.name,
+                    $window.sessionStorage["token"]
                 };
                 $scope.pictures = [];
                 $scope.picNum = [];
@@ -310,7 +305,8 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 
     $scope.pitData = {
         pictures: [],
-        comments: []
+        comments: [],
+        token: $window.sessionStorage["token"]
     }
 
     $scope.picIndex;
@@ -388,8 +384,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 
     $scope.refreshByteCoins = function () {
         $http.post("php/getByteCoins.php", {
-            id: $window.sessionStorage["username"],
-            pswd: $window.sessionStorage["password"]
+            token: $window.sessionStorage["token"]
         }).then(function (response) {
             $window.sessionStorage["byteCoins"] = response.data;
         }, function (response) {
@@ -465,8 +460,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
         var postObject = {};
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
             postObject = {
-                associatedId: $window.sessionStorage["username"],
-                pswd: $window.sessionStorage["password"],
+                token: $window.sessionStorage["token"],
                 wagerType: "alliance",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,
@@ -474,8 +468,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
             };
         } else if ($scope.currentWager.wagerType === "closeMatch" && $scope.currentWager.withenPoints && $scope.currentWager.matchPredicted) {
             postObject = {
-                associatedId: $window.sessionStorage["username"],
-                pswd: $window.sessionStorage["password"],
+                token: $window.sessionStorage["token"],
                 wagerType: "closeMatch",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,
@@ -483,8 +476,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
             };
         } else if ($scope.currentWager.wagerType === "points" && $scope.currentWager.pointsPredicted && $scope.currentWager.matchPredicted) {
             postObject = {
-                associatedId: $window.sessionStorage["username"],
-                pswd: $window.sessionStorage["password"],
+                token: $window.sessionStorage["token"],
                 wagerType: "points",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,
