@@ -68,7 +68,7 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
 
     $scope.login = function () {
         $http.post('php/checkUser.php', {
-            id: $scope.scouterId,
+            username: $scope.scouterId,
             pswd: $scope.scouterPswd
         }).then(function (response) {
             var result = response.data;
