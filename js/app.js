@@ -118,8 +118,8 @@ app.controller('RegisterController', function ($scope, $http, $location) {
     $scope.register = function () {
         if ($scope.validate()) {
             console.log('registered');
-            $scope.firstName = $scope.firstName[0].toUpperCase() + $scope.firstName.slice(1);
-            $scope.lastName = $scope.lastName[0].toUpperCase() + $scope.lastName.slice(1);
+            $scope.firstName = $scope.firstName[0].toUpperCase() + $scope.firstName.toLowerCase().slice(1);
+            $scope.lastName = $scope.lastName[0].toUpperCase() + $scope.lastName.toLowerCase().slice(1);
             $scope.name = $scope.firstName + ' ' + $scope.lastName;
             $http.post('php/register.php', {
                 name: $scope.name,
