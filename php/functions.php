@@ -229,23 +229,20 @@ function updateQualificationWagers($db, $matchNum) {
 
 function getByteCoins($db, $token) {
 	if($username = getSessionUser($db, $token)) {
-		$username = getSessionUser($db, $token);
 		$query = "SELECT byteCoins FROM scouters WHERE username = ?";
-		if(checkPassword($db, $username, $pswdHash)) {
-			if($stmt = $db->prepare($query)) {
-			    $stmt->bind_param("s", $id);
-			    $stmt->execute();
-			    $result = $stmt->get_result();
-			    while($row = $result->fetch_array()) {
-			        $db->close();
-			        die(json_encode($row[0]));
-			    }
-			}
-			else {
-				die("{'message' : 'SQL Error'} ");
+		if($stmt = $db->prepare($query)) {
+			$stmt->bind_param("s", $id);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			while($row = $result->fetch_array()) {
+				$db->close();
+				die(json_encode($row[0]));
 			}
 		}
-	else {
+		else {
+			die("{'message' : 'SQL Error'} ");
+		}
+	} else {
 		return false;
 	}
 }

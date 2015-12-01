@@ -4,10 +4,10 @@
 
     $params = json_decode(file_get_contents('php://input'), true);
 
-    if(getName($db, $params["id"], md5($params["pswd"]))) {
+    if(getName($db, $params["username"], md5($params["pswd"]))) {
         die(json_encode(array(
-            "name" => getName($db, $params["id"], md5($params["pswd"])),
-            "token" => startSession($db, $params["id"], md5($params["pswd"]))
+            "name" => getName($db, $params["username"], md5($params["pswd"])),
+            "token" => startSession($db, $params["username"], md5($params["pswd"]))
         )));
     }
     header('HTTP/1.1 500 SQL Error', true, 500);
