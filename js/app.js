@@ -8,9 +8,13 @@ app.run(function ($rootScope, $location, $http, $window) {
     
     $rootScope.user = {
         username: '',
-        password: '',
         name: '',
         byteCoins: 0
+        logOut: function() {
+            $window.sessionStorage.removeItem('token');
+            $rootScope.user.name = '';
+            $rootScope.loggedIn = false;
+        }
     };
     
     $rootScope.loggedIn = (!$window.sessionStorage.token == null);
@@ -29,13 +33,11 @@ app.run(function ($rootScope, $location, $http, $window) {
             }
         }).then(function(response) {
             if (response.data == 'false') {
-                $window.sessionStorage.removeItem('token');
-                $rootScope.loggedIn = false;
+                $rootScope.user.logOut();
                 $location.path('/login');
             }
         }, function (response) {
-            $window.sessionStorage.removeItem('token');
-            $rootScope.loggedIn = false;
+            $rootScope.user.logOut();
             $location.path('/login');
         });
     };
@@ -68,7 +70,7 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
 
     $scope.login = function () {
         $http.post('php/checkUser.php', {
-            username: $scope.scouterId,
+            username: $scope.scouterUsername,
             pswd: $scope.scouterPswd
         }).then(function (response) {
             var result = response.data;
