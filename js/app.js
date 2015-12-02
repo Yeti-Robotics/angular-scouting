@@ -8,34 +8,36 @@ app.run(function ($rootScope, $location, $http, $window) {
     
     $rootScope.user = {
         username: '',
-        password: '',
         name: '',
-        byteCoins: 0
+        byteCoins: 0,
+        logOut: function () {
+            $window.sessionStorage.removeItem('token');
+            this.user.name = '';
+            $rootScope.loggedIn = false;
+        }
     };
     
-    $rootScope.loggedIn = (!$window.sessionStorage.token == null);
+    $rootScope.loggedIn = !($window.sessionStorage.token == null);
     
-    $rootScope.log = function() {
+    $rootScope.log = function () {
         if ($rootScope.loggedIn) {
             $window.sessionStorage.removeItem('token');
         }
         $rootScope.loggedIn = !$rootScope.loggedIn;
     };
     
-    $rootScope.validateLogin = function() {
+    $rootScope.validateLogin = function () {
         $http.get('php/validateSession.php', {
             params: {
                 token: $window.sessionStorage["token"]
             }
-        }).then(function(response) {
+        }).then(function (response) {
             if (response.data == 'false') {
-                $window.sessionStorage.removeItem('token');
-                $rootScope.loggedIn = false;
+                $rootScope.user.logOut();
                 $location.path('/login');
             }
         }, function (response) {
-            $window.sessionStorage.removeItem('token');
-            $rootScope.loggedIn = false;
+            $rootScope.user.logOut();
             $location.path('/login');
         });
     };
@@ -44,7 +46,7 @@ app.run(function ($rootScope, $location, $http, $window) {
         return $location.path();
     }, function () {
         if ($location.path() == '/wager') {
-             $rootScope.validateLogin();
+			$rootScope.validateLogin();
         }
     });
 });
@@ -52,7 +54,7 @@ app.run(function ($rootScope, $location, $http, $window) {
 app.controller('LoginController', function ($rootScope, $scope, $http, $location, $window) {
     'use strict';
     
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#loginForm').validate();
         $('#username').rules("add", {
             messages: {
@@ -68,21 +70,20 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
 
     $scope.login = function () {
         $http.post('php/checkUser.php', {
-            id: $scope.scouterId,
+            username: $scope.scouterUsername,
             pswd: $scope.scouterPswd
         }).then(function (response) {
             var result = response.data;
             console.log(result);
             $window.sessionStorage["token"] = result.token;
-            $rootScope.user.name = result;
+            $rootScope.user.name = result.name;
             $rootScope.user.username = $scope.scouterId;
-            $rootScope.user.password = $scope.scouterPswd;
             $rootScope.loggedIn = true;
             $location.path('/wager');
-        }, function(response) {
+        }, function (response) {
             $("#loginForm").validate().showErrors({
                 "loginFields": "Invalid username/password"
-            })
+            });
         });
     };
 });
@@ -101,7 +102,7 @@ app.controller('RegisterController', function ($scope, $http, $location) {
         return $scope.username.length > 0 && $scope.password.length > 0 && $scope.password === $scope.confirmPassword;
     };
     
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#registerForm").validate();
         $("#username").rules("add", {
             messages: {
@@ -128,7 +129,7 @@ app.controller('RegisterController', function ($scope, $http, $location) {
             }).then(function (response) {
                 $location.path("/login");
                 console.log(response.data);
-            }, function(response) {
+            }, function (response) {
                 console.log(response.data);
                 $("#registerForm").validate().showErrors({
                     "username": "Username already taken"
@@ -150,9 +151,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
         stackRows: {
             rows: []
         },
-        name: $window.sessionStorage["name"],
-        id: $window.sessionStorage["username"],
-        pswd: $window.sessionStorage["password"]
+        name: $rootScope.user.name
     };
 
     $(document).ready(function () {
@@ -215,12 +214,11 @@ app.controller('PitFormController', function ($scope, $http, $window) {
 
     $scope.unrequireComments = function () {
         $("#comments").rules("remove", "required");
-    }
+    };
 
     $scope.pitFormData = {
-        name: $window.sessionStorage["name"],
-        id: $window.sessionStorage["username"],
-        pswd: $window.sessionStorage["password"]
+        name: $rootScope.user.name,
+        token: $window.sessionStorage["token"]
     };
 
     $scope.pictures = [];
@@ -238,7 +236,7 @@ app.controller('PitFormController', function ($scope, $http, $window) {
         reader.readAsDataURL(file);
         reader.onload = function () {
             $(picture).parent().prev().children().attr("src", reader.result);
-        }
+        };
     };
 
     var num = 0;
@@ -276,9 +274,8 @@ app.controller('PitFormController', function ($scope, $http, $window) {
                 console.log(response.data);
                 $('body').scrollTop(0);
                 $scope.pitFormData = {
-                    name: $window.sessionStorage["name"],
-                    id: $window.sessionStorage["username"],
-                    pswd: $window.sessionStorage["password"]
+                    name: $rootScope.user.name,
+                    token: $window.sessionStorage["token"]
                 };
                 $scope.pictures = [];
                 $scope.picNum = [];
@@ -310,7 +307,8 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 
     $scope.pitData = {
         pictures: [],
-        comments: []
+        comments: [],
+        token: $window.sessionStorage["token"]
     }
 
     $scope.picIndex;
@@ -402,10 +400,9 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 
     $scope.refreshByteCoins = function () {
         $http.post("php/getByteCoins.php", {
-            id: $window.sessionStorage["username"],
-            pswd: $window.sessionStorage["password"]
+            token: $window.sessionStorage["token"]
         }).then(function (response) {
-            $window.sessionStorage["byteCoins"] = response.data;
+            $rootScope.user.byteCoins = $scope.byteCoins = response.data;
         }, function (response) {
             $scope.reportError("Could not properly get your number of Byte Coins. Are you logged in?");
         });
@@ -479,8 +476,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
         var postObject = {};
         if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
             postObject = {
-                associatedId: $window.sessionStorage["username"],
-                pswd: $window.sessionStorage["password"],
+                token: $window.sessionStorage["token"],
                 wagerType: "alliance",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,
@@ -488,8 +484,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
             };
         } else if ($scope.currentWager.wagerType === "closeMatch" && $scope.currentWager.withenPoints && $scope.currentWager.matchPredicted) {
             postObject = {
-                associatedId: $window.sessionStorage["username"],
-                pswd: $window.sessionStorage["password"],
+                token: $window.sessionStorage["token"],
                 wagerType: "closeMatch",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,
@@ -497,8 +492,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
             };
         } else if ($scope.currentWager.wagerType === "points" && $scope.currentWager.pointsPredicted && $scope.currentWager.matchPredicted) {
             postObject = {
-                associatedId: $window.sessionStorage["username"],
-                pswd: $window.sessionStorage["password"],
+                token: $window.sessionStorage["token"],
                 wagerType: "points",
                 wageredByteCoins: $scope.currentWager.wageredByteCoins,
                 matchPredicted: $scope.currentWager.matchPredicted,

@@ -130,6 +130,25 @@ function getUserId($db, $username, $pswdHash) {
     }
 }
 
+function getUserIdFromToken($db, $token) {
+	$query = "SELECT id FROM sessions WHERE token = ?";
+	if(validateToken($db, $token)) {
+		if($stmt = $db->prepare($query)) {
+            $stmt->bind_param("s", $token);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while($row = $result->fetch_array()) {
+                return $row[0];
+            }
+        } else {
+            header('HTTP/1.1 500 SQL Error', true, 500);
+            die ( '{"message":"Failed creating statement"}' );
+        }
+	} else {
+        return false;
+    }
+}
+
 function checkPassword($db, $username, $pswdHash) {
     $query = "SELECT pswd FROM `scouters` WHERE username = ?";
 
@@ -254,20 +273,23 @@ function updateQualificationWagers($db, $matchNum) {
     error_log("Adding Byte Coins failed");
 }
 
-function getByteCoins($db, $username, $pswdHash) {
-    $query = "SELECT byteCoins FROM scouters WHERE username = ?";
-    if(checkPassword($db, $username, $pswdHash)) {
-        if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("s", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            while($row = $result->fetch_array()) {
-                $db->close();
-                die(json_encode($row[0]));
-            }
-        }
-    }
-    die("Getting Byte Coins failed");
+function getByteCoins($db, $token) {
+	if($id = getUserIdFromToken($db, $token)) {
+		$query = "SELECT byteCoins FROM scouters WHERE id = ?";
+		if($stmt = $db->prepare($query)) {
+			$stmt->bind_param("i", $id);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			while($row = $result->fetch_array()) {
+				die(json_encode($row[0]));
+			}
+		}
+		else {
+			die("{'message' : 'SQL Error'} ");
+		}
+	} else {
+		return false;
+	}
 }
 
 function getTeamStacksTable($db, $team){
