@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.4.14
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 11, 2015 at 03:31 AM
--- Server version: 5.6.26
--- PHP Version: 5.6.12
+-- Generation Time: Dec 02, 2015 at 03:41 AM
+-- Server version: 10.1.8-MariaDB
+-- PHP Version: 5.6.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -26,7 +26,8 @@ SET time_zone = "+00:00";
 -- Table structure for table `pit_comments`
 --
 
-CREATE TABLE IF NOT EXISTS `pit_comments` (
+DROP TABLE IF EXISTS `pit_comments`;
+CREATE TABLE `pit_comments` (
   `pit_scout_data_id` int(11) NOT NULL,
   `team_number` int(11) NOT NULL,
   `pit_comments` mediumtext NOT NULL,
@@ -40,7 +41,8 @@ CREATE TABLE IF NOT EXISTS `pit_comments` (
 -- Table structure for table `pit_pictures`
 --
 
-CREATE TABLE IF NOT EXISTS `pit_pictures` (
+DROP TABLE IF EXISTS `pit_pictures`;
+CREATE TABLE `pit_pictures` (
   `pit_scout_data_id` int(11) NOT NULL,
   `team_number` int(11) NOT NULL,
   `pic_num` int(11) DEFAULT NULL,
@@ -54,7 +56,8 @@ CREATE TABLE IF NOT EXISTS `pit_pictures` (
 -- Table structure for table `scouters`
 --
 
-CREATE TABLE IF NOT EXISTS `scouters` (
+DROP TABLE IF EXISTS `scouters`;
+CREATE TABLE `scouters` (
   `id` int(6) NOT NULL,
   `name` tinytext NOT NULL,
   `username` text NOT NULL,
@@ -68,7 +71,8 @@ CREATE TABLE IF NOT EXISTS `scouters` (
 -- Table structure for table `scout_data`
 --
 
-CREATE TABLE IF NOT EXISTS `scout_data` (
+DROP TABLE IF EXISTS `scout_data`;
+CREATE TABLE `scout_data` (
   `scout_data_id` int(11) NOT NULL,
   `team` int(11) NOT NULL,
   `match_number` int(11) DEFAULT NULL,
@@ -95,7 +99,8 @@ CREATE TABLE IF NOT EXISTS `scout_data` (
 -- Table structure for table `sessions`
 --
 
-CREATE TABLE IF NOT EXISTS `sessions` (
+DROP TABLE IF EXISTS `sessions`;
+CREATE TABLE `sessions` (
   `id` int(11) NOT NULL,
   `token` text NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -107,11 +112,28 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 -- Table structure for table `stacks`
 --
 
-CREATE TABLE IF NOT EXISTS `stacks` (
+DROP TABLE IF EXISTS `stacks`;
+CREATE TABLE `stacks` (
   `scout_data_id` int(11) NOT NULL,
   `totes` int(11) NOT NULL,
   `cap_state` int(11) NOT NULL,
   `cap_height` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wagers`
+--
+
+DROP TABLE IF EXISTS `wagers`;
+CREATE TABLE `wagers` (
+  `associatedId` int(11) NOT NULL,
+  `wagerType` text NOT NULL,
+  `wageredByteCoins` int(11) NOT NULL,
+  `matchPredicted` int(11) NOT NULL,
+  `alliancePredicted` text,
+  `withenPoints` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -167,7 +189,7 @@ ALTER TABLE `pit_pictures`
 -- AUTO_INCREMENT for table `scouters`
 --
 ALTER TABLE `scouters`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `scout_data`
 --

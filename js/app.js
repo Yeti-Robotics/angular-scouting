@@ -10,28 +10,28 @@ app.run(function ($rootScope, $location, $http, $window) {
         username: '',
         name: '',
         byteCoins: 0,
-        logOut: function() {
+        logOut: function () {
             $window.sessionStorage.removeItem('token');
-            $rootScope.user.name = '';
+            this.user.name = '';
             $rootScope.loggedIn = false;
         }
     };
     
-    $rootScope.loggedIn = (!$window.sessionStorage.token == null);
+    $rootScope.loggedIn = !($window.sessionStorage.token == null);
     
-    $rootScope.log = function() {
+    $rootScope.log = function () {
         if ($rootScope.loggedIn) {
             $window.sessionStorage.removeItem('token');
         }
         $rootScope.loggedIn = !$rootScope.loggedIn;
     };
     
-    $rootScope.validateLogin = function() {
+    $rootScope.validateLogin = function () {
         $http.get('php/validateSession.php', {
             params: {
                 token: $window.sessionStorage["token"]
             }
-        }).then(function(response) {
+        }).then(function (response) {
             if (response.data == 'false') {
                 $rootScope.user.logOut();
                 $location.path('/login');
@@ -46,7 +46,7 @@ app.run(function ($rootScope, $location, $http, $window) {
         return $location.path();
     }, function () {
         if ($location.path() == '/wager') {
-             $rootScope.validateLogin();
+			$rootScope.validateLogin();
         }
     });
 });
@@ -54,7 +54,7 @@ app.run(function ($rootScope, $location, $http, $window) {
 app.controller('LoginController', function ($rootScope, $scope, $http, $location, $window) {
     'use strict';
     
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#loginForm').validate();
         $('#username').rules("add", {
             messages: {
@@ -80,10 +80,10 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
             $rootScope.user.username = $scope.scouterId;
             $rootScope.loggedIn = true;
             $location.path('/wager');
-        }, function(response) {
+        }, function (response) {
             $("#loginForm").validate().showErrors({
                 "loginFields": "Invalid username/password"
-            })
+            });
         });
     };
 });
@@ -102,7 +102,7 @@ app.controller('RegisterController', function ($scope, $http, $location) {
         return $scope.username.length > 0 && $scope.password.length > 0 && $scope.password === $scope.confirmPassword;
     };
     
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("#registerForm").validate();
         $("#username").rules("add", {
             messages: {
@@ -129,7 +129,7 @@ app.controller('RegisterController', function ($scope, $http, $location) {
             }).then(function (response) {
                 $location.path("/login");
                 console.log(response.data);
-            }, function(response) {
+            }, function (response) {
                 console.log(response.data);
                 $("#registerForm").validate().showErrors({
                     "username": "Username already taken"
@@ -214,7 +214,7 @@ app.controller('PitFormController', function ($scope, $http, $window) {
 
     $scope.unrequireComments = function () {
         $("#comments").rules("remove", "required");
-    }
+    };
 
     $scope.pitFormData = {
         name: $rootScope.user.name,
@@ -236,7 +236,7 @@ app.controller('PitFormController', function ($scope, $http, $window) {
         reader.readAsDataURL(file);
         reader.onload = function () {
             $(picture).parent().prev().children().attr("src", reader.result);
-        }
+        };
     };
 
     var num = 0;
@@ -388,7 +388,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
         $http.post("php/getByteCoins.php", {
             token: $window.sessionStorage["token"]
         }).then(function (response) {
-            $window.sessionStorage["byteCoins"] = response.data;
+            $rootScope.user.byteCoins = $scope.byteCoins = response.data;
         }, function (response) {
             $scope.reportError("Could not properly get your number of Byte Coins. Are you logged in?");
         });
