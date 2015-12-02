@@ -9,7 +9,7 @@ app.run(function ($rootScope, $location, $http, $window) {
     $rootScope.user = {
         username: '',
         name: '',
-        byteCoins: 0
+        byteCoins: 0,
         logOut: function() {
             $window.sessionStorage.removeItem('token');
             $rootScope.user.name = '';
@@ -151,7 +151,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
         stackRows: {
             rows: []
         },
-        name: $rootScope.user.name;
+        name: $rootScope.user.name
     };
 
     $(document).ready(function () {
@@ -275,7 +275,7 @@ app.controller('PitFormController', function ($scope, $http, $window) {
                 $('body').scrollTop(0);
                 $scope.pitFormData = {
                     name: $rootScope.user.name,
-                    $window.sessionStorage["token"]
+                    token: $window.sessionStorage["token"]
                 };
                 $scope.pictures = [];
                 $scope.picNum = [];
