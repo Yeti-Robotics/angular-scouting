@@ -334,6 +334,20 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
             $scope.picIndex = $scope.pitData.pictures.length - 1;
         }
     }
+    
+    $http.get("php/getTeamInfo.php", {
+        params: {
+            teamNumber: $routeParams.teamNumber
+        }
+    }).then(function(response) {
+        console.log(response.data);
+        $scope.teamInfo = response.data;
+    }, function(response) {
+        $scope.teamInfo = {
+            name: "Error getting name",
+            robotName: "Error getting robot name"
+        };
+    });
 
     $http.get('php/getPitData.php', {
         params: {
@@ -531,7 +545,21 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
     $scope.commentSection = {
         comments: []
     }
-
+    
+    $http.get("php/getTeamInfo.php", {
+        params: {
+            teamNumber: $routeParams.teamNumber
+        }
+    }).then(function(response) {
+        console.log(response.data);
+        $scope.teamInfo = response.data;
+    }, function(response) {
+        $scope.teamInfo = {
+            name: "Error getting name",
+            robotName: "Error getting robot name"
+        };
+    });
+    
     $http.get("php/team.php", {
         params: {
             teamNumber: $routeParams.teamNumber

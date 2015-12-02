@@ -1,5 +1,27 @@
 <?php
 
+function getTeamInfo($teamNumber) {
+    include("../config/config.php");
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://frc-api.usfirst.org/v2.0/$tournamentYear/teams?teamNumber=$teamNumber");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array (
+        "Accept: application/json",
+        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
+    ));
+
+    $responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["teams"][0];
+    curl_close($ch);
+    die(json_encode(array (
+        "name" => $responsejson["nameShort"],
+        "robotName" => $responsejson["robotName"]
+    )));
+}
+
 function validateToken($db, $token) {
     $query = "SELECT * FROM sessions WHERE token = ?";
     if($stmt = $db->prepare($query)) {
@@ -157,16 +179,21 @@ function checkForUser($db, $username) {
 
 function updateQualificationWagers($db, $matchNum) {
     $query = "SELECT * FROM `wagers` WHERE matchPredicted = ?";
-    $options = array("timeout"=>2);
     include("../config/config.php");
-    $request = new HttpRequest("https://frc-api.usfirst.org/v2.0/2015/matches/" . $tournamentKey . "?tournamentLevel=qual&matchNumber=" . $matchNum);
-    $request->setOptions($options);
-    $request->addHeaders(array(
-                               "Accept" => "application/json",
-                               "Authorization" => base64_encode($authUser . ":" . $authToken)
-                               ));
-    $request->send();
-    $responsejson = json_decode($request->getResponseBody(), true)["Matches"];
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://frc-api.usfirst.org/v2.0/$tournamentYear/matches/" . $tournamentKey . "?tournamentLevel=qual&matchNumber=" . $matchNum);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array (
+        "Accept: application/json",
+        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
+    ));
+
+    $responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["Matches"];
+    curl_close($ch);
     if(!empty($responsejson["0"])) {
         $matchData = $responsejson["0"];
 
