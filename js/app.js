@@ -194,7 +194,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
     };
 });
 
-app.controller('PitFormController', function ($scope, $http, $window) {
+app.controller('PitFormController', function ($rootScope, $scope, $http, $window) {
     'use strict';
 
     $(document).ready(function () {
@@ -217,8 +217,7 @@ app.controller('PitFormController', function ($scope, $http, $window) {
     };
 
     $scope.pitFormData = {
-        name: $rootScope.user.name,
-        token: $window.sessionStorage["token"]
+        name: $rootScope.user.name
     };
 
     $scope.pictures = [];
@@ -274,8 +273,7 @@ app.controller('PitFormController', function ($scope, $http, $window) {
                 console.log(response.data);
                 $('body').scrollTop(0);
                 $scope.pitFormData = {
-                    name: $rootScope.user.name,
-                    token: $window.sessionStorage["token"]
+                    name: $rootScope.user.name
                 };
                 $scope.pictures = [];
                 $scope.picNum = [];
