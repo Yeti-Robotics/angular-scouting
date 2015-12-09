@@ -1,6 +1,6 @@
 # Scouting Site To-Do list
 
-- [ ] Make a new table for team information gathered from the API to reduce number of requests
+- [X] Make a new table for team information gathered from the API to reduce number of requests
 - [ ] Make another php page that aggregates the details of each match
 - [X] Design wager system w/ sign in number & password
   - [X] Store session tokens in database to stay logged in on reload
