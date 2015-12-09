@@ -68,34 +68,6 @@ CREATE TABLE `scouters` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `scout_data`
---
-
-DROP TABLE IF EXISTS `scout_data`;
-CREATE TABLE `scout_data` (
-  `scout_data_id` int(11) NOT NULL,
-  `team` int(11) NOT NULL,
-  `match_number` int(11) DEFAULT NULL,
-  `comments` text,
-  `robot_moved` tinyint(1) NOT NULL,
-  `totes_auto` int(11) NOT NULL,
-  `cans_auto` int(11) NOT NULL,
-  `coopertition` tinyint(1) NOT NULL,
-  `coopertition_totes` int(11) NOT NULL,
-  `score` int(11) DEFAULT NULL,
-  `rating` int(11) NOT NULL DEFAULT '1',
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `name` text NOT NULL,
-  `cans_from_middle` tinyint(1) NOT NULL,
-  `totes_from_landfill` tinyint(1) NOT NULL,
-  `totes_from_human` tinyint(1) NOT NULL,
-  `cans_auto_origin` tinyint(4) NOT NULL,
-  `in_auto_zone` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `sessions`
 --
 
@@ -131,6 +103,34 @@ CREATE TABLE `team_info` (
   `team_number` int(11) DEFAULT NULL,
   `team_name` text NOT NULL,
   `robot_name` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `scout_data`
+--
+
+DROP TABLE IF EXISTS `scout_data`;
+CREATE TABLE `scout_data` (
+  `scout_data_id` int(11) NOT NULL,
+  `team` int(11) NOT NULL,
+  `match_number` int(11) DEFAULT NULL,
+  `comments` text,
+  `robot_moved` tinyint(1) NOT NULL,
+  `totes_auto` int(11) NOT NULL,
+  `cans_auto` int(11) NOT NULL,
+  `coopertition` tinyint(1) NOT NULL,
+  `coopertition_totes` int(11) NOT NULL,
+  `score` int(11) DEFAULT NULL,
+  `rating` int(11) NOT NULL DEFAULT '1',
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `name` text NOT NULL,
+  `cans_from_middle` tinyint(1) NOT NULL,
+  `totes_from_landfill` tinyint(1) NOT NULL,
+  `totes_from_human` tinyint(1) NOT NULL,
+  `cans_auto_origin` tinyint(4) NOT NULL,
+  `in_auto_zone` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
