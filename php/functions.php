@@ -1,25 +1,71 @@
 <?php
 
 function getTeamInfo($teamNumber) {
-    include("../config/config.php");
-    $ch = curl_init();
+    $robotInfo = array(
+        "teamNumber" => 0,
+        "name" => "",
+        "robotName" => ""
+    );
+    
+    include("connect.php");
+    $query = "SELECT * FROM team_info WHERE team_number = ?";
+    if($stmt = $db->prepare($query)) {
+        $stmt->bind_param("i", $teamNumber);
+        $stmt->execute();
+        $stmt->store_result();
+        if($stmt->num_rows == 0) {
+            include("../config/config.php");
+            $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://frc-api.usfirst.org/v2.0/$tournamentYear/teams?teamNumber=$teamNumber");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HEADER, false);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+            curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/teams?teamNumber=$teamNumber");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HEADER, false);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 2);
 
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array (
-        "Accept: application/json",
-        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
-    ));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array (
+                "Accept: application/json",
+                "Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
+            ));
 
-    $responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["teams"][0];
-    curl_close($ch);
-    die(json_encode(array (
-        "name" => $responsejson["nameShort"],
-        "robotName" => $responsejson["robotName"]
-    )));
+            $responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["teams"][0];
+            curl_close($ch);
+            
+            $robotInfo["teamNumber"] = intval($teamNumber);
+            $robotInfo["name"] = $responsejson["nameShort"] != null ? $responsejson["nameShort"] : "N/A";
+            $robotInfo["robotName"] = $responsejson["robotName"] != null ? $responsejson["robotName"] : "N/A";
+            
+            $query = "INSERT INTO team_info (team_number, team_name, robot_name) VALUES (?, ?, ?)";
+            if($stmt = $db->prepare($query)) {
+                $stmt->bind_param("iss", $teamNumber, $robotInfo["name"], $robotInfo["robotName"]);
+                $stmt->execute();
+                if ($stmt->error) {
+                    header('HTTP/1.1 500 SQL Error', true, 500);
+                    $db->close();
+                    die('{"message":"'.$stmt->error.'"}');
+                }
+            }
+        } else {
+            $query = "SELECT * FROM team_info WHERE team_number = ?";
+            if($stmt = $db->prepare($query)) {
+                $stmt->bind_param("i", $teamNumber);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                while($row = $result->fetch_array()) {
+                    $robotInfo["teamNumber"] = intval($teamNumber);
+                    $robotInfo["name"] = $row["team_name"];
+                    $robotInfo["robotName"] = $row["robot_name"];
+                }
+            } else {
+                header('HTTP/1.1 500 SQL Error', true, 500);
+                die ( '{"message":"Failed creating statement"}' );
+            }
+        }
+        
+        die(json_encode($robotInfo));
+    } else {
+        header('HTTP/1.1 500 SQL Error', true, 500);
+        die ( '{"message":"Failed creating statement"}' );
+    }
 }
 
 function validateToken($db, $token) {
@@ -201,7 +247,7 @@ function updateQualificationWagers($db, $matchNum) {
     include("../config/config.php");
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://frc-api.usfirst.org/v2.0/$tournamentYear/matches/" . $tournamentKey . "?tournamentLevel=qual&matchNumber=" . $matchNum);
+    curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/matches/" . $tournamentKey . "?tournamentLevel=qual&matchNumber=" . $matchNum);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HEADER, false);
     curl_setopt($ch, CURLOPT_TIMEOUT, 2);

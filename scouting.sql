@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.4.14
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2015 at 03:41 AM
--- Server version: 10.1.8-MariaDB
--- PHP Version: 5.6.14
+-- Generation Time: Dec 09, 2015 at 01:50 AM
+-- Server version: 5.6.26
+-- PHP Version: 5.6.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -123,6 +123,19 @@ CREATE TABLE `stacks` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `team_info`
+--
+
+DROP TABLE IF EXISTS `team_info`;
+CREATE TABLE `team_info` (
+  `team_number` int(11) DEFAULT NULL,
+  `team_name` text NOT NULL,
+  `robot_name` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `wagers`
 --
 
@@ -189,7 +202,7 @@ ALTER TABLE `pit_pictures`
 -- AUTO_INCREMENT for table `scouters`
 --
 ALTER TABLE `scouters`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `scout_data`
 --
