@@ -115,7 +115,7 @@ function isUserAdmin($db, $token) {
             $stmt->execute();
             $result = $stmt->get_result();
             while($row = $result->fetch_array()) {
-				include("../config/config.php");
+				//include("../config/config.php");
 				//return ($row[5] == $adminUsername && $row[6] == $adminPswdHash);
 				return true;
             }

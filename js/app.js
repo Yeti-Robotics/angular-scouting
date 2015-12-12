@@ -47,8 +47,9 @@ app.run(function ($rootScope, $location, $http, $window) {
 	}, function () {
 		if ($location.path() == '/wager') {
 			$rootScope.validateLogin();
-		} else if ($location.path() == '/admin' && $rootScope.user.name != 'admin') {
+		} else if ($location.path() == '/admin' && $rootScope.user.username != 'admin') {
 			console.log("If you are looking at this, then you probably tried to force your way in here. If you tried to force your way in here, you could probably find the funciton that logged this. But be warned. Our security is more complicated than an if statement, and deeper then some client-side javascript. If you think you can hack this, then Game On. (But seriously don't cause I don't want to deal with incorrect data)");
+			$location.path('/');
 		}
 	});
 });
@@ -79,7 +80,7 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
 			console.log(result);
 			$window.sessionStorage["token"] = result.token;
 			$rootScope.user.name = result.name;
-			$rootScope.user.username = $scope.scouterId;
+			$rootScope.user.username = $scope.scouterUsername;
 			$rootScope.loggedIn = true;
 			$location.path('/wager');
 		}, function (response) {
