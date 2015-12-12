@@ -11,4 +11,8 @@ $tournamentYear = 2015;
 $authUser = "user";
 $authToken = "token";
 $apiServer = "https://frc-staging-api.usfirst.org/v2.0";
+
+// Admin Account details
+$adminUsername = "admin";
+$adminPswdHash = "";
 ?>
