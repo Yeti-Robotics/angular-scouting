@@ -1,49 +1,51 @@
 <?php
+function updateTeamInfo($db, $teamNumber) {
+	$ch = curl_init();
+	include("../config/config.php");
+	curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/teams?teamNumber=$teamNumber");
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_HEADER, false);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 2);
 
-function getTeamInfo($teamNumber) {
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array (
+		"Accept: application/json",
+		"Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
+	));
+
+	$responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["teams"][0];
+	curl_close($ch);
+
+	$robotInfo["teamNumber"] = intval($teamNumber);
+	$robotInfo["name"] = $responsejson["nameShort"] != null ? $responsejson["nameShort"] : "N/A";
+	$robotInfo["robotName"] = $responsejson["robotName"] != null ? $responsejson["robotName"] : "N/A";
+
+	$query = "INSERT INTO team_info (team_number, team_name, robot_name) VALUES (?, ?, ?)";
+	if($stmt = $db->prepare($query)) {
+		$stmt->bind_param("iss", $teamNumber, $robotInfo["name"], $robotInfo["robotName"]);
+		$stmt->execute();
+		if ($stmt->error) {
+			header('HTTP/1.1 500 SQL Error', true, 500);
+			$db->close();
+			die('{"message":"'.$stmt->error.'"}');
+		}
+	}
+	return $robotInfo;
+}
+
+function getTeamInfo($db, $teamNumber) {
     $robotInfo = array(
         "teamNumber" => 0,
         "name" => "",
         "robotName" => ""
     );
-    
-    include("connect.php");
+
     $query = "SELECT * FROM team_info WHERE team_number = ?";
     if($stmt = $db->prepare($query)) {
         $stmt->bind_param("i", $teamNumber);
         $stmt->execute();
         $stmt->store_result();
         if($stmt->num_rows == 0) {
-            include("../config/config.php");
-            $ch = curl_init();
-
-            curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/teams?teamNumber=$teamNumber");
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HEADER, false);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 2);
-
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array (
-                "Accept: application/json",
-                "Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
-            ));
-
-            $responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["teams"][0];
-            curl_close($ch);
-            
-            $robotInfo["teamNumber"] = intval($teamNumber);
-            $robotInfo["name"] = $responsejson["nameShort"] != null ? $responsejson["nameShort"] : "N/A";
-            $robotInfo["robotName"] = $responsejson["robotName"] != null ? $responsejson["robotName"] : "N/A";
-            
-            $query = "INSERT INTO team_info (team_number, team_name, robot_name) VALUES (?, ?, ?)";
-            if($stmt = $db->prepare($query)) {
-                $stmt->bind_param("iss", $teamNumber, $robotInfo["name"], $robotInfo["robotName"]);
-                $stmt->execute();
-                if ($stmt->error) {
-                    header('HTTP/1.1 500 SQL Error', true, 500);
-                    $db->close();
-                    die('{"message":"'.$stmt->error.'"}');
-                }
-            }
+			$robotInfo = updateTeamInfo($db, $teamNumber);
         } else {
             $query = "SELECT * FROM team_info WHERE team_number = ?";
             if($stmt = $db->prepare($query)) {
@@ -94,6 +96,27 @@ function getSessionUser($db, $token) {
             $result = $stmt->get_result();
             while($row = $result->fetch_array()) {
                 return $row[0];
+            }
+        } else {
+            header('HTTP/1.1 500 SQL Error', true, 500);
+            die ( '{"message":"Failed creating statement"}' );
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+function isUserAdmin($db, $token) {
+    $query = "SELECT * FROM sessions LEFT JOIN scouters ON sessions.id = scouters.id WHERE token = ?";
+    if (validateToken($db, $token)) {
+        if($stmt = $db->prepare($query)) {
+            $stmt->bind_param("s", $token);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while($row = $result->fetch_array()) {
+				include("../config/config.php");
+				return ($row[5] == $adminUsername && $row[6] == $adminPswdHash);
             }
         } else {
             header('HTTP/1.1 500 SQL Error', true, 500);
@@ -229,7 +252,7 @@ function getName($db, $username, $pswdHash) {
 }
 
 function checkForUser($db, $username) {
-	$query = "SELECT name FROM scouters WHERE name = ?";
+	$query = "SELECT username FROM scouters WHERE username = ?";
 	if($stmt = $db->prepare($query)) {
 		$stmt->bind_param("s", $username);
         	$stmt->execute();
