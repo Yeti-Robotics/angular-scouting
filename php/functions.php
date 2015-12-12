@@ -115,9 +115,8 @@ function isUserAdmin($db, $token) {
             $stmt->execute();
             $result = $stmt->get_result();
             while($row = $result->fetch_array()) {
-				//include("../config/config.php");
-				//return ($row[5] == $adminUsername && $row[6] == $adminPswdHash);
-				return true;
+				include("../config/config.php");
+				return ($row[5] == $adminUsername && $row[6] == $adminPswdHash);
             }
         } else {
             header('HTTP/1.1 500 SQL Error', true, 500);
