@@ -12,4 +12,4 @@ if(isUserAdmin($db, $postData["token"])) {
 			break;
 	}
 }
-?>+s
+?>
