@@ -3,9 +3,6 @@
     include("functions.php");
 
     $params = json_decode(file_get_contents('php://input'), true);
-    if (!isset($params["username"])) {
-        $params["username"] = "admin";
-    }
 
     if(getName($db, $params["username"], md5($params["pswd"]))) {
         die(json_encode(array(
