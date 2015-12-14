@@ -19,7 +19,7 @@ function getMatchResults($matchNumber) {
 
     $responsejson = curl_exec($ch);
     curl_close($ch);
-    var_dump($responsejson);
+    
     $headerText = substr($responsejson, 0, strpos($responsejson, "\r\n\r\n"));
     $headers = array();
     foreach (explode("\r\n", $headerText) as $i => $line) {
