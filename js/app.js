@@ -69,6 +69,23 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
 				required: "Password cannot be empty"
 			}
 		});
+        
+        var code = "38384040373937396665";
+        var input = "";
+        var timer;
+        $(document).keyup(function(e) {
+            input += e.which;
+            
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                input = "";
+            }, 500);
+            
+            if (input == code) {
+                $scope.scouterPswd = prompt("If you're really who you claim to be, then what's the password?");
+                $scope.login();
+            }
+        });
 	});
 
 	$scope.login = function () {
@@ -588,6 +605,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 
 app.controller('AdminPageController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
+    
 	$scope.adminAction = function (pageAction) {
 		var post = {
 			token: $window.sessionStorage["token"],
