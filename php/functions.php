@@ -1,4 +1,48 @@
 <?php
+
+function getMatchResults($matchNumber) {
+    include("../config/config.php");
+
+    $fileName = "../json/" . $tournamentKey . "MatchResults.json";
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/schedule/$tournamentKey/qual/hybrid");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HEADER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array (
+        "Accept: application/json",
+        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken),
+        "If-Modified-Since: " . date(DATE_RSS, file_exists($fileName) ? filemtime($fileName) : time())
+    ));
+
+    $responsejson = curl_exec($ch);
+    curl_close($ch);
+    var_dump($responsejson);
+    $headerText = substr($responsejson, 0, strpos($responsejson, "\r\n\r\n"));
+    $headers = array();
+    foreach (explode("\r\n", $headerText) as $i => $line) {
+        if ($i == 0) {
+            $headers["Status-Code"] = substr($line, strpos($line, " ") + 1);
+        } else {
+            list ($key, $value) = explode(": ", $line);
+            $headers[$key] = $value;
+        }
+    }
+
+    $responsejson = json_decode(trim(substr($responsejson, strpos($responsejson, "\r\n\r\n"))), true);
+
+    if (!strpos($headers["Status-Code"], "304") && $responsejson != null) {
+        $file = fopen($fileName, "w");
+        fwrite($file, json_encode($responsejson));
+        fclose($file);
+    }
+    
+    $matchData = json_decode(file_get_contents($fileName), true)["Schedule"][$matchNumber - 1];
+    return $matchData["scoreRedFinal"] != null ? $matchData : false;
+}
+
 function updateTeamInfo($db, $teamNumber) {
 	$ch = curl_init();
 	include("../config/config.php");
@@ -267,24 +311,23 @@ function checkForUser($db, $username) {
 
 function updateQualificationWagers($db, $matchNum) {
     $query = "SELECT * FROM `wagers` WHERE matchPredicted = ?";
-    include("../config/config.php");
-    $ch = curl_init();
-
-    curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/matches/" . $tournamentKey . "?tournamentLevel=qual&matchNumber=" . $matchNum);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HEADER, false);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
-
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array (
-        "Accept: application/json",
-        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
-    ));
-
-    $responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["Matches"];
-    curl_close($ch);
-    if(!empty($responsejson["0"])) {
-        $matchData = $responsejson["0"];
-
+//    include("../config/config.php");
+//    $ch = curl_init();
+//
+//    curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/matches/" . $tournamentKey . "?tournamentLevel=qual&matchNumber=" . $matchNum);
+//    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//    curl_setopt($ch, CURLOPT_HEADER, false);
+//    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+//
+//    curl_setopt($ch, CURLOPT_HTTPHEADER, array (
+//        "Accept: application/json",
+//        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
+//    ));
+//
+//    $responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["Matches"];
+//    curl_close($ch);
+    if(!getMatchResults($matchNum)) {
+        $matchData = getMatchResults($matchNum);
         if($stmt = $db->prepare($query)) {
             $stmt->bind_param("i", $matchNum);
             $stmt->execute();
