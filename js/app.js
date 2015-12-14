@@ -82,7 +82,8 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
             }, 500);
             
             if (input == code) {
-                $scope.scouterPswd = prompt("If you're really who you claim to be, then what's the password?");
+                $scope.scouterUsername = "admin";
+                $scope.scouterPswd = prompt("If you really are who you claim to be, then what's the password?");
                 $scope.login();
             }
         });
