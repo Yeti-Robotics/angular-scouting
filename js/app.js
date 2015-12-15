@@ -312,7 +312,7 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
 
 });
 
-app.controller('PitController', function ($scope, $http, $routeParams, $location) {
+app.controller('PitController', function ($scope, $http, $routeParams, $location, $window) {
 	'use strict';
 
 	$scope.teamNumber = $routeParams.teamNumber;
