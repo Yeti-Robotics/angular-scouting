@@ -326,8 +326,8 @@ function updateQualificationWagers($db, $matchNum) {
 //
 //    $responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["Matches"];
 //    curl_close($ch);
-    if(!getMatchResults($matchNum)) {
-        $matchData = getMatchResults($matchNum);
+    $matchData = getMatchResults($matchNum);
+    if (!$matchData) {
         if($stmt = $db->prepare($query)) {
             $stmt->bind_param("i", $matchNum);
             $stmt->execute();
