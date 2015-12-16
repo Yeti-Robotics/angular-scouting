@@ -408,6 +408,11 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 	'use strict';
 	$scope.sortType = 'rating';
 	$scope.sortReverse = false;
+    
+    $scope.filterTeams = function(value) {
+        var searchRegExp = new RegExp($scope.search, "i");
+        return value.name.match(searchRegExp) || value.team.match(searchRegExp);
+    }
 
 	$http.get('php/list.php').then(function (response) {
 		$scope.data = response.data;
@@ -558,20 +563,6 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	$scope.commentSection = {
 		comments: []
 	}
-
-	$http.get("php/getTeamInfo.php", {
-		params: {
-			teamNumber: $routeParams.teamNumber
-		}
-	}).then(function (response) {
-		console.log(response.data);
-		$scope.teamInfo = response.data;
-	}, function (response) {
-		$scope.teamInfo = {
-			name: "Error getting name",
-			robotName: "Error getting robot name"
-		};
-	});
 
 	$http.get("php/team.php", {
 		params: {

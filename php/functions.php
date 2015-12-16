@@ -107,7 +107,7 @@ function getTeamInfo($db, $teamNumber) {
             }
         }
         
-        die(json_encode($robotInfo));
+        return json_encode($robotInfo);
     } else {
         header('HTTP/1.1 500 SQL Error', true, 500);
         die ( '{"message":"Failed creating statement"}' );

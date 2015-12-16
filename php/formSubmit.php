@@ -87,5 +87,8 @@ if($stmt = $db->prepare($query)) {
     $db->close();
 	die ( '{"message":"Failed creating statement"}' );
 }
+
+updateTeamInfo($db, $postData["team_number"]);
+
 $db->close();
 ?>
