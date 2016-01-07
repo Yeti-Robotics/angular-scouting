@@ -1,17 +1,34 @@
-<div class="container-fluid">
-    <h1>Welcome To the Yeti Scouting page</h1>
-    <div ng-show="showRedirectMessage" role="alert" class="alert alert-danger alert-dismissible">
-        <button type="button" data-dismiss="alert" aria-label="Close" class="close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <strong>You must be logged in to scout or place a bet</strong>
+<form id="registerForm" ng-submit="register()">
+    <div class="container-fluid">
+        <h1>Welcome To the Yeti Scouting page</h1>
+        <div ng-show="showRedirectMessage" role="alert" class="alert alert-danger alert-dismissible">
+            <button type="button" data-dismiss="alert" aria-label="Close" class="close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <strong>You must be logged in to scout or place a bet</strong>
+        </div>
+            <div class="form-group">
+               <label for="firstName">First Name</label>
+                <input type="text" name="firstName" class="form-control" id="firstName" aria-label="..." placeholder="Enter your first name" ng-model="firstName" required>
+            </div>
+            <div class="form-group">
+               <label for="lastName">Last Name</label>
+                <input type="text" name="lastName" class="form-control" id="lastName" aria-label="..." placeholder="Enter your last name" ng-model="lastName" required>
+            </div>
+            <div class="form-group">
+               <label for="username">Username</label>
+                <input type="text" name="username" class="form-control" id="username" aria-label="..." placeholder="Enter a Username" ng-model='username' required>
+            </div>
+            <div class="form-group">
+               <label for="password">Password</label>
+                <input type="password" name="password" class="form-control" id="password" aria-label="..." placeholder="Enter a new password" ng-model="password" required>
+            </div>
+            <div class="form-group">
+               <label for="confirmPassword">Confirm Password</label>
+                <input type="password" name="confirmPassword" class="form-control" id="confirmPassword" aria-label="..." placeholder="Confirm your new password" ng-model="confirmPassword" required>
+            </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-block btn-primary">Register</button>
+        </div>
     </div>
-    <div class="form-group">
-        <input type="text" name="username" class="form-control" id="username" aria-label="..." placeholder="Enter a Username" ng-model='username'>
-        <input type="password" name="password" class="form-control" id="password" aria-label="..." placeholder="Enter a new password" ng-model="password">
-        <input type="password" name="password" class="form-control" id="password" aria-label="..." placeholder="Confirm your new password" ng-model="confirmPassword">
-    </div>
-    <div class="form-group">
-        <button type="button" ng-click="validate() ? register() : ''" class="btn btn-block btn-primary">Submit Registration</button>
-    </div>
-</div>
+</form>

@@ -162,6 +162,7 @@ WHERE t1.team=?";
         header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
         die("Failed to upload points");
      }
+     $response['teamInfo'] = json_decode(getTeamInfo($db, $teamNumber), true);
 die(json_encode($response));
 } else {
     header($_SERVER['SERVER_PROTOCOL'] . '403 No headers', true, 403);

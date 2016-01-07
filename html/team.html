@@ -1,7 +1,10 @@
 <div class="container-fluid">
-    <h2 class="page-header">Team {{teamNumber}}
+    <h2 class="page-header">Team {{teamNumber}}, {{data.teamInfo.name}}
        <br/>
-        <a class="small" ng-href="#/pit/{{teamNumber}}">Team {{teamNumber}}'s pit</a>
+       <small>Robot name: {{data.teamInfo.robotName}}</small>
+       <br/>
+       <br/>
+        <a class="small" ng-href="#/pit/{{teamNumber}}">{{data.teamInfo.name}}'<span ng-show="teamInfo.name[teamInfo.name.length - 1] != 's'">s</span> pit</a>
     </h2>
     <br/>
     <fieldset>

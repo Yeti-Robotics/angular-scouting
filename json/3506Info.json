@@ -1,0 +1,18 @@
+{
+    "teams": [{
+        "teamNumber": 3506,
+        "nameFull": "CPCC / IEEE Charlotte Section / Leidos / BASF / Bank of America / CapTech Consulting / Celgard, LLC / Concept Systems, Inc. / D.R.Joseph Incorporated / Duke Energy / Liqui-Cel / Piedmont Natural Gas / Rosemary Keeney / Transbotics / Van Buren Law, PLLC / Beekman Family - Tetra Tech / Greiner Bio-One / The Koh Family / Medtronic & Network for Good / M.R. Snyder Corporation / Skookum / Unger Family - Duke Energy / Yara Family / Packaging Corporation of America / Unimin Corporation / Kenneth Stoyack / Linda G Percy / PVC Fittings Online / Commercial Industrial Supply / David M Goodman / Sabic Polymershapes / Eastern Metal Supply / Enventys / YETI, Inc. & Queen City Robotics Alliance",
+        "nameShort": "YETI Robotics",
+        "city": "Charlotte",
+        "stateProv": "North Carolina",
+        "country": "USA",
+        "website": null,
+        "rookieYear": 2011,
+        "robotName": "Frost Byte",
+        "districtCode": null
+    }],
+    "teamCountTotal": 1,
+    "teamCountPage": 1,
+    "pageCurrent": 1,
+    "pageTotal": 1
+}

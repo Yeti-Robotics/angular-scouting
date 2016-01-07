@@ -18,9 +18,12 @@
 </div>
 
 <div class="container-fluid">
-    <h2 class="page-header">Team {{teamNumber}}
-    <br/>
-    <a class="small" ng-href="#/team/{{teamNumber}}">Team {{teamNumber}}'s match data</a>
+    <h2 class="page-header">Team {{teamNumber}}, {{teamInfo.name}}
+       <br/>
+       <small>Robot name: {{teamInfo.robotName}}</small>
+       <br/>
+       <br/>
+        <a class="small" ng-href="#/team/{{teamNumber}}">{{teamInfo.name}}'<span ng-show="teamInfo.name[teamInfo.name.length - 1] != 's'">s</span> match data</a>
     </h2>
     <div class="container-fluid" ng-show="!noPictures">
         <div class="row" ng-show="pitData.pictures.length > 1">

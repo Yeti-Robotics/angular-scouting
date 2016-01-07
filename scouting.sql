@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2015 at 07:01 PM
+-- Generation Time: Dec 09, 2015 at 01:50 AM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -14,6 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `scouting`
@@ -25,7 +26,8 @@ SET time_zone = "+00:00";
 -- Table structure for table `pit_comments`
 --
 
-CREATE TABLE IF NOT EXISTS `pit_comments` (
+DROP TABLE IF EXISTS `pit_comments`;
+CREATE TABLE `pit_comments` (
   `pit_scout_data_id` int(11) NOT NULL,
   `team_number` int(11) NOT NULL,
   `pit_comments` mediumtext NOT NULL,
@@ -39,7 +41,8 @@ CREATE TABLE IF NOT EXISTS `pit_comments` (
 -- Table structure for table `pit_pictures`
 --
 
-CREATE TABLE IF NOT EXISTS `pit_pictures` (
+DROP TABLE IF EXISTS `pit_pictures`;
+CREATE TABLE `pit_pictures` (
   `pit_scout_data_id` int(11) NOT NULL,
   `team_number` int(11) NOT NULL,
   `pic_num` int(11) DEFAULT NULL,
@@ -53,11 +56,53 @@ CREATE TABLE IF NOT EXISTS `pit_pictures` (
 -- Table structure for table `scouters`
 --
 
-CREATE TABLE IF NOT EXISTS `scouters` (
+DROP TABLE IF EXISTS `scouters`;
+CREATE TABLE `scouters` (
   `id` int(6) NOT NULL,
   `name` tinytext NOT NULL,
+  `username` text NOT NULL,
   `pswd` tinytext NOT NULL,
   `byteCoins` int(11) NOT NULL DEFAULT '200'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sessions`
+--
+
+DROP TABLE IF EXISTS `sessions`;
+CREATE TABLE `sessions` (
+  `id` int(11) NOT NULL,
+  `token` text NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stacks`
+--
+
+DROP TABLE IF EXISTS `stacks`;
+CREATE TABLE `stacks` (
+  `scout_data_id` int(11) NOT NULL,
+  `totes` int(11) NOT NULL,
+  `cap_state` int(11) NOT NULL,
+  `cap_height` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `team_info`
+--
+
+DROP TABLE IF EXISTS `team_info`;
+CREATE TABLE `team_info` (
+  `team_number` int(11) DEFAULT NULL,
+  `team_name` text NOT NULL,
+  `robot_name` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -66,7 +111,8 @@ CREATE TABLE IF NOT EXISTS `scouters` (
 -- Table structure for table `scout_data`
 --
 
-CREATE TABLE IF NOT EXISTS `scout_data` (
+DROP TABLE IF EXISTS `scout_data`;
+CREATE TABLE `scout_data` (
   `scout_data_id` int(11) NOT NULL,
   `team` int(11) NOT NULL,
   `match_number` int(11) DEFAULT NULL,
@@ -90,14 +136,17 @@ CREATE TABLE IF NOT EXISTS `scout_data` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `stacks`
+-- Table structure for table `wagers`
 --
 
-CREATE TABLE IF NOT EXISTS `stacks` (
-  `scout_data_id` int(11) NOT NULL,
-  `totes` int(11) NOT NULL,
-  `cap_state` int(11) NOT NULL,
-  `cap_height` tinyint(4) NOT NULL
+DROP TABLE IF EXISTS `wagers`;
+CREATE TABLE `wagers` (
+  `associatedId` int(11) NOT NULL,
+  `wagerType` text NOT NULL,
+  `wageredByteCoins` int(11) NOT NULL,
+  `matchPredicted` int(11) NOT NULL,
+  `alliancePredicted` text,
+  `withenPoints` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

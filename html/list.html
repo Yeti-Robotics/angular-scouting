@@ -5,7 +5,7 @@
         }
     </style>
     <div class="form-group">
-        <input type="text" class="form-control" placeholder="Filter by team number" ng-model="search.team">
+        <input type="text" class="form-control" placeholder="Filter by team number or name" ng-model="search">
     </div>
     <table class="table table-hover">
         <thead>
@@ -13,6 +13,9 @@
                 <th ng-click="sortType = 'team'; sortReverse = !sortReverse">Team
                     <span ng-show="sortType == 'team' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
                     <span ng-show="sortType == 'team' && sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
+                <th ng-click="sortType = 'team'; sortReverse = !sortReverse">Team Name
+                    <span ng-show="sortType == 'teamName' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+                    <span ng-show="sortType == 'teamName' && sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
                 <th ng-click="sortType = 'avgStackHeight'; sortReverse = !sortReverse">Avg. Stack Height
                     <span ng-show="sortType == 'avgStackHeight' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
                     <span ng-show="sortType == 'avgStackHeight' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
@@ -28,8 +31,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="row in data | orderBy:sortType:sortReverse | filter:search:strict" >
+            <tr ng-repeat="row in data | orderBy:sortType:sortReverse | filter:filterTeams" >
                 <td><a href="#/team/{{row.team}}">{{row.team}}</a></td>
+                <td><a href="#/team/{{row.team}}">{{row.name}}</a></td>
                 <td>{{row.avgStackHeight}}</td>
                 <td>{{row.avgStacksPerMatch}}</td>
                 <td>{{row.highestStackMade}}</td>

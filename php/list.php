@@ -1,7 +1,8 @@
 <?php
 include ("connect.php");
+include ("functions.php");
 header('Content-Type: application/json');
-$query = "SELECT t1.team AS 'team', ROUND(t1.avg_height,2) AS 'avgStackHeight', ROUND(t2.avg_stacks,2) AS 'avgStacksPerMatch', IFNULL(MAX(max_totes), 0) AS 'highestStackMade', ROUND(rating,2) AS 'rating'
+$query = "SELECT t1.team AS 'team', t5.team_name AS 'name', ROUND(t1.avg_height,2) AS 'avgStackHeight', ROUND(t2.avg_stacks,2) AS 'avgStacksPerMatch', IFNULL(MAX(max_totes), 0) AS 'highestStackMade', ROUND(rating,2) AS 'rating'
 FROM (SELECT team, AVG(totes) AS avg_height, totes
 FROM scout_data
 LEFT JOIN stacks ON scout_data.scout_data_id=stacks.scout_data_id
@@ -21,6 +22,7 @@ LEFT JOIN (SELECT team, totes AS max_totes
 				WHERE totes > 0
 			    GROUP BY totes, cap_height, match_number
 				ORDER BY match_number, totes) AS t4 ON t4.team=t1.team
+LEFT JOIN (SELECT team_number, team_name FROM team_info) AS t5 ON t5.team_number=t1.team
 GROUP BY team";
 $result = $db->query ( $query );
 if ($result) {
@@ -30,13 +32,13 @@ if ($result) {
         $output[] = $row;
     }
         
-    echo(json_encode($output));
-    
 } else {
 	$db->close ();
     header('HTTP/1.1 500 SQL Error', true, 500);
 	die ( '{"error":"wasone"}' );
 }
+
+die(json_encode($output));
 
 $db->close ();
 

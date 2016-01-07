@@ -1,14 +1,276 @@
 <?php
 
-function checkPassword($db, $id, $pswd) {
-    $query = "SELECT pswd FROM `scouters` WHERE id = ?";
+function getMatchResults($matchNumber) {
+    include("../config/config.php");
+
+    $fileName = "../json/" . $tournamentKey . "MatchResults.json";
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/schedule/$tournamentKey/qual/hybrid");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HEADER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array (
+        "Accept: application/json",
+        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken),
+        "If-Modified-Since: " . date(DATE_RSS, file_exists($fileName) ? filemtime($fileName) : time())
+    ));
+
+    $responsejson = curl_exec($ch);
+    curl_close($ch);
+    
+    $headerText = substr($responsejson, 0, strpos($responsejson, "\r\n\r\n"));
+    $headers = array();
+    foreach (explode("\r\n", $headerText) as $i => $line) {
+        if ($i == 0) {
+            $headers["Status-Code"] = substr($line, strpos($line, " ") + 1);
+        } else {
+            list ($key, $value) = explode(": ", $line);
+            $headers[$key] = $value;
+        }
+    }
+
+    $responsejson = json_decode(trim(substr($responsejson, strpos($responsejson, "\r\n\r\n"))), true);
+
+    if (!strpos($headers["Status-Code"], "304") && $responsejson != null) {
+        $file = fopen($fileName, "w");
+        fwrite($file, json_encode($responsejson));
+        fclose($file);
+    }
+    
+    $matchData = json_decode(file_get_contents($fileName), true)["Schedule"][$matchNumber - 1];
+    return $matchData["scoreRedFinal"] != null ? $matchData : false;
+}
+
+function updateTeamInfo($db, $teamNumber) {
+	$ch = curl_init();
+	include("../config/config.php");
+	curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/teams?teamNumber=$teamNumber");
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_HEADER, false);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array (
+		"Accept: application/json",
+		"Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
+	));
+
+	$responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["teams"][0];
+	curl_close($ch);
+
+	$robotInfo["teamNumber"] = intval($teamNumber);
+	$robotInfo["name"] = $responsejson["nameShort"] != null ? $responsejson["nameShort"] : "N/A";
+	$robotInfo["robotName"] = $responsejson["robotName"] != null ? $responsejson["robotName"] : "N/A";
+
+	$query = "INSERT INTO team_info (team_number, team_name, robot_name) VALUES (?, ?, ?)";
+	if($stmt = $db->prepare($query)) {
+		$stmt->bind_param("iss", $teamNumber, $robotInfo["name"], $robotInfo["robotName"]);
+		$stmt->execute();
+		if ($stmt->error) {
+			header('HTTP/1.1 500 SQL Error', true, 500);
+			$db->close();
+			die('{"message":"'.$stmt->error.'"}');
+		}
+	}
+	return $robotInfo;
+}
+
+function getTeamInfo($db, $teamNumber) {
+    $robotInfo = array(
+        "teamNumber" => 0,
+        "name" => "",
+        "robotName" => ""
+    );
+
+    $query = "SELECT * FROM team_info WHERE team_number = ?";
+    if($stmt = $db->prepare($query)) {
+        $stmt->bind_param("i", $teamNumber);
+        $stmt->execute();
+        $stmt->store_result();
+        if($stmt->num_rows == 0) {
+			$robotInfo = updateTeamInfo($db, $teamNumber);
+        } else {
+            $query = "SELECT * FROM team_info WHERE team_number = ?";
+            if($stmt = $db->prepare($query)) {
+                $stmt->bind_param("i", $teamNumber);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                while($row = $result->fetch_array()) {
+                    $robotInfo["teamNumber"] = intval($teamNumber);
+                    $robotInfo["name"] = $row["team_name"];
+                    $robotInfo["robotName"] = $row["robot_name"];
+                }
+            } else {
+                header('HTTP/1.1 500 SQL Error', true, 500);
+                die ( '{"message":"Failed creating statement"}' );
+            }
+        }
+        
+        return json_encode($robotInfo);
+    } else {
+        header('HTTP/1.1 500 SQL Error', true, 500);
+        die ( '{"message":"Failed creating statement"}' );
+    }
+}
+
+function validateToken($db, $token) {
+    $query = "SELECT * FROM sessions WHERE token = ?";
+    if($stmt = $db->prepare($query)) {
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+        $stmt->store_result();
+        if($stmt->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        header('HTTP/1.1 500 SQL Error', true, 500);
+        die ( '{"message":"Failed creating statement"}' );
+    }
+}
+
+function getSessionUser($db, $token) {
+    $query = "SELECT name FROM sessions LEFT JOIN scouters ON sessions.id = scouters.id WHERE token = ?";
+    if (validateToken($db, $token)) {
+        if($stmt = $db->prepare($query)) {
+            $stmt->bind_param("s", $token);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while($row = $result->fetch_array()) {
+                return $row[0];
+            }
+        } else {
+            header('HTTP/1.1 500 SQL Error', true, 500);
+            die ( '{"message":"Failed creating statement"}' );
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+function isUserAdmin($db, $token) {
+    $query = "SELECT * FROM sessions LEFT JOIN scouters ON sessions.id = scouters.id WHERE token = ?";
+    if (validateToken($db, $token)) {
+        if($stmt = $db->prepare($query)) {
+            $stmt->bind_param("s", $token);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while($row = $result->fetch_array()) {
+				include("../config/config.php");
+				return ($row[5] == $adminUsername && $row[6] == $adminPswdHash);
+            }
+        } else {
+            header('HTTP/1.1 500 SQL Error', true, 500);
+            die ( '{"message":"Failed creating statement"}' );
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+function startSession($db, $username, $pswdHash) {
+    $query = "SELECT * FROM sessions WHERE id = ?";
+    $token = ($pswdHash . md5(time()));
+    if (checkPassword($db, $username, $pswdHash)) {
+        if($stmt = $db->prepare($query)) {
+            $stmt->bind_param("i", getUserId($db, $username, $pswdHash));
+            $stmt->execute();
+            $stmt->store_result();
+            if($stmt->num_rows > 0) {
+                $query = "UPDATE sessions SET token = ? WHERE id = ?";
+                if($stmt = $db->prepare($query)) {
+                    $stmt->bind_param("si", $token, getUserId($db, $username, $pswdHash));
+                    $stmt->execute();
+                    return $token;
+                } else {
+                    header('HTTP/1.1 500 SQL Error', true, 500);
+                    die ( '{"message":"Failed creating statement"}' );
+                }
+            } else {
+                $query = "INSERT INTO sessions (id, token) VALUES (?, ?)";
+                if($stmt = $db->prepare($query)) {
+                    $stmt->bind_param("is", getUserId($db, $username, $pswdHash), $token);
+                    $stmt->execute();
+                    return $token;
+                } else {
+                    header('HTTP/1.1 500 SQL Error', true, 500);
+                    die ( '{"message":"Failed creating statement"}' );
+                }
+            }
+        } else {
+            header('HTTP/1.1 500 SQL Error', true, 500);
+            die ( '{"message":"Failed creating statement"}' );
+        }
+    } else {
+        return false;
+    }
+    
+    $query = "INSERT INTO sessions (id, token) VALUES (?, ?)";
+    $token = ($pswdHash . md5(time()));
+    if (checkPassword($db, $username, $pswdHash)) {
+        if($stmt = $db->prepare($query)) {
+            $stmt->bind_param("is", getUserId($db, $username, $pswdHash), $token);
+            $stmt->execute();
+            return $token;
+        } else {
+            header('HTTP/1.1 500 SQL Error', true, 500);
+            die ( '{"message":"Failed creating statement"}' );
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+function getUserId($db, $username, $pswdHash) {
+    $query = "SELECT id FROM `scouters` WHERE username = ?";
+    if (checkPassword($db, $username, $pswdHash)) {
+        if($stmt = $db->prepare($query)) {
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while($row = $result->fetch_array()) {
+                return $row[0];
+            }
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+function getUserIdFromToken($db, $token) {
+	$query = "SELECT id FROM sessions WHERE token = ?";
+	if(validateToken($db, $token)) {
+		if($stmt = $db->prepare($query)) {
+            $stmt->bind_param("s", $token);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            while($row = $result->fetch_array()) {
+                return $row[0];
+            }
+        } else {
+            header('HTTP/1.1 500 SQL Error', true, 500);
+            die ( '{"message":"Failed creating statement"}' );
+        }
+	} else {
+        return false;
+    }
+}
+
+function checkPassword($db, $username, $pswdHash) {
+    $query = "SELECT pswd FROM `scouters` WHERE username = ?";
 
     if($stmt = $db->prepare($query)) {
-        $stmt->bind_param("i", $id);
+        $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
         while($row = $result->fetch_array()) {
-            if($row[0] == md5($pswd)) {
+            if($row[0] == $pswdHash) {
                 return true;
             }
         }
@@ -16,15 +278,14 @@ function checkPassword($db, $id, $pswd) {
     }
 }
 
-function getName($db, $id, $pswd) {
-    $query = "SELECT name FROM `scouters` WHERE id = ?";
-    if (checkPassword($db, $id, $pswd)) {
+function getName($db, $username, $pswdHash) {
+    $query = "SELECT name FROM `scouters` WHERE username = ?";
+    if (checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("i", $id);
+            $stmt->bind_param("s", $username);
             $stmt->execute();
             $result = $stmt->get_result();
             while($row = $result->fetch_array()) {
-                $db->close();
                 return $row[0];
             }
         }
@@ -35,16 +296,14 @@ function getName($db, $id, $pswd) {
 }
 
 function checkForUser($db, $username) {
-	$query = "SELECT name FROM `scouters WHERE name = ?";
+	$query = "SELECT username FROM scouters WHERE username = ?";
 	if($stmt = $db->prepare($query)) {
 		$stmt->bind_param("s", $username);
         	$stmt->execute();
         	$stmt->store_result();
         	if($stmt->num_rows > 0) {
-        		$db->close();
         		return true;
         	} else {
-        		$db->close();
         		return false;
         	}
 	}
@@ -52,18 +311,23 @@ function checkForUser($db, $username) {
 
 function updateQualificationWagers($db, $matchNum) {
     $query = "SELECT * FROM `wagers` WHERE matchPredicted = ?";
-    $options = array("timeout"=>2);
-    $request = new HttpRequest("https://frc-api.usfirst.org/v2.0/2015/matches/NCRE?tournamentLevel=qual&matchNumber=" . $matchNum);
-    $request->setOptions($options);
-    $request->addHeaders(array(
-                               "Accept" => "application/json",
-                               "Authorization" => base64_encode("user:token")
-                               ));
-    $request->send();
-    $responsejson = json_decode($request->getResponseBody(), true)["Matches"];
-    if(!empty($responsejson["0"])) {
-        $matchData = $responsejson["0"];
-
+//    include("../config/config.php");
+//    $ch = curl_init();
+//
+//    curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/matches/" . $tournamentKey . "?tournamentLevel=qual&matchNumber=" . $matchNum);
+//    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//    curl_setopt($ch, CURLOPT_HEADER, false);
+//    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+//
+//    curl_setopt($ch, CURLOPT_HTTPHEADER, array (
+//        "Accept: application/json",
+//        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
+//    ));
+//
+//    $responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["Matches"];
+//    curl_close($ch);
+    $matchData = getMatchResults($matchNum);
+    if (!$matchData) {
         if($stmt = $db->prepare($query)) {
             $stmt->bind_param("i", $matchNum);
             $stmt->execute();
@@ -121,21 +385,23 @@ function updateQualificationWagers($db, $matchNum) {
     error_log("Adding Byte Coins failed");
 }
 
-function getByteCoins($db, $id, $pswd) {
-    $query = "SELECT byteCoins FROM scouters WHERE id = ?";
-    if(checkPassword($db, $id, $pswd)) {
-        //addByteCoins(getByteCoinsToAdd($db, $id));
-        if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            while($row = $result->fetch_array()) {
-                $db->close();
-                die(json_encode($row[0]));
-            }
-        }
-    }
-    die("Getting Byte Coins failed");
+function getByteCoins($db, $token) {
+	if($id = getUserIdFromToken($db, $token)) {
+		$query = "SELECT byteCoins FROM scouters WHERE id = ?";
+		if($stmt = $db->prepare($query)) {
+			$stmt->bind_param("i", $id);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			while($row = $result->fetch_array()) {
+				die(json_encode($row[0]));
+			}
+		}
+		else {
+			die("{'message' : 'SQL Error'} ");
+		}
+	} else {
+		return false;
+	}
 }
 
 function getTeamStacksTable($db, $team){
