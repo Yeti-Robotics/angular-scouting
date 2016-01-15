@@ -21,80 +21,28 @@
         <fieldset>
             <legend>Autonomous</legend>
             <div class="form-group">
-                <label for="robot_moved">Did the robot move?</label>
+                <label for="robot_moved">Did the robot reach a defense?</label>
                 <input ng-model="formData.robot_moved" type="checkbox" ng-model="robot_moved">
                 <div ng-show="formData.robot_moved">
-                    <label for="totes_auto">How many totes in auto zone?</label>
-                    <select ng-model="formData.totes_auto" ng-init="formData.totes_auto = '0'" class="form-control">
+                    <div defenses_crossed_selector model-to="formData.auto_defense_crossed"></div>
+                    <label for="cans_auto">How many balls did it get into the opponents courtyard?</label>
+                    <select ng-model="formData.auto_balls_crossed" ng-init="formData.auto_balls_crossed = '0'" class="form-control">
                         <option value="0" selected="selected">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
-                    <label for="cans_auto">How many cans in auto zone?</label>
-                    <select ng-model="formData.cans_auto" ng-init="formData.cans_auto = '0'" class="form-control">
-                        <option value="0" selected="selected">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                    <label for="cans_auto_origin">Grabs how many cans from step?</label>
-                    <select ng-model="formData.cans_auto_origin" ng-init="formData.cans_auto_origin = '0'" class="form-control">
-                        <option value="0" selected="selected">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-                    <label for="in_auto_zone">Did it finish in the auto zone?</label>
-                    <input type="checkbox" ng-model="formData.in_auto_zone">
-                </div>
-            </div>
-
-        </fieldset>
-
-        <fieldset>
-            <legend>Coopertition</legend>
-            <div class="form-group">
-                <label for="coopertition_totes">How many totes?</label>
-                <select ng-model="formData.coopertition_totes" ng-init="formData.coopertition_totes = '0'">
-                    <option value="0" selected="selected">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-            </div>
-        </fieldset>
-
-        <fieldset>
-            <legend>Totes</legend>
-            <div class="form-group">
-                <label for="totes_from_landfill">Totes from landfill?</label>
-                <input type="checkbox" ng-model="formData.totes_from_landfill" />
-                <label for="totes_from_human">Totes from human player?</label>
-                <input type="checkbox" ng-model="formData.totes_from_human" />
-            </div>
-        </fieldset>
-
-        <fieldset>
-            <legend>Cans</legend>
-            <div class="form-group">
-                <label for="cans_from_middle">Grab cans from middle?</label>
-                <input type="checkbox" ng-model="formData.cans_from_middle" />
-            </div>
-        </fieldset>
-
-        <fieldset>
-            <legend>Stacks</legend>
-            <div class="form-group">
-                <div class="form-group">
-                    <button type="button" class="btn btn-block" ng-click="addStack()" onclick="">Add Stack</button>
-                </div>
-                <div ng-repeat="row in formData.stackRows.rows">
-                    <div stack remove-stack="removeStack(row)"></div>
+                    <div balls_scored_selector model-to="formData.auto_balls_scored"></div>
                 </div>
             </div>
         </fieldset>
+        
+        <fieldset>
+            <legend>Tele-Op</legend>
+            <div defenses_crossed_selector model-to="formData.teleop_defense_crossed"></div>
+            <div balls_scored_selector model-to="formData.teleop_balls_scored"></div>
+        </fieldset>
+        
         <fieldset>
             <legend>Misc.</legend>
             <div class="form-group">
