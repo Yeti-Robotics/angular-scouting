@@ -167,31 +167,41 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 
 app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
-
-	$scope.formData = {
-		stackRows: {
-			rows: []
-		},
-		name: $rootScope.user.name
+	
+	var emptyDefensesCrossedObj ={
+		portcullis:0,
+		cheval_de_frise:0,
+		moat:0,
+		ramparts:0,
+		drawbridge:0,
+		sally_port:0,
+		rock_wall:0,
+		rough_terrain:0,
+		low_bar:0
 	};
+	var emptyBallsScoredObj = {
+		high_goal = 0,
+		low_goal = 0
+	}
+	
+	$scope.templateFormData = {
+		robot_moved: false,
+		name: $rootScope.user.name,
+		auto_defense_crossed: emptyDefensesCrossedObj,
+		auto_balls_crossed: 0,
+		auto_balls_scored:emptyBallsScoredObj,
+		teleop_defense_crossed: emptyDefensesCrossedObj,
+		teleop_balls_scored: emptyBallsScoredObj,
+		rating: 1,
+		score: 0,
+		comments: ""
+	};
+	$scope.formData = $scope.templateFormData;
 
 	$(document).ready(function () {
 		$('#scouting_form').validate();
 		console.log('Inititalize validation');
 	});
-
-	$scope.addStack = function () {
-		$scope.formData.stackRows.rows.push({
-			stacks_totes: '0',
-			capped_stack: '0',
-			cap_height: '0'
-		});
-	};
-
-	$scope.removeStack = function (stack) {
-		var rowNum = $scope.formData.stackRows.rows.indexOf(stack);
-		$scope.formData.stackRows.rows.splice(rowNum, 1);
-	};
 
 	$scope.submit = function () {
 		if ($('#scouting_form').valid()) {
@@ -204,7 +214,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 				if ($('#scouting_form').prev().attr('id') != "success_message") {
 					$("#scouting_form").before('<div id="success_message" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"<span aria-hidden="true">&times;</span></button><strong>Success!</strong> Now do it again.</div>');
 				}
-				$scope.formData.stackRows.rows = [];
+				$scope.formData = $scope.templateFormData;
 			}, function (response) {
 				console.log("Error during submission");
 				console.log(response);
@@ -622,12 +632,24 @@ app.controller('AdminPageController', function ($rootScope, $scope, $http, $wind
 	}
 })
 
-app.directive('stack', function () {
+app.directive('defensesCrossedSelector ', function () {
 	'use strict';
 	return {
-		templateUrl: 'html/stack.html',
+		restrict: 'E',
+		templateUrl: 'html/defenseSelector.html'
 		scope: {
-			removeStack: '&'
+			defensesCrossed: '=modelTo'
+		}
+	};
+});
+
+app.directive('ballsScoredSelector ', function () {
+	'use strict';
+	return {
+		restrict: 'E',
+		templateUrl: 'html/ballsSelector.html',
+		scope: {
+			ballsScored: '=modelTo'
 		}
 	};
 });
