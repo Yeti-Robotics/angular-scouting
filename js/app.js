@@ -635,7 +635,6 @@ app.controller('AdminPageController', function ($rootScope, $scope, $http, $wind
 app.directive('defensesCrossedSelector', function () {
 	'use strict';
 	return {
-		restrict: 'E',
 		templateUrl: 'html/defenseSelector.html',
 		scope: {
 			defensesCrossed: '=modelTo'
@@ -645,7 +644,6 @@ app.directive('defensesCrossedSelector', function () {
 app.directive('ballsScoredSelector', function () {
 	'use strict';
 	return {
-		restrict: 'E',
 		templateUrl: 'html/ballsSelector.html',
 		scope: {
 			ballsScored: '=modelTo'
@@ -655,7 +653,6 @@ app.directive('ballsScoredSelector', function () {
 app.directive('goal', function () {
 	'use strict';
 	return {
-		restrict: 'E',
 		templateUrl: 'html/goal.html',
 		scope: {
 			type: '='
