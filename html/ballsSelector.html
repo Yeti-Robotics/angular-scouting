@@ -1,0 +1,14 @@
+<div class="well well-lg">
+	<div class="list-group">
+		<div ng-repeat="ball in ballsScored">
+			<div goal type="ball.goal"></div>
+		</div>
+	</div>
+	<div class="row">
+		<button class="col-xs-4 btn col-xs-offset-1" ng-click="ballsScored.high++; ballsScored.append({goal: 'High'});" type="button">Add high goal</button>
+		<button class="col-xs-4 btn col-xs-offset-2" ng-click="ballsScored.low++; ballsScored.append({goal: 'Low'});" type="button">Add low goal</button>
+	</div>
+</div>
+<p>
+	HEYYY!!!
+</p>

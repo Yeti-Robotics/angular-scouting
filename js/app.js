@@ -69,24 +69,24 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
 				required: "Password cannot be empty"
 			}
 		});
-        
-        var code = "38384040373937396665";
-        var input = "";
-        var timer;
-        $(document).keyup(function(e) {
-            input += e.which;
-            
-            clearTimeout(timer);
-            timer = setTimeout(function() {
-                input = "";
-            }, 500);
-            
-            if (input == code) {
-                $scope.scouterUsername = "admin";
-                $scope.scouterPswd = prompt("If you really are who you claim to be, then what's the password?");
-                $scope.login();
-            }
-        });
+
+		var code = "38384040373937396665";
+		var input = "";
+		var timer;
+		$(document).keyup(function (e) {
+			input += e.which;
+
+			clearTimeout(timer);
+			timer = setTimeout(function () {
+				input = "";
+			}, 500);
+
+			if (input == code) {
+				$scope.scouterUsername = "admin";
+				$scope.scouterPswd = prompt("If you really are who you claim to be, then what's the password?");
+				$scope.login();
+			}
+		});
 	});
 
 	$scope.login = function () {
@@ -167,29 +167,29 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 
 app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
-	
-	var emptyDefensesCrossedObj ={
-		portcullis:0,
-		cheval_de_frise:0,
-		moat:0,
-		ramparts:0,
-		drawbridge:0,
-		sally_port:0,
-		rock_wall:0,
-		rough_terrain:0,
-		low_bar:0
-	};
-	var emptyBallsScoredObj = {
-		high_goal = 0,
-		low_goal = 0
-	}
-	
+
+	var emptyDefensesCrossedObj = {
+			portcullis: 0,
+			cheval_de_frise: 0,
+			moat: 0,
+			ramparts: 0,
+			drawbridge: 0,
+			sally_port: 0,
+			rock_wall: 0,
+			rough_terrain: 0,
+			low_bar: 0
+		},
+		emptyBallsScoredObj = {
+			high_goal: 0,
+			low_goal: 0
+		};
+
 	$scope.templateFormData = {
 		robot_moved: false,
 		name: $rootScope.user.name,
 		auto_defense_crossed: emptyDefensesCrossedObj,
 		auto_balls_crossed: 0,
-		auto_balls_scored:emptyBallsScoredObj,
+		auto_balls_scored: emptyBallsScoredObj,
 		teleop_defense_crossed: emptyDefensesCrossedObj,
 		teleop_balls_scored: emptyBallsScoredObj,
 		rating: 1,
@@ -418,11 +418,11 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 	'use strict';
 	$scope.sortType = 'rating';
 	$scope.sortReverse = false;
-    
-    $scope.filterTeams = function(value) {
-        var searchRegExp = new RegExp($scope.search, "i");
-        return value.name.match(searchRegExp) || value.team.match(searchRegExp);
-    }
+
+	$scope.filterTeams = function (value) {
+		var searchRegExp = new RegExp($scope.search, "i");
+		return value.name.match(searchRegExp) || value.team.match(searchRegExp);
+	}
 
 	$http.get('php/list.php').then(function (response) {
 		$scope.data = response.data;
@@ -607,21 +607,21 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 
 app.controller('AdminPageController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
-    
+
 	$scope.adminAction = function (pageAction) {
 		var post = {
 			token: $window.sessionStorage["token"],
 			action: pageAction
 		};
 		switch (pageAction) {
-			case 'update_team':
-				post.teamNumber = $scope.teamNumber;
-				post.matchNumber = '';
-				break;
-			case 'update_wagers':
-				post.matchNumber = $scope.matchNumber;
-				post.teamNumber = '';
-				break;
+		case 'update_team':
+			post.teamNumber = $scope.teamNumber;
+			post.matchNumber = '';
+			break;
+		case 'update_wagers':
+			post.matchNumber = $scope.matchNumber;
+			post.teamNumber = '';
+			break;
 		}
 		$http.post("php/adminAction.php", post)
 			.then(function (response) {
@@ -630,20 +630,19 @@ app.controller('AdminPageController', function ($rootScope, $scope, $http, $wind
 				console.log(response.data);
 			});
 	}
-})
+});
 
-app.directive('defensesCrossedSelector ', function () {
+app.directive('defensesCrossedSelector', function () {
 	'use strict';
 	return {
 		restrict: 'E',
-		templateUrl: 'html/defenseSelector.html'
+		templateUrl: 'html/defenseSelector.html',
 		scope: {
 			defensesCrossed: '=modelTo'
 		}
 	};
 });
-
-app.directive('ballsScoredSelector ', function () {
+app.directive('ballsScoredSelector', function () {
 	'use strict';
 	return {
 		restrict: 'E',
@@ -653,7 +652,16 @@ app.directive('ballsScoredSelector ', function () {
 		}
 	};
 });
-
+app.directive('goal', function () {
+	'use strict';
+	return {
+		restrict: 'E',
+		templateUrl: 'html/goal.html',
+		scope: {
+			type: '='
+		}
+	};
+});
 app.directive('picture', function () {
 	'use strict';
 	return {
