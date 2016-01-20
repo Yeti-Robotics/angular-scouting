@@ -670,15 +670,6 @@ app.directive('ballsScoredSelector', function () {
 		}
 	};
 });
-app.directive('goal', function () {
-	'use strict';
-	return {
-		templateUrl: 'html/goal.html',
-		scope: {
-			type: '='
-		}
-	};
-});
 app.directive('picture', function () {
 	'use strict';
 	return {
