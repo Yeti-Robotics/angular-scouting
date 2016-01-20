@@ -169,29 +169,29 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
 
 	var emptyDefensesCrossedObj = {
-			portcullis: 0,
-			cheval_de_frise: 0,
-			moat: 0,
-			ramparts: 0,
-			drawbridge: 0,
-			sally_port: 0,
-			rock_wall: 0,
-			rough_terrain: 0,
-			low_bar: 0
-		},
-		emptyBallsScoredObj = {
-			high_goal: 0,
-			low_goal: 0
-		};
+		portcullis: 0,
+		cheval_de_frise: 0,
+		moat: 0,
+		ramparts: 0,
+		drawbridge: 0,
+		sally_port: 0,
+		rock_wall: 0,
+		rough_terrain: 0,
+		low_bar: 0
+	};
 
 	$scope.templateFormData = {
 		robot_moved: false,
 		name: $rootScope.user.name,
 		auto_defense_crossed: emptyDefensesCrossedObj,
 		auto_balls_crossed: 0,
-		auto_balls_scored: emptyBallsScoredObj,
+		auto_balls_scored: [],
+		auto_balls_high: 0,
+		auto_balls_low: 0,
 		teleop_defense_crossed: emptyDefensesCrossedObj,
-		teleop_balls_scored: emptyBallsScoredObj,
+		teleop_balls_scored: [],
+		teleop_balls_high: 0,
+		teleop_balls_low: 0,
 		rating: 1,
 		score: 0,
 		comments: ""
@@ -206,6 +206,26 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	$scope.submit = function () {
 		if ($('#scouting_form').valid()) {
 			console.log("valid");
+
+			$scope.formData.auto_balls_scored.forEach(function (e, i, arr) {
+				if (e.goal === 'High') {
+					$scope.formData.auto_balls_high++;
+				} else {
+					$scope.formData.auto_balls_low++;
+				}
+			});
+
+			$scope.formData.teleop_balls_scored.forEach(function (e, i, arr) {
+				if (e.goal === 'High') {
+					$scope.formData.teleop_balls_high++;
+				} else {
+					$scope.formData.teleop_balls_low++;
+				}
+			});
+			//So we dont send more data then we need to
+			delete $scope.formData.auto_balls_scored;
+			delete $scope.formData.teleop_balls_scored;
+
 			$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
 				console.log("submitted");
 				console.log(response);
