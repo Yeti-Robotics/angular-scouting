@@ -670,6 +670,16 @@ app.directive('ballsScoredSelector', function () {
 		}
 	};
 });
+app.directive('numberPicker', function () {
+   'use strict';
+    return {
+        templateUrl: 'html/numberPicker.html',
+        scope: {
+            var: '='
+        }
+    }
+});
+
 app.directive('picture', function () {
 	'use strict';
 	return {
