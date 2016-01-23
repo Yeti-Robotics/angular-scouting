@@ -671,13 +671,13 @@ app.directive('ballsScoredSelector', function () {
 	};
 });
 app.directive('numberPicker', function () {
-   'use strict';
-    return {
-        templateUrl: 'html/numberPicker.html',
-        scope: {
-            var: '='
-        }
-    }
+	'use strict';
+	return {
+		templateUrl: 'html/numberPicker.html',
+		scope: {
+			num: '='
+		}
+	}
 });
 
 app.directive('picture', function () {
