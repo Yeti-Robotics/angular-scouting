@@ -22,7 +22,7 @@
 			<legend>Autonomous</legend>
 			<div class="form-group">
 				<label for="robot_moved">Did the robot reach a defense?</label>
-				<input ng-model="formData.robot_moved" type="checkbox" ng-model="robot_moved">
+				<input ng-model="formData.robot_moved" type="checkbox">
 				<div ng-show="formData.robot_moved">
 					<div defenses-crossed-selector model-to="formData.auto_defense_crossed"></div>
 					<label for="cans_auto">How many balls did it get into the opponents courtyard?</label>
@@ -41,6 +41,8 @@
 			<legend>Tele-Op</legend>
 			<div defenses-crossed-selector model-to="formData.teleop_defense_crossed"></div>
 			<div balls-scored-selector model-to="formData.teleop_balls_scored"></div>
+			<label for="robot_defended">Did the robot attempt to defend?</label>
+			<input ng-model="formData.robot_defended" type="checkbox">
 		</fieldset>
 
 		<fieldset>

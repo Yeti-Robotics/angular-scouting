@@ -192,6 +192,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 		teleop_balls_scored: [],
 		teleop_balls_high: 0,
 		teleop_balls_low: 0,
+		robot_defended: false,
 		rating: 1,
 		score: 0,
 		comments: ""
