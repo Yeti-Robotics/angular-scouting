@@ -181,8 +181,8 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	};
 
 	$scope.templateFormData = {
-		robot_moved: false,
 		name: $rootScope.user.name,
+		robot_moved: false,
 		auto_defense_crossed: emptyDefensesCrossedObj,
 		auto_balls_crossed: 0,
 		auto_balls_scored: [],
@@ -226,7 +226,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			//So we dont send more data then we need to
 			delete $scope.formData.auto_balls_scored;
 			delete $scope.formData.teleop_balls_scored;
-
+			console.log($scope.formData);
 			$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
 				console.log("submitted");
 				console.log(response);

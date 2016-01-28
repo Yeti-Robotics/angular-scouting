@@ -26,7 +26,7 @@
 				<div ng-show="formData.robot_moved">
 					<div defenses-crossed-selector model-to="formData.auto_defense_crossed"></div>
 					<label for="cans_auto">How many balls did it get into the opponents courtyard?</label>
-					<select ng-model="formData.auto_balls_crossed" ng-init="formData.auto_balls_crossed = '0'" class="form-control">
+					<select ng-model="formData.auto_balls_crossed" class="form-control">
 						<option value="0" selected="selected">0</option>
 						<option value="1">1</option>
 						<option value="2">2</option>
@@ -49,7 +49,7 @@
 			<legend>Misc.</legend>
 			<div class="form-group">
 				<label for="rating">Rating:</label>
-				<select id="rating" ng-model="formData.rating" ng-init="formData.rating = '1'" required>
+				<select id="rating" ng-model="formData.rating" required>
 					<option value="1" selected="selected">1</option>
 					<option value="2">2</option>
 					<option value="3">3</option>
