@@ -619,7 +619,76 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		//        $scope.coopTotes = response.data.coopSection;
 		//        $scope.autoSection = response.data.autoSection;
 		//
-
+      var autoCases = {
+        doesnt_drive: 0,
+        reaches_defense: 0,
+        crosses_defense: 0,
+        crosses_two_defenses: 0,
+        doesnt_score: 0,
+        scores_low: 0,
+        scores_two_low: 0,
+        scores_three_low: 0
+        scores_high: 0,
+        scores_two_high: 0,
+        scores_three_high: 0
+      } 
+      response.data.defenses.auto.forEach(function(e, i, arr) {
+        var cross_count = 0;
+        for (defense in e) {
+          cross_count += defense;
+        }
+        switch (cross_count) {
+          case 0:
+            autoCases.reaches_defense++;
+            break;
+          case 1:
+            autoCases.crosses_defense++;
+            break;
+          case 2:
+            autoCases.crosses_two_defenses;
+            break;
+        }
+      });
+        response.data.balls.auto.forEach(function(e, i, arr) {
+      switch (e.balls_scored_low) {
+        case 1:
+          autoCases.scores_low++;
+          break;
+        case 2:
+          autoCases.scores_two_low++;
+          break;
+        case 3:
+          autoCases.scores_three_low++;
+          break;
+        default:
+          break;
+      }
+        switch (e.balls_scored_high) {
+          case 1:
+            autoCases:scores_high++;
+            break;
+          case 2:
+            autoCases.scores_two_high++;
+            break;
+          case 3:
+            autoCases.scores_three_high++;
+            break;
+          default:
+            break;
+        }
+        if(e.balls_scored_low == 0 && e.balls_scored_high == 0) {
+            autoCases.doesnt_score;
+          }
+      });
+      if (autoCases.doesnt_drive > autoCases.reaches_defense) {
+        
+      } else if (autoCases.reaches_defense > autoCases.crosses_defense) {
+        
+      } else if (autoCases.crosses_defense > autoCases.crosses_two_defenses) {
+        
+      } else {
+        $scope.auto_common_defense = "Crosses two defenses";
+      }
 	}, function (response) {
 		$scope.team = {},
 			$scope.stacks = []
