@@ -645,7 +645,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
             autoCases.crosses_defense++;
             break;
           case 2:
-            autoCases.crosses_two_defenses;
+            autoCases.crosses_two_defenses++;
             break;
         }
       });
