@@ -645,7 +645,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
             autoCases.crosses_defense++;
             break;
           case 2:
-            autoCases.crosses_two_defenses;
+            autoCases.crosses_two_defenses++;
             break;
         }
       });
@@ -677,16 +677,45 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
             break;
         }
         if(e.balls_scored_low == 0 && e.balls_scored_high == 0) {
-            autoCases.doesnt_score;
+            autoCases.doesnt_score++;
           }
       });
+      //dd, rd, cd, c2d
       if (autoCases.doesnt_drive > autoCases.reaches_defense) {
-        
+        //dd, cd, c2d
+        if (autoCases.doesnt_drive > autoCases.crosses_defense) {
+          //dd, c2d
+          if (autoCases.doesnt_drive > autoCases.crosses_two_defenses) {
+            //dd
+            $scope.auto_common_defense = "Doesn't drive";
+          } else {
+            //c2d
+            $scope.auto_common_defense = "Crosses two defenses";
+          }
+        } else {
+          //cd, c2d
+          if (autoCases.crosses_defense > autoCases.crosses_two_defenses) {
+            //cd
+            $scope.auto_common_defense = "Crosses a defense";
+          } else {
+            //c2d
+            $scope.auto_common_defense = "Crosses two defenses";
+          }
+        }
       } else if (autoCases.reaches_defense > autoCases.crosses_defense) {
-        
+        //rd, c2d
+        if(autoCases.reaches_defense > autoCases.crosses_two_defenses) {
+          //rd
+          $scope.auto_common_defense = "Drives to a defense";
+        } else {
+          //c2d
+          $scope.auto_common_defense = "Crosses two defenses";
+        }
       } else if (autoCases.crosses_defense > autoCases.crosses_two_defenses) {
-        
+        //cd
+        $scope.auto_common_defense = "Crosses a defense";
       } else {
+        //c2d
         $scope.auto_common_defense = "Crosses two defenses";
       }
 	}, function (response) {
