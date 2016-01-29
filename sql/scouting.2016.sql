@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 29, 2016 at 12:45 AM
+-- Generation Time: Jan 29, 2016 at 01:16 AM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -62,6 +62,7 @@ CREATE TABLE `scouters` (
   `byteCoins` int(11) NOT NULL DEFAULT '200'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
 -- --------------------------------------------------------
 
 --
@@ -96,19 +97,6 @@ CREATE TABLE `sessions` (
   `id` int(11) NOT NULL,
   `token` text NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `stacks`
---
-
-CREATE TABLE `stacks` (
-  `scout_data_id` int(11) NOT NULL,
-  `totes` int(11) NOT NULL,
-  `cap_state` int(11) NOT NULL,
-  `cap_height` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -168,12 +156,6 @@ ALTER TABLE `scout_data`
   ADD KEY `team` (`team`);
 
 --
--- Indexes for table `stacks`
---
-ALTER TABLE `stacks`
-  ADD KEY `scout_data_id` (`scout_data_id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -197,16 +179,6 @@ ALTER TABLE `scouters`
 --
 ALTER TABLE `scout_data`
   MODIFY `scout_data_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `stacks`
---
-ALTER TABLE `stacks`
-  ADD CONSTRAINT `stacks_ibfk_1` FOREIGN KEY (`scout_data_id`) REFERENCES `scout_data` (`scout_data_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
