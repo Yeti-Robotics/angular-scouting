@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 29, 2016 at 01:16 AM
+-- Generation Time: Jan 29, 2016 at 02:26 AM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -23,9 +23,31 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `defenses`
+--
+
+DROP TABLE IF EXISTS `defenses`;
+CREATE TABLE `defenses` (
+  `id` int(11) NOT NULL,
+  `low_bar` int(11) NOT NULL,
+  `portcullis` int(11) NOT NULL,
+  `cheval_de_frise` int(11) NOT NULL,
+  `moat` int(11) NOT NULL,
+  `ramparts` int(11) NOT NULL,
+  `drawbridge` int(11) NOT NULL,
+  `sally_port` int(11) NOT NULL,
+  `rock_wall` int(11) NOT NULL,
+  `rough_terrain` int(11) NOT NULL,
+  `gametime` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pit_comments`
 --
 
+DROP TABLE IF EXISTS `pit_comments`;
 CREATE TABLE `pit_comments` (
   `pit_scout_data_id` int(11) NOT NULL,
   `team_number` int(11) NOT NULL,
@@ -40,6 +62,7 @@ CREATE TABLE `pit_comments` (
 -- Table structure for table `pit_pictures`
 --
 
+DROP TABLE IF EXISTS `pit_pictures`;
 CREATE TABLE `pit_pictures` (
   `pit_scout_data_id` int(11) NOT NULL,
   `team_number` int(11) NOT NULL,
@@ -54,6 +77,7 @@ CREATE TABLE `pit_pictures` (
 -- Table structure for table `scouters`
 --
 
+DROP TABLE IF EXISTS `scouters`;
 CREATE TABLE `scouters` (
   `id` int(6) NOT NULL,
   `name` tinytext NOT NULL,
@@ -62,13 +86,13 @@ CREATE TABLE `scouters` (
   `byteCoins` int(11) NOT NULL DEFAULT '200'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `scout_data`
 --
 
+DROP TABLE IF EXISTS `scout_data`;
 CREATE TABLE `scout_data` (
   `scout_data_id` int(11) NOT NULL,
   `name` text NOT NULL,
@@ -93,6 +117,7 @@ CREATE TABLE `scout_data` (
 -- Table structure for table `sessions`
 --
 
+DROP TABLE IF EXISTS `sessions`;
 CREATE TABLE `sessions` (
   `id` int(11) NOT NULL,
   `token` text NOT NULL,
@@ -105,6 +130,7 @@ CREATE TABLE `sessions` (
 -- Table structure for table `team_info`
 --
 
+DROP TABLE IF EXISTS `team_info`;
 CREATE TABLE `team_info` (
   `team_number` int(11) DEFAULT NULL,
   `team_name` text NOT NULL,
@@ -117,6 +143,7 @@ CREATE TABLE `team_info` (
 -- Table structure for table `wagers`
 --
 
+DROP TABLE IF EXISTS `wagers`;
 CREATE TABLE `wagers` (
   `associatedId` int(11) NOT NULL,
   `wagerType` text NOT NULL,
@@ -129,6 +156,12 @@ CREATE TABLE `wagers` (
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `defenses`
+--
+ALTER TABLE `defenses`
+  ADD KEY `id` (`id`);
 
 --
 -- Indexes for table `pit_comments`
@@ -178,7 +211,7 @@ ALTER TABLE `scouters`
 -- AUTO_INCREMENT for table `scout_data`
 --
 ALTER TABLE `scout_data`
-  MODIFY `scout_data_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `scout_data_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
