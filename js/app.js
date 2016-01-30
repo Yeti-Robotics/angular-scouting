@@ -587,131 +587,192 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		avgStacksPerMatch: 0,
 		heighestStackMade: 0,
 		rating: 0
-	}
+	};
 
 	$scope.stacks = [];
 
 	$scope.commentSection = {
 		comments: []
-	}
+	};
 
 	$http.get("php/getTeam.php", {
 		params: {
 			teamNumber: $routeParams.teamNumber
 		}
-
 	}).then(function (response) {
-		$scope.data = response.data;
-		console.log($scope.data);
-		var autoCases = {
-			doesnt_drive: 0,
-			reaches_defense: 0,
-			crosses_defense: 0,
-			crosses_two_defenses: 0,
-			doesnt_score: 0,
-			scores_low: 0,
-			scores_two_low: 0,
-			scores_three_low: 0,
-			scores_high: 0,
-			scores_two_high: 0,
-			scores_three_high: 0
-		};
-		response.data.defenses.auto.forEach(function (e, i, arr) {
-			var cross_count = 0;
-			console.log(e);
-			for (var defenses in e) {
-				cross_count += e[defenses];
-			}
-			switch (cross_count) {
-			case 0:
-				autoCases.doesnt_drive++;
-				break;
-			case 1:
-				autoCases.reaches_defense++;
-				break;
-			case 2:
-				autoCases.crosses_defense++;
-				break;
-			case 3:
-				autoCases.crosses_two_defenses++;
-				break;
-			}
-		});
-		response.data.balls.auto.forEach(function (e, i, arr) {
-			switch (e.balls_scored_low) {
-			case 1:
-				autoCases.scores_low++;
-				break;
-			case 2:
-				autoCases.scores_two_low++;
-				break;
-			case 3:
-				autoCases.scores_three_low++;
-				break;
-			default:
-				break;
-			}
-			switch (e.balls_scored_high) {
-			case 1:
-				autoCases.scores_high++;
-				break;
-			case 2:
-				autoCases.scores_two_high++;
-				break;
-			case 3:
-				autoCases.scores_three_high++;
-				break;
-			default:
-				break;
-			}
-			if (e.balls_scored_low == 0 && e.balls_scored_high == 0) {
-				autoCases.doesnt_score++;
-			}
-		});
-		//dd, rd, cd, c2d
-		if (autoCases.doesnt_drive > autoCases.reaches_defense) {
-			//dd, cd, c2d
-			if (autoCases.doesnt_drive > autoCases.crosses_defense) {
-				//dd, c2d
-				if (autoCases.doesnt_drive > autoCases.crosses_two_defenses) {
-					//dd
-					$scope.auto_common_defense = "Doesn't drive";
+			$scope.data = response.data;
+			var autoCases = {
+				doesnt_drive: 0,
+				reaches_defense: 0,
+				crosses_defense: 0,
+				crosses_two_defenses: 0,
+				doesnt_score: 0,
+				scores_low: 0,
+				scores_two_low: 0,
+				scores_three_low: 0,
+				scores_high: 0,
+				scores_two_high: 0,
+				scores_three_high: 0
+			};
+			response.data.defenses.auto.forEach(function (e, i, arr) {
+				var cross_count = 0;
+				console.log(e);
+				for (var defenses in e) {
+					cross_count += e[defenses];
+				}
+				switch (cross_count) {
+				case 0:
+					autoCases.doesnt_drive++;
+					break;
+				case 1:
+					autoCases.reaches_defense++;
+					break;
+				case 2:
+					autoCases.crosses_defense++;
+					break;
+				case 3:
+					autoCases.crosses_two_defenses++;
+					break;
+				}
+			});
+			response.data.balls.auto.forEach(function (e, i, arr) {
+				switch (e.balls_scored_low) {
+				case 1:
+					autoCases.scores_low++;
+					break;
+				case 2:
+					autoCases.scores_two_low++;
+					break;
+				case 3:
+					autoCases.scores_three_low++;
+					break;
+				default:
+					break;
+				}
+				switch (e.balls_scored_high) {
+				case 1:
+					autoCases.scores_high++;
+					break;
+				case 2:
+					autoCases.scores_two_high++;
+					break;
+				case 3:
+					autoCases.scores_three_high++;
+					break;
+				default:
+					break;
+				}
+				if (e.balls_scored_low == 0 && e.balls_scored_high == 0) {
+					autoCases.doesnt_score++;
+				}
+			});
+			//dd, rd, cd, c2d
+			if (autoCases.doesnt_drive > autoCases.reaches_defense) {
+				//dd, cd, c2d
+				if (autoCases.doesnt_drive > autoCases.crosses_defense) {
+					//dd, c2d
+					if (autoCases.doesnt_drive > autoCases.crosses_two_defenses) {
+						//dd
+						$scope.auto_common_defense = "Doesn't drive";
+					} else {
+						//c2d
+						$scope.auto_common_defense = "Crosses two defenses";
+					}
+				} else {
+					//cd, c2d
+					if (autoCases.crosses_defense > autoCases.crosses_two_defenses) {
+						//cd
+						$scope.auto_common_defense = "Crosses a defense";
+					} else {
+						//c2d
+						$scope.auto_common_defense = "Crosses two defenses";
+					}
+				}
+			} else if (autoCases.reaches_defense > autoCases.crosses_defense) {
+				//rd, c2d
+				if (autoCases.reaches_defense > autoCases.crosses_two_defenses) {
+					//rd
+					$scope.auto_common_defense = "Drives to a defense";
 				} else {
 					//c2d
 					$scope.auto_common_defense = "Crosses two defenses";
 				}
-			} else {
-				//cd, c2d
-				if (autoCases.crosses_defense > autoCases.crosses_two_defenses) {
-					//cd
-					$scope.auto_common_defense = "Crosses a defense";
-				} else {
-					//c2d
-					$scope.auto_common_defense = "Crosses two defenses";
-				}
-			}
-		} else if (autoCases.reaches_defense > autoCases.crosses_defense) {
-			//rd, c2d
-			if (autoCases.reaches_defense > autoCases.crosses_two_defenses) {
-				//rd
-				$scope.auto_common_defense = "Drives to a defense";
+			} else if (autoCases.crosses_defense > autoCases.crosses_two_defenses) {
+				//cd
+				$scope.auto_common_defense = "Crosses a defense";
 			} else {
 				//c2d
 				$scope.auto_common_defense = "Crosses two defenses";
 			}
-		} else if (autoCases.crosses_defense > autoCases.crosses_two_defenses) {
-			//cd
-			$scope.auto_common_defense = "Crosses a defense";
-		} else {
-			//c2d
-			$scope.auto_common_defense = "Crosses two defenses";
-		}
-		console.log(autoCases);
-		console.log($scope.auto_common_defense);
-	}, function (response) {
-		$scope.team = {},
-			$scope.stacks = []
-	});
+
+
+			if (autoCases.doesnt_score > autoCases.scores_low) {
+				// 0, 2l, 3l
+				if (autocases.doesnt_score > autoCases.scores_two_low) {
+					// 0, 3l
+					if (autoCases.doesnt_score > autoCases.scores_three_low) {
+						//0
+						$scope.auto_common_scoring.low = "Doesn't score low";
+
+					} else {
+						$scope.auto_common_scoring.low = "Scores three low";
+
+					}
+				} else {
+					if (autoCases.scores_two_low > autoCases.scores_three_low) {
+						$scope.auto_common_scoring.low = "Scores two low";
+					} else {
+						$scope.auto_common_scoring.low = "Scores three low";
+					}
+				}
+			} else if (autoCases.scores_low > autoCases.scores_two_low) {
+				if (autoCases.scores_low > autoCases.scores_three_low) {
+					$scope.auto_common_scoring.low = "Scores low";
+				} else {
+					$scope.auto_common_scoring.low = "Scores three low";
+
+				}
+			} else if (autoCases.scoring_two_low > autoCases.scores_three_low) {
+				$scope.auto_common_scoring.low = "Scores two low";
+
+			} else {
+				$scope.auto_common_scoring.low = "Scores three low";
+			}
+
+			//Now we do the high
+			if (autoCases.doesnt_score > autoCases.scores_high) {
+				// 0, 2h, 3h
+				if (autocases.doesnt_score > autoCases.scores_two_high) {
+					// 0, 3h
+					if (autoCases.doesnt_score > autoCases.scores_three_high) {
+						//0
+						$scope.auto_common_scoring.high = "Doesn't score high";
+					} else {
+						$scope.auto_common_scoring.high = "Scores three high";
+					}
+				} else {
+					if (autoCases.scores_two_high > autoCases.scores_three_high) {
+						$scope.auto_common_scoring.high = "Scores Two high";
+					} else {
+						$scope.auto_common_scoring.High = "Scores Three high";
+					}
+				}
+			} else if (autoCases.scores_high > autoCases.scores_two_high) {
+				if (autoCases.scores_high > autoCases.scores_three_high) {
+					$scope.auto_common_scoring.high = "Scores high";
+				} else {
+					$scope.auto_common_scoring.high = "Scores three high";
+				}
+			} else if (autoCases.scoring_two_high > autoCases.scores_three_high) {
+				$scope.auto_common_scoring.high = "Scores two high";
+			} else {
+				$scope.auto_common_scoring.high = "Scores three high";
+			}
+		},
+		function (response) {
+			$scope.team = {},
+				$scope.stacks = []
+		});
 });
 
 app.controller('AdminPageController', function ($rootScope, $scope, $http, $window) {
