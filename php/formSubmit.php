@@ -6,8 +6,8 @@ $postData = json_decode(file_get_contents("php://input"), true);
 $query = "INSERT INTO scout_data (name, match_number,
          team, robot_moved, auto_balls_crossed, auto_balls_high,
          auto_balls_low, teleop_balls_high, teleop_balls_low,
-		 robot_defended, rating, score, comments)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		 robot_defended, end_game, rating, score, comments)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 if($postData["robot_moved"]) {
 	$robot_moved = 1;
@@ -21,7 +21,7 @@ if($postData["robot_defended"]) {
 }
 
 if($stmt = $db->prepare($query)) {
-    $stmt->bind_param("siiiiiiiiiiis",
+    $stmt->bind_param("siiiiiiiiisiis",
         $postData["name"],
         $postData["match_number"],
 		$postData["team_number"],
@@ -32,6 +32,7 @@ if($stmt = $db->prepare($query)) {
         $postData["teleop_balls_high"],
         $postData["teleop_balls_low"],
         $robot_defended,
+		$postData["end_game"],
         $postData["rating"],
 		$postData["score"],
         $postData["comments"]);

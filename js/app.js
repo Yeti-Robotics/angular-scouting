@@ -193,6 +193,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 		teleop_balls_high: 0,
 		teleop_balls_low: 0,
 		robot_defended: false,
+		end_game: "none",
 		rating: 1,
 		score: 0,
 		comments: ""
@@ -207,7 +208,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	$scope.submit = function () {
 		if ($('#scouting_form').valid()) {
 			console.log("valid");
-
+			console.log($scope.formData);
 			$scope.formData.auto_balls_scored.forEach(function (e, i, arr) {
 				if (e.goal === 'High') {
 					$scope.formData.auto_balls_high++;
@@ -226,7 +227,6 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			//So we dont send more data then we need to
 			delete $scope.formData.auto_balls_scored;
 			delete $scope.formData.teleop_balls_scored;
-			console.log($scope.formData);
 			$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
 				console.log("submitted");
 				console.log(response);
@@ -619,105 +619,105 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		//        $scope.coopTotes = response.data.coopSection;
 		//        $scope.autoSection = response.data.autoSection;
 		//
-      var autoCases = {
-        doesnt_drive: 0,
-        reaches_defense: 0,
-        crosses_defense: 0,
-        crosses_two_defenses: 0,
-        doesnt_score: 0,
-        scores_low: 0,
-        scores_two_low: 0,
-        scores_three_low: 0
-        scores_high: 0,
-        scores_two_high: 0,
-        scores_three_high: 0
-      } 
-      response.data.defenses.auto.forEach(function(e, i, arr) {
-        var cross_count = 0;
-        for (defense in e) {
-          cross_count += defense;
-        }
-        switch (cross_count) {
-          case 0:
-            autoCases.reaches_defense++;
-            break;
-          case 1:
-            autoCases.crosses_defense++;
-            break;
-          case 2:
-            autoCases.crosses_two_defenses++;
-            break;
-        }
-      });
-        response.data.balls.auto.forEach(function(e, i, arr) {
-      switch (e.balls_scored_low) {
-        case 1:
-          autoCases.scores_low++;
-          break;
-        case 2:
-          autoCases.scores_two_low++;
-          break;
-        case 3:
-          autoCases.scores_three_low++;
-          break;
-        default:
-          break;
-      }
-        switch (e.balls_scored_high) {
-          case 1:
-            autoCases:scores_high++;
-            break;
-          case 2:
-            autoCases.scores_two_high++;
-            break;
-          case 3:
-            autoCases.scores_three_high++;
-            break;
-          default:
-            break;
-        }
-        if(e.balls_scored_low == 0 && e.balls_scored_high == 0) {
-            autoCases.doesnt_score++;
-          }
-      });
-      //dd, rd, cd, c2d
-      if (autoCases.doesnt_drive > autoCases.reaches_defense) {
-        //dd, cd, c2d
-        if (autoCases.doesnt_drive > autoCases.crosses_defense) {
-          //dd, c2d
-          if (autoCases.doesnt_drive > autoCases.crosses_two_defenses) {
-            //dd
-            $scope.auto_common_defense = "Doesn't drive";
-          } else {
-            //c2d
-            $scope.auto_common_defense = "Crosses two defenses";
-          }
-        } else {
-          //cd, c2d
-          if (autoCases.crosses_defense > autoCases.crosses_two_defenses) {
-            //cd
-            $scope.auto_common_defense = "Crosses a defense";
-          } else {
-            //c2d
-            $scope.auto_common_defense = "Crosses two defenses";
-          }
-        }
-      } else if (autoCases.reaches_defense > autoCases.crosses_defense) {
-        //rd, c2d
-        if(autoCases.reaches_defense > autoCases.crosses_two_defenses) {
-          //rd
-          $scope.auto_common_defense = "Drives to a defense";
-        } else {
-          //c2d
-          $scope.auto_common_defense = "Crosses two defenses";
-        }
-      } else if (autoCases.crosses_defense > autoCases.crosses_two_defenses) {
-        //cd
-        $scope.auto_common_defense = "Crosses a defense";
-      } else {
-        //c2d
-        $scope.auto_common_defense = "Crosses two defenses";
-      }
+		var autoCases = {
+			doesnt_drive: 0,
+			reaches_defense: 0,
+			crosses_defense: 0,
+			crosses_two_defenses: 0,
+			doesnt_score: 0,
+			scores_low: 0,
+			scores_two_low: 0,
+			scores_three_low: 0,
+			scores_high: 0,
+			scores_two_high: 0,
+			scores_three_high: 0
+		};
+		response.data.defenses.auto.forEach(function (e, i, arr) {
+			var cross_count = 0;
+			for (defense in e) {
+				cross_count += defense;
+			}
+			switch (cross_count) {
+			case 0:
+				autoCases.reaches_defense++;
+				break;
+			case 1:
+				autoCases.crosses_defense++;
+				break;
+			case 2:
+				autoCases.crosses_two_defenses++;
+				break;
+			}
+		});
+		response.data.balls.auto.forEach(function (e, i, arr) {
+			switch (e.balls_scored_low) {
+			case 1:
+				autoCases.scores_low++;
+				break;
+			case 2:
+				autoCases.scores_two_low++;
+				break;
+			case 3:
+				autoCases.scores_three_low++;
+				break;
+			default:
+				break;
+			}
+			switch (e.balls_scored_high) {
+			case 1:
+				autoCases: scores_high++;
+				break;
+			case 2:
+				autoCases.scores_two_high++;
+				break;
+			case 3:
+				autoCases.scores_three_high++;
+				break;
+			default:
+				break;
+			}
+			if (e.balls_scored_low == 0 && e.balls_scored_high == 0) {
+				autoCases.doesnt_score++;
+			}
+		});
+		//dd, rd, cd, c2d
+		if (autoCases.doesnt_drive > autoCases.reaches_defense) {
+			//dd, cd, c2d
+			if (autoCases.doesnt_drive > autoCases.crosses_defense) {
+				//dd, c2d
+				if (autoCases.doesnt_drive > autoCases.crosses_two_defenses) {
+					//dd
+					$scope.auto_common_defense = "Doesn't drive";
+				} else {
+					//c2d
+					$scope.auto_common_defense = "Crosses two defenses";
+				}
+			} else {
+				//cd, c2d
+				if (autoCases.crosses_defense > autoCases.crosses_two_defenses) {
+					//cd
+					$scope.auto_common_defense = "Crosses a defense";
+				} else {
+					//c2d
+					$scope.auto_common_defense = "Crosses two defenses";
+				}
+			}
+		} else if (autoCases.reaches_defense > autoCases.crosses_defense) {
+			//rd, c2d
+			if (autoCases.reaches_defense > autoCases.crosses_two_defenses) {
+				//rd
+				$scope.auto_common_defense = "Drives to a defense";
+			} else {
+				//c2d
+				$scope.auto_common_defense = "Crosses two defenses";
+			}
+		} else if (autoCases.crosses_defense > autoCases.crosses_two_defenses) {
+			//cd
+			$scope.auto_common_defense = "Crosses a defense";
+		} else {
+			//c2d
+			$scope.auto_common_defense = "Crosses two defenses";
+		}
 	}, function (response) {
 		$scope.team = {},
 			$scope.stacks = []

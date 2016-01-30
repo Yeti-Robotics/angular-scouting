@@ -105,6 +105,7 @@ CREATE TABLE `scout_data` (
   `teleop_balls_high` int(11) NOT NULL,
   `teleop_balls_low` int(11) NOT NULL,
   `robot_defended` tinyint(1) NOT NULL,
+  `end_game` text NOT NULL,
   `rating` int(11) NOT NULL,
   `score` int(11) NOT NULL,
   `comments` text NOT NULL,

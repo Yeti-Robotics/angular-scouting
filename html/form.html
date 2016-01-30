@@ -36,7 +36,10 @@
 				</div>
 			</div>
 		</fieldset>
-
+		<br>
+		<br>
+		<br>
+		<br>
 		<fieldset>
 			<legend>Tele-Op</legend>
 			<div defenses-crossed-selector model-to="formData.teleop_defense_crossed"></div>
@@ -44,7 +47,23 @@
 			<label for="robot_defended">Did the robot attempt to defend?</label>
 			<input ng-model="formData.robot_defended" type="checkbox">
 		</fieldset>
+		<br>
+		<br>
+		<br>
+		<br>
+		<fieldset>
+			<legend>Endgame</legend>
+			<select ng-model="formData.end_game" class="form-control">
+				<option value="none" selected="selected">None</option>
+				<option value="scaling">Climbing</option>
+				<option value="challenging">Parking in front of the tower</option>
 
+			</select>
+		</fieldset>
+		<br>
+		<br>
+		<br>
+		<br>
 		<fieldset>
 			<legend>Misc.</legend>
 			<div class="form-group">
