@@ -595,7 +595,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		comments: []
 	}
 
-	$http.get("php/team.php", {
+	$http.get("php/getTeam.php", {
 		params: {
 			teamNumber: $routeParams.teamNumber
 		}
@@ -603,22 +603,6 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	}).then(function (response) {
 		$scope.data = response.data;
 		console.log($scope.data);
-		//        $scope.stacks = response.stacks;
-		//        for (var i = 0; i < response.data.commentSection['comments'].length; i++ ) {
-		//            $scope.commentSection.comments.push({
-		//                commentText: response.data.commentSection['comments'][i],
-		//                timeStamp: response.data.commentSection['timestamps'][i],
-		//                name: response.data.commentSection['names'][i],
-		//                matchNumber: response.data.commentSection['matchNumbers'][i]
-		//            });
-		//        }
-		//        console.log(response.data);
-		//        $scope.team = response.data.teamSection;
-		//        $scope.stacks = response.data.stacksSection;
-		//        $scope.toteSupplys = response.data.toteSupplySection;
-		//        $scope.coopTotes = response.data.coopSection;
-		//        $scope.autoSection = response.data.autoSection;
-		//
 		var autoCases = {
 			doesnt_drive: 0,
 			reaches_defense: 0,
@@ -634,17 +618,21 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		};
 		response.data.defenses.auto.forEach(function (e, i, arr) {
 			var cross_count = 0;
-			for (defense in e) {
-				cross_count += defense;
+			console.log(e);
+			for (var defenses in e) {
+				cross_count += e[defenses];
 			}
 			switch (cross_count) {
 			case 0:
-				autoCases.reaches_defense++;
+				autoCases.doesnt_drive++;
 				break;
 			case 1:
-				autoCases.crosses_defense++;
+				autoCases.reaches_defense++;
 				break;
 			case 2:
+				autoCases.crosses_defense++;
+				break;
+			case 3:
 				autoCases.crosses_two_defenses++;
 				break;
 			}
@@ -665,7 +653,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 			}
 			switch (e.balls_scored_high) {
 			case 1:
-				autoCases: scores_high++;
+				autoCases.scores_high++;
 				break;
 			case 2:
 				autoCases.scores_two_high++;
@@ -718,6 +706,8 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 			//c2d
 			$scope.auto_common_defense = "Crosses two defenses";
 		}
+		console.log(autoCases);
+		console.log($scope.auto_common_defense);
 	}, function (response) {
 		$scope.team = {},
 			$scope.stacks = []
