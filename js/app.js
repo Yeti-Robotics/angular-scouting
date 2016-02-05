@@ -616,9 +616,10 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 			};
 			response.data.defenses.auto.forEach(function (e, i, arr) {
 				var cross_count = 0;
-				console.log(e);
 				for (var defenses in e) {
-					cross_count += e[defenses];
+					if (defenses !== "match_number") {
+						cross_count += e[defenses];
+					}
 				}
 				switch (cross_count) {
 				case 0:
@@ -704,11 +705,14 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 				//c2d
 				$scope.auto_common_defense = "Crosses two defenses";
 			}
-
+			$scope.auto_common_scoring = {
+				low: "",
+				high: ""
+			};
 
 			if (autoCases.doesnt_score > autoCases.scores_low) {
 				// 0, 2l, 3l
-				if (autocases.doesnt_score > autoCases.scores_two_low) {
+				if (autoCases.doesnt_score > autoCases.scores_two_low) {
 					// 0, 3l
 					if (autoCases.doesnt_score > autoCases.scores_three_low) {
 						//0
@@ -742,7 +746,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 			//Now we do the high
 			if (autoCases.doesnt_score > autoCases.scores_high) {
 				// 0, 2h, 3h
-				if (autocases.doesnt_score > autoCases.scores_two_high) {
+				if (autoCases.doesnt_score > autoCases.scores_two_high) {
 					// 0, 3h
 					if (autoCases.doesnt_score > autoCases.scores_three_high) {
 						//0
@@ -768,6 +772,12 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 			} else {
 				$scope.auto_common_scoring.high = "Scores three high";
 			}
+
+			$scope.range = function (n) {
+				return new Array(n);
+			};
+
+			console.log($scope.data);
 		},
 		function (response) {
 			$scope.team = {},

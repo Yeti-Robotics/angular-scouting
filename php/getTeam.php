@@ -10,6 +10,8 @@ $matchNumber = array();
 $team = 0;
 if($teamNumber) {
     $response = array();
+
+	//Comments query
     $query = "SELECT team, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, name, match_number
 			FROM scout_data
 			WHERE team = ?";
@@ -18,7 +20,6 @@ if($teamNumber) {
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result) {
-
            // $response["team"] = array();
             while ($row = $result->fetch_assoc()) {
                 //print_r($row);
@@ -31,9 +32,9 @@ if($teamNumber) {
         die("Failed to get comments");
     }
 
-	//Boulders query
+	//Boulders and endgame query
 	$query = "SELECT match_number, auto_balls_high,
-        auto_balls_low, teleop_balls_high, teleop_balls_low
+        auto_balls_low, teleop_balls_high, teleop_balls_low, end_game
 		FROM scout_data WHERE team=?";
 	if($stmt = $db->prepare($query)) {
 		$stmt->bind_param("i", $teamNumber);
@@ -42,12 +43,19 @@ if($teamNumber) {
         if ($result) {
             while ($row = $result->fetch_assoc()) {
 				$response["balls"]["auto"][] = array(
+					"match_number" => $row["match_number"],
 					"balls_scored_low" => $row["auto_balls_low"],
 					"balls_scored_high" => $row["auto_balls_high"]
 				);
 				$response["balls"]["teleop"][] = array(
+					"match_number" => $row["match_number"],
 					"balls_scored_low" => $row["teleop_balls_low"],
 					"balls_scored_high" => $row["teleop_balls_high"]
+				);
+
+				$response["endgame"][] = array(
+					"match_number" => $row["match_number"],
+					"end_game" => $row["end_game"]
 				);
 			}
         }
@@ -57,7 +65,7 @@ if($teamNumber) {
     }
 
 	//Defenses query
-	$query = "SELECT robot_moved, gametime, low_bar, portcullis,
+	$query = "SELECT match_number, robot_moved, gametime, low_bar, portcullis,
 	cheval_de_frise, moat, ramparts, drawbridge,
 	sally_port, rock_wall, rough_terrain FROM scout_data
 	LEFT JOIN defenses
@@ -71,6 +79,7 @@ if($teamNumber) {
             while ($row = $result->fetch_assoc()) {
 				if($row["gametime"] == "auto") {
 					$response["defenses"]["auto"][] = array(
+						"match_number" => $row["match_number"],
 						"robot_moved" => $row["robot_moved"],
 						"low_bar" => $row["low_bar"],
 						"portcullis" => $row["portcullis"],
@@ -83,6 +92,7 @@ if($teamNumber) {
 						"rough_terrain" => $row["rough_terrain"]);
 				} else {
 					$response["defenses"]["teleop"][] = array(
+						"match_number" => $row["match_number"],
 						"robot_moved" => $row["robot_moved"],
 						"low_bar" => $row["low_bar"],
 						"portcullis" => $row["portcullis"],
@@ -101,7 +111,7 @@ if($teamNumber) {
         die("Failed to get data");
     }
 
-    $response['teamInfo'] = json_decode(getTeamInfo($db, $teamNumber), true);
+    $response['teamInfo'] = getTeamInfo($db, $teamNumber);
 	echo(json_encode($response));
 } else {
     header($_SERVER['SERVER_PROTOCOL'] . '403 No headers', true, 403);

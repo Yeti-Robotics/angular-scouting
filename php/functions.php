@@ -106,8 +106,7 @@ function getTeamInfo($db, $teamNumber) {
                 die ( '{"message":"Failed creating statement"}' );
             }
         }
-        
-        return json_encode($robotInfo);
+        return $robotInfo;
     } else {
         header('HTTP/1.1 500 SQL Error', true, 500);
         die ( '{"message":"Failed creating statement"}' );
@@ -488,20 +487,6 @@ function timeAgo($timestamp){
 	if($difference != 1) $periods[$j].= "s";
 	$text = "$difference $periods[$j] ago";
 	return $text;
-}
-
-function getTeamCoopertition($db, $team){
-	$query = "SELECT match_number AS 'Match Number', coopertition_totes AS 'Co-op Totes'
-				FROM scout_data
-				WHERE team = ?
-				ORDER BY match_number";
-	if($stmt = $db->prepare($query)){
-		$stmt->bind_param("i", $team);
-		$stmt->execute();
-		return $stmt->get_result();
-	} else{
-		return null;
-	}
 }
 
 function makeImageHTML($imgCode) {
