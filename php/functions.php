@@ -515,7 +515,7 @@ function getTeamBouldersTable($db, $team) {
 function getTeamAutoString($db, $team){
     $defenses = getTeamDefenseTable($db, $team);
     $balls = getTeamBouldersTable($db, $team); 
-	$scope = array();
+	$return = array();
     $autoCases = array(
         'doesnt_drive' => 0,
         'reaches_defense' => 0,
@@ -589,36 +589,36 @@ function getTeamAutoString($db, $team){
             //dd, c2d
             if ($autoCases['doesnt_drive'] > $autoCases['crosses_two_defenses']) {
                 //dd
-                $scope['auto_common_defense'] = "Doesn't drive";
+                $return['auto_common_defense'] = "Doesn't drive";
             } else {
                 //c2d
-                $scope['auto_common_defense'] = "Crosses two defenses";
+                $return['auto_common_defense'] = "Crosses two defenses";
             }
         } else {
             //cd, c2d
             if ($autoCases.['crosses_defense'] > $autoCases['crosses_two_defenses']) {
                 //cd
-                $scope['auto_common_defense'] = "Crosses a defense";
+                $return['auto_common_defense'] = "Crosses a defense";
             } else {
                 //c2d
-                $scope['auto_common_defense'] = "Crosses two defenses";
+                $return['auto_common_defense'] = "Crosses two defenses";
             }
         }
     } else if ($autoCases['reaches_defense'] > $autoCases['crosses_defense']) {
         //rd, c2d
         if ($autoCases['reaches_defense'] > $autoCases['crosses_two_defenses']) {
             //rd
-            $scope['auto_common_defense'] = "Drives to a defense";
+            $return['auto_common_defense'] = "Drives to a defense";
         } else {
             //c2d
-            $scope['auto_common_defense'] = "Crosses two defenses";
+            $return['auto_common_defense'] = "Crosses two defenses";
         }
     } else if ($autoCases['crosses_defense'] > $autoCases['crosses_two_defenses']) {
         //cd
-        $scope['auto_common_defense'] = "Crosses a defense";
+        $return['auto_common_defense'] = "Crosses a defense";
     } else {
         //c2d
-        $scope['auto_common_defense'] = "Crosses two defenses";
+        $return['auto_common_defense'] = "Crosses two defenses";
     }
 
     // 0, 1l, 2l, 3l, 1h, 2h, 3h 
@@ -638,67 +638,69 @@ function getTeamAutoString($db, $team){
             // 0, 3l
             if ($autoCases['doesnt_score'] > $autoCases['scores_three_low']) {
                 //0
-                $scope['auto_common_scoring.low']= "Doesn't Score Low";
+                $return['auto_common_scoring']['low']= "Doesn't Score Low";
 
             } else {
-                $scope['auto_common_scoring.low'] = "Scores Three Low";
+                $return['auto_common_scoring']['low'] = "Scores Three Low";
 
             }
         } else {
             if ($autoCases['scores_two_low'] > $autoCases['scores_three_low']) {
-                $scope['auto_common_scoring.low'] = "Scores Two Low";
+                $return['auto_common_scoring']['low'] = "Scores Two Low";
             } else {
-                $scope['auto_common_scoring.low'] = "Scores Three Low";
+                $return['auto_common_scoring']['low'] = "Scores Three Low";
             }
         }
     } else if ($autoCases['scores_low'] > $autoCases['scores_two_low']) {
         if ($autoCases['scores_low'] > $autoCases['scores_three_low']) {
-            $scope['auto_common_scoring.low'] = "Scores Low";
+            $return['auto_common_scoring']['low'] = "Scores Low";
         } else {
-            $scope['auto_common_scoring.low'] = "Scores Three Low ";
+            $return['auto_common_scoring']['low'] = "Scores Three Low ";
 
         }
     } else if ($autoCases['scoring_two_low'] > $autoCases['scores_three_low']) {
-        $scope['auto_common_scoring.low'] = "Scores Two Low";
+        $return['auto_common_scoring']['low'] = "Scores Two Low";
 
     } else {
-        $scope['auto_common_scoring.low'] = "scores Three Low";
+        $return['auto_common_scoring']['low'] = "scores Three Low";
     }
 
     //Now we do the high 
-    if ($autoCases['doesnt_score'] > $autoCase.['scores_high']) {
+    if ($autoCases['doesnt_score'] > $autoCase']['['scores_high']) {
         // 0, 2h, 3h
         if (autocases['doesnt_score'] > $autoCases['scores_two_high']) {
             // 0, 3h
             if ($autoCases['doesnt_score'] > $autoCases['scores_three_high']) {
                 //0
-                $scope['auto_common_scoring.high'] = "Doesn't Score High";
+                $return['auto_common_scoring']['high'] = "Doesn't Score High";
 
             } else {
-                $scope['auto_common_scoring.high'] = "Scores Three High";
+                $return['auto_common_scoring']['high'] = "Scores Three High";
 
             }
         } else {
             if ($autoCases['scores_two_high'] > $autoCases['scores_three_high']) {
-                $scope['auo_common_scoring.high'] = "Scores Two High";
+                $return['auo_common_scoring']['high'] = "Scores Two High";
 
             } else {
-                $scope['auto_common_scoring.High'] = "Scores Three High";
+                $return['auto_common_scoring']['High'] = "Scores Three High";
             }
         }
     } else if ($autoCases['scores_high'] > $autoCases['scores_two_high']) {
         if ($autoCases['scores_high'] > $autoCases['scores_three_high']) {
-            $scope['auto_common_scoring.high'] = "Scores High";
+            $return['auto_common_scoring']['high'] = "Scores High";
         } else {
-            $scope['auto_common_scoring.high'] = "Scores Three High";
+            $return['auto_common_scoring']['high'] = "Scores Three High";
 
         }
     } else if ($autoCases['scoring_two_high'] > $autoCases['scores_three_high']) {
-        $scope['auto_common_scoring.high'] = "Scores Two High";
+        $return['auto_common_scoring']['high'] = "Scores Two High";
 
     } else {
-        $scope['auto_common_scoring.high'] = "scores Three High";
+        $return['auto_common_scoring']['high'] = "scores Three High";
     }
+
+	return $return;
 }
 
 function getTeamRankings($db, $team){
