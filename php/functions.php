@@ -486,7 +486,7 @@ function getTeamBouldersTable($db, $team) {
     $query = "SELECT match_number, auto_balls_high, auto_balls_low, 
                 teleop_balls_high, teleop_balls_low
                 FROM scout_data WHERE team=?";
-    $return
+    $return = array();
     if($stmt = $db->prepare($query)) {
         $stmt->bind_param("i", $teamNumber);
         $stmt->execute();
@@ -515,6 +515,7 @@ function getTeamBouldersTable($db, $team) {
 function getTeamAutoString($db, $team){
     $defenses = getTeamDefenseTable($db, $team);
     $balls = getTeamBouldersTable($db, $team); 
+	$scope = array();
     $autoCases = array(
         'doesnt_drive' => 0,
         'reaches_defense' => 0,
@@ -580,7 +581,7 @@ function getTeamAutoString($db, $team){
         if ($match['balls_scored_low'] == 0 && $match['balls_scored_high'] == 0) {
             $autoCases['doesnt_score']++;
         }
-    });
+    }
     //dd, rd, cd, c2d
     if ($autoCases['doesnt_drive'] > $autoCases['reaches_defense']) {
         // dd, cd, c2d
@@ -607,17 +608,17 @@ function getTeamAutoString($db, $team){
         //rd, c2d
         if ($autoCases['reaches_defense'] > $autoCases['crosses_two_defenses']) {
             //rd
-            $scope.['auto_common_defense'] = "Drives to a defense";
+            $scope['auto_common_defense'] = "Drives to a defense";
         } else {
             //c2d
-            $scope.['auto_common_defense'] = "Crosses two defenses";
+            $scope['auto_common_defense'] = "Crosses two defenses";
         }
-    } else if ($autoCases.crosses_defense > $autoCases.crosses_two_defenses) {
+    } else if ($autoCases['crosses_defense'] > $autoCases['crosses_two_defenses']) {
         //cd
-        $scope.['auto_common_defense'] = "Crosses a defense";
+        $scope['auto_common_defense'] = "Crosses a defense";
     } else {
         //c2d
-        $scope.['auto_common_defense'] = "Crosses two defenses";
+        $scope['auto_common_defense'] = "Crosses two defenses";
     }
 
     // 0, 1l, 2l, 3l, 1h, 2h, 3h 
