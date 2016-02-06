@@ -432,6 +432,274 @@ function getTeamAutoTable($db, $team){
 	}
 }
 
+function getTeamDefenseTable($db, $team){
+   $query = "SELECT match_number, robot_moved, gametime, low_bar, portcullis,
+	cheval_de_frise, moat, ramparts, drawbridge,
+	sally_port, rock_wall, rough_terrain FROM scout_data
+	LEFT JOIN defenses
+	ON scout_data.scout_data_id = defenses.id
+	WHERE scout_data.team=?";
+	$return = array();
+    if($stmt = $db->prepare($query)) {
+		$stmt->bind_param("i", $teamNumber);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+				if($row["gametime"] == "auto") {
+					$return["auto"][] = array(
+						"match_number" => $row["match_number"],
+						"robot_moved" => $row["robot_moved"],
+						"low_bar" => $row["low_bar"],
+						"portcullis" => $row["portcullis"],
+						"cheval_de_frise" => $row["cheval_de_frise"],
+						"moat" => $row["moat"],
+						"ramparts" => $row["ramparts"],
+						"drawbridge" => $row["drawbridge"],
+						"sally_port" => $row["sally_port"],
+						"rock_wall" => $row["rock_wall"],
+						"rough_terrain" => $row["rough_terrain"]);
+				} else {
+					$return["teleop"][] = array(
+						"match_number" => $row["match_number"],
+						"robot_moved" => $row["robot_moved"],
+						"low_bar" => $row["low_bar"],
+						"portcullis" => $row["portcullis"],
+						"cheval_de_frise" => $row["cheval_de_frise"],
+						"moat" => $row["moat"],
+						"ramparts" => $row["ramparts"],
+						"drawbridge" => $row["drawbridge"],
+						"sally_port" => $row["sally_port"],
+						"rock_wall" => $row["rock_wall"],
+						"rough_terrain" => $row["rough_terrain"]);
+				}
+			}
+        }
+        return $return;
+    } else {
+        header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
+        die("Failed to get data");
+    }
+}
+
+function getTeamBouldersTable($db, $team) {
+    $query = "SELECT match_number, auto_balls_high, auto_balls_low, 
+                teleop_balls_high, teleop_balls_low
+                FROM scout_data WHERE team=?";
+    $return
+    if($stmt = $db->prepare($query)) {
+        $stmt->bind_param("i", $teamNumber);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $return["auto"][] = array(
+					"match_number" => $row["match_number"],
+					"balls_scored_low" => $row["auto_balls_low"],
+					"balls_scored_high" => $row["auto_balls_high"]
+				);
+				$return["teleop"][] = array(
+					"match_number" => $row["match_number"],
+					"balls_scored_low" => $row["teleop_balls_low"],
+					"balls_scored_high" => $row["teleop_balls_high"]
+				);
+            }
+        }
+        return $return;
+    } else {
+        header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
+        die("Failed to get data");
+    }
+}
+
+function getTeamAutoString($db, $team){
+    $defenses = getTeamDefenseTable($db, $team);
+    $balls = getTeamBouldersTable($db, $team); 
+    $autoCases = array(
+        'doesnt_drive' => 0,
+        'reaches_defense' => 0,
+        'crosses_defense' =>0,
+        'crosses_two_defenses' => 0,
+        'doesnt_score' => 0,
+        'scores_low' => 0,
+        'scores_two_low' => 0,
+        'scores_three_low' => 0,
+        'scores_high' => 0,
+        'scores_two_high' => 0,
+        'scores_three_high' => 0
+    );
+    foreach ($defenses['auto'] as $match){
+        $crosscount = 0;
+        foreach ($match as $defenses){
+            $crosscount += $defenses; 
+        }
+        switch ($crosscount) {
+        case 0:
+            $autoCases['doesnt_drive']++;
+            break;
+        case 1:
+            $autoCases['reaches_defense']++;
+            break;
+        case 2:
+            $autoCases['crosses_defense']++;
+            break;
+        case 3:
+            $autoCases['crosses_two_defenses']++;
+            break;
+        } 
+    }
+    
+
+    foreach ($balls['auto'] as $match){
+        switch ($match['balls_scored_low'] ) {
+        case 1:
+            $autoCases['scores_low']++;
+            break;
+        case 2:
+            $autoCases['scores_two_low']++;
+            break;
+        case 3:
+            $autoCases['scores_three_low']++;
+            break;
+        default:
+            break;
+        }
+        switch ($match['balls_scored_high'] ) {
+        case 1:
+            $autoCases['scores_high']++;
+            break;
+        case 2:
+            $autoCases['scores_two_high']++;
+            break;
+        case 3:
+            $autoCases['scores_three_high']++;
+            break;
+        default:
+            break;
+        }
+        if ($match['balls_scored_low'] == 0 && $match['balls_scored_high'] == 0) {
+            $autoCases['doesnt_score']++;
+        }
+    });
+    //dd, rd, cd, c2d
+    if ($autoCases['doesnt_drive'] > $autoCases['reaches_defense']) {
+        // dd, cd, c2d
+        if ($autoCases['doesnt_drive'] > $autoCases['crosses_defense']) {
+            //dd, c2d
+            if ($autoCases['doesnt_drive'] > $autoCases['crosses_two_defenses']) {
+                //dd
+                $scope['auto_common_defense'] = "Doesn't drive";
+            } else {
+                //c2d
+                $scope['auto_common_defense'] = "Crosses two defenses";
+            }
+        } else {
+            //cd, c2d
+            if ($autoCases.['crosses_defense'] > $autoCases['crosses_two_defenses']) {
+                //cd
+                $scope['auto_common_defense'] = "Crosses a defense";
+            } else {
+                //c2d
+                $scope['auto_common_defense'] = "Crosses two defenses";
+            }
+        }
+    } else if ($autoCases['reaches_defense'] > $autoCases['crosses_defense']) {
+        //rd, c2d
+        if ($autoCases['reaches_defense'] > $autoCases['crosses_two_defenses']) {
+            //rd
+            $scope.['auto_common_defense'] = "Drives to a defense";
+        } else {
+            //c2d
+            $scope.['auto_common_defense'] = "Crosses two defenses";
+        }
+    } else if ($autoCases.crosses_defense > $autoCases.crosses_two_defenses) {
+        //cd
+        $scope.['auto_common_defense'] = "Crosses a defense";
+    } else {
+        //c2d
+        $scope.['auto_common_defense'] = "Crosses two defenses";
+    }
+
+    // 0, 1l, 2l, 3l, 1h, 2h, 3h 
+    /*
+    doesnt_score: 0,
+    scores_low: 0,
+    scores_two_low: 0,
+    scores_three_low: 0,
+    scores_high: 0,
+    scores_two_high: 0,
+    scores_three_high: 0
+    */
+
+    if ($autoCases['doesnt_score'] > $autoCases['scores_low']) {
+        // 0, 2l, 3l
+        if ($autocases['doesnt_score'] > $autoCases['scores_two_low']) {
+            // 0, 3l
+            if ($autoCases['doesnt_score'] > $autoCases['scores_three_low']) {
+                //0
+                $scope['auto_common_scoring.low']= "Doesn't Score Low";
+
+            } else {
+                $scope['auto_common_scoring.low'] = "Scores Three Low";
+
+            }
+        } else {
+            if ($autoCases['scores_two_low'] > $autoCases['scores_three_low']) {
+                $scope['auto_common_scoring.low'] = "Scores Two Low";
+            } else {
+                $scope['auto_common_scoring.low'] = "Scores Three Low";
+            }
+        }
+    } else if ($autoCases['scores_low'] > $autoCases['scores_two_low']) {
+        if ($autoCases['scores_low'] > $autoCases['scores_three_low']) {
+            $scope['auto_common_scoring.low'] = "Scores Low";
+        } else {
+            $scope['auto_common_scoring.low'] = "Scores Three Low ";
+
+        }
+    } else if ($autoCases['scoring_two_low'] > $autoCases['scores_three_low']) {
+        $scope['auto_common_scoring.low'] = "Scores Two Low";
+
+    } else {
+        $scope['auto_common_scoring.low'] = "scores Three Low";
+    }
+
+    //Now we do the high 
+    if ($autoCases['doesnt_score'] > $autoCase.['scores_high']) {
+        // 0, 2h, 3h
+        if (autocases['doesnt_score'] > $autoCases['scores_two_high']) {
+            // 0, 3h
+            if ($autoCases['doesnt_score'] > $autoCases['scores_three_high']) {
+                //0
+                $scope['auto_common_scoring.high'] = "Doesn't Score High";
+
+            } else {
+                $scope['auto_common_scoring.high'] = "Scores Three High";
+
+            }
+        } else {
+            if ($autoCases['scores_two_high'] > $autoCases['scores_three_high']) {
+                $scope['auo_common_scoring.high'] = "Scores Two High";
+
+            } else {
+                $scope['auto_common_scoring.High'] = "Scores Three High";
+            }
+        }
+    } else if ($autoCases['scores_high'] > $autoCases['scores_two_high']) {
+        if ($autoCases['scores_high'] > $autoCases['scores_three_high']) {
+            $scope['auto_common_scoring.high'] = "Scores High";
+        } else {
+            $scope['auto_common_scoring.high'] = "Scores Three High";
+
+        }
+    } else if ($autoCases['scoring_two_high'] > $autoCases['scores_three_high']) {
+        $scope['auto_common_scoring.high'] = "Scores Two High";
+
+    } else {
+        $scope['auto_common_scoring.high'] = "scores Three High";
+    }
+}
+
 function getTeamRankings($db, $team){
 	$query = "SELECT t1.team AS Team, ROUND(t1.avg_height,2) AS 'Avg. Stack Height', ROUND(t2.avg_stacks,2) AS 'Avg. Stacks per Match', MAX(t4.totes) AS 'Highest Stack Made', ROUND(rating,2) AS 'Rating'
 FROM (SELECT team, AVG(totes) AS avg_height, totes
