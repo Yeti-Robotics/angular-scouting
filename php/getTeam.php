@@ -53,7 +53,7 @@ if($teamNumber) {
     }
     
     $response["balls"] = getTeamBouldersTable($db, $team);
-    response['defenses'] = getTeamDefenseTable($db, $team);
+    $response['defenses'] = getTeamDefenseTable($db, $team);
     $response['teamInfo'] = getTeamInfo($db, $teamNumber);
 	echo(json_encode($response));
 } else {
