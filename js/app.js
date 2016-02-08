@@ -218,8 +218,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	$scope.submit = function () {
 		if ($('#scouting_form').valid()) {
 			console.log("valid");
-			console.log($scope.formData);
-			$scope.formData.auto_balls_scored.forEach(function (e, i, arr) {
+			$scope.formData.auto_balls_scored.forEach(function (e) {
 				if (e.goal === 'High') {
 					$scope.formData.auto_balls_high++;
 				} else {
@@ -227,7 +226,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 				}
 			});
 
-			$scope.formData.teleop_balls_scored.forEach(function (e, i, arr) {
+			$scope.formData.teleop_balls_scored.forEach(function (e) {
 				if (e.goal === 'High') {
 					$scope.formData.teleop_balls_high++;
 				} else {
@@ -239,7 +238,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			delete $scope.formData.teleop_balls_scored;
 			$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
 				console.log("submitted");
-				console.log(response);
+				console.log(response.data);
 				$('#scouting_form').trigger('reset');
 				$('body').scrollTop(0);
 				if ($('#scouting_form').prev().attr('id') != "success_message") {
@@ -248,7 +247,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 				$scope.resetForm();
 			}, function (response) {
 				console.log("Error during submission");
-				console.log(response);
+				console.log(response.data);
 			});
 		} else {
 			console.log("Not valid");

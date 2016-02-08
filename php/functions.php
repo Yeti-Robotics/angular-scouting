@@ -666,7 +666,7 @@ function getTeamAutoString($db, $team){
     }
 
     //Now we do the high 
-    if ($autoCases['doesnt_score'] > $autoCase']['['scores_high']) {
+    if ($autoCases['doesnt_score'] > $autoCases['scores_high']) {
         // 0, 2h, 3h
         if (autocases['doesnt_score'] > $autoCases['scores_two_high']) {
             // 0, 3h
