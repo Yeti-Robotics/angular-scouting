@@ -51,9 +51,11 @@ if($teamNumber) {
         header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
         die("Failed to get data");
     }
-    
-    $response["balls"] = getTeamBouldersTable($db, $team);
-    $response['defenses'] = getTeamDefenseTable($db, $team);
+
+	$response["balls"] = getTeamBouldersTable($db, $teamNumber);
+    $response['defenses'] = getTeamDefenseTable($db, $teamNumber);
+    $response["rankingInfo"] = getTeamRankings($db, $teamNumber);
+	$response["rankingInfo"]["autoString"] = getTeamAutoStringWTables($db, $teamNumber, $response['defenses'], $response["balls"]);
     $response['teamInfo'] = getTeamInfo($db, $teamNumber);
 	echo(json_encode($response));
 } else {

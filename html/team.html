@@ -21,10 +21,12 @@
 			</tr>
 			<tr class="team_row">
 				<td>{{data.teamInfo.teamNumber}}</td>
-				<td>{{data.teamSection.avgStackHeight}}</td>
-				<td>{{data.teamSection.avgStacksperMatch}}</td>
-				<td>{{data.teamSection.heighestStackMade}}</td>
-				<td>{{data.teamSection.rating}}</td>
+				<td><span class="glyphicon glyphicon-ok" ng-show="canLowBar" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!canLowBar" style="color:red"></span></td>
+				<td>{{data.rankingInfo.gcdName}}</td>
+				<td>{{data.rankingInfo.totalHighGoals}}</td>
+				<td>{{data.rankingInfo.totalLowGoals}}</td>
+				<td>{{data.rankingInfo.gamesDefended}}</td>
+				<td>{{autoString}}</td>
 			</tr>
 		</table>
 	</fieldset>
@@ -59,15 +61,15 @@
 				<tr ng-repeat="match in data.defenses.teleop | orderBy : 'match_number' : false">
 					<td>{{match.match_number}}</td>
 					<td class="row">
-						<img class="col-xs-2" src="images/defenses/portcullis.png" ng-repeat="a in range(match.portcullis) track by $index" />
-						<img class="col-xs-2" src="images/defenses/cheval-de-frise.png" ng-repeat="a in range(match.cheval_de_frise) track by $index" />
-						<img class="col-xs-2" src="images/defenses/moat.png" ng-repeat="a in range(match.moat) track by $index" />
-						<img class="col-xs-2" src="images/defenses/ramparts.png" ng-repeat="a in range(match.ramparts) track by $index" />
-						<img class="col-xs-2" src="images/defenses/drawbridge.png" ng-repeat="a in range(match.drawbridge) track by $index" />
-						<img class="col-xs-2" src="images/defenses/sally-port.png" ng-repeat="a in range(match.sall_port) track by $index" />
-						<img class="col-xs-2" src="images/defenses/rock-wall.png" ng-repeat="a in range(match.rock_wall) track by $index" />
-						<img class="col-xs-2" src="images/defenses/rough-terrain.png" ng-repeat="a in range(match.rough_terrain) track by $index" />
-						<img class="col-xs-2" src="images/defenses/low-bar.png" ng-repeat="a in range(match.low_bar) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/portcullis.png" ng-repeat="a in range(match.portcullis) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/cheval-de-frise.png" ng-repeat="a in range(match.cheval_de_frise) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/moat.png" ng-repeat="a in range(match.moat) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/ramparts.png" ng-repeat="a in range(match.ramparts) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/drawbridge.png" ng-repeat="a in range(match.drawbridge) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/sally-port.png" ng-repeat="a in range(match.sall_port) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/rock-wall.png" ng-repeat="a in range(match.rock_wall) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/rough-terrain.png" ng-repeat="a in range(match.rough_terrain) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/low-bar.png" ng-repeat="a in range(match.low_bar) track by $index" />
 					</td>
 				</tr>
 			</tbody>
@@ -104,15 +106,15 @@
 				<tr ng-repeat="match in data.defenses.auto | orderBy : 'match_number' : false">
 					<td>{{match.match_number}}</td>
 					<td class="row">
-						<img class="col-xs-2" src="images/defenses/portcullis.png" ng-repeat="a in range(match.portcullis) track by $index" />
-						<img class="col-xs-2" src="images/defenses/cheval-de-frise.png" ng-repeat="a in range(match.cheval_de_frise) track by $index" />
-						<img class="col-xs-2" src="images/defenses/moat.png" ng-repeat="a in range(match.moat) track by $index" />
-						<img class="col-xs-2" src="images/defenses/ramparts.png" ng-repeat="a in range(match.ramparts) track by $index" />
-						<img class="col-xs-2" src="images/defenses/drawbridge.png" ng-repeat="a in range(match.drawbridge) track by $index" />
-						<img class="col-xs-2" src="images/defenses/sally-port.png" ng-repeat="a in range(match.sall_port) track by $index" />
-						<img class="col-xs-2" src="images/defenses/rock-wall.png" ng-repeat="a in range(match.rock_wall) track by $index" />
-						<img class="col-xs-2" src="images/defenses/rough-terrain.png" ng-repeat="a in range(match.rough_terrain) track by $index" />
-						<img class="col-xs-2" src="images/defenses/low-bar.png" ng-repeat="a in range(match.low_bar) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/portcullis.png" ng-repeat="a in range(match.portcullis) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/cheval-de-frise.png" ng-repeat="a in range(match.cheval_de_frise) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/moat.png" ng-repeat="a in range(match.moat) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/ramparts.png" ng-repeat="a in range(match.ramparts) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/drawbridge.png" ng-repeat="a in range(match.drawbridge) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/sally-port.png" ng-repeat="a in range(match.sall_port) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/rock-wall.png" ng-repeat="a in range(match.rock_wall) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/rough-terrain.png" ng-repeat="a in range(match.rough_terrain) track by $index" />
+						<img class="col-xs-2 col-md-1" src="images/defenses/low-bar.png" ng-repeat="a in range(match.low_bar) track by $index" />
 					</td>
 				</tr>
 			</tbody>

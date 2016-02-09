@@ -168,51 +168,51 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
 
-    $scope.resetForm = function() {
-        $scope.formData = {
-            name: $rootScope.user.name,
-            robot_moved: false,
-            auto_defense_crossed: {
-                portcullis: 0,
-                cheval_de_frise: 0,
-                moat: 0,
-                ramparts: 0,
-                drawbridge: 0,
-                sally_port: 0,
-                rock_wall: 0,
-                rough_terrain: 0,
-                low_bar: 0
-            },
-            auto_balls_crossed: 0,
-            auto_balls_scored: [],
-            auto_balls_high: 0,
-            auto_balls_low: 0,
-            teleop_defense_crossed: {
-                portcullis: 0,
-                cheval_de_frise: 0,
-                moat: 0,
-                ramparts: 0,
-                drawbridge: 0,
-                sally_port: 0,
-                rock_wall: 0,
-                rough_terrain: 0,
-                low_bar: 0
-            },
-            teleop_balls_scored: [],
-            teleop_balls_high: 0,
-            teleop_balls_low: 0,
-            robot_defended: false,
-            end_game: "none",
-            rating: 1,
-            score: 0,
-            comments: ""
-        };
-    };
+	$scope.resetForm = function () {
+		$scope.formData = {
+			name: $rootScope.user.name,
+			robot_moved: false,
+			auto_defense_crossed: {
+				portcullis: 0,
+				cheval_de_frise: 0,
+				moat: 0,
+				ramparts: 0,
+				drawbridge: 0,
+				sally_port: 0,
+				rock_wall: 0,
+				rough_terrain: 0,
+				low_bar: 0
+			},
+			auto_balls_crossed: 0,
+			auto_balls_scored: [],
+			auto_balls_high: 0,
+			auto_balls_low: 0,
+			teleop_defense_crossed: {
+				portcullis: 0,
+				cheval_de_frise: 0,
+				moat: 0,
+				ramparts: 0,
+				drawbridge: 0,
+				sally_port: 0,
+				rock_wall: 0,
+				rough_terrain: 0,
+				low_bar: 0
+			},
+			teleop_balls_scored: [],
+			teleop_balls_high: 0,
+			teleop_balls_low: 0,
+			robot_defended: false,
+			end_game: "none",
+			rating: 1,
+			score: 0,
+			comments: ""
+		};
+	};
 
 	$(document).ready(function () {
 		$('#scouting_form').validate();
 		console.log('Inititalize validation');
-        $scope.resetForm();
+		$scope.resetForm();
 	});
 
 	$scope.submit = function () {
@@ -610,10 +610,13 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		}
 	}).then(function (response) {
 			$scope.data = response.data;
-			
+
 			$scope.range = function (n) {
 				return new Array(n);
 			};
+
+			$scope.autoString = $scope.data.rankingInfo.autoString.auto_common_defense + " | " + $scope.data.rankingInfo.autoString.auto_common_scoring.high + " | " + $scope.data.rankingInfo.autoString.auto_common_scoring.low;
+			$scope.canLowBar = ($scope.data.rankingInfo.totalLowBars > 0)
 
 			console.log($scope.data);
 		},

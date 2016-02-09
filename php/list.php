@@ -2,28 +2,34 @@
 include ("connect.php");
 include ("functions.php");
 header('Content-Type: application/json');
-$query = "SELECT t1.team AS 'team', t5.team_name AS 'name', ROUND(t1.avg_height,2) AS 'avgStackHeight', ROUND(t2.avg_stacks,2) AS 'avgStacksPerMatch', IFNULL(MAX(max_totes), 0) AS 'highestStackMade', ROUND(rating,2) AS 'rating'
-FROM (SELECT team, AVG(totes) AS avg_height, totes
+$query = "SELECT totalLowBars.*, gcd.gcdName, totalHighGoals.totalHighGoals, totalLowGoals.totalLowGoals, gamesDefended.gamesDefended
+FROM (SELECT team, SUM(low_bar) AS totalLowBars
+FROM defenses
+LEFT JOIN scout_data ON defenses.id = scout_data.scout_data_id
+GROUP BY team) AS totalLowBars
+LEFT JOIN (SELECT team, CASE GREATEST(SUM(low_bar), SUM(portcullis), SUM(cheval_de_frise), SUM(moat), SUM(ramparts), SUM(drawbridge), SUM(sally_port), SUM(rock_wall), SUM(rough_terrain))
+	WHEN SUM(low_bar) THEN 'Low bar'
+	WHEN SUM(portcullis) THEN 'Portcullis'
+	WHEN SUM(cheval_de_frise) THEN 'Cheval de frise'
+	WHEN SUM(moat) THEN 'Moat'
+	WHEN SUM(ramparts) THEN 'Ramparts'
+	WHEN SUM(drawbridge) THEN 'Drawbridge'
+	WHEN SUM(sally_port) THEN 'Sally port'
+	WHEN SUM(rock_wall) THEN 'Rock wall'
+	WHEN SUM(rough_terrain) THEN 'Rough terrain'
+END AS gcdName
+FROM defenses
+LEFT JOIN scout_data ON defenses.id = scout_data.scout_data_id
+GROUP BY team) AS gcd ON totalLowBars.team = gcd.team
+LEFT JOIN (SELECT team, ROUND(SUM(teleop_balls_high) + SUM(auto_balls_high)) AS totalHighGoals
 FROM scout_data
-LEFT JOIN stacks ON scout_data.scout_data_id=stacks.scout_data_id
-GROUP BY team) AS t1
-LEFT JOIN (SELECT team, COUNT(totes > 0) / COUNT(DISTINCT match_number) AS avg_stacks
-FROM stacks
-RIGHT JOIN scout_data ON scout_data.scout_data_id = stacks.scout_data_id
-GROUP BY team
-ORDER BY team DESC) AS t2 ON t1.team = t2.team
-LEFT JOIN (SELECT AVG(rating) AS rating, team
-					FROM scout_data
-					GROUP BY team) AS t3 ON t1.team=t3.team
-                    
-LEFT JOIN (SELECT team, totes AS max_totes
-				FROM stacks
-				LEFT JOIN scout_data ON scout_data.scout_data_id = stacks.scout_data_id
-				WHERE totes > 0
-			    GROUP BY totes, cap_height, match_number
-				ORDER BY match_number, totes) AS t4 ON t4.team=t1.team
-LEFT JOIN (SELECT team_number, team_name FROM team_info) AS t5 ON t5.team_number=t1.team
-GROUP BY team";
+GROUP BY team) AS totalHighGoals ON totalLowBars.team = totalHighGoals.team
+LEFT JOIN (SELECT team, ROUND(SUM(teleop_balls_low) + SUM(auto_balls_low)) AS totalLowGoals
+FROM scout_data
+GROUP BY team) AS totalLowGoals ON totalLowBars.team = totalLowGoals.team
+LEFT JOIN (SELECT team, CONCAT(ROUND((SUM(robot_defended) / COUNT(match_number)) * 100), '%') AS gamesDefended
+FROM scout_data
+ GROUP BY team) AS gamesDefended ON totalLowBars.team = gamesDefended.team";
 $result = $db->query ( $query );
 if ($result) {
     $output = array();
