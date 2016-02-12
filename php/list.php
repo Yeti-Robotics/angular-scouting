@@ -2,7 +2,7 @@
 include ("connect.php");
 include ("functions.php");
 header('Content-Type: application/json');
-$query = "SELECT totalLowBars.*, gcd.gcdName, totalHighGoals.totalHighGoals, totalLowGoals.totalLowGoals, gamesDefended.gamesDefended
+$query = "SELECT totalLowBars.*, teamName.team_name AS name, gcd.gcdName, totalHighGoals.totalHighGoals, totalLowGoals.totalLowGoals, gamesDefended.gamesDefended
 FROM (SELECT team, SUM(low_bar) AS totalLowBars
 FROM defenses
 LEFT JOIN scout_data ON defenses.id = scout_data.scout_data_id
@@ -27,9 +27,10 @@ GROUP BY team) AS totalHighGoals ON totalLowBars.team = totalHighGoals.team
 LEFT JOIN (SELECT team, ROUND(SUM(teleop_balls_low) + SUM(auto_balls_low)) AS totalLowGoals
 FROM scout_data
 GROUP BY team) AS totalLowGoals ON totalLowBars.team = totalLowGoals.team
-LEFT JOIN (SELECT team, CONCAT(ROUND((SUM(robot_defended) / COUNT(match_number)) * 100), '%') AS gamesDefended
+LEFT JOIN (SELECT team, ROUND((SUM(robot_defended) / COUNT(match_number)) * 100) AS gamesDefended
 FROM scout_data
- GROUP BY team) AS gamesDefended ON totalLowBars.team = gamesDefended.team";
+ GROUP BY team) AS gamesDefended ON totalLowBars.team = gamesDefended.team
+ LEFT JOIN (SELECT team_number, team_name FROM team_info) AS teamName ON totalLowBars.team = teamName.team_number";
 $result = $db->query ( $query );
 if ($result) {
     $output = array();

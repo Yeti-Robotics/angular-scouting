@@ -7,7 +7,7 @@ $dbname = "scouting";
 
 // FMSAPI variables
 $tournamentKey = "NCRE";
-$tournamentYear = 2015;
+$tournamentYear = 2016;
 $authUser = "user";
 $authToken = "token";
 $apiServer = "https://frc-staging-api.usfirst.org/v2.0";

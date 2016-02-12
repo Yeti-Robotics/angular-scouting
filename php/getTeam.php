@@ -12,7 +12,7 @@ if($teamNumber) {
     $response = array();
 
 	//Comments query
-    $query = "SELECT team, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, name, match_number
+    $query = "SELECT team, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, name, match_number, rating
 			FROM scout_data
 			WHERE team = ?";
 	if($stmt = $db->prepare($query)){

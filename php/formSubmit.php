@@ -35,7 +35,7 @@ if($stmt = $db->prepare($query)) {
 		$postData["end_game"],
         $postData["rating"],
 		$postData["score"],
-        $postData["comments"]);
+        strip_tags($postData["comments"]));
     $stmt->execute();
     if ($stmt->error) {
         header('HTTP/1.1 500 SQL Error', true, 500);

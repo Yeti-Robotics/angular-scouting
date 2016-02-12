@@ -823,7 +823,7 @@ function getTeamAutoStringWTables($db, $team, $defenses, $balls){
 
     if ($autoCases['doesnt_score'] > $autoCases['scores_low']) {
         // 0, 2l, 3l
-        if ($autocases['doesnt_score'] > $autoCases['scores_two_low']) {
+        if ($autoCases['doesnt_score'] > $autoCases['scores_two_low']) {
             // 0, 3l
             if ($autoCases['doesnt_score'] > $autoCases['scores_three_low']) {
                 //0
@@ -847,17 +847,17 @@ function getTeamAutoStringWTables($db, $team, $defenses, $balls){
             $return['auto_common_scoring']['low'] = "Scores Three Low ";
 
         }
-    } else if ($autoCases['scoring_two_low'] > $autoCases['scores_three_low']) {
+    } else if ($autoCases['scores_two_low'] > $autoCases['scores_three_low']) {
         $return['auto_common_scoring']['low'] = "Scores Two Low";
 
     } else {
-        $return['auto_common_scoring']['low'] = "scores Three Low";
+        $return['auto_common_scoring']['low'] = "Scores Three Low";
     }
 
     //Now we do the high
     if ($autoCases['doesnt_score'] > $autoCases['scores_high']) {
         // 0, 2h, 3h
-        if (autocases['doesnt_score'] > $autoCases['scores_two_high']) {
+        if ($autoCases['doesnt_score'] > $autoCases['scores_two_high']) {
             // 0, 3h
             if ($autoCases['doesnt_score'] > $autoCases['scores_three_high']) {
                 //0
@@ -886,7 +886,7 @@ function getTeamAutoStringWTables($db, $team, $defenses, $balls){
         $return['auto_common_scoring']['high'] = "Scores Two High";
 
     } else {
-        $return['auto_common_scoring']['high'] = "scores Three High";
+        $return['auto_common_scoring']['high'] = "Scores Three High";
     }
 
 	return $return;

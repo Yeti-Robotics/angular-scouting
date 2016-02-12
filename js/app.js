@@ -446,16 +446,25 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 
 app.controller("ListController", function ($rootScope, $scope, $http) {
 	'use strict';
-	$scope.sortType = 'rating';
+	$scope.sortType = 'team';
 	$scope.sortReverse = false;
 
 	$scope.filterTeams = function (value) {
 		var searchRegExp = new RegExp($scope.search, "i");
-		return value.name.match(searchRegExp) || value.team.match(searchRegExp);
+		var teamString = value.team.toString();
+		return value.name != null ? (value.name.match(searchRegExp) || teamString.match(searchRegExp)) : teamString.match(searchRegExp);
 	}
 
 	$http.get('php/list.php').then(function (response) {
 		$scope.data = response.data;
+		console.log($scope.data);
+		for (var i = 0; i < $scope.data.length; i++) {
+			$scope.data[i].team = parseInt($scope.data[i].team);
+			$scope.data[i].totalHighGoals = parseInt($scope.data[i].totalHighGoals);
+			$scope.data[i].totalLowGoals = parseInt($scope.data[i].totalLowGoals);
+			$scope.data[i].totalLowBars = parseInt($scope.data[i].totalLowBars);
+			$scope.data[i].gamesDefended = parseInt($scope.data[i].gamesDefended);
+		}
 	});
 });
 
