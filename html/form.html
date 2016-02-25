@@ -1,130 +1,98 @@
 <div class="container-fluid">
-    <form id="scouting_form" ng-submit="submit()">
-        <fieldset>
-            <legend>Info</legend>
-            <div class="form-group">
-                <div>
-                    <label for="name">Your name:</label>
-                    <input id="name" ng-model="formData.name" type="text" class="form-control" placeholder="Enter your name" required>
-                </div>
-                <div>
-                    <label for="match_number">Match #:</label>
-                    <input id="match_number" ng-model="formData.match_number" type="number" class="form-control" placeholder="Enter the match number" required>
-                </div>
-                <div>
-                    <label for="team_number">Team #:</label>
-                    <input id="team_number" ng-model="formData.team_number" type="number" class="form-control" placeholder="Enter the team number" required>
-                </div>
-            </div>
-        </fieldset>
+	<form id="scouting_form" ng-submit="submit()">
+		<fieldset>
+			<legend>Info</legend>
+			<div class="form-group">
+				<div>
+					<label for="name">Your name:</label>
+					<input id="name" ng-model="formData.name" type="text" class="form-control" placeholder="Enter your name" required>
+				</div>
+				<div>
+					<label for="match_number">Match #:</label>
+					<input id="match_number" ng-model="formData.match_number" type="number" class="form-control" placeholder="Enter the match number" required>
+				</div>
+				<div>
+					<label for="team_number">Team #:</label>
+					<input id="team_number" ng-model="formData.team_number" type="number" class="form-control" placeholder="Enter the team number" required>
+				</div>
+			</div>
+		</fieldset>
 
-        <fieldset>
-            <legend>Autonomous</legend>
-            <div class="form-group">
-                <label for="robot_moved">Did the robot move?</label>
-                <input ng-model="formData.robot_moved" type="checkbox" ng-model="robot_moved">
-                <div ng-show="formData.robot_moved">
-                    <label for="totes_auto">How many totes in auto zone?</label>
-                    <select ng-model="formData.totes_auto" ng-init="formData.totes_auto = '0'" class="form-control">
-                        <option value="0" selected="selected">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                    <label for="cans_auto">How many cans in auto zone?</label>
-                    <select ng-model="formData.cans_auto" ng-init="formData.cans_auto = '0'" class="form-control">
-                        <option value="0" selected="selected">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                    <label for="cans_auto_origin">Grabs how many cans from step?</label>
-                    <select ng-model="formData.cans_auto_origin" ng-init="formData.cans_auto_origin = '0'" class="form-control">
-                        <option value="0" selected="selected">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
-                    <label for="in_auto_zone">Did it finish in the auto zone?</label>
-                    <input type="checkbox" ng-model="formData.in_auto_zone">
-                </div>
-            </div>
+		<fieldset>
+			<legend>Autonomous</legend>
+			<div class="form-group">
+				<label for="robot_moved">Did the robot reach a defense?</label>
+				<input ng-model="formData.robot_moved" type="checkbox">
+				<div ng-show="formData.robot_moved">
+					<div defenses-crossed-selector model-to="formData.auto_defense_crossed"></div>
+					<label for="cans_auto">How many balls did it get into the opponents courtyard?</label>
+					<select ng-model="formData.auto_balls_crossed" class="form-control">
+						<option value="0" selected="selected">0</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+					</select>
+					<div balls-scored-selector model-to="formData.auto_balls_scored"></div>
+				</div>
+			</div>
+		</fieldset>
+		<br>
+		<br>
+		<br>
+		<br>
+		<fieldset>
+			<legend>Tele-Op</legend>
+			<div defenses-crossed-selector model-to="formData.teleop_defense_crossed"></div>
+			<div balls-scored-selector model-to="formData.teleop_balls_scored"></div>
+			<label for="robot_defended">Did the robot attempt to defend?</label>
+			<input ng-model="formData.robot_defended" type="checkbox">
+		</fieldset>
+		<br>
+		<br>
+		<br>
+		<br>
+		<fieldset>
+			<legend>Endgame</legend>
+			<select ng-model="formData.end_game" class="form-control">
+				<option value="none" selected="selected">None</option>
+				<option value="scaling">Climbing</option>
+				<option value="challenging">Parking in front of the tower</option>
+			</select>
+		</fieldset>
+		<br>
+		<br>
+		<br>
+		<br>
+		<fieldset>
+			<legend>Misc.</legend>
+			<div class="form-group">
+				<label for="rating">Rating:</label>
+				<select id="rating" ng-model="formData.rating" required>
+					<option value="1" selected="selected">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="score">Score:</label>
+				<input id="score" class="form-control" type="number" ng-model="formData.score" placeholder="Enter the alliance's score" required/>
+			</div>
+			<div class="form-group">
+				<label>Comments:</label>
+				<br/>
+				<textarea class="form-control" ng-model="formData.comments" rows="5"></textarea>
+			</div>
+		</fieldset>
 
-        </fieldset>
-
-        <fieldset>
-            <legend>Coopertition</legend>
-            <div class="form-group">
-                <label for="coopertition_totes">How many totes?</label>
-                <select ng-model="formData.coopertition_totes" ng-init="formData.coopertition_totes = '0'">
-                    <option value="0" selected="selected">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-            </div>
-        </fieldset>
-
-        <fieldset>
-            <legend>Totes</legend>
-            <div class="form-group">
-                <label for="totes_from_landfill">Totes from landfill?</label>
-                <input type="checkbox" ng-model="formData.totes_from_landfill" />
-                <label for="totes_from_human">Totes from human player?</label>
-                <input type="checkbox" ng-model="formData.totes_from_human" />
-            </div>
-        </fieldset>
-
-        <fieldset>
-            <legend>Cans</legend>
-            <div class="form-group">
-                <label for="cans_from_middle">Grab cans from middle?</label>
-                <input type="checkbox" ng-model="formData.cans_from_middle" />
-            </div>
-        </fieldset>
-
-        <fieldset>
-            <legend>Stacks</legend>
-            <div class="form-group">
-                <div class="form-group">
-                    <button type="button" class="btn btn-block" ng-click="addStack()" onclick="">Add Stack</button>
-                </div>
-                <div ng-repeat="row in formData.stackRows.rows">
-                    <div stack remove-stack="removeStack(row)"></div>
-                </div>
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend>Misc.</legend>
-            <div class="form-group">
-                <label for="rating">Rating:</label>
-                <select id="rating" ng-model="formData.rating" ng-init="formData.rating = '1'" required>
-                    <option value="1" selected="selected">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="score">Score:</label>
-                <input id="score" class="form-control" type="number" ng-model="formData.score" placeholder="Enter the alliance's score" required/>
-            </div>
-            <div class="form-group">
-                <label>Comments:</label>
-                <br/>
-                <textarea class="form-control" ng-model="formData.comments" rows="5"></textarea>
-            </div>
-        </fieldset>
-
-        <div class="form-group">
-            <button class="btn btn-primary btn-block" type="submit">Submit</button>
-        </div>
-    </form>
+		<div class="form-group">
+			<button class="btn btn-primary btn-block" type="submit">Submit</button>
+		</div>
+	</form>
 </div>

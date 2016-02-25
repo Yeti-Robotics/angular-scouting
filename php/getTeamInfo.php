@@ -5,5 +5,5 @@ include("functions.php");
 
 $teamNumber = $_GET["teamNumber"];
 
-die(getTeamInfo($db, $teamNumber));
+die(json_encode(getTeamInfo($db, $teamNumber)));
 ?>

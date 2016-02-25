@@ -69,24 +69,24 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
 				required: "Password cannot be empty"
 			}
 		});
-        
-        var code = "38384040373937396665";
-        var input = "";
-        var timer;
-        $(document).keyup(function(e) {
-            input += e.which;
-            
-            clearTimeout(timer);
-            timer = setTimeout(function() {
-                input = "";
-            }, 500);
-            
-            if (input == code) {
-                $scope.scouterUsername = "admin";
-                $scope.scouterPswd = prompt("If you really are who you claim to be, then what's the password?");
-                $scope.login();
-            }
-        });
+
+		var code = "38384040373937396665";
+		var input = "";
+		var timer;
+		$(document).keyup(function (e) {
+			input += e.which;
+
+			clearTimeout(timer);
+			timer = setTimeout(function () {
+				input = "";
+			}, 500);
+
+			if (input == code) {
+				$scope.scouterUsername = "admin";
+				$scope.scouterPswd = prompt("If you really are who you claim to be, then what's the password?");
+				$scope.login();
+			}
+		});
 	});
 
 	$scope.login = function () {
@@ -168,46 +168,86 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
 
-	$scope.formData = {
-		stackRows: {
-			rows: []
-		},
-		name: $rootScope.user.name
+	$scope.resetForm = function () {
+		$scope.formData = {
+			name: $rootScope.user.name,
+			robot_moved: false,
+			auto_defense_crossed: {
+				portcullis: 0,
+				cheval_de_frise: 0,
+				moat: 0,
+				ramparts: 0,
+				drawbridge: 0,
+				sally_port: 0,
+				rock_wall: 0,
+				rough_terrain: 0,
+				low_bar: 0
+			},
+			auto_balls_crossed: 0,
+			auto_balls_scored: [],
+			auto_balls_high: 0,
+			auto_balls_low: 0,
+			teleop_defense_crossed: {
+				portcullis: 0,
+				cheval_de_frise: 0,
+				moat: 0,
+				ramparts: 0,
+				drawbridge: 0,
+				sally_port: 0,
+				rock_wall: 0,
+				rough_terrain: 0,
+				low_bar: 0
+			},
+			teleop_balls_scored: [],
+			teleop_balls_high: 0,
+			teleop_balls_low: 0,
+			robot_defended: false,
+			end_game: "none",
+			rating: 1,
+			score: 0,
+			comments: ""
+		};
 	};
 
 	$(document).ready(function () {
 		$('#scouting_form').validate();
 		console.log('Inititalize validation');
+		$scope.resetForm();
 	});
-
-	$scope.addStack = function () {
-		$scope.formData.stackRows.rows.push({
-			stacks_totes: '0',
-			capped_stack: '0',
-			cap_height: '0'
-		});
-	};
-
-	$scope.removeStack = function (stack) {
-		var rowNum = $scope.formData.stackRows.rows.indexOf(stack);
-		$scope.formData.stackRows.rows.splice(rowNum, 1);
-	};
 
 	$scope.submit = function () {
 		if ($('#scouting_form').valid()) {
 			console.log("valid");
+			$scope.formData.auto_balls_scored.forEach(function (e) {
+				if (e.goal === 'High') {
+					$scope.formData.auto_balls_high++;
+				} else {
+					$scope.formData.auto_balls_low++;
+				}
+			});
+
+			$scope.formData.teleop_balls_scored.forEach(function (e) {
+				if (e.goal === 'High') {
+					$scope.formData.teleop_balls_high++;
+				} else {
+					$scope.formData.teleop_balls_low++;
+				}
+			});
+			//So we dont send more data then we need to
+			delete $scope.formData.auto_balls_scored;
+			delete $scope.formData.teleop_balls_scored;
 			$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
 				console.log("submitted");
-				console.log(response);
+				console.log(response.data);
 				$('#scouting_form').trigger('reset');
 				$('body').scrollTop(0);
 				if ($('#scouting_form').prev().attr('id') != "success_message") {
 					$("#scouting_form").before('<div id="success_message" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"<span aria-hidden="true">&times;</span></button><strong>Success!</strong> Now do it again.</div>');
 				}
-				$scope.formData.stackRows.rows = [];
+				$scope.resetForm();
 			}, function (response) {
 				console.log("Error during submission");
-				console.log(response);
+				console.log(response.data);
 			});
 		} else {
 			console.log("Not valid");
@@ -406,16 +446,25 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 
 app.controller("ListController", function ($rootScope, $scope, $http) {
 	'use strict';
-	$scope.sortType = 'rating';
+	$scope.sortType = 'team';
 	$scope.sortReverse = false;
-    
-    $scope.filterTeams = function(value) {
-        var searchRegExp = new RegExp($scope.search, "i");
-        return value.name.match(searchRegExp) || value.team.match(searchRegExp);
-    }
+
+	$scope.filterTeams = function (value) {
+		var searchRegExp = new RegExp($scope.search, "i");
+		var teamString = value.team.toString();
+		return value.name != null ? (value.name.match(searchRegExp) || teamString.match(searchRegExp)) : teamString.match(searchRegExp);
+	}
 
 	$http.get('php/list.php').then(function (response) {
 		$scope.data = response.data;
+		console.log($scope.data);
+		for (var i = 0; i < $scope.data.length; i++) {
+			$scope.data[i].team = parseInt($scope.data[i].team);
+			$scope.data[i].totalHighGoals = parseInt($scope.data[i].totalHighGoals);
+			$scope.data[i].totalLowGoals = parseInt($scope.data[i].totalLowGoals);
+			$scope.data[i].totalLowBars = parseInt($scope.data[i].totalLowBars);
+			$scope.data[i].gamesDefended = parseInt($scope.data[i].gamesDefended);
+		}
 	});
 });
 
@@ -556,62 +605,53 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		avgStacksPerMatch: 0,
 		heighestStackMade: 0,
 		rating: 0
-	}
+	};
 
 	$scope.stacks = [];
 
 	$scope.commentSection = {
 		comments: []
-	}
+	};
 
-	$http.get("php/team.php", {
+	$http.get("php/getTeam.php", {
 		params: {
 			teamNumber: $routeParams.teamNumber
 		}
-
 	}).then(function (response) {
-		$scope.data = response.data;
-		console.log($scope.data);
-		//        $scope.stacks = response.stacks;
-		//        for (var i = 0; i < response.data.commentSection['comments'].length; i++ ) {
-		//            $scope.commentSection.comments.push({
-		//                commentText: response.data.commentSection['comments'][i],
-		//                timeStamp: response.data.commentSection['timestamps'][i],
-		//                name: response.data.commentSection['names'][i],
-		//                matchNumber: response.data.commentSection['matchNumbers'][i]
-		//            });
-		//        }
-		//        console.log(response.data);
-		//        $scope.team = response.data.teamSection;
-		//        $scope.stacks = response.data.stacksSection;
-		//        $scope.toteSupplys = response.data.toteSupplySection;
-		//        $scope.coopTotes = response.data.coopSection;
-		//        $scope.autoSection = response.data.autoSection;
-		//
+			$scope.data = response.data;
 
-	}, function (response) {
-		$scope.team = {},
-			$scope.stacks = []
-	});
+			$scope.range = function (n) {
+				return new Array(n);
+			};
+
+			$scope.autoString = $scope.data.rankingInfo.autoString.auto_common_defense + " | " + $scope.data.rankingInfo.autoString.auto_common_scoring.high + " | " + $scope.data.rankingInfo.autoString.auto_common_scoring.low;
+			$scope.canLowBar = ($scope.data.rankingInfo.totalLowBars > 0)
+
+			console.log($scope.data);
+		},
+		function (response) {
+			$scope.team = {},
+				$scope.stacks = []
+		});
 });
 
 app.controller('AdminPageController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
-    
+
 	$scope.adminAction = function (pageAction) {
 		var post = {
 			token: $window.sessionStorage["token"],
 			action: pageAction
 		};
 		switch (pageAction) {
-			case 'update_team':
-				post.teamNumber = $scope.teamNumber;
-				post.matchNumber = '';
-				break;
-			case 'update_wagers':
-				post.matchNumber = $scope.matchNumber;
-				post.teamNumber = '';
-				break;
+		case 'update_team':
+			post.teamNumber = $scope.teamNumber;
+			post.matchNumber = '';
+			break;
+		case 'update_wagers':
+			post.matchNumber = $scope.matchNumber;
+			post.teamNumber = '';
+			break;
 		}
 		$http.post("php/adminAction.php", post)
 			.then(function (response) {
@@ -620,16 +660,34 @@ app.controller('AdminPageController', function ($rootScope, $scope, $http, $wind
 				console.log(response.data);
 			});
 	}
-})
+});
 
-app.directive('stack', function () {
+app.directive('defensesCrossedSelector', function () {
 	'use strict';
 	return {
-		templateUrl: 'html/stack.html',
+		templateUrl: 'html/defenseSelector.html',
 		scope: {
-			removeStack: '&'
+			defensesCrossed: '=modelTo'
 		}
 	};
+});
+app.directive('ballsScoredSelector', function () {
+	'use strict';
+	return {
+		templateUrl: 'html/ballsSelector.html',
+		scope: {
+			ballsScored: '=modelTo'
+		}
+	};
+});
+app.directive('numberPicker', function () {
+	'use strict';
+	return {
+		templateUrl: 'html/numberPicker.html',
+		scope: {
+			num: '='
+		}
+	}
 });
 
 app.directive('picture', function () {
