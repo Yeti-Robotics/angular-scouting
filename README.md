@@ -1,7 +1,7 @@
 # Scouting Site To-Do list
 
-- [ ] Update form!!!
-- [ ] Make another php page that aggregates the details of each match from our data
+- [X] Update form!!!
+- [ ] ~~Make another php page that aggregates the details of each match from our data~~ (not required by Word of Mitch, chapter Stronghold, week 5)
 - [ ] Display team's current ranking in a competition on [team.html](html/team.html) (retrieved from FRC servers)
 - [x] Display team's name on [team.html](html/team.html) (retrieved from FRC servers)
 - [ ] Design wager system w/ sign in number & password
