@@ -12,7 +12,7 @@ app.run(function ($rootScope, $location, $http, $window) {
 		byteCoins: 0,
 		logOut: function () {
 			$window.sessionStorage.removeItem('token');
-			this.user.name = '';
+			this.name = '';
 			$rootScope.loggedIn = false;
 		}
 	};
@@ -512,17 +512,21 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 		matchPredicted: 0,
 		withenPoints: 0,
 		minPointsPredicted: 0,
-		getValue: function () {
+		getMultiplier: function () {
 			if (this.wagerType === "alliance") {
-				return this.wageredByteCoins * 2;
+				return 2;
 			} else if (this.wagerType === "closeMatch") {
-				return ((parseInt(this.wageredByteCoins, 10) / parseInt(this.withenPoints, 10)) * 3) + parseInt(this.wageredByteCoins, 10); //Terrible scale, need to fix
+				return 1 / (parseInt(this.withenPoints, 10) * (3 + 1)); //Terrible scale, need to fix
 			} else if (this.wagerType === "points") {
 				if (this.minPointsPredicted > 110) {
-					return (parseInt(this.wageredByteCoins, 10) * Math.log(parseInt(this.minPointsPredicted, 10)) / 2); //Actually VERY NICE scale, thanks math ;)
+					return (1 / parseInt(this.minPointsPredicted, 10)) + parseInt(this.minPointsPredicted, 10) - 110; //Also terrible scale FIX PLS
 				}
+			} else {
+				return 0;
 			}
-			return 0;
+		},
+		getValue: function () {
+			return Math.floor(this.wageredByteCoins * this.getMultiplier()) - this.wageredByteCoins;
 		}
 	};
 
