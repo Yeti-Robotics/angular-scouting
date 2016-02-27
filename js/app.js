@@ -526,7 +526,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 			}
 		},
 		getValue: function () {
-			return Math.floor(this.wageredByteCoins * this.getMultiplier()) - this.wageredByteCoins;
+			return Math.floor(this.wageredByteCoins * this.getMultiplier());
 		}
 	};
 
@@ -579,10 +579,11 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 		} else {
 			$scope.reportError("Incorrect wager format. Did you fill all of the fields?");
 		}
+		console.log(postObject)
 		$http.post("php/wager.php", postObject).then(function (response) {
-			$scope.reportSuccess(postObject);
+			$scope.reportSuccess(response.data.message);
 		}, function (response) {
-			$scope.reportError("Failed to send Wager.");
+			$scope.reportError("Failed to send Wager");
 		});
 	};
 });
