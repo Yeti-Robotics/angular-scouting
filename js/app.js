@@ -649,15 +649,14 @@ app.controller('AdminPageController', function ($rootScope, $scope, $http, $wind
 			action: pageAction
 		};
 		switch (pageAction) {
-		case 'update_team':
-			post.teamNumber = $scope.teamNumber;
-			post.matchNumber = '';
-			break;
-		case 'update_wagers':
-			post.matchNumber = $scope.matchNumber;
-			post.teamNumber = '';
-			break;
+			case 'update_team':
+				post.teamNumber = $scope.teamNumber;
+				break;
+			case 'update_wagers':
+				post.matchNumber = $scope.matchNumber;
+				break;
 		}
+		console.log(post);
 		$http.post("php/adminAction.php", post)
 			.then(function (response) {
 				console.log(response.data);

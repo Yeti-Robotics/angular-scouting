@@ -159,7 +159,7 @@ function isUserAdmin($db, $token) {
             $result = $stmt->get_result();
             while($row = $result->fetch_array()) {
 				include("../config/config.php");
-				return ($row[5] == $adminUsername && $row[6] == $adminPswdHash);
+				return ($row[5] == $adminUsername);
             }
         } else {
             header('HTTP/1.1 500 SQL Error', true, 500);
@@ -310,78 +310,75 @@ function checkForUser($db, $username) {
 
 function updateQualificationWagers($db, $matchNum) {
     $query = "SELECT * FROM `wagers` WHERE matchPredicted = ?";
-//    include("../config/config.php");
-//    $ch = curl_init();
-//
-//    curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/matches/" . $tournamentKey . "?tournamentLevel=qual&matchNumber=" . $matchNum);
-//    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//    curl_setopt($ch, CURLOPT_HEADER, false);
-//    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
-//
-//    curl_setopt($ch, CURLOPT_HTTPHEADER, array (
-//        "Accept: application/json",
-//        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
-//    ));
-//
-//    $responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["Matches"];
-//    curl_close($ch);
-    $matchData = getMatchResults($matchNum);
-    if (!$matchData) {
-        if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("i", $matchNum);
-            $stmt->execute();
-            while($row = $result->fetch_array()) {
-                $byteCoinsToAdd = 0;
-                switch($row["wagerType"]) {
-                    case 'alliance':
-                        if($matchData["scoreRedFinal"] > $matchData["scoreBlueFinal"]) {
-                            if($row["alliancePredicted"] == 'red') {
-                                $byteCoinsToAdd += $row["wageredByteCoins"]*2;
-                            }
-                        } else if ($matchData["scoreRedFinal"] > $matchData["scoreBlueFinal"]) {
-                            if($row["alliancePredicted"] == 'blue') {
-                                $byteCoinsToAdd += $row["wageredByteCoins"]*2;
-                            }
-                        } else {
-                            $byteCoinsToAdd += $$row["wageredByteCoins"];
-                        }
-                        break;
-                    case 'closeMatch':
-                        if(abs($matchData["scoreRedFinal"] - $matchData["scoreBlueFinal"]) <= $row["withenPoints"]) {
-                            $byteCoinsToAdd += ($row["wageredByteCoins"] / $row["withenPoints"]);
-                        }
-                        break;
-                    case 'minPoints':
-                        if($row["alliancePredicted"] == 'red') {
-                            if ($matchData["scoreRedFinal"] > $row["minPointsPredicted"]) {
-                                $byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])) / 2);
-                            }
-                        } else {
-                            if ($matchData["scoreBlueFinal"] > $row["minPointsPredicted"]) {
-                                $byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])));
-                            }
-                        }
-                        break;
-                    }
-                    if($byteCoinsToAdd > 1) {
-                        $query = "UPDATE scouters SET byteCoins = byteCoins + ? WHERE id = ?"; {
-                            if($stmt = $db->prepare($query)) {
-                                $stmt->bind_param("ii", $byteCoinsToAdd, $row["associatedId"]);
-                                $stmt->execute();
-                                return true;
-                            }
-                        }
-                    }
-            }
-            $query = "DELETE * FROM `wagers` WHERE matchPredicted = ?";
-            if($stmt = $db->prepare($query)) {
-                $stmt->bind_param("i", $matchNum);
-                $stmt->execute();
-                return;
-            }
-        }
-    }
-    error_log("Adding Byte Coins failed");
+    include("../config/config.php");
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/matches/" . $tournamentKey . "?tournamentLevel=qual&matchNumber=" . $matchNum);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array (
+        "Accept: application/json",
+        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
+    ));
+
+	$responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["Matches"];
+	curl_close($ch);
+	$matchData = getMatchResults($matchNum);
+	if ($matchData) {
+		if($stmt = $db->prepare($query)) {
+			$stmt->bind_param("i", $matchNum);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			while($row = $result->fetch_array()) {
+				$byteCoinsToAdd = 0;
+				switch($row["wagerType"]) {
+					case 'alliance':
+						if($matchData["scoreRedFinal"] > $matchData["scoreBlueFinal"]) {
+							if($row["alliancePredicted"] == 'red') {
+								$byteCoinsToAdd += $row["wageredByteCoins"]*2;
+							}
+						} else if ($matchData["scoreRedFinal"] > $matchData["scoreBlueFinal"]) {
+							if($row["alliancePredicted"] == 'blue') {
+								$byteCoinsToAdd += $row["wageredByteCoins"]*2;
+							}
+						} else {
+							$byteCoinsToAdd += $row["wageredByteCoins"];
+						}
+						break;
+					case 'closeMatch':
+						if(abs($matchData["scoreRedFinal"] - $matchData["scoreBlueFinal"]) <= $row["withenPoints"]) {
+							$byteCoinsToAdd += ($row["wageredByteCoins"] / $row["withenPoints"]);
+						}
+						break;
+					case 'minPoints':
+						if($row["alliancePredicted"] == 'red') {
+							if ($matchData["scoreRedFinal"] > $row["minPointsPredicted"]) {
+								$byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])) / 2);
+							}
+						} else {
+							if ($matchData["scoreBlueFinal"] > $row["minPointsPredicted"]) {
+								$byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])));
+							}
+						}
+						break;
+				}
+				if($byteCoinsToAdd > 1) {
+					$query = "UPDATE scouters SET byteCoins = byteCoins + ? WHERE id = ?";
+					if($stmt = $db->prepare($query)) {
+						$stmt->bind_param("ii", $byteCoinsToAdd, $row["associatedId"]);
+						$stmt->execute();
+					}
+				}
+			}
+		}
+		$query = "DELETE FROM `wagers` WHERE matchPredicted = ?";
+		if($stmt = $db->prepare($query)) {
+			$stmt->bind_param("i", $matchNum);
+			$stmt->execute();
+		}
+	}
 }
 
 function getByteCoins($db, $token) {
