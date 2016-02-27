@@ -309,7 +309,7 @@ function checkForUser($db, $username) {
 }
 
 function updateQualificationWagers($db, $matchNum) {
-    $query = "SELECT * FROM `wagers` WHERE matchPredicted = ?";
+    $query = "SELECT * FROM `wagers` WHERE matchPredicted <= ?";
     include("../config/config.php");
     $ch = curl_init();
 
@@ -326,7 +326,7 @@ function updateQualificationWagers($db, $matchNum) {
 	$responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["Matches"];
 	curl_close($ch);
 	$matchData = getMatchResults($matchNum);
-	if ($matchData) {
+	if($matchData) {
 		if($stmt = $db->prepare($query)) {
 			$stmt->bind_param("i", $matchNum);
 			$stmt->execute();
@@ -339,7 +339,7 @@ function updateQualificationWagers($db, $matchNum) {
 							if($row["alliancePredicted"] == 'red') {
 								$byteCoinsToAdd += $row["wageredByteCoins"]*2;
 							}
-						} else if ($matchData["scoreRedFinal"] > $matchData["scoreBlueFinal"]) {
+						} else if($matchData["scoreRedFinal"] > $matchData["scoreBlueFinal"]) {
 							if($row["alliancePredicted"] == 'blue') {
 								$byteCoinsToAdd += $row["wageredByteCoins"]*2;
 							}
@@ -354,11 +354,11 @@ function updateQualificationWagers($db, $matchNum) {
 						break;
 					case 'minPoints':
 						if($row["alliancePredicted"] == 'red') {
-							if ($matchData["scoreRedFinal"] > $row["minPointsPredicted"]) {
+							if($matchData["scoreRedFinal"] > $row["minPointsPredicted"]) {
 								$byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])) / 2);
 							}
 						} else {
-							if ($matchData["scoreBlueFinal"] > $row["minPointsPredicted"]) {
+							if($matchData["scoreBlueFinal"] > $row["minPointsPredicted"]) {
 								$byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])));
 							}
 						}
@@ -372,11 +372,11 @@ function updateQualificationWagers($db, $matchNum) {
 					}
 				}
 			}
-		}
-		$query = "DELETE FROM `wagers` WHERE matchPredicted = ?";
-		if($stmt = $db->prepare($query)) {
-			$stmt->bind_param("i", $matchNum);
-			$stmt->execute();
+			$query = "DELETE FROM `wagers` WHERE matchPredicted <= ?";
+			if($stmt = $db->prepare($query)) {
+				$stmt->bind_param("i", $matchNum);
+				$stmt->execute();
+			}
 		}
 	}
 }
