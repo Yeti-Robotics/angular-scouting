@@ -8,5 +8,7 @@
   - [x] Store session tokens in database to stay logged in on reload
   - [ ] Update people's wagers after a match ends, e.g. when a stand scouting form is submitted
   - [ ] Fix [getByteCoins.php](php/getByteCoins.php) returning an error when [TheCasino.html](html/TheCasino.html) is loaded
+  - [ ] Ensure wagers are only made for future matches by using the FRC API
 - [x] Submit multiple pictures at once
+- [ ] Individual user pages that show all completed wagers and from submissions
 - [ ] Add comments directly to a picture from [pit.html](html/pit.html) (Is this really necessary?)
