@@ -1,8 +1,8 @@
 <?php
 
-function getMatchResults($matchNumber) {
-    include("../config/config.php");
-
+//returns if the match data updated or not
+function updateMatchData() {
+	include("../config/config.php");
     $fileName = "../json/" . $tournamentKey . "MatchResults.json";
     $ch = curl_init();
 
@@ -18,8 +18,7 @@ function getMatchResults($matchNumber) {
     ));
 
     $responsejson = curl_exec($ch);
-    curl_close($ch);
-    
+	curl_close($ch);
     $headerText = substr($responsejson, 0, strpos($responsejson, "\r\n\r\n"));
     $headers = array();
     foreach (explode("\r\n", $headerText) as $i => $line) {
@@ -32,15 +31,35 @@ function getMatchResults($matchNumber) {
     }
 
     $responsejson = json_decode(trim(substr($responsejson, strpos($responsejson, "\r\n\r\n"))), true);
-
     if (!strpos($headers["Status-Code"], "304") && $responsejson != null) {
         $file = fopen($fileName, "w");
         fwrite($file, json_encode($responsejson));
         fclose($file);
-    }
-    
-    $matchData = json_decode(file_get_contents($fileName), true)["Schedule"][$matchNumber - 1];
+		return true;
+    } else {
+		return false;
+	}
+}
+
+function getMatchSchedule() {
+	updateMatchData();
+	include("../config/config.php");
+    $fileName = "../json/" . $tournamentKey . "MatchResults.json";
+	return json_decode(file_get_contents($fileName), true)["Schedule"];
+}
+
+function getMatchResults($matchNumber) {
+    $matchData = getMatchSchedule()[$matchNumber - 1];
     return $matchData["scoreRedFinal"] != null ? $matchData : false;
+}
+
+function nextMatch() {
+	$schedule = getMatchSchedule();
+	foreach($schedule as $match) {
+		if(empty($match["actualStartTime"])) {
+			return $match["matchNumber"];
+		}
+	}
 }
 
 function updateTeamInfo($db, $teamNumber) {
@@ -310,21 +329,6 @@ function checkForUser($db, $username) {
 
 function updateQualificationWagers($db, $matchNum) {
     $query = "SELECT * FROM `wagers` WHERE matchPredicted <= ?";
-    include("../config/config.php");
-    $ch = curl_init();
-
-    curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/matches/" . $tournamentKey . "?tournamentLevel=qual&matchNumber=" . $matchNum);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HEADER, false);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
-
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array (
-        "Accept: application/json",
-        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
-    ));
-
-	$responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["Matches"];
-	curl_close($ch);
 	$matchData = getMatchResults($matchNum);
 	if($matchData) {
 		if($stmt = $db->prepare($query)) {

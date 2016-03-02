@@ -95,7 +95,6 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
 			pswd: $scope.scouterPswd
 		}).then(function (response) {
 			var result = response.data;
-			console.log(result);
 			$window.sessionStorage["token"] = result.token;
 			$rootScope.user.name = result.name;
 			$rootScope.user.username = $scope.scouterUsername;
@@ -492,7 +491,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 		$("#errorModal").modal('show');
 	};
 
-	$http.get("json/NCRE.json").then(function (response) {
+	$http.get("php/currentWageringMatches.php").then(function (response) {
 		$scope.NCRE = response.data;
 	}, function (response) {
 		$scope.reportError("Failed to get match data");
