@@ -45,7 +45,7 @@
 		<div class="modal-content">
 			<div class="error-header modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>Error <span class="glyphicon glyphicon-exclamation-sign"></span></div>
-			<div class="modal-body">Hello</div>
+			<div class="modal-body">{{lastError}}</div>
 		</div>
 	</div>
 </div>
@@ -139,7 +139,7 @@
 				<label for="pointsWithen">How many points do you think the alliances will be within?</label>
 			</div>
 			<div class="col-md-2">
-				<input id="withenPoints" type="text" data-slider-min="0" data-slider-max="200" data-slider-step="1" data-slider-value="200" name="pointsWithen" ng-model="currentWager.withenPoints" />
+				<input id="withenPoints" type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="50" name="pointsWithen" ng-model="currentWager.withenPoints" />
 			</div>
 		</div>
 	</fieldset>

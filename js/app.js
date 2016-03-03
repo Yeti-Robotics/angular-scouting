@@ -486,7 +486,6 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 	};
 
 	$scope.reportError = function (error) {
-		//something like, "Sorry, we " + error + ", maybe try again?"
 		$scope.lastError = error;
 		$("#errorModal").modal('show');
 	};
@@ -515,11 +514,9 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 			if (this.wagerType === "alliance") {
 				return 2;
 			} else if (this.wagerType === "closeMatch") {
-				return 1 / (parseInt(this.withenPoints, 10) * (3 + 1)); //Terrible scale, need to fix
+				return 5 - (parseInt(this.withenPoints, 10) / (12.5));
 			} else if (this.wagerType === "points") {
-				if (this.minPointsPredicted > 110) {
-					return (1 / parseInt(this.minPointsPredicted, 10)) + parseInt(this.minPointsPredicted, 10) - 110; //Also terrible scale FIX PLS
-				}
+				return (parseInt(this.minPointsPredicted, 10) / 110) + (parseInt(this.minPointsPredicted, 10) / 350);
 			} else {
 				return 0;
 			}
@@ -566,19 +563,18 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 				matchPredicted: $scope.currentWager.matchPredicted,
 				withenPoints: $scope.currentWager.withenPoints
 			};
-		} else if ($scope.currentWager.wagerType === "points" && $scope.currentWager.pointsPredicted && $scope.currentWager.matchPredicted) {
+		} else if ($scope.currentWager.wagerType === "points" && $scope.currentWager.minPointsPredicted && $scope.currentWager.matchPredicted) {
 			postObject = {
 				token: $window.sessionStorage["token"],
 				wagerType: "points",
 				wageredByteCoins: $scope.currentWager.wageredByteCoins,
 				matchPredicted: $scope.currentWager.matchPredicted,
 				alliancePredicted: $scope.currentWager.alliancePredicted,
-				withenPoints: $scope.currentWager.withenPoints
+				withenPoints: $scope.currentWager.minPointsPredicted
 			};
 		} else {
 			$scope.reportError("Incorrect wager format. Did you fill all of the fields?");
 		}
-		console.log(postObject)
 		$http.post("php/wager.php", postObject).then(function (response) {
 			$scope.reportSuccess(response.data.message);
 		}, function (response) {

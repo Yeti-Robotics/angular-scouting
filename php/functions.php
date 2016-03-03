@@ -353,17 +353,17 @@ function updateQualificationWagers($db, $matchNum) {
 						break;
 					case 'closeMatch':
 						if(abs($matchData["scoreRedFinal"] - $matchData["scoreBlueFinal"]) <= $row["withenPoints"]) {
-							$byteCoinsToAdd += ($row["wageredByteCoins"] / $row["withenPoints"]);
+							$byteCoinsToAdd += $row["wageredByteCoins"] * (5 - ($row["withenPoints"] / 12.5));
 						}
 						break;
 					case 'minPoints':
 						if($row["alliancePredicted"] == 'red') {
-							if($matchData["scoreRedFinal"] > $row["minPointsPredicted"]) {
-								$byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])) / 2);
+							if($matchData["scoreRedFinal"] >= $row["withenPoints"]) {
+								$byteCoinsToAdd += $row["wageredByteCoins"] * round(($row["withenPoints"] / 110) + ($row["withenPoints"] / 350));
 							}
 						} else {
-							if($matchData["scoreBlueFinal"] > $row["minPointsPredicted"]) {
-								$byteCoinsToAdd += ($row["wageredByteCoins"] * round(log($row["minPointsPredicted"])));
+							if($matchData["scoreBlueFinal"] >= $row["withenPoints"]) {
+								$byteCoinsToAdd += $row["wageredByteCoins"] * round(($row["withenPoints"] / 110) + ($row["withenPoints"] / 350));
 							}
 						}
 						break;
