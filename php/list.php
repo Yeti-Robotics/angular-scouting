@@ -3,7 +3,7 @@ include ("connect.php");
 include ("functions.php");
 header('Content-Type: application/json');
 $query = "SELECT totalLowBars.*, teamName.team_name AS name, gcd.gcdName, totalHighGoals.totalHighGoals, totalLowGoals.totalLowGoals, gamesDefended.gamesDefended
-FROM (SELECT team, SUM(low_bar) AS totalLowBars
+FROM (SELECT team, SUM(low_bar) AS totalLowBars, AVG(rating) as averageRating
 FROM defenses
 LEFT JOIN scout_data ON defenses.id = scout_data.scout_data_id
 GROUP BY team) AS totalLowBars
