@@ -46,7 +46,6 @@ if($stmt = $db->prepare($query)) {
 
 	$defense_query = "INSERT INTO `defenses` (`id`, `gametime`, `low_bar`, `portcullis`, `cheval_de_frise`, `moat`, `ramparts`, `drawbridge`, `sally_port`, `rock_wall`, `rough_terrain`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	if($defense_stmt = $db->prepare($defense_query)) {
-		//stupid stupid php
 		$auto = "auto";
 		$defense_stmt->bind_param("isiiiiiiiii", $insert_id,
 			$auto,
@@ -67,7 +66,6 @@ if($stmt = $db->prepare($query)) {
 	}
 
 	if($defense_stmt = $db->prepare($defense_query)) {
-		//stupid stupid php
 		$teleop = "teleop";
 		$defense_stmt->bind_param("isiiiiiiiii", $insert_id,
 			$teleop,
@@ -86,7 +84,7 @@ if($stmt = $db->prepare($query)) {
 		$db->close();
 		die ( '{"message":"Failed creating defenses statement"}' );
 	}
-
+	updateQualificationWagers($db, $postData["match_number"]);
 } else {
     header('HTTP/1.1 500 SQL Error', true, 500);
     $db->close();

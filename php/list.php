@@ -3,7 +3,7 @@ include ("connect.php");
 include ("functions.php");
 header('Content-Type: application/json');
 $query = "SELECT totalLowBars.*, teamName.team_name AS name, gcd.gcdName, totalHighGoals.totalHighGoals, totalLowGoals.totalLowGoals, gamesDefended.gamesDefended
-FROM (SELECT team, SUM(low_bar) AS totalLowBars
+FROM (SELECT team, SUM(low_bar) AS totalLowBars, AVG(rating) as averageRating, (SUM(low_bar) + SUM(portcullis) + SUM(cheval_de_frise) + SUM(moat) + SUM(ramparts) + SUM(drawbridge) + SUM(sally_port) + SUM(rock_wall) + SUM(rough_terrain)) as totalDefenses
 FROM defenses
 LEFT JOIN scout_data ON defenses.id = scout_data.scout_data_id
 GROUP BY team) AS totalLowBars
@@ -36,6 +36,13 @@ if ($result) {
     $output = array();
     
     while ($row = $result->fetch_assoc()) {
+    	$row['totalDefenses'] = intval($row['totalDefenses']);
+    	$row['totalLowGoals'] = intval($row['totalLowGoals']);
+    	$row['totalHighGoals'] = intval($row['totalHighGoals']);
+    	$row['totalLowBars'] = intval($row['totalLowBars']);
+    	$row['averageRating'] = floatval($row['averageRating']);
+    	$row['gamesDefended'] = intval($row['gamesDefended']);
+    	$row['team'] = intval($row['team']);
         $output[] = $row;
     }
         

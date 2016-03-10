@@ -14,9 +14,13 @@
 					<span ng-show="sortType == 'team' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
 					<span ng-show="sortType == 'team' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 				</th>
-				<th ng-click="sortType = 'name'; sortReverse = !sortReverse">Team Name
-					<span ng-show="sortType == 'name' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-					<span ng-show="sortType == 'name' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+				<th ng-click="sortType = 'averageRating'; sortReverse = !sortReverse">Average Rating
+					<span ng-show="sortType == 'averageRating' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+					<span ng-show="sortType == 'averageRating' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+				</th>
+				<th ng-click="sortType = 'totalDefenses'; sortReverse = !sortReverse">Defenses crossed
+					<span ng-show="sortType == 'totalDefenses' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+					<span ng-show="sortType == 'totalDefenses' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 				</th>
 				<th ng-click="sortType = 'totalLowBars'; sortReverse = !sortReverse">Low bars crossed
 					<span ng-show="sortType == 'totalLowBars' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
@@ -44,7 +48,8 @@
 		<tbody>
 			<tr ng-repeat="row in data | orderBy:sortType:sortReverse | filter:filterTeams">
 				<td><a href="#/team/{{row.team}}">{{row.team}}</a></td>
-				<td><a href="#/team/{{row.team}}">{{row.team_name}}</a></td>
+				<td>{{row.averageRating}}</td>
+				<td>{{row.totalDefenses}}</td>
 				<td>{{row.totalLowBars}}</td>
 				<td>{{row.gcdName}}</td>
 				<td>{{row.totalHighGoals}}</td>

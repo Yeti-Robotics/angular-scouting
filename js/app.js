@@ -12,7 +12,7 @@ app.run(function ($rootScope, $location, $http, $window) {
 		byteCoins: 0,
 		logOut: function () {
 			$window.sessionStorage.removeItem('token');
-			this.user.name = '';
+			this.name = '';
 			$rootScope.loggedIn = false;
 		}
 	};
@@ -95,7 +95,6 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
 			pswd: $scope.scouterPswd
 		}).then(function (response) {
 			var result = response.data;
-			console.log(result);
 			$window.sessionStorage["token"] = result.token;
 			$rootScope.user.name = result.name;
 			$rootScope.user.username = $scope.scouterUsername;
@@ -487,12 +486,11 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 	};
 
 	$scope.reportError = function (error) {
-		//something like, "Sorry, we " + error + ", maybe try again?"
 		$scope.lastError = error;
 		$("#errorModal").modal('show');
 	};
 
-	$http.get("json/NCRE.json").then(function (response) {
+	$http.get("php/currentWageringMatches.php").then(function (response) {
 		$scope.NCRE = response.data;
 	}, function (response) {
 		$scope.reportError("Failed to get match data");
@@ -512,17 +510,19 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 		matchPredicted: 0,
 		withenPoints: 0,
 		minPointsPredicted: 0,
-		getValue: function () {
+		getMultiplier: function () {
 			if (this.wagerType === "alliance") {
-				return this.wageredByteCoins * 2;
+				return 2;
 			} else if (this.wagerType === "closeMatch") {
-				return ((parseInt(this.wageredByteCoins, 10) / parseInt(this.withenPoints, 10)) * 3) + parseInt(this.wageredByteCoins, 10); //Terrible scale, need to fix
+				return 5 - (parseInt(this.withenPoints, 10) / (12.5));
 			} else if (this.wagerType === "points") {
-				if (this.minPointsPredicted > 110) {
-					return (parseInt(this.wageredByteCoins, 10) * Math.log(parseInt(this.minPointsPredicted, 10)) / 2); //Actually VERY NICE scale, thanks math ;)
-				}
+				return (parseInt(this.minPointsPredicted, 10) / 110) + (parseInt(this.minPointsPredicted, 10) / 350);
+			} else {
+				return 0;
 			}
-			return 0;
+		},
+		getValue: function () {
+			return Math.floor(this.wageredByteCoins * this.getMultiplier());
 		}
 	};
 
@@ -563,22 +563,22 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 				matchPredicted: $scope.currentWager.matchPredicted,
 				withenPoints: $scope.currentWager.withenPoints
 			};
-		} else if ($scope.currentWager.wagerType === "points" && $scope.currentWager.pointsPredicted && $scope.currentWager.matchPredicted) {
+		} else if ($scope.currentWager.wagerType === "points" && $scope.currentWager.minPointsPredicted && $scope.currentWager.matchPredicted) {
 			postObject = {
 				token: $window.sessionStorage["token"],
 				wagerType: "points",
 				wageredByteCoins: $scope.currentWager.wageredByteCoins,
 				matchPredicted: $scope.currentWager.matchPredicted,
 				alliancePredicted: $scope.currentWager.alliancePredicted,
-				withenPoints: $scope.currentWager.withenPoints
+				withenPoints: $scope.currentWager.minPointsPredicted
 			};
 		} else {
 			$scope.reportError("Incorrect wager format. Did you fill all of the fields?");
 		}
 		$http.post("php/wager.php", postObject).then(function (response) {
-			$scope.reportSuccess(postObject);
+			$scope.reportSuccess(response.data.message);
 		}, function (response) {
-			$scope.reportError("Failed to send Wager.");
+			$scope.reportError("Failed to send Wager");
 		});
 	};
 });
@@ -644,15 +644,14 @@ app.controller('AdminPageController', function ($rootScope, $scope, $http, $wind
 			action: pageAction
 		};
 		switch (pageAction) {
-		case 'update_team':
-			post.teamNumber = $scope.teamNumber;
-			post.matchNumber = '';
-			break;
-		case 'update_wagers':
-			post.matchNumber = $scope.matchNumber;
-			post.teamNumber = '';
-			break;
+			case 'update_team':
+				post.teamNumber = $scope.teamNumber;
+				break;
+			case 'update_wagers':
+				post.matchNumber = $scope.matchNumber;
+				break;
 		}
+		console.log(post);
 		$http.post("php/adminAction.php", post)
 			.then(function (response) {
 				console.log(response.data);
