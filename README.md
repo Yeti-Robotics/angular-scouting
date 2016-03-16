@@ -10,4 +10,4 @@
   - [x] Fix [getByteCoins.php](php/getByteCoins.php) returning an error when [TheCasino.html](html/TheCasino.html) is loaded
   - [ ] Ensure wagers are only made for future matches by using the FRC API
 - [x] Submit multiple pictures at once
-- [ ] Individual user pages that show all completed wagers and from submissions
+- [ ] Individual user pages that show all completed wagers and form submissions
