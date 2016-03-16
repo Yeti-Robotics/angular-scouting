@@ -12,5 +12,5 @@
     }
     header('HTTP/1.1 500 SQL Error', true, 500);
     $db->close();
-    die ("Invalid username/password");
+    die ('{"error": "Invalid username/password"}');
 ?>

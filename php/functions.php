@@ -1,5 +1,61 @@
 <?php
 
+function checkPitData($db, $teamNumber) {
+	$query = "SELECT * FROM `pit_comments` WHERE pit_comments.team_number = ?";
+	$hasComments;
+	$hasPics;
+
+    if ($stmt = $db->prepare($query)) {
+        $stmt->bind_param("i", $teamNumber);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+			$hasComments = true;
+        } else {
+			$hasComments = false;
+		}
+    } else {
+        header('HTTP/1.1 500 SQL Error', true, 500);
+        die ( '{"message":"Failed creating statement"}' );
+    }
+	
+	$query = "SELECT * FROM `pit_pictures` WHERE pit_pictures.team_number = ?";
+	
+    if ($stmt = $db->prepare($query)) {
+        $stmt->bind_param("i", $teamNumber);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+			$hasPics = true;
+        } else {
+			$hasPics = false;
+		}
+    } else {
+        header('HTTP/1.1 500 SQL Error', true, 500);
+        die ( '{"message":"Failed creating statement"}' );
+    }
+	
+	return ($hasComments || $hasPics);
+}
+
+function checkTeamData($db, $teamNumber) {
+	$query = "SELECT * FROM `scout_data` WHERE team = ?";
+
+    if ($stmt = $db->prepare($query)) {
+        $stmt->bind_param("i", $teamNumber);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+			return true;
+        } else {
+			return false;
+		}
+    } else {
+        header('HTTP/1.1 500 SQL Error', true, 500);
+        die ( '{"message":"Failed creating statement"}' );
+    }
+}
+
 //returns if the match data updated or not
 function updateMatchData() {
 	include("../config/config.php");
@@ -108,7 +164,7 @@ function getTeamInfo($db, $teamNumber) {
         $stmt->execute();
         $stmt->store_result();
         if($stmt->num_rows == 0) {
-			//$robotInfo = updateTeamInfo($db, $teamNumber);
+			$robotInfo = updateTeamInfo($db, $teamNumber);
         } else {
             $query = "SELECT * FROM team_info WHERE team_number = ?";
             if($stmt = $db->prepare($query)) {
@@ -479,7 +535,7 @@ function getTeamDefenseTable($db, $team){
         return $return;
     } else {
         header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
-        die("Failed to get data");
+        die('{"error": "Failed to get data"}');
     }
 }
 
@@ -509,7 +565,7 @@ function getTeamBouldersTable($db, $team) {
         return $return;
     } else {
         header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
-        die("Failed to get data");
+        die('{"error": "Failed to get data"}');
     }
 }
 

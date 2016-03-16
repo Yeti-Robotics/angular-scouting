@@ -59,30 +59,32 @@
 			<div class="modal-body">
 				<label for="wageredByteCoins">How many ByteCoins would you like to wager? </label>
 				<input id="byteCoinsWagered" type="text" data-slider-min="0" data-slider-max="200" data-slider-step="1" data-slider-value="0" name="wageredByteCoins" data-slider-handle="custom" ng-model="currentWager.wageredByteCoins" />
-				<table class="table table-hover table-condensed table-bordered">
-					<tbody>
-						<tr>
-							<td>Byte Coins this wager would cost you:</td>
-							<td>{{currentWager.wageredByteCoins}}</td>
-						</tr>
-						<tr>
-							<td>Multiplier (calculated from your wager type):</td>
-							<td>{{currentWager.getMultiplier()}}</td>
-						</tr>
-						<tr>
-							<td>Byte Coins this wager could win you:</td>
-							<td>{{currentWager.getValue()}}</td>
-						</tr>
-						<tr>
-							<td>Net Byte Coin profit:</td>
-							<td>{{currentWager.getValue() - currentWager.wageredByteCoins}}</td>
-						</tr>
-						<tr>
-							<td>Byte Coins left after wager:</td>
-							<td>{{byteCoins - currentWager.wageredByteCoins}}</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="table-responsive">
+					<table class="table table-hover table-condensed table-bordered">
+						<tbody>
+							<tr>
+								<td>Byte Coins this wager would cost you:</td>
+								<td>{{currentWager.wageredByteCoins}}</td>
+							</tr>
+							<tr>
+								<td>Multiplier (calculated from your wager type):</td>
+								<td>{{currentWager.getMultiplier()}}</td>
+							</tr>
+							<tr>
+								<td>Byte Coins this wager could win you:</td>
+								<td>{{currentWager.getValue()}}</td>
+							</tr>
+							<tr>
+								<td>Net Byte Coin profit:</td>
+								<td>{{currentWager.getValue() - currentWager.wageredByteCoins}}</td>
+							</tr>
+							<tr>
+								<td>Byte Coins left after wager:</td>
+								<td>{{byteCoins - currentWager.wageredByteCoins}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>

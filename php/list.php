@@ -43,6 +43,7 @@ if ($result) {
     	$row['averageRating'] = floatval($row['averageRating']);
     	$row['gamesDefended'] = intval($row['gamesDefended']);
     	$row['team'] = intval($row['team']);
+		$row['name'] = getTeamInfo($db, intval($row['team']))['name'];
         $output[] = $row;
     }
         

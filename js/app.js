@@ -355,6 +355,8 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 	'use strict';
 
 	$scope.teamNumber = $routeParams.teamNumber;
+	
+	$scope.error = "";
 
 	$scope.teamLink = function () {
 		$('#errorModal').on('hidden.bs.modal', function () {
@@ -391,20 +393,6 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 		}
 	}
 
-	$http.get("php/getTeamInfo.php", {
-		params: {
-			teamNumber: $routeParams.teamNumber
-		}
-	}).then(function (response) {
-		console.log(response.data);
-		$scope.teamInfo = response.data;
-	}, function (response) {
-		$scope.teamInfo = {
-			name: "Error getting name",
-			robotName: "Error getting robot name"
-		};
-	});
-
 	$http.get('php/getPitData.php', {
 		params: {
 			teamNumber: $routeParams.teamNumber
@@ -440,6 +428,8 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 				$("#errorModal").modal("show");
 			}
 		});
+	}, function (response) {
+		$scope.error = response.data.error;
 	});
 });
 
@@ -595,9 +585,9 @@ app.controller("LeaderboardsController", function ($scope, $http) {
 app.controller("TeamController", function ($scope, $http, $routeParams) {
 	'use strict';
 
-	console.log(' team number ' + $routeParams.teamNumber);
-
 	$scope.teamNumber = $routeParams.teamNumber;
+	
+	$scope.error = "";
 
 	$scope.team = {
 		number: 0,
@@ -612,27 +602,39 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	$scope.commentSection = {
 		comments: []
 	};
+	
+	$(document).ready(function () {
+		setTimeout(function () {
+			$('[data-toggle="tooltip"]').each(function () {
+				$(this).attr("style", "outline: none");
+				$(this).tooltip({
+					container: 'body',
+					placement: 'top',
+					trigger: 'focus'
+				});
+			});
+		}, 100);
+	});
 
 	$http.get("php/getTeam.php", {
 		params: {
 			teamNumber: $routeParams.teamNumber
 		}
 	}).then(function (response) {
-			$scope.data = response.data;
+		$scope.data = response.data;
 
-			$scope.range = function (n) {
-				return new Array(n);
-			};
+		$scope.range = function (n) {
+			return new Array(n);
+		};
 
-			$scope.autoString = $scope.data.rankingInfo.autoString.auto_common_defense + " | " + $scope.data.rankingInfo.autoString.auto_common_scoring.high + " | " + $scope.data.rankingInfo.autoString.auto_common_scoring.low;
-			$scope.canLowBar = ($scope.data.rankingInfo.totalLowBars > 0)
+		$scope.autoString = $scope.data.rankingInfo.autoString.auto_common_defense + " | " + $scope.data.rankingInfo.autoString.auto_common_scoring.high + " | " + $scope.data.rankingInfo.autoString.auto_common_scoring.low;
+		$scope.canLowBar = ($scope.data.rankingInfo.totalLowBars > 0);
 
-			console.log($scope.data);
-		},
-		function (response) {
-			$scope.team = {},
-				$scope.stacks = []
-		});
+		console.log($scope.data);
+	}, function (response) {
+		$scope.error = response.data.error;
+		console.log($scope.error);
+	});
 });
 
 app.controller('AdminPageController', function ($rootScope, $scope, $http, $window) {

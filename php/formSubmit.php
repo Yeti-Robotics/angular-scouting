@@ -85,13 +85,12 @@ if($stmt = $db->prepare($query)) {
 		die ( '{"message":"Failed creating defenses statement"}' );
 	}
 	updateQualificationWagers($db, $postData["match_number"]);
+	updateTeamInfo($db, $postData["team_number"]);
 } else {
     header('HTTP/1.1 500 SQL Error', true, 500);
     $db->close();
 	die ( '{"message":"Failed creating statement"}' );
 }
-
-//updateTeamInfo($db, $postData["team_number"]);
 
 $db->close();
 ?>

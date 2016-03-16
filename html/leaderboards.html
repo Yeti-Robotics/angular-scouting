@@ -4,26 +4,28 @@
             cursor: ns-resize;
         }
     </style>
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th ng-click="sortType = 'id'; sortReverse = !sortReverse">Id
-                    <span ng-show="sortType == 'id' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-                    <span ng-show="sortType == 'id' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
-                <th ng-click="sortType = 'name'; sortReverse = !sortReverse">Name
-                    <span ng-show="sortType == 'name' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-                    <span ng-show="sortType == 'name' && sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
-                <th ng-click="sortType = 'byteCoins'; sortReverse = !sortReverse">Byte Coins Accumulated
-                    <span ng-show="sortType == 'byteCoins' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-                    <span ng-show="sortType == 'byteCoins' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="scouter in data | orderBy:sortType:sortReverse">
-                <td>{{scouter.id}}</td>
-                <td>{{scouter.name}}</td>
-                <td>{{scouter.byteCoins}}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+    	<table class="table table-hover">
+    	    <thead>
+    	        <tr>
+    	            <th ng-click="sortType = 'id'; sortReverse = !sortReverse">Id
+    	                <span ng-show="sortType == 'id' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+    	                <span ng-show="sortType == 'id' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
+    	            <th ng-click="sortType = 'name'; sortReverse = !sortReverse">Name
+    	                <span ng-show="sortType == 'name' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+    	                <span ng-show="sortType == 'name' && sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
+    	            <th ng-click="sortType = 'byteCoins'; sortReverse = !sortReverse">Byte Coins Accumulated
+    	                <span ng-show="sortType == 'byteCoins' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+    	                <span ng-show="sortType == 'byteCoins' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span></th>
+    	        </tr>
+    	    </thead>
+    	    <tbody>
+    	        <tr ng-repeat="scouter in data | orderBy:sortType:sortReverse">
+    	            <td>{{scouter.id}}</td>
+    	            <td>{{scouter.name}}</td>
+    	            <td>{{scouter.byteCoins}}</td>
+    	        </tr>
+    	    </tbody>
+    	</table>
+    </div>
 </div>

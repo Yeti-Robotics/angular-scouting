@@ -1,150 +1,167 @@
 <div class="container-fluid">
-	<h2 class="page-header">Team {{teamNumber}}, {{data.teamInfo.name}}
-       <br/>
-       <small>Robot name: {{data.teamInfo.robotName}}</small>
-       <br/>
-       <br/>
-        <a class="small" ng-href="#/pit/{{teamNumber}}">{{data.teamInfo.name}}'<span ng-show="teamInfo.name[teamInfo.name.length - 1] != 's'">s</span> pit</a>
-    </h2>
-	<br/>
-	<fieldset>
-		<legend>Ranking</legend>
-		<table class="table table-striped">
-			<tr>
-				<th>Team #</th>
-				<th>Lowbar</th>
-				<th>Most Common Defense</th>
-				<th>Total High</th>
-				<th>Total Low</th>
-				<th>% Games Defending </th>
-				<th>Autonomous description</th>
-			</tr>
-			<tr class="team_row">
-				<td>{{data.teamInfo.teamNumber}}</td>
-				<td><span class="glyphicon glyphicon-ok" ng-show="canLowBar" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!canLowBar" style="color:red"></span></td>
-				<td>{{data.rankingInfo.gcdName}}</td>
-				<td>{{data.rankingInfo.totalHighGoals}}</td>
-				<td>{{data.rankingInfo.totalLowGoals}}</td>
-				<td>{{data.rankingInfo.gamesDefended}}</td>
-				<td>{{autoString}}</td>
-			</tr>
-		</table>
-	</fieldset>
-	<fieldset>
-		<legend>Teleop</legend>
-		<h4>Boulders Scored</h4>
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Match #</th>
-					<th>High goal</th>
-					<th>Low goal</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="match in data.balls.teleop | orderBy : 'match_number' : false">
-					<td>{{match.match_number}}</td>
-					<td>{{match.balls_scored_high}}</td>
-					<td>{{match.balls_scored_low}}</td>
-				</tr>
-			</tbody>
-		</table>
-		<h4>Defenses Crossed</h4>
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Match #</th>
-					<th>Defenses</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="match in data.defenses.teleop | orderBy : 'match_number' : false">
-					<td>{{match.match_number}}</td>
-					<td class="row">
-						<img class="col-xs-2 col-md-1" src="images/defenses/portcullis.png" ng-repeat="a in range(match.portcullis) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/cheval-de-frise.png" ng-repeat="a in range(match.cheval_de_frise) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/moat.png" ng-repeat="a in range(match.moat) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/ramparts.png" ng-repeat="a in range(match.ramparts) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/drawbridge.png" ng-repeat="a in range(match.drawbridge) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/sally-port.png" ng-repeat="a in range(match.sally_port) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/rock-wall.png" ng-repeat="a in range(match.rock_wall) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/rough-terrain.png" ng-repeat="a in range(match.rough_terrain) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/low-bar.png" ng-repeat="a in range(match.low_bar) track by $index" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</fieldset>
-	<fieldset>
-		<legend>Autonomous</legend>
-		<h4>Boulders Scored</h4>
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Match #</th>
-					<th>High goal</th>
-					<th>Low goal</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="match in data.balls.auto | orderBy : 'match_number' : false">
-					<td>{{match.match_number}}</td>
-					<td>{{match.balls_scored_high}}</td>
-					<td>{{match.balls_scored_low}}</td>
-				</tr>
-			</tbody>
-		</table>
-		<h4>Defenses Crossed</h4>
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Match #</th>
-					<th>Defenses</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="match in data.defenses.auto | orderBy : 'match_number' : false">
-					<td>{{match.match_number}}</td>
-					<td class="row">
-						<img class="col-xs-2 col-md-1" src="images/defenses/portcullis.png" ng-repeat="a in range(match.portcullis) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/cheval-de-frise.png" ng-repeat="a in range(match.cheval_de_frise) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/moat.png" ng-repeat="a in range(match.moat) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/ramparts.png" ng-repeat="a in range(match.ramparts) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/drawbridge.png" ng-repeat="a in range(match.drawbridge) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/sally-port.png" ng-repeat="a in range(match.sall_port) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/rock-wall.png" ng-repeat="a in range(match.rock_wall) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/rough-terrain.png" ng-repeat="a in range(match.rough_terrain) track by $index" />
-						<img class="col-xs-2 col-md-1" src="images/defenses/low-bar.png" ng-repeat="a in range(match.low_bar) track by $index" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</fieldset>
-	<fieldset>
-		<legend>Endgame</legend>
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Match #</th>
-					<th>Endgame</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="match in data.endgame | orderBy : 'match_number' : false">
-					<td>{{match.match_number}}</td>
-					<td>{{match.end_game}}</td>
-				</tr>
-			</tbody>
-		</table>
-	</fieldset>
-	<fieldset>
-		<legend>Comments:</legend>
-		<div class="container-fluid" ng-repeat="comment in data.commentSection">
-			<div class="row">
-				<p>{{comment.comments}} <small style="font-size: 11px">Rating: {{comment.rating}}</small></p>
-				<p>-- {{comment.name}}, {{comment.timeStamp}} for match #{{comment.match_number}}, {{comment.timestamp}}</p>
-				<hr/>
+	<div ng-show="error != ''">
+		<h1 class="text-center">{{error}}</h1>
+	</div>
+	<div ng-show="error == ''">
+		<h2 class="page-header">Team {{teamNumber}}, {{data.teamInfo.name}}
+		       <br/>
+		       <small>Robot name: {{data.teamInfo.robotName}}</small>
+		       <br/>
+		       <br/>
+		        <a class="small" ng-href="#/pit/{{teamNumber}}">{{data.teamInfo.name}}'<span ng-show="teamInfo.name[teamInfo.name.length - 1] != 's'">s</span> pit</a>
+		    </h2>
+		<br/>
+		<fieldset>
+			<legend>Ranking</legend>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<tr>
+						<th>Team #</th>
+						<th>Lowbar</th>
+						<th>Most Common Defense</th>
+						<th>Total High</th>
+						<th>Total Low</th>
+						<th>% Games Defending </th>
+						<th>Autonomous description</th>
+					</tr>
+					<tr class="team_row">
+						<td>{{teamNumber}}</td>
+						<td><span class="glyphicon glyphicon-ok" ng-show="canLowBar" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!canLowBar" style="color:red"></span></td>
+						<td>{{data.rankingInfo.gcdName}}</td>
+						<td>{{data.rankingInfo.totalHighGoals}}</td>
+						<td>{{data.rankingInfo.totalLowGoals}}</td>
+						<td>{{data.rankingInfo.gamesDefended}}</td>
+						<td>{{autoString}}</td>
+					</tr>
+				</table>
 			</div>
-		</div>
-	</fieldset>
+		</fieldset>
+		<fieldset>
+			<legend>Teleop</legend>
+			<h4>Boulders Scored</h4>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Match #</th>
+							<th>High goal</th>
+							<th>Low goal</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="match in data.balls.teleop | orderBy : 'match_number' : false">
+							<td>{{match.match_number}}</td>
+							<td>{{match.balls_scored_high}}</td>
+							<td>{{match.balls_scored_low}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<h4>Defenses Crossed</h4>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Match #</th>
+							<th class="text-center">Defenses</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="match in data.defenses.teleop | orderBy : 'match_number' : false">
+							<td>{{match.match_number}}</td>
+							<td class="row">
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Portcullis" class="col-xs-2 col-md-1" src="images/defenses/portcullis.png" ng-repeat="a in range(match.portcullis) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Cheval de frise" class="col-xs-2 col-md-1" src="images/defenses/cheval-de-frise.png" ng-repeat="a in range(match.cheval_de_frise) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Moat" class="col-xs-2 col-md-1" src="images/defenses/moat.png" ng-repeat="a in range(match.moat) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Ramparts" class="col-xs-2 col-md-1" src="images/defenses/ramparts.png" ng-repeat="a in range(match.ramparts) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Drawbridge" class="col-xs-2 col-md-1" src="images/defenses/drawbridge.png" ng-repeat="a in range(match.drawbridge) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Sally port" class="col-xs-2 col-md-1" src="images/defenses/sally-port.png" ng-repeat="a in range(match.sally_port) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Rock wall" class="col-xs-2 col-md-1" src="images/defenses/rock-wall.png" ng-repeat="a in range(match.rock_wall) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Rouch terrain" class="col-xs-2 col-md-1" src="images/defenses/rough-terrain.png" ng-repeat="a in range(match.rough_terrain) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Low bar" class="col-xs-2 col-md-1" src="images/defenses/low-bar.png" ng-repeat="a in range(match.low_bar) track by $index" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>Autonomous</legend>
+			<h4>Boulders Scored</h4>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Match #</th>
+							<th>High goal</th>
+							<th>Low goal</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="match in data.balls.auto | orderBy : 'match_number' : false">
+							<td>{{match.match_number}}</td>
+							<td>{{match.balls_scored_high}}</td>
+							<td>{{match.balls_scored_low}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<h4>Defenses Crossed</h4>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Match #</th>
+							<th class="text-center">Defenses</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="match in data.defenses.auto | orderBy : 'match_number' : false">
+							<td>{{match.match_number}}</td>
+							<td class="row">
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Portcullis" class="col-xs-2 col-md-1" src="images/defenses/portcullis.png" ng-repeat="a in range(match.portcullis) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Cheval de frise" class="col-xs-2 col-md-1" src="images/defenses/cheval-de-frise.png" ng-repeat="a in range(match.cheval_de_frise) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Moat" class="col-xs-2 col-md-1" src="images/defenses/moat.png" ng-repeat="a in range(match.moat) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Ramparts" class="col-xs-2 col-md-1" src="images/defenses/ramparts.png" ng-repeat="a in range(match.ramparts) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Drawbridge" class="col-xs-2 col-md-1" src="images/defenses/drawbridge.png" ng-repeat="a in range(match.drawbridge) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Sally port" class="col-xs-2 col-md-1" src="images/defenses/sally-port.png" ng-repeat="a in range(match.sall_port) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Rock wall" class="col-xs-2 col-md-1" src="images/defenses/rock-wall.png" ng-repeat="a in range(match.rock_wall) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Rouch terrain" class="col-xs-2 col-md-1" src="images/defenses/rough-terrain.png" ng-repeat="a in range(match.rough_terrain) track by $index" />
+								<img tabindex="0" role="button" data-toggle="tooltip" title="Low bar" class="col-xs-2 col-md-1" src="images/defenses/low-bar.png" ng-repeat="a in range(match.low_bar) track by $index" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>Endgame</legend>
+			<div class="table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Match #</th>
+							<th>Endgame</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="match in data.endgame | orderBy : 'match_number' : false">
+							<td>{{match.match_number}}</td>
+							<td>{{match.end_game}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>Comments:</legend>
+			<div class="container-fluid" ng-repeat="comment in data.commentSection">
+				<div class="row">
+					<p>{{comment.comments}} <small style="font-size: 11px">Rating: {{comment.rating}}</small></p>
+					<p>-- {{comment.name}}, {{comment.timeStamp}} for match #{{comment.match_number}}, {{comment.timestamp}}</p>
+					<hr/>
+				</div>
+			</div>
+		</fieldset>
+	</div>
 </div>

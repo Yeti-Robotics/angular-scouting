@@ -20,7 +20,7 @@ if($id = getUserIdFromToken($db, $postData["token"])) {
 			}
 			else {
 				header($_SERVER['SERVER_PROTOCOL'] . ' 500 SQL Error', true, 500);
-				die("Failed to upload alliance");
+				die('{"error": "Failed to upload alliance"}');
 			}
 		} else if($postData["wagerType"] == "closeMatch") {
 			if($postData["withenPoints"] > -1 && $postData["withenPoints"] < 51) {

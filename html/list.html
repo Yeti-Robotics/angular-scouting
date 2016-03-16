@@ -7,55 +7,62 @@
 	<div class="form-group">
 		<input type="text" class="form-control" placeholder="Filter by team number or name" ng-model="search">
 	</div>
-	<table class="table table-hover table-responsive">
-		<thead>
-			<tr>
-				<th ng-click="sortType = 'team'; sortReverse = !sortReverse">Team
-					<span ng-show="sortType == 'team' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-					<span ng-show="sortType == 'team' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-				</th>
-				<th ng-click="sortType = 'averageRating'; sortReverse = !sortReverse">Average Rating
-					<span ng-show="sortType == 'averageRating' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-					<span ng-show="sortType == 'averageRating' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-				</th>
-				<th ng-click="sortType = 'totalDefenses'; sortReverse = !sortReverse">Defenses crossed
-					<span ng-show="sortType == 'totalDefenses' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-					<span ng-show="sortType == 'totalDefenses' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-				</th>
-				<th ng-click="sortType = 'totalLowBars'; sortReverse = !sortReverse">Low bars crossed
-					<span ng-show="sortType == 'totalLowBars' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-					<span ng-show="sortType == 'totalLowBars' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-				</th>
-				<th ng-click="sortType = 'gcdName'; sortReverse = !sortReverse">Most common defense
-					<span ng-show="sortType == 'gcdName' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-					<span ng-show="sortType == 'gcdName' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-				</th>
-				<th ng-click="sortType = 'totalHighGoals'; sortReverse = !sortReverse">Total high goals
-					<span ng-show="sortType == 'totalHighGoals' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-					<span ng-show="sortType == 'totalHighGoals' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-				</th>
-				<th ng-click="sortType = 'totalLowGoals'; sortReverse = !sortReverse">Total low goals
-					<span ng-show="sortType == 'totalLowGoals' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-					<span ng-show="sortType == 'totalLowGoals' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-				</th>
-				<th ng-click="sortType = 'gamesDefended'; sortReverse = !sortReverse">% games defended
-					<span ng-show="sortType == 'gamesDefended' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-					<span ng-show="sortType == 'gamesDefended' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-				</th>
-
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="row in data | orderBy:sortType:sortReverse | filter:filterTeams">
-				<td><a href="#/team/{{row.team}}">{{row.team}}</a></td>
-				<td>{{row.averageRating}}</td>
-				<td>{{row.totalDefenses}}</td>
-				<td>{{row.totalLowBars}}</td>
-				<td>{{row.gcdName}}</td>
-				<td>{{row.totalHighGoals}}</td>
-				<td>{{row.totalLowGoals}}</td>
-				<td>{{row.gamesDefended}}%</td>
-			</tr>
-		</tbody>
-	</table>
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th ng-click="sortType = 'team'; sortReverse = !sortReverse">Team
+						<span ng-show="sortType == 'team' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'team' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
+					<th ng-click="sortType = 'name'; sortReverse = !sortReverse">Team name
+						<span ng-show="sortType == 'name' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'name' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
+					<th ng-click="sortType = 'averageRating'; sortReverse = !sortReverse">Average Rating
+						<span ng-show="sortType == 'averageRating' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'averageRating' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
+					<th ng-click="sortType = 'totalDefenses'; sortReverse = !sortReverse">Defenses crossed
+						<span ng-show="sortType == 'totalDefenses' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'totalDefenses' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
+					<th ng-click="sortType = 'totalLowBars'; sortReverse = !sortReverse">Low bars crossed
+						<span ng-show="sortType == 'totalLowBars' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'totalLowBars' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
+					<th ng-click="sortType = 'gcdName'; sortReverse = !sortReverse">Most common defense
+						<span ng-show="sortType == 'gcdName' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'gcdName' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
+					<th ng-click="sortType = 'totalHighGoals'; sortReverse = !sortReverse">Total high goals
+						<span ng-show="sortType == 'totalHighGoals' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'totalHighGoals' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
+					<th ng-click="sortType = 'totalLowGoals'; sortReverse = !sortReverse">Total low goals
+						<span ng-show="sortType == 'totalLowGoals' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'totalLowGoals' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
+					<th ng-click="sortType = 'gamesDefended'; sortReverse = !sortReverse">% games defended
+						<span ng-show="sortType == 'gamesDefended' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'gamesDefended' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
+		
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="row in data | orderBy:sortType:sortReverse | filter:filterTeams">
+					<td><a href="#/team/{{row.team}}">{{row.team}}</a></td>
+					<td><a href="#/team/{{row.team}}">{{row.name}}</a></td>
+					<td>{{row.averageRating}}</td>
+					<td>{{row.totalDefenses}}</td>
+					<td>{{row.totalLowBars}}</td>
+					<td>{{row.gcdName}}</td>
+					<td>{{row.totalHighGoals}}</td>
+					<td>{{row.totalLowGoals}}</td>
+					<td>{{row.gamesDefended}}%</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </div>
