@@ -60,6 +60,9 @@ function checkTeamData($db, $teamNumber) {
 function updateMatchData() {
 	include("../config/config.php");
     $fileName = "../json/" . $tournamentKey . "MatchResults.json";
+	if (!file_exists($fileName)) {
+		file_put_contents($fileName, "{}");
+	}
     $ch = curl_init();
 
     curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/schedule/$tournamentKey/qual/hybrid");
@@ -135,17 +138,18 @@ function updateTeamInfo($db, $teamNumber) {
 	curl_close($ch);
 
 	$robotInfo["teamNumber"] = intval($teamNumber);
-	$robotInfo["name"] = $responsejson["nameShort"] != null ? $responsejson["nameShort"] : "N/A";
-	$robotInfo["robotName"] = $responsejson["robotName"] != null ? $responsejson["robotName"] : "N/A";
+	$robotInfo["name"] = isset($responsejson["nameShort"]) ? $responsejson["nameShort"] : null;
 
-	$query = "INSERT INTO team_info (team_number, team_name, robot_name) VALUES (?, ?, ?)";
-	if($stmt = $db->prepare($query)) {
-		$stmt->bind_param("iss", $teamNumber, $robotInfo["name"], $robotInfo["robotName"]);
-		$stmt->execute();
-		if ($stmt->error) {
-			header('HTTP/1.1 500 SQL Error', true, 500);
-			$db->close();
-			die('{"message":"'.$stmt->error.'"}');
+	if ($robotInfo["name"] != null) {
+		$query = "INSERT INTO team_info (team_number, team_name) VALUES (?, ?)";
+		if($stmt = $db->prepare($query)) {
+			$stmt->bind_param("is", $teamNumber, $robotInfo["name"]);
+			$stmt->execute();
+			if ($stmt->error) {
+				header('HTTP/1.1 500 SQL Error', true, 500);
+				$db->close();
+				die('{"message":"'.$stmt->error.'"}');
+			}
 		}
 	}
 	return $robotInfo;
@@ -154,8 +158,7 @@ function updateTeamInfo($db, $teamNumber) {
 function getTeamInfo($db, $teamNumber) {
     $robotInfo = array(
         "teamNumber" => 0,
-        "name" => "",
-        "robotName" => ""
+        "name" => ""
     );
 
     $query = "SELECT * FROM team_info WHERE team_number = ?";
@@ -174,7 +177,6 @@ function getTeamInfo($db, $teamNumber) {
                 while($row = $result->fetch_array()) {
                     $robotInfo["teamNumber"] = intval($teamNumber);
                     $robotInfo["name"] = $row["team_name"];
-                    $robotInfo["robotName"] = $row["robot_name"];
                 }
             } else {
                 header('HTTP/1.1 500 SQL Error', true, 500);

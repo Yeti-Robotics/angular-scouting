@@ -10,7 +10,7 @@ $tournamentKey = "NCMCL";
 $tournamentYear = 2016;
 $authUser = "user";
 $authToken = "token";
-$apiServer = "https://frc-staging-api.usfirst.org/v2.0";
+$apiServer = "https://frc-api.firstinspires.org/v2.0";
 
 // Admin Account details
 $adminUsername = "admin";

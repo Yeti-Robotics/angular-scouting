@@ -3,13 +3,11 @@
 		<h1 class="text-center">{{error}}</h1>
 	</div>
     <div ng-show="error == ''">
-    	<h2 class="page-header">Team {{teamNumber}}, {{data.teamInfo.name}}
-    	   <br/>
-    	   <small>Robot name: {{data.teamInfo.robotName}}</small>
-    	   <br/>
-    	   <br/>
-    	    <a class="small" ng-href="#/team/{{teamNumber}}">{{data.teamInfo.name}}'<span ng-show="data.teamInfo.name[data.teamInfo.name.length - 1] != 's'">s</span> match data</a>
-    	</h2>
+    	<h2 class="page-header">Team {{teamNumber}}<span ng-show="data.teamInfo.name != null">, {{data.teamInfo.name}}</span>
+		   <br/>
+				<a class="small" ng-href="#/team/{{teamNumber}}">{{name}} match results</a>
+		   <br/>
+		</h2>
     	<div class="container-fluid" ng-show="!noPictures">
     	    <div class="row" ng-show="pitData.pictures.length > 1">
     	        <div class="col-xs-4">
