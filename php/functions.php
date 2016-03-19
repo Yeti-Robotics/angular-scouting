@@ -92,14 +92,20 @@ function updateMatchData() {
     $responsejson = json_decode(trim(substr($responsejson, strpos($responsejson, "\r\n\r\n"))), true);
     if (!strpos($headers["Status-Code"], "304") && $responsejson != null) {
         $file = fopen($fileName, "w");
-        fwrite($file, json_encode($responsejson));
+		$currentSchedule = json_decode(file_get_contents($fileName), true);
+		foreach($currentSchedule as $match) {
+			if($match["matchNumber"] == $responsejson["Schedule"][0]["matchNumber"]) {
+				$match = $responsejson;
+			}
+		}
+		$currentSchedule["Schedule"][] = $responsejson["Schedule"][0];
+        fwrite($file, json_encode($currentSchedule));
         fclose($file);
 		return true;
     } else {
 		return false;
 	}
 }
-
 function getMatchSchedule() {
 	updateMatchData();
 	include("../config/config.php");

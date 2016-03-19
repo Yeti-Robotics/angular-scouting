@@ -499,7 +499,25 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 	};
 	$scope.refreshByteCoins();
 	
+	$scope.selectedMatch = false;
 	
+	$scope.selectMatch = function (match) {
+		$scope.selectedMatch = {
+			number: match.matchNumber,
+			red: [
+				match.Teams[0].teamNumber,
+				match.Teams[1].teamNumber,
+				match.Teams[2].teamNumber
+			],
+			blue: [
+				match.Teams[3].teamNumber,
+				match.Teams[4].teamNumber,
+				match.Teams[5].teamNumber
+			]
+		};
+		$scope.currentWager.matchPredicted = match.matchNumber;
+		$("#match-modal").modal('hide');
+	}
 
 	$scope.reportSuccess = function (wager) {
 		$scope.refreshByteCoins();
@@ -521,7 +539,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 			teams[2].teamNumber + " vs " + teams[3].teamNumber + "-" +
 			teams[4].teamNumber + "-" + teams[5].teamNumber;
 	};
-
+	
 	$scope.currentWager = {
 		wagerType: '',
 		wageredByteCoins: 0,
@@ -564,6 +582,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 	};
 
 	$scope.sendWager = function () {
+		console.log($scope.currentWager);
 		$rootScope.validateLogin();
 		var postObject = {};
 		if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {

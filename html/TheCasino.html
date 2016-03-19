@@ -20,6 +20,40 @@
 		});
 	});
 </script>
+
+<div id="match-modal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal" aria-label="close"><span>&times;</span></button>
+				<h4 class="modal-title">Future Matches</h4>
+			</div>
+			<div class="modal-body">
+				<div class="table-responsive">
+					<table class="table">
+						<tr>
+							<th class="text-center">#</th>
+							<th class="text-center danger" colspan="3">Red Alliance</th>
+							<th class="text-center info" colspan="3">Blue Alliance</th>
+						</tr>
+						<tr ng-repeat="match in NCRE.Schedule[0]" ng-click="selectMatch(match)" role="button">
+							<td class="text-center">{{match.matchNumber}}</td>
+							
+							<td class="text-center danger">{{match.Teams[0].teamNumber}}</td>
+							<td class="text-center danger">{{match.Teams[1].teamNumber}}</td>
+							<td class="text-center danger">{{match.Teams[2].teamNumber}}</td>
+							
+							<td class="text-center info">{{match.Teams[3].teamNumber}}</td>
+							<td class="text-center info">{{match.Teams[4].teamNumber}}</td>
+							<td class="text-center info">{{match.Teams[5].teamNumber}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div id="confirm-wager-modal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -80,6 +114,7 @@
 			<label class="btn btn-primary" ng-click="currentWager.wagerType = 'alliance'">Predict a match winner
 				<input class="ng-hide" type="radio" value="alliance">
 			</label>
+			
 			<label class="btn btn-primary" ng-click="currentWager.wagerType = 'closeMatch'">Predict a close game
 				<input class="ng-hide" type="radio" value="closeMatch">
 			</label>
@@ -92,9 +127,28 @@
 	<fieldset ng-show="currentWager.wagerType === 'alliance'">
 		<legend>Make a wager on an alliance!</legend>
 		<label for="match">What match do you want to wager for?</label>
-		<select class='form-control' name="match" id="match" ng-model="currentWager.matchPredicted">
-			<option ng-repeat="match in NCRE.Schedule" value="{{match.matchNumber}}">{{"Match:" + match.matchNumber + " " + toOptionLabel(match.Teams)}}</option>
-		</select>
+		<button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal">Choose a match</button>
+		<div ng-show="selectedMatch != false">
+			<table class="table">
+				<tr class="primary">
+					<td colspan="7" class="text-center">Selected Match</td>
+				</tr>
+				<tr>
+					<th class="text-center">#</th>
+					<th class="text-center danger" colspan="3">Red Alliance</th>
+					<th class="text-center info" colspan="3">Blue Alliance</th>
+				</tr>
+				<tr>
+					<td class="text-center">{{selectedMatch.number}}</td>
+					<td class="text-center danger">{{selectedMatch.red[0]}}</td>
+					<td class="text-center danger">{{selectedMatch.red[1]}}</td>
+					<td class="text-center danger">{{selectedMatch.red[2]}}</td>
+					<td class="text-center info">{{selectedMatch.blue[0]}}</td>
+					<td class="text-center info">{{selectedMatch.blue[1]}}</td>
+					<td class="text-center info">{{selectedMatch.blue[2]}}</td>
+				</tr>
+			</table>
+		</div>
 		<br/>
 		<label for="alliancePredicted">Who do you think will win?</label>
 		<div class="btn-group btn-group-justified" data-toggle="buttons">
@@ -114,9 +168,28 @@
 	<fieldset ng-show="currentWager.wagerType === 'closeMatch'">
 		<legend>Predict a close game</legend>
 		<label for="match">What match do you want to wager for?</label>
-		<select class='form-control' name="match" id="match" ng-model="currentWager.matchPredicted">
-			<option ng-repeat="match in NCRE.Schedule" value="{{match.matchNumber}}">{{"Match:" + match.matchNumber + " " + toOptionLabel(match.Teams)}}</option>
-		</select>
+		<button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal">Choose a match</button>
+		<div ng-show="selectedMatch != false">
+			<table class="table">
+				<tr class="primary">
+					<td colspan="7" class="text-center">Selected Match</td>
+				</tr>
+				<tr>
+					<th class="text-center">#</th>
+					<th class="text-center danger" colspan="3">Red Alliance</th>
+					<th class="text-center info" colspan="3">Blue Alliance</th>
+				</tr>
+				<tr>
+					<td class="text-center">{{selectedMatch.number}}</td>
+					<td class="text-center danger">{{selectedMatch.red[0]}}</td>
+					<td class="text-center danger">{{selectedMatch.red[1]}}</td>
+					<td class="text-center danger">{{selectedMatch.red[2]}}</td>
+					<td class="text-center info">{{selectedMatch.blue[0]}}</td>
+					<td class="text-center info">{{selectedMatch.blue[1]}}</td>
+					<td class="text-center info">{{selectedMatch.blue[2]}}</td>
+				</tr>
+			</table>
+		</div>
 		<br/>
 		<label for="pointsWithen">How many points do you think the alliances will be within?</label>
 		<div class="row">
@@ -132,9 +205,28 @@
 	<fieldset ng-show="currentWager.wagerType === 'points'">
 		<legend>Wager on minimum points scored</legend>
 		<label for="match">What match do you want to wager for?</label>
-		<select class='form-control' name="match" id="match" ng-model="currentWager.matchPredicted">
-			<option ng-repeat="match in NCRE.Schedule" value="{{match.matchNumber}}">{{"Match:" + match.matchNumber + " " + toOptionLabel(match.Teams)}}</option>
-		</select>
+		<button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal">Choose a match</button>
+		<div ng-show="selectedMatch != false">
+			<table class="table">
+				<tr class="primary">
+					<td colspan="7" class="text-center">Selected Match</td>
+				</tr>
+				<tr>
+					<th class="text-center">#</th>
+					<th class="text-center danger" colspan="3">Red Alliance</th>
+					<th class="text-center info" colspan="3">Blue Alliance</th>
+				</tr>
+				<tr>
+					<td class="text-center">{{selectedMatch.number}}</td>
+					<td class="text-center danger">{{selectedMatch.red[0]}}</td>
+					<td class="text-center danger">{{selectedMatch.red[1]}}</td>
+					<td class="text-center danger">{{selectedMatch.red[2]}}</td>
+					<td class="text-center info">{{selectedMatch.blue[0]}}</td>
+					<td class="text-center info">{{selectedMatch.blue[1]}}</td>
+					<td class="text-center info">{{selectedMatch.blue[2]}}</td>
+				</tr>
+			</table>
+		</div>
 		<br/>
 		<label for="pointsPredicted">Points the alliance will score</label>
 		<div class="row">
