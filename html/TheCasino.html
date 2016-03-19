@@ -1,55 +1,25 @@
-<style>
-	.error-header {
-		background-color: #d9534f;
-	}
-
-	.confirm-header {
-		background-color: #337ab7;
-	}
-
-	.slider-selection {
-		background: #0AA2F4;
-	}
-
-	.slider-handle.custom {
-		background: transparent none;
-		background: url("images/ByteCoin.png") 0px 0px/20px 20px;
-	}
-
-	.slider-handle.custom::before {
-		color: transparent;
-	}
-</style>
 <script>
 	$(document).ready(function () {
 		$('#byteCoinsWagered').slider({
 			formatter: function (value) {
 				return 'Byte Coins: ' + value;
-			}
+			}, 
+			tooltip: 'hide'
 		});
 		$('#withenPoints').slider({
 			formatter: function (value) {
 				return 'Withen Points: ' + value;
-			}
+			}, 
+			tooltip: 'hide'
 		});
 		$('#pointsPredicted').slider({
 			formatter: function (value) {
 				return 'Minumum Points: ' + value;
-			}
+			}, 
+			tooltip: 'hide'
 		});
 	});
 </script>
-<!--error modal-->
-<div id="errorModal" class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="error-header modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>Error <span class="glyphicon glyphicon-exclamation-sign"></span></div>
-			<div class="modal-body">{{lastError}}</div>
-		</div>
-	</div>
-</div>
-
 <div id="confirm-wager-modal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -58,7 +28,14 @@
 			</div>
 			<div class="modal-body">
 				<label for="wageredByteCoins">How many ByteCoins would you like to wager? </label>
-				<input id="byteCoinsWagered" type="text" data-slider-min="0" data-slider-max="200" data-slider-step="1" data-slider-value="0" name="wageredByteCoins" data-slider-handle="custom" ng-model="currentWager.wageredByteCoins" />
+				<div class="row">
+					<div class="col-xs-7">
+						<input id="byteCoinsWagered" type="text" data-slider-min="0" data-slider-max="200" data-slider-step="1" data-slider-value="0" name="wageredByteCoins" data-slider-handle="custom" ng-model="currentWager.wageredByteCoins" />
+					</div>
+					<div class="col-xs-4">
+						<span class="slider-value">{{currentWager.wageredByteCoins}} Byte Coins</span>
+					</div>
+				</div>
 				<div class="table-responsive">
 					<table class="table table-hover table-condensed table-bordered">
 						<tbody>
@@ -99,7 +76,7 @@
 	<!--common wagering info-->
 	<fieldset>
 		<legend>Your Byte Coins: {{byteCoins}}</legend>
-		<div class="btn-group" data-toggle="buttons">
+		<div class="btn-group btn-group-vertical center-block" data-toggle="buttons">
 			<label class="btn btn-primary" ng-click="currentWager.wagerType = 'alliance'">Predict a match winner
 				<input class="ng-hide" type="radio" value="alliance">
 			</label>
@@ -111,6 +88,7 @@
 			</label>
 		</div>
 	</fieldset>
+	<br/>
 	<fieldset ng-show="currentWager.wagerType === 'alliance'">
 		<legend>Make a wager on an alliance!</legend>
 		<label for="match">What match do you want to wager for?</label>
@@ -119,13 +97,17 @@
 		</select>
 		<br/>
 		<label for="alliancePredicted">Who do you think will win?</label>
-		<div class="btn-group" data-toggle="buttons">
-			<label class="btn btn-danger" ng-click="currentWager.alliancePredicted = 'red'">Red Alliance
-				<input class="ng-hide" type="radio" ng-click="currentWager.alliancePredicted">
-			</label>
-			<label class="btn btn-primary" ng-click="currentWager.alliancePredicted = 'blue'">Blue Alliance
-				<input class="ng-hide" type="radio" ng-model="currentWager.alliancePredicted">
-			</label>
+		<div class="btn-group btn-group-justified" data-toggle="buttons">
+			<div class="btn-group" role="group">
+				<label class="btn btn-danger" ng-click="currentWager.alliancePredicted = 'red'">Red Alliance
+					<input class="ng-hide" type="radio" ng-click="currentWager.alliancePredicted">
+				</label>
+			</div>
+			<div class="btn-group" role="group">
+				<label class="btn btn-primary" ng-click="currentWager.alliancePredicted = 'blue'">Blue Alliance
+					<input class="ng-hide" type="radio" ng-model="currentWager.alliancePredicted">
+				</label>
+			</div>
 		</div>
 	</fieldset>
 
@@ -136,12 +118,13 @@
 			<option ng-repeat="match in NCRE.Schedule" value="{{match.matchNumber}}">{{"Match:" + match.matchNumber + " " + toOptionLabel(match.Teams)}}</option>
 		</select>
 		<br/>
+		<label for="pointsWithen">How many points do you think the alliances will be within?</label>
 		<div class="row">
-			<div class="col-md-4">
-				<label for="pointsWithen">How many points do you think the alliances will be within?</label>
+			<div class="col-xs-7">
+				<input id="withenPoints" type="text" data-slider-min="0" data-slider-handle="custom" data-slider-max="50" data-slider-step="1" data-slider-value="0" name="pointsWithen" ng-model="currentWager.withenPoints" />
 			</div>
-			<div class="col-md-2">
-				<input id="withenPoints" type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="50" name="pointsWithen" ng-model="currentWager.withenPoints" />
+			<div class="col-xs-4">
+				<span class="slider-value">{{currentWager.withenPoints}} Byte Coins</span>
 			</div>
 		</div>
 	</fieldset>
@@ -153,28 +136,33 @@
 			<option ng-repeat="match in NCRE.Schedule" value="{{match.matchNumber}}">{{"Match:" + match.matchNumber + " " + toOptionLabel(match.Teams)}}</option>
 		</select>
 		<br/>
+		<label for="pointsPredicted">Points the alliance will score</label>
 		<div class="row">
-			<div class="col-md-4">
-				<label for="pointsPredicted">Points the alliance will score</label>
+			<div class="col-xs-7">
+				<input id="pointsPredicted" data-slider-id='pointsPredictedSlider' type="text" data-slider-min="110" data-slider-handle="custom" data-slider-max="300" data-slider-step="1" data-slider-value="110" name="pointsPredicted" ng-model="currentWager.minPointsPredicted" />
 			</div>
-			<div class="col-md-2">
-				<input id="pointsPredicted" data-slider-id='pointsPredictedSlider' type="text" data-slider-min="110" data-slider-max="300" data-slider-step="1" data-slider-value="1100" name="pointsPredicted" ng-model="currentWager.minPointsPredicted" />
+			<div class="col-xs-4">
+				<span class="slider-value">{{currentWager.minPointsPredicted}} Byte Coins</span>
 			</div>
 		</div>
 
 		<label for="alliancePredicted">Which alliance?</label>
-		<div class="btn-group" data-toggle="buttons">
-			<label class="btn btn-danger" ng-click="currentWager.alliancePredicted = 'red'">Red Alliance
-				<input class="ng-hide" type="radio" ng-click="currentWager.alliancePredicted">
-			</label>
-			<label class="btn btn-primary" ng-click="currentWager.alliancePredicted = 'blue'">Blue Alliance
-				<input class="ng-hide" type="radio" ng-model="currentWager.alliancePredicted">
-			</label>
+		<div class="btn-group btn-group-justified" data-toggle="buttons">
+			<div class="btn-group" role="group">
+				<label class="btn btn-danger" ng-click="currentWager.alliancePredicted = 'red'">Red Alliance
+					<input class="ng-hide" type="radio" ng-click="currentWager.alliancePredicted">
+				</label>
+			</div>
+			<div class="btn-group" role="group">
+				<label class="btn btn-primary" ng-click="currentWager.alliancePredicted = 'blue'">Blue Alliance
+					<input class="ng-hide" type="radio" ng-model="currentWager.alliancePredicted">
+				</label>
+			</div>
 		</div>
 	</fieldset>
 	<br>
 	<div ng-show="currentWager.wagerType">
-		<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#confirm-wager-modal">Make wager</button>
+		<button class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#confirm-wager-modal">Make wager</button>
 	</div>
 
 </div>

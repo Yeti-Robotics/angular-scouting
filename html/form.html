@@ -5,15 +5,15 @@
 			<div class="form-group">
 				<div>
 					<label for="name">Your name:</label>
-					<input id="name" ng-model="formData.name" type="text" class="form-control" placeholder="Enter your name" required>
+					<input name="name" id="name" ng-model="formData.name" type="text" class="form-control" placeholder="Enter your name" required>
 				</div>
 				<div>
 					<label for="match_number">Match #:</label>
-					<input id="match_number" ng-model="formData.match_number" type="number" class="form-control" placeholder="Enter the match number" required>
+					<input name="match_number" id="match_number" ng-model="formData.match_number" type="number" class="form-control" placeholder="Enter the match number" required>
 				</div>
 				<div>
 					<label for="team_number">Team #:</label>
-					<input id="team_number" ng-model="formData.team_number" type="number" class="form-control" placeholder="Enter the team number" required>
+					<input name="team_number" id="team_number" ng-model="formData.team_number" type="number" class="form-control" placeholder="Enter the team number" required>
 				</div>
 			</div>
 		</fieldset>
@@ -66,9 +66,9 @@
 		<fieldset>
 			<legend>Misc.</legend>
 			<div class="form-group">
-				<label for="rating">Rating:</label>
-				<select id="rating" ng-model="formData.rating" required>
-					<option value="1" selected="selected">1</option>
+				<label for="rating" convert-to-number>Rating:</label>
+				<select name="rating" id="rating" ng-model="formData.rating">
+					<option value="1">1</option>
 					<option value="2">2</option>
 					<option value="3">3</option>
 					<option value="4">4</option>
@@ -82,12 +82,12 @@
 			</div>
 			<div class="form-group">
 				<label for="score">Score:</label>
-				<input id="score" class="form-control" type="number" ng-model="formData.score" placeholder="Enter the alliance's score" required/>
+				<input name="score" id="score" class="form-control" type="number" ng-model="formData.score" placeholder="Enter the alliance's score" required/>
 			</div>
 			<div class="form-group">
 				<label>Comments:</label>
 				<br/>
-				<textarea class="form-control" ng-model="formData.comments" rows="5"></textarea>
+				<textarea name="comments" id="comments" class="form-control" ng-model="formData.comments" rows="5" required></textarea>
 			</div>
 		</fieldset>
 

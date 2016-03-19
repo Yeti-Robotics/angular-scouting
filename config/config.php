@@ -6,7 +6,7 @@ $dbpassword = "";
 $dbname = "scouting";
 
 // FMSAPI variables
-$tournamentKey = "NCMCL";
+$tournamentKey = "NCASH";
 $tournamentYear = 2016;
 $authUser = "user";
 $authToken = "token";

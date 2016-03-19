@@ -3,6 +3,12 @@
 var app;
 app = angular.module('app', ['ngRoute']);
 
+function displayMessage(message, alertType, timeVisible) {
+    "use strict";
+	timeVisible = timeVisible == undefined ? 3000 : timeVisible;
+    $('.message-container').html(message).removeClass('alert-success alert-info alert-warning alert-danger').addClass('alert-' + alertType).stop(true).slideDown(500).delay(timeVisible).slideUp(500);
+}
+
 app.run(function ($rootScope, $location, $http, $window) {
 	'use strict';
 
@@ -166,7 +172,7 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 
 app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
-
+	
 	$scope.resetForm = function () {
 		$scope.formData = {
 			name: $rootScope.user.name,
@@ -202,51 +208,66 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			teleop_balls_low: 0,
 			robot_defended: false,
 			end_game: "none",
-			rating: 1,
+			rating: "1",
 			score: 0,
 			comments: ""
 		};
 	};
-
+	
 	$(document).ready(function () {
-		$('#scouting_form').validate();
+		$scope.validator = $('#scouting_form').validate();
+		$("#comments").rules("add", {
+			required: true
+		});
 		console.log('Inititalize validation');
+		 
 		$scope.resetForm();
 	});
 
 	$scope.submit = function () {
 		if ($('#scouting_form').valid()) {
 			console.log("valid");
-			$scope.formData.auto_balls_scored.forEach(function (e) {
-				if (e.goal === 'High') {
-					$scope.formData.auto_balls_high++;
-				} else {
-					$scope.formData.auto_balls_low++;
-				}
-			});
+			
+			$http.post('php/validateTeamNumber.php', $scope.formData.team_number).then(function (response) {
+				$scope.formData.rating = parseInt($scope.formData.rating);
+				
+				$scope.formData.auto_balls_scored.forEach(function (e) {
+					if (e.goal === 'High') {
+						$scope.formData.auto_balls_high++;
+					} else {
+						$scope.formData.auto_balls_low++;
+					}
+				});
 
-			$scope.formData.teleop_balls_scored.forEach(function (e) {
-				if (e.goal === 'High') {
-					$scope.formData.teleop_balls_high++;
-				} else {
-					$scope.formData.teleop_balls_low++;
-				}
-			});
-			//So we dont send more data then we need to
-			delete $scope.formData.auto_balls_scored;
-			delete $scope.formData.teleop_balls_scored;
-			$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
-				console.log("submitted");
-				console.log(response.data);
-				$('#scouting_form').trigger('reset');
-				$('body').scrollTop(0);
-				if ($('#scouting_form').prev().attr('id') != "success_message") {
-					$("#scouting_form").before('<div id="success_message" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"<span aria-hidden="true">&times;</span></button><strong>Success!</strong> Now do it again.</div>');
-				}
-				$scope.resetForm();
+				$scope.formData.teleop_balls_scored.forEach(function (e) {
+					if (e.goal === 'High') {
+						$scope.formData.teleop_balls_high++;
+					} else {
+						$scope.formData.teleop_balls_low++;
+					}
+				});
+				//So we dont send more data then we need to
+				delete $scope.formData.auto_balls_scored;
+				delete $scope.formData.teleop_balls_scored;
+				$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
+					console.log("submitted");
+					console.log(response.data);
+					$('#scouting_form').trigger('reset');
+					$('body').scrollTop(0);
+					if ($('#scouting_form').prev().attr('id') != "success_message") {
+						displayMessage("<strong>Success!</strong> Now do it again.", "success");
+						
+					}
+					$scope.resetForm();
+				}, function (response) {
+					console.log("Error during submission");
+					console.log(response.data);
+				});
 			}, function (response) {
-				console.log("Error during submission");
-				console.log(response.data);
+				$scope.validator.showErrors({
+					"team_number": $scope.formData.team_number + " isn't on the schedule, double check you entered it correctly"
+				});
+				$("#team_number").focus();
 			});
 		} else {
 			console.log("Not valid");
@@ -399,6 +420,13 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 		}
 	}).then(function (response) {
 		$scope.data = response.data;
+		
+		if ($scope.data.teamInfo.name != null) {
+			$scope.name = $scope.data.teamInfo.name + ($scope.data.teamInfo.name[$scope.data.teamInfo.name.length - 1] == "s" ? "'" : "'s");
+		} else {
+			$scope.name = $scope.teamNumber + "'s";
+		}
+		
 		if (response.data.commentSection != null) {
 			for (var i = 0; i < response.data.commentSection.length; i++) {
 				$scope.pitData.comments.push({
@@ -459,17 +487,19 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 
 app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 	'use strict';
-
+	
 	$scope.refreshByteCoins = function () {
 		$http.post("php/getByteCoins.php", {
 			token: $window.sessionStorage["token"]
 		}).then(function (response) {
 			$rootScope.user.byteCoins = $scope.byteCoins = response.data;
 		}, function (response) {
-			$scope.reportError("Could not properly get your number of Byte Coins. Are you logged in?");
+			displayMessage("Could not properly get your number of Byte Coins. Please log in and try again", "danger");
 		});
 	};
 	$scope.refreshByteCoins();
+	
+	
 
 	$scope.reportSuccess = function (wager) {
 		$scope.refreshByteCoins();
@@ -477,13 +507,12 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 
 	$scope.reportError = function (error) {
 		$scope.lastError = error;
-		$("#errorModal").modal('show');
 	};
 
 	$http.get("php/currentWageringMatches.php").then(function (response) {
 		$scope.NCRE = response.data;
 	}, function (response) {
-		$scope.reportError("Failed to get match data");
+		displayMessage("Failed to get match data", "danger");
 	});
 
 
@@ -563,12 +592,12 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 				withenPoints: $scope.currentWager.minPointsPredicted
 			};
 		} else {
-			$scope.reportError("Incorrect wager format. Did you fill all of the fields?");
+			displayMessage("Incorrect wager format. Did you fill all of the fields?", "danger");
 		}
 		$http.post("php/wager.php", postObject).then(function (response) {
 			$scope.reportSuccess(response.data.message);
 		}, function (response) {
-			$scope.reportError("Failed to send Wager");
+			displayMessage("Failed to send Wager", "danger");
 		});
 	};
 });
@@ -622,7 +651,13 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		}
 	}).then(function (response) {
 		$scope.data = response.data;
-
+		
+		if ($scope.data.teamInfo.name != null) {
+			$scope.pitName = $scope.data.teamInfo.name + ($scope.data.teamInfo.name[$scope.data.teamInfo.name.length - 1] == "s" ? "'" : "'s");
+		} else {
+			$scope.pitName = $scope.teamNumber + "'s";
+		}
+		
 		$scope.range = function (n) {
 			return new Array(n);
 		};
@@ -672,6 +707,7 @@ app.directive('defensesCrossedSelector', function () {
 		}
 	};
 });
+
 app.directive('ballsScoredSelector', function () {
 	'use strict';
 	return {
@@ -681,6 +717,7 @@ app.directive('ballsScoredSelector', function () {
 		}
 	};
 });
+
 app.directive('numberPicker', function () {
 	'use strict';
 	return {

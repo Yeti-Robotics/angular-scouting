@@ -2,6 +2,36 @@ label.error {
     color: red;
 }
 
-input.error {
+.required, .error {
     border-color: red !important;
+}
+
+.message-container {
+	display: none
+}
+
+.confirm-header {
+	background-color: #337ab7;
+}
+
+.slider-selection {
+	background: #0AA2F4;
+}
+
+.slider-handle.custom {
+	background: transparent none;
+	background: url("../images/ByteCoin.png") 0px 0px/20px 20px;
+}
+
+.slider-handle.custom::before {
+	color: transparent;
+}
+
+.slider-value {
+	margin: 0 0 10px;
+	font-size: 13px;
+	background-color: #f5f5f5;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	padding: 2px;
 }
