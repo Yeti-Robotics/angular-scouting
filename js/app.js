@@ -474,6 +474,7 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 
 	$http.get('php/list.php').then(function (response) {
 		$scope.data = response.data;
+		$scope.data.name = $scope.data.name != null ? $scope.data.name : "Name unavailable";
 		console.log($scope.data);
 		for (var i = 0; i < $scope.data.length; i++) {
 			$scope.data[i].team = parseInt($scope.data[i].team);

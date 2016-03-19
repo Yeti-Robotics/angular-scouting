@@ -2,7 +2,7 @@
 include ("connect.php");
 include ("functions.php");
 header('Content-Type: application/json');
-$query = "SELECT totalLowBars.*, teamName.team_name AS name, gcd.gcdName, totalHighGoals.totalHighGoals, totalLowGoals.totalLowGoals, gamesDefended.gamesDefended
+$query = "SELECT DISTINCT totalLowBars.*, teamName.team_name AS name, gcd.gcdName, totalHighGoals.totalHighGoals, totalLowGoals.totalLowGoals, gamesDefended.gamesDefended
 FROM (SELECT team, SUM(low_bar) AS totalLowBars, AVG(rating) as averageRating, (SUM(low_bar) + SUM(portcullis) + SUM(cheval_de_frise) + SUM(moat) + SUM(ramparts) + SUM(drawbridge) + SUM(sally_port) + SUM(rock_wall) + SUM(rough_terrain)) as totalDefenses
 FROM defenses
 LEFT JOIN scout_data ON defenses.id = scout_data.scout_data_id
