@@ -662,7 +662,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 					trigger: 'focus'
 				});
 			});
-		}, 100);
+		}, 1000);
 	});
 
 	$http.get("php/getTeam.php", {
