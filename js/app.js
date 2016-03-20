@@ -474,7 +474,6 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 
 	$http.get('php/list.php').then(function (response) {
 		$scope.data = response.data;
-		$scope.data.name = $scope.data.name != null ? $scope.data.name : "Name unavailable";
 		console.log($scope.data);
 		for (var i = 0; i < $scope.data.length; i++) {
 			$scope.data[i].team = parseInt($scope.data[i].team);
@@ -482,6 +481,7 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 			$scope.data[i].totalLowGoals = parseInt($scope.data[i].totalLowGoals);
 			$scope.data[i].totalLowBars = parseInt($scope.data[i].totalLowBars);
 			$scope.data[i].gamesDefended = parseInt($scope.data[i].gamesDefended);
+			$scope.data[i].name = $scope.data[i].name != null ? $scope.data[i].name : "Name unavailable";
 		}
 	});
 });
