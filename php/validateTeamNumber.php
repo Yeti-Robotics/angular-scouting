@@ -1,10 +1,11 @@
 <?php
 
 include('functions.php');
+include('../config/config.php');
 
 $teamNumber = json_decode(file_get_contents('php://input'), true);
 $fileName = "../json/" . $tournamentKey . "MatchResults.json";
-$schedule = getMatchData();
+$schedule = getMatchSchedule();
 $teams = array();
 
 foreach ($schedule as $match) {
@@ -13,11 +14,8 @@ foreach ($schedule as $match) {
 	}
 }
 
-if (array_search($teamNumber, $teams)) {
-	die();
-} else {
-	header('HTTP/1.1 Team Invalid', true, 500);
-	die();
+if (!array_search($teamNumber, $teams)) {
+	header('HTTP/1.1 500 Team Invalid', true, 500);
 }
 
 ?>

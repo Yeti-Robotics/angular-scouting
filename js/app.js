@@ -227,7 +227,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	$scope.submit = function () {
 		if ($('#scouting_form').valid()) {
 			console.log("valid");
-			
+			displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
 			$http.post('php/validateTeamNumber.php', $scope.formData.team_number).then(function (response) {
 				$scope.formData.rating = parseInt($scope.formData.rating);
 				
@@ -253,10 +253,8 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 					console.log("submitted");
 					console.log(response.data);
 					$('#scouting_form').trigger('reset');
-					$('body').scrollTop(0);
 					if ($('#scouting_form').prev().attr('id') != "success_message") {
 						displayMessage("<strong>Success!</strong> Now do it again.", "success");
-						
 					}
 					$scope.resetForm();
 				}, function (response) {
