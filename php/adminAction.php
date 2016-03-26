@@ -10,6 +10,8 @@ if(isUserAdmin($db, $postData["token"])) {
 		case 'update_team':
 			updateTeamInfo($db, $postData["teamNumber"]);
 			break;
+		case 'flush_schedule':
+			flushSchedule($db);
 	}
 }
 ?>

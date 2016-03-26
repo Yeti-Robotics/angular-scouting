@@ -91,7 +91,7 @@ function updateMatchData() {
 
     $responsejson = json_decode(trim(substr($responsejson, strpos($responsejson, "\r\n\r\n"))), true);
     if (!strpos($headers["Status-Code"], "304") && $responsejson != null) {
-        $file = fopen($fileName, "w");
+        $file = fopen($fileName, "r+");
 		$currentSchedule = json_decode(file_get_contents($fileName), true);
 		foreach($currentSchedule as $match) {
 			if($match["matchNumber"] == $responsejson["Schedule"][0]["matchNumber"]) {
@@ -106,16 +106,42 @@ function updateMatchData() {
 		return false;
 	}
 }
+
+function flushSchedule() {
+	include("../config/config.php");
+    $fileName = "../json/" . $tournamentKey . "MatchResults.json";
+	if (!file_exists($fileName)) {
+		file_put_contents($fileName, "{}");
+	}
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/schedule/$tournamentKey/qual/hybrid");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array (
+        "Accept: application/json",
+        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
+    ));
+
+    $responsejson = curl_exec($ch);
+	curl_close($ch);
+	$file = fopen($fileName, "w");
+	fwrite($file, $responsejson);
+	fclose($file);
+}
+
 function getMatchSchedule() {
 	updateMatchData();
 	include("../config/config.php");
     $fileName = "../json/" . $tournamentKey . "MatchResults.json";
-	return json_decode(file_get_contents($fileName), true)["Schedule"];
+	return json_decode(file_get_contents($fileName), true);
 }
 
 function getMatchResults($matchNumber) {
-    $matchData = getMatchSchedule()[$matchNumber - 1];
-    return $matchData["scoreRedFinal"] != null ? $matchData : false;
+    $matchData = getMatchSchedule()["Schedule"][$matchNumber - 1];
+    return $matchData["actualStartTime"] != null ? $matchData : false;
 }
 
 function nextMatch() {
@@ -392,6 +418,7 @@ function checkForUser($db, $username) {
 }
 
 function updateQualificationWagers($db, $matchNum) {
+	updateMatchData();
     $query = "SELECT * FROM `wagers` WHERE matchPredicted <= ?";
 	$matchData = getMatchResults($matchNum);
 	if($matchData) {

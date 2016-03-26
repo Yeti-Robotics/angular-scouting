@@ -472,7 +472,6 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 
 	$http.get('php/list.php').then(function (response) {
 		$scope.data = response.data;
-		console.log($scope.data);
 		for (var i = 0; i < $scope.data.length; i++) {
 			$scope.data[i].team = parseInt($scope.data[i].team);
 			$scope.data[i].totalHighGoals = parseInt($scope.data[i].totalHighGoals);
@@ -525,13 +524,13 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 	$scope.reportError = function (error) {
 		$scope.lastError = error;
 	};
-
-	$http.get("php/currentWageringMatches.php").then(function (response) {
-		$scope.NCRE = response.data;
-	}, function (response) {
-		displayMessage("Failed to get match data", "danger");
-	});
-
+	$scope.generateMatchs = function () {
+		$http.get("php/currentWageringMatches.php").then(function (response) {
+			$scope.Schedule = response.data["Schedule"];
+		}, function (response) {
+			displayMessage("Failed to get match data", "danger");
+		});
+	}
 
 	$scope.toOptionLabel = function (teams) {
 		return teams[0].teamNumber + "-" + teams[1].teamNumber + "-" +
@@ -581,7 +580,6 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 	};
 
 	$scope.sendWager = function () {
-		console.log($scope.currentWager);
 		$rootScope.validateLogin();
 		var postObject = {};
 		if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
