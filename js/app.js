@@ -11,7 +11,6 @@ function displayMessage(message, alertType, timeVisible) {
 
 app.run(function ($rootScope, $location, $http, $window) {
 	'use strict';
-
 	$rootScope.user = {
 		username: '',
 		name: '',
@@ -22,6 +21,23 @@ app.run(function ($rootScope, $location, $http, $window) {
 			$rootScope.loggedIn = false;
 		}
 	};
+	
+	$rootScope.getCurrentSettings = function (onSettingsUpdate) {
+		$http.get("php/getSettings.php").then(function (response) {
+			$rootScope.settings = response.data;
+			if (onSettingsUpdate != undefined) {
+				onSettingsUpdate();
+			}
+		}, function (response) {
+			displayMessage("Failed getting current settings.", "danger");
+			$rootScope.settings = null;
+			if (onSettingsUpdate != undefined) {
+				onSettingsUpdate();
+			}
+		});
+	}
+	
+	$rootScope.getCurrentSettings();
 
 	$rootScope.loggedIn = !($window.sessionStorage.token == null);
 
@@ -198,7 +214,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			});
 		}
 		$scope.matchesReceived = true;
-		$scope.lastMatch = $scope.matches[0].number;
+		$scope.lastMatch = $scope.matches.length > 0 ? $scope.matches[0].number : false;
 	}, function (response) {
 		displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
 		$scope.matchesReceived = false;
@@ -290,6 +306,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
 				console.log("submitted");
 				$scope.matches.shift();
+				$rootScope.getCurrentSettings();
 				console.log(response.data);
 				$('#scouting_form').trigger('reset');
 				displayMessage("<strong>Success!</strong> Now do it again.", "success");
@@ -721,8 +738,16 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 
 app.controller('AdminPageController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
-
-	$scope.adminAction = function (pageAction) {
+	
+	$scope.prettySettings = {
+		validateTeams: ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled"
+	};
+	
+	$scope.updatePrettySettings = function () {
+		$scope.prettySettings.validateTeams = ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled";
+	};
+	
+	$scope.adminAction = function (pageAction, setting, value) {
 		var post = {
 			token: $window.sessionStorage["token"],
 			action: pageAction
@@ -734,14 +759,18 @@ app.controller('AdminPageController', function ($rootScope, $scope, $http, $wind
 			case 'update_wagers':
 				post.matchNumber = $scope.matchNumber;
 				break;
+			case 'updateSettings':
+				post.setting = setting;
+				post.settingValue = value == 'true' ? true : false;
+				break;
 		}
-		console.log(post);
-		$http.post("php/adminAction.php", post)
-			.then(function (response) {
-				console.log(response.data);
-			}, function (response) {
-				console.log(response.data);
+		$http.post("php/adminAction.php", post).then(function (response) {
+			$rootScope.getCurrentSettings(function () {
+				$scope.updatePrettySettings();
 			});
+		}, function (response) {
+			console.log("Post response: " + response.data);
+		});
 	}
 });
 

@@ -11,7 +11,16 @@ if(isUserAdmin($db, $postData["token"])) {
 			updateTeamInfo($db, $postData["teamNumber"]);
 			break;
 		case 'flush_schedule':
-			flushSchedule($db);
+			flushSchedule();
+			break;
+		case 'updateSettings':
+			$settings = getSettings();
+			$settingName = $postData["setting"];
+			$newSettingValue = $postData["settingValue"];
+			
+			$settings[$settingName] = $newSettingValue;
+			updateSettings($settings);
+			break;
 	}
 }
 ?>

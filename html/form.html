@@ -6,38 +6,43 @@
 				<h4 class="modal-title">Match Selector</h4>
 			</div>
 			<div class="modal-body">
-				<div class="table-responsive">
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th class="text-center">#</th>
-								<th class="text-center danger" colspan="3">Red Alliance</th>
-								<th class="text-center info" colspan="3">Blue Alliance</th>
-							</tr>
-							<tr>
-								<th></th>
-								<th class="text-center danger">Red 1</th>
-								<th class="text-center danger">Red 2</th>
-								<th class="text-center danger">Red 3</th>
-								<th class="text-center info">Blue 1</th>
-								<th class="text-center info">Blue 2</th>
-								<th class="text-center info">Blue 3</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="match in matches">
-								<td class="text-center">{{match.number}}</td>
-								
-								<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[0])">{{match.teams.red[0]}}</td>
-								<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[1])">{{match.teams.red[1]}}</td>
-								<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[2])">{{match.teams.red[2]}}</td>
-								
-								<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[0])">{{match.teams.blue[0]}}</td>
-								<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[1])">{{match.teams.blue[1]}}</td>
-								<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[2])">{{match.teams.blue[2]}}</td>
-							</tr>
-						</tbody>
-					</table>
+				<div ng-show="lastMatch != false">
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th class="text-center">#</th>
+									<th class="text-center danger" colspan="3">Red Alliance</th>
+									<th class="text-center info" colspan="3">Blue Alliance</th>
+								</tr>
+								<tr>
+									<th></th>
+									<th class="text-center danger">Red 1</th>
+									<th class="text-center danger">Red 2</th>
+									<th class="text-center danger">Red 3</th>
+									<th class="text-center info">Blue 1</th>
+									<th class="text-center info">Blue 2</th>
+									<th class="text-center info">Blue 3</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="match in matches">
+									<td class="text-center">{{match.number}}</td>
+									
+									<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[0])">{{match.teams.red[0]}}</td>
+									<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[1])">{{match.teams.red[1]}}</td>
+									<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[2])">{{match.teams.red[2]}}</td>
+									
+									<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[0])">{{match.teams.blue[0]}}</td>
+									<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[1])">{{match.teams.blue[1]}}</td>
+									<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[2])">{{match.teams.blue[2]}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div ng-show="!lastMatch">
+					<h4>No matches to display at this time</h4>
 				</div>
 			</div>
 		</div>
@@ -53,7 +58,7 @@
 					<label for="name">Your name:</label>
 					<input name="name" id="name" ng-model="formData.name" type="text" class="form-control" placeholder="Enter your name" required>
 				</div>
-				<div ng-show="!matchesReceived">
+				<div ng-show="!matchesReceived || !settings.validateTeams">
 					<div>
 						<label for="match_number">Match #:</label>
 						<input name="match_number" id="match_number" ng-model="formData.match_number" type="number" class="form-control" placeholder="Enter the match number" required>
@@ -63,7 +68,7 @@
 						<input name="team_number" id="team_number" ng-model="formData.team_number" type="number" class="form-control" placeholder="Enter the team number" required>
 					</div>
 				</div>
-				<div ng-show="matchesReceived">
+				<div ng-show="matchesReceived && settings.validateTeams">
 					<br/>
 					<button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal">Choose a match</button>
 					<br/>

@@ -1,5 +1,21 @@
 <?php
 
+function getSettings() {
+	$fileName = "../config/settings.json";
+	return file_exists($fileName) ? json_decode(file_get_contents($fileName), true) : false;
+}
+
+function updateSettings($updatedSettings) {
+	$fileName = "../config/settings.json";
+	
+	if (file_exists($fileName)) {
+		file_put_contents($fileName, json_encode($updatedSettings, JSON_PRETTY_PRINT));
+		return true;
+	} else {
+		return false;
+	}
+}
+
 function checkPitData($db, $teamNumber) {
 	$query = "SELECT * FROM `pit_comments` WHERE pit_comments.team_number = ?";
 	$hasComments;
