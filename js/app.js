@@ -173,6 +173,44 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
 	
+	$scope.matchesReceived = true;
+	
+	$scope.selectedTeam = false;
+	
+	$scope.matches = [];
+	
+	$http.get("php/currentWageringMatches.php").then(function (response) {
+		for (var i = 0; i < response.data.Schedule.length; i++) {
+			$scope.matches.push({
+				teams: {
+					red: [
+						response.data.Schedule[i].Teams[0].teamNumber,
+						response.data.Schedule[i].Teams[1].teamNumber,
+						response.data.Schedule[i].Teams[2].teamNumber
+					],
+					blue: [
+						response.data.Schedule[i].Teams[3].teamNumber,
+						response.data.Schedule[i].Teams[4].teamNumber,
+						response.data.Schedule[i].Teams[5].teamNumber
+					]
+				},
+				number: response.data.Schedule[i].matchNumber
+			});
+		}
+		$scope.matchesReceived = true;
+		$scope.lastMatch = $scope.matches[0].number;
+	}, function (response) {
+		displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
+		$scope.matchesReceived = false;
+	});
+	
+	$scope.selectTeam = function (matchNumber, teamNumber) {
+		$scope.formData.match_number = matchNumber;
+		$scope.formData.team_number = teamNumber;
+		$scope.selectedTeam = true;
+		$("#match-modal").modal('hide');
+	};
+	
 	$scope.resetForm = function () {
 		$scope.formData = {
 			name: $rootScope.user.name,
@@ -227,45 +265,38 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	$scope.submit = function () {
 		if ($('#scouting_form').valid()) {
 			console.log("valid");
+			$("body").scrollTop(0);
 			displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
-			$http.post('php/validateTeamNumber.php', $scope.formData.team_number).then(function (response) {
-				$scope.formData.rating = parseInt($scope.formData.rating);
-				
-				$scope.formData.auto_balls_scored.forEach(function (e) {
-					if (e.goal === 'High') {
-						$scope.formData.auto_balls_high++;
-					} else {
-						$scope.formData.auto_balls_low++;
-					}
-				});
+			$scope.formData.rating = parseInt($scope.formData.rating);
 
-				$scope.formData.teleop_balls_scored.forEach(function (e) {
-					if (e.goal === 'High') {
-						$scope.formData.teleop_balls_high++;
-					} else {
-						$scope.formData.teleop_balls_low++;
-					}
-				});
-				//So we dont send more data then we need to
-				delete $scope.formData.auto_balls_scored;
-				delete $scope.formData.teleop_balls_scored;
-				$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
-					console.log("submitted");
-					console.log(response.data);
-					$('#scouting_form').trigger('reset');
-					if ($('#scouting_form').prev().attr('id') != "success_message") {
-						displayMessage("<strong>Success!</strong> Now do it again.", "success");
-					}
-					$scope.resetForm();
-				}, function (response) {
-					console.log("Error during submission");
-					console.log(response.data);
-				});
+			$scope.formData.auto_balls_scored.forEach(function (e) {
+				if (e.goal === 'High') {
+					$scope.formData.auto_balls_high++;
+				} else {
+					$scope.formData.auto_balls_low++;
+				}
+			});
+
+			$scope.formData.teleop_balls_scored.forEach(function (e) {
+				if (e.goal === 'High') {
+					$scope.formData.teleop_balls_high++;
+				} else {
+					$scope.formData.teleop_balls_low++;
+				}
+			});
+			//So we dont send more data then we need to
+			delete $scope.formData.auto_balls_scored;
+			delete $scope.formData.teleop_balls_scored;
+			$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
+				console.log("submitted");
+				$scope.matches.shift();
+				console.log(response.data);
+				$('#scouting_form').trigger('reset');
+				displayMessage("<strong>Success!</strong> Now do it again.", "success");
+				$scope.resetForm();
 			}, function (response) {
-				$scope.validator.showErrors({
-					"team_number": $scope.formData.team_number + " isn't on the schedule, double check you entered it correctly"
-				});
-				$("#team_number").focus();
+				console.log("Error during submission");
+				console.log(response.data);
 			});
 		} else {
 			console.log("Not valid");
@@ -332,6 +363,8 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
 
 	$scope.submit = function () {
 		if ($('#pitForm').valid()) {
+			$("body").scrollTop(0);
+			displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
 			console.log("valid");
 			var formData = new FormData();
 			for (var i = 0; i < $scope.pictures.length; i++) {
@@ -356,9 +389,7 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
 				};
 				$scope.pictures = [];
 				$scope.picNum = [];
-				if ($('#pitForm').prev().attr('id') != "success_message") {
-					$("#pitForm").before('<div id="success_message" class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"<span aria-hidden="true">&times;</span></button><strong>Success!</strong> Now do it again.</div>');
-				}
+				displayMessage("<strong>Success!</strong> Now do it again.", "success");
 			}, function (response) {
 				console.log("Error during submission");
 				console.log(response);
