@@ -579,6 +579,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 			displayMessage("Failed to get match data", "danger");
 		});
 	}
+	$scope.generateMatchs();
 
 	$scope.toOptionLabel = function (teams) {
 		return teams[0].teamNumber + "-" + teams[1].teamNumber + "-" +
