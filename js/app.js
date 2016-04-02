@@ -195,30 +195,34 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	
 	$scope.matches = [];
 	
-	$http.get("php/currentWageringMatches.php").then(function (response) {
-		for (var i = 0; i < response.data.Schedule.length; i++) {
-			$scope.matches.push({
-				teams: {
-					red: [
-						response.data.Schedule[i].Teams[0].teamNumber,
-						response.data.Schedule[i].Teams[1].teamNumber,
-						response.data.Schedule[i].Teams[2].teamNumber
-					],
-					blue: [
-						response.data.Schedule[i].Teams[3].teamNumber,
-						response.data.Schedule[i].Teams[4].teamNumber,
-						response.data.Schedule[i].Teams[5].teamNumber
-					]
-				},
-				number: response.data.Schedule[i].matchNumber
-			});
-		}
-		$scope.matchesReceived = true;
-		$scope.lastMatch = $scope.matches.length > 0 ? $scope.matches[0].number : false;
-	}, function (response) {
-		displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
-		$scope.matchesReceived = false;
-	});
+	$scope.lastMatch = false;
+	
+	if ($scope.settings.validateTeams) {
+		$http.get("php/currentWageringMatches.php").then(function (response) {
+			for (var i = 0; i < response.data.Schedule[0].length; i++) {
+				$scope.matches.push({
+					teams: {
+						red: [
+							response.data.Schedule[0][i].Teams[0].teamNumber,
+							response.data.Schedule[0][i].Teams[1].teamNumber,
+							response.data.Schedule[0][i].Teams[2].teamNumber
+						],
+						blue: [
+							response.data.Schedule[0][i].Teams[3].teamNumber,
+							response.data.Schedule[0][i].Teams[4].teamNumber,
+							response.data.Schedule[0][i].Teams[5].teamNumber
+						]
+					},
+					number: response.data.Schedule[0][i].matchNumber
+				});
+			}
+			$scope.matchesReceived = true;
+			$scope.lastMatch = $scope.matches.length > 0 ? $scope.matches[0].number : false;
+		}, function (response) {
+			displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
+			$scope.matchesReceived = false;
+		});
+	}
 	
 	$scope.selectTeam = function (matchNumber, teamNumber) {
 		$scope.formData.match_number = matchNumber;
