@@ -574,7 +574,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 	};
 	$scope.generateMatchs = function () {
 		$http.get("php/currentWageringMatches.php").then(function (response) {
-			$scope.Schedule = response.data["Schedule"];
+			$scope.Schedule = response.data["Schedule"][0];
 		}, function (response) {
 			displayMessage("Failed to get match data", "danger");
 		});
