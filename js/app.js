@@ -198,22 +198,22 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	$scope.lastMatch = false;
 	
 	if ($scope.settings.validateTeams) {
-		$http.get("php/currentWageringMatches.php").then(function (response) {
-			for (var i = 0; i < response.data.Schedule[0].length; i++) {
+		$http.get("php/getFutureMatches.php").then(function (response) {
+			for (var i = 0; i < response.data.Schedule.length; i++) {
 				$scope.matches.push({
 					teams: {
 						red: [
-							response.data.Schedule[0][i].Teams[0].teamNumber,
-							response.data.Schedule[0][i].Teams[1].teamNumber,
-							response.data.Schedule[0][i].Teams[2].teamNumber
+							response.data.Schedule[i].Teams[0].teamNumber,
+							response.data.Schedule[i].Teams[1].teamNumber,
+							response.data.Schedule[i].Teams[2].teamNumber
 						],
 						blue: [
-							response.data.Schedule[0][i].Teams[3].teamNumber,
-							response.data.Schedule[0][i].Teams[4].teamNumber,
-							response.data.Schedule[0][i].Teams[5].teamNumber
+							response.data.Schedule[i].Teams[3].teamNumber,
+							response.data.Schedule[i].Teams[4].teamNumber,
+							response.data.Schedule[i].Teams[5].teamNumber
 						]
 					},
-					number: response.data.Schedule[0][i].matchNumber
+					number: response.data.Schedule[i].matchNumber
 				});
 			}
 			$scope.matchesReceived = true;
@@ -579,6 +579,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 	$scope.generateMatchs = function () {
 		$http.get("php/currentWageringMatches.php").then(function (response) {
 			$scope.Schedule = response.data["Schedule"][0];
+			console.log($scope.Schedule);
 		}, function (response) {
 			displayMessage("Failed to get match data", "danger");
 		});
@@ -591,28 +592,37 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 			teams[4].teamNumber + "-" + teams[5].teamNumber;
 	};
 	
-	$scope.currentWager = {
-		wagerType: '',
-		wageredByteCoins: 0,
-		alliancePredicted: '',
-		matchPredicted: 0,
-		withenPoints: 0,
-		minPointsPredicted: 0,
-		getMultiplier: function () {
-			if (this.wagerType === "alliance") {
-				return 2;
-			} else if (this.wagerType === "closeMatch") {
-				return 5 - (parseInt(this.withenPoints, 10) / (12.5));
-			} else if (this.wagerType === "points") {
-				return (parseInt(this.minPointsPredicted, 10) / 110) + (parseInt(this.minPointsPredicted, 10) / 350);
-			} else {
-				return 0;
+	$scope.resetForm = function () {
+		console.log($("#confirm-wager-modal").modal('hide'));
+		$("#byteCoinsWagered").slider('setValue', 0);
+		$scope.selectedMatch = false;
+		$scope.currentWager = {
+			wagerType: '',
+			wageredByteCoins: 0,
+			alliancePredicted: '',
+			matchPredicted: 0,
+			withenPoints: 0,
+			minPointsPredicted: 0,
+			getMultiplier: function () {
+				if (this.wagerType === "alliance") {
+					return 2;
+				} else if (this.wagerType === "closeMatch") {
+					return 5 - (parseInt(this.withenPoints, 10) / (12.5));
+				} else if (this.wagerType === "points") {
+					return (parseInt(this.minPointsPredicted, 10) / 110) + (parseInt(this.minPointsPredicted, 10) / 350);
+				} else {
+					return 0;
+				}
+			},
+			getValue: function () {
+				return Math.floor(this.wageredByteCoins * this.getMultiplier());
 			}
-		},
-		getValue: function () {
-			return Math.floor(this.wageredByteCoins * this.getMultiplier());
 		}
 	};
+	
+	$(document).ready(function () {
+		$scope.resetForm();
+	});
 
 	$scope.changeWager = function (wagerType) {
 		$scope.currentWager.wagerType = wagerType;
@@ -633,6 +643,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 	};
 
 	$scope.sendWager = function () {
+		$("#confirm-wager-modal").modal('hide');
 		$rootScope.validateLogin();
 		var postObject = {};
 		if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
@@ -665,6 +676,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 		}
 		$http.post("php/wager.php", postObject).then(function (response) {
 			$scope.reportSuccess(response.data.message);
+			$scope.resetForm();
 		}, function (response) {
 			displayMessage("Failed to send Wager", "danger");
 		});

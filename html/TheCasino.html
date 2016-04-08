@@ -105,16 +105,12 @@
 	</div>
 </div>
 
-
-<div class="container-fluid" style="max-width:500px;">
-	<!--common wagering info-->
 	<fieldset>
 		<legend>Your Byte Coins: {{byteCoins}}</legend>
 		<div class="btn-group btn-group-vertical center-block" data-toggle="buttons">
 			<label class="btn btn-primary" ng-click="currentWager.wagerType = 'alliance'">Predict a match winner
 				<input class="ng-hide" type="radio" value="alliance">
 			</label>
-			
 			<label class="btn btn-primary" ng-click="currentWager.wagerType = 'closeMatch'">Predict a close game
 				<input class="ng-hide" type="radio" value="closeMatch">
 			</label>
@@ -258,20 +254,3 @@
 	</div>
 
 </div>
-
-<!-- won byte coins
-	<div class="row" ng-show="currentWager.wagerType">
-		<div class="col-md-4"><pre>Byte Coins this wager could win you: {{currentWager.getValue()}}</pre></div>
-	</div>
-
-	how many wagered
-	 <div class="row">
-			<div class="col-md-4">
-				<label for="wageredByteCoins">How many ByteCoins would you like to wager?</label>
-			</div>
-			<div class="col-md-1">
-				<input id="byteCoinsWagered" type="text" data-slider-min="0" data-slider-max="200" data-slider-step="1" data-slider-value="0" name="wageredByteCoins" data-slider-handle="custom" ng-model="currentWager.wageredByteCoins" />
-			</div>
-		</div>
-
-	    -->

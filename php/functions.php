@@ -1,5 +1,33 @@
 <?php
 
+function getLastMatch($db) {
+	$query = "SELECT DISTINCT match_number FROM scout_data ORDER BY match_number DESC LIMIT 1";
+	$result = $db->query($query);
+	if ($result) {
+		$lastMatch = 0;
+		if ($row = $result->fetch_array()) {
+			$lastMatch = $row["match_number"];
+		}
+		return $lastMatch;
+    } else {
+        header('HTTP/1.1 500 SQL Error', true, 500);
+        die ( '{"message":"Failed creating statement"}' );
+    }
+}
+
+function getFutureMatches($db) {
+	//$matchResults = getMatchSchedule(); //For server
+	$matchResults = json_decode(file_get_contents("../json/NCMCLMatchResults.json"), true)["Schedule"]; //For localhost
+	$lastMatch = getLastMatch($db);
+	$uncompletedMatchs = array();
+	for ($i = 0; $i < count($matchResults); $i++) {
+		if ($i >= $lastMatch) {
+			$uncompletedMatchs[] = $matchResults[$i];
+		}
+	}
+	return $uncompletedMatchs;
+}
+
 function getSettings() {
 	$fileName = "../config/settings.json";
 	return file_exists($fileName) ? json_decode(file_get_contents($fileName), true) : false;
