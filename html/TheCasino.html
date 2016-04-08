@@ -64,7 +64,7 @@
 				<label for="wageredByteCoins">How many ByteCoins would you like to wager? </label>
 				<div class="row">
 					<div class="col-xs-7">
-						<input id="byteCoinsWagered" type="text" data-slider-min="0" data-slider-max="200" data-slider-step="1" data-slider-value="0" name="wageredByteCoins" data-slider-handle="custom" ng-model="currentWager.wageredByteCoins" />
+						<input id="byteCoinsWagered" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" name="wageredByteCoins" data-slider-handle="custom" ng-model="currentWager.wageredByteCoins" />
 					</div>
 					<div class="col-xs-4">
 						<span class="slider-value">{{currentWager.wageredByteCoins}} Byte Coins</span>
@@ -104,7 +104,6 @@
 		</div>
 	</div>
 </div>
-
 	<fieldset>
 		<legend>Your Byte Coins: {{byteCoins}}</legend>
 		<div class="btn-group btn-group-vertical center-block" data-toggle="buttons">

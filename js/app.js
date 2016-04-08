@@ -543,6 +543,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 			token: $window.sessionStorage["token"]
 		}).then(function (response) {
 			$rootScope.user.byteCoins = $scope.byteCoins = response.data;
+		$("#byteCoinsWagered").slider('setAttribute', 'max', parseInt($scope.byteCoins));
 		}, function (response) {
 			displayMessage("Could not properly get your number of Byte Coins. Please log in and try again", "danger");
 		});
@@ -578,7 +579,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 	};
 	$scope.generateMatchs = function () {
 		$http.get("php/currentWageringMatches.php").then(function (response) {
-			$scope.Schedule = response.data["Schedule"][0];
+			$scope.Schedule = response.data["Schedule"];
 			console.log($scope.Schedule);
 		}, function (response) {
 			displayMessage("Failed to get match data", "danger");

@@ -464,13 +464,13 @@ function checkForUser($db, $username) {
 function updateQualificationWagers($db, $matchNum) {
 	updateMatchData();
     $query = "SELECT * FROM `wagers` WHERE matchPredicted <= ?";
-	$matchData = getMatchResults($matchNum);
 	if($matchData) {
 		if($stmt = $db->prepare($query)) {
 			$stmt->bind_param("i", $matchNum);
 			$stmt->execute();
 			$result = $stmt->get_result();
 			while($row = $result->fetch_array()) {
+				$matchData = getMatchResults($row["matchPredicted"]);
 				$byteCoinsToAdd = 0;
 				switch($row["wagerType"]) {
 					case 'alliance':
