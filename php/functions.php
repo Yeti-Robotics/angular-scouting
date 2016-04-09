@@ -180,7 +180,7 @@ function getMatchSchedule() {
 	updateMatchData();
 	include("../config/config.php");
     $fileName = "../json/" . $tournamentKey . "MatchResults.json";
-	return json_decode(file_get_contents($fileName), true);
+	return json_decode(file_get_contents($fileName), true)["Schedule"];
 }
 
 function getMatchResults($matchNumber) {

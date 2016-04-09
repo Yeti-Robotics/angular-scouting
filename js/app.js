@@ -195,8 +195,6 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	
 	$scope.matches = [];
 	
-	$scope.lastMatch = false;
-	
 	if ($scope.settings.validateTeams) {
 		$http.get("php/getFutureMatches.php").then(function (response) {
 			for (var i = 0; i < response.data.Schedule.length; i++) {
@@ -217,7 +215,6 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 				});
 			}
 			$scope.matchesReceived = true;
-			$scope.lastMatch = $scope.matches.length > 0 ? $scope.matches[0].number : false;
 		}, function (response) {
 			displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
 			$scope.matchesReceived = false;

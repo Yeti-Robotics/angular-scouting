@@ -6,7 +6,7 @@
 				<h4 class="modal-title">Match Selector</h4>
 			</div>
 			<div class="modal-body">
-				<div ng-show="lastMatch != false">
+				<div ng-show="matches.length > 0">
 					<div class="table-responsive">
 						<table class="table table-hover">
 							<thead>
@@ -41,7 +41,7 @@
 						</table>
 					</div>
 				</div>
-				<div ng-show="!lastMatch">
+				<div ng-show="matches.length == 0">
 					<h4>No matches to display at this time</h4>
 				</div>
 			</div>
