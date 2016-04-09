@@ -104,6 +104,7 @@
 		</div>
 	</div>
 </div>
+<div class="container-fluid">
 	<fieldset>
 		<legend>Your Byte Coins: {{byteCoins}}</legend>
 		<div class="btn-group btn-group-vertical center-block" data-toggle="buttons">
@@ -192,7 +193,7 @@
 				<input id="withenPoints" type="text" data-slider-min="0" data-slider-handle="custom" data-slider-max="50" data-slider-step="1" data-slider-value="0" name="pointsWithen" ng-model="currentWager.withenPoints" />
 			</div>
 			<div class="col-xs-4">
-				<span class="slider-value">{{currentWager.withenPoints}} Byte Coins</span>
+				<span class="slider-value">{{currentWager.withenPoints}} Points</span>
 			</div>
 		</div>
 	</fieldset>
@@ -229,7 +230,7 @@
 				<input id="pointsPredicted" data-slider-id='pointsPredictedSlider' type="text" data-slider-min="110" data-slider-handle="custom" data-slider-max="300" data-slider-step="1" data-slider-value="110" name="pointsPredicted" ng-model="currentWager.minPointsPredicted" />
 			</div>
 			<div class="col-xs-4">
-				<span class="slider-value">{{currentWager.minPointsPredicted}} Byte Coins</span>
+				<span class="slider-value">{{currentWager.minPointsPredicted}} Points</span>
 			</div>
 		</div>
 
@@ -251,5 +252,4 @@
 	<div ng-show="currentWager.wagerType">
 		<button class="btn btn-primary btn-block" type="button" data-toggle="modal" data-target="#confirm-wager-modal">Make wager</button>
 	</div>
-
 </div>
