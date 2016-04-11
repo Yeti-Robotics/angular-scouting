@@ -10,4 +10,6 @@
   - [x] Fix [getByteCoins.php](php/getByteCoins.php) returning an error when [TheCasino.html](html/TheCasino.html) is loaded
   - [x] Ensure wagers are only made for future matches by using the FRC API
 - [x] Submit multiple pictures at once
-- [ ] Individual user pages that show all completed wagers and form submissions
+- [ ] Individual user pages
+  - [ ] Allow people to edit scouting form data to fix typos
+  - [ ] Show people's past and pending wagers 
