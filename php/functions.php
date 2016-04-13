@@ -184,7 +184,7 @@ function getMatchSchedule() {
 }
 
 function getMatchResults($matchNumber) {
-    $matchData = getMatchSchedule()["Schedule"][$matchNumber - 1];
+    $matchData = getMatchSchedule()[$matchNumber - 1];
     return $matchData["actualStartTime"] != null ? $matchData : false;
 }
 
@@ -464,26 +464,20 @@ function checkForUser($db, $username) {
 function updateQualificationWagers($db, $matchNum) {
 	updateMatchData();
     $query = "SELECT * FROM `wagers` WHERE matchPredicted <= ?";
-	if($matchData) {
-		if($stmt = $db->prepare($query)) {
-			$stmt->bind_param("i", $matchNum);
-			$stmt->execute();
-			$result = $stmt->get_result();
-			while($row = $result->fetch_array()) {
-				$matchData = getMatchResults($row["matchPredicted"]);
+	if($stmt = $db->prepare($query)) {
+		$stmt->bind_param("i", $matchNum);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		while($row = $result->fetch_array()) {
+			$matchData = getMatchResults($row["matchPredicted"]);
+			if($matchData) {
 				$byteCoinsToAdd = 0;
 				switch($row["wagerType"]) {
 					case 'alliance':
-						if($matchData["scoreRedFinal"] > $matchData["scoreBlueFinal"]) {
-							if($row["alliancePredicted"] == 'red') {
-								$byteCoinsToAdd += $row["wageredByteCoins"]*2;
-							}
-						} else if($matchData["scoreRedFinal"] > $matchData["scoreBlueFinal"]) {
-							if($row["alliancePredicted"] == 'blue') {
-								$byteCoinsToAdd += $row["wageredByteCoins"]*2;
-							}
-						} else {
-							$byteCoinsToAdd += $row["wageredByteCoins"];
+						if(($matchData["scoreRedFinal"] > $matchData["scoreBlueFinal"]) && $row["alliancePredicted"] == 'red') {
+							$byteCoinsToAdd += $row["wageredByteCoins"]*2;
+						} else if(($matchData["scoreBlueFinal"] > $matchData["scoreRedFinal"]) && $row["alliancePredicted"] == 'blue') {
+							$byteCoinsToAdd += $row["wageredByteCoins"]*2;
 						}
 						break;
 					case 'closeMatch':
@@ -510,11 +504,11 @@ function updateQualificationWagers($db, $matchNum) {
 						$stmt->execute();
 					}
 				}
-			}
-			$query = "DELETE FROM `wagers` WHERE matchPredicted <= ?";
-			if($stmt = $db->prepare($query)) {
-				$stmt->bind_param("i", $matchNum);
-				$stmt->execute();
+				$query = "DELETE FROM `wagers` WHERE matchPredicted <= ?";
+				if($stmt = $db->prepare($query)) {
+					$stmt->bind_param("i", $matchNum);
+					$stmt->execute();
+				}
 			}
 		}
 	}
@@ -856,8 +850,8 @@ function getTeamAutoStringWTables($db, $team, $defenses, $balls){
     );
     foreach ($defenses['auto'] as $match){
         $crosscount = 0;
-        foreach ($match as $defenses){
-            $crosscount += $defenses;
+        foreach ($match as $key => $defenses){
+            $crosscount += $key != "match_number" ? $defenses : 0;
         }
         switch ($crosscount) {
         case 0:
@@ -921,7 +915,7 @@ function getTeamAutoStringWTables($db, $team, $defenses, $balls){
             }
         } else {
             //cd, c2d
-            if ($autoCases.['crosses_defense'] > $autoCases['crosses_two_defenses']) {
+            if ($autoCases['crosses_defense'] > $autoCases['crosses_two_defenses']) {
                 //cd
                 $return['auto_common_defense'] = "Crosses a defense";
             } else {

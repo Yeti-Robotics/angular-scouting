@@ -687,6 +687,9 @@ app.controller("LeaderboardsController", function ($scope, $http) {
 	$scope.sortReverse = true;
 	$http.get('php/leaderboards.php').then(function (response) {
 		$scope.data = response.data;
+		for (var i = 0; i < $scope.data.length; i++) {
+			$scope.data[i].byteCoins = parseInt($scope.data[i].byteCoins);
+		}
 	});
 });
 
