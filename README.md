@@ -10,7 +10,7 @@
   - [x] Fix [getByteCoins.php](php/getByteCoins.php) returning an error when [TheCasino.html](html/TheCasino.html) is loaded
   - [x] Ensure wagers are only made for future matches by using the FRC API
   - [ ] Limit people to wagering a minimum of 20 ByteCoins (number subject to change)
-  - [ ] Let people manually edit slider values for more precision using a text field
+  - [x] Let people manually edit slider values for more precision using a text field
   - [ ] Start using database scores for wager checking (once score validation is done) to stop reliance on API being updated
 - [x] Submit multiple pictures at once
 - [ ] Individual user pages
