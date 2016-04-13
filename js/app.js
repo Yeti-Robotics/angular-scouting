@@ -540,12 +540,19 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 			token: $window.sessionStorage["token"]
 		}).then(function (response) {
 			$rootScope.user.byteCoins = $scope.byteCoins = response.data;
-		$("#byteCoinsWagered").slider('setAttribute', 'max', parseInt($scope.byteCoins));
+		$("#byteCoinsWagered").slider('setAttribute', 'max', parseInt($scope.byteCoins) + 1);
 		}, function (response) {
 			displayMessage("Could not properly get your number of Byte Coins. Please log in and try again", "danger");
 		});
 	};
+	
 	$scope.refreshByteCoins();
+	
+	$scope.manuallyEnterByteCoins = false;
+	
+	$scope.toggleManualByteCoins = function () {
+		$scope.manuallyEnterByteCoins = !$scope.manuallyEnterByteCoins;
+	}
 	
 	$scope.selectedMatch = false;
 	

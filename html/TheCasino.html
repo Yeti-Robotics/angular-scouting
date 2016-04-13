@@ -62,13 +62,22 @@
 			</div>
 			<div class="modal-body">
 				<label for="wageredByteCoins">How many ByteCoins would you like to wager? </label>
-				<div class="row">
+				<div ng-show="manuallyEnterByteCoins">
+					<input class="form-control" type="number" ng-model="currentWager.wageredByteCoins">
+				</div>
+				<div class="row" ng-show="!manuallyEnterByteCoins">
 					<div class="col-xs-7">
 						<input id="byteCoinsWagered" type="text" data-slider-min="0"  data-slider-step="1" data-slider-value="0" name="wageredByteCoins" data-slider-handle="custom" ng-model="currentWager.wageredByteCoins" />
 					</div>
 					<div class="col-xs-4">
 						<span class="slider-value">{{currentWager.wageredByteCoins}} Byte Coins</span>
 					</div>
+				</div>
+				<div style="margin-top: .5vh; margin-bottom: .5vh">
+					<button class="btn center-block btn-info" type="button" ng-click="toggleManualByteCoins()">
+						<span ng-show="!manuallyEnterByteCoins">Manually enter Byte Coins to wager</span>
+						<span ng-show="manuallyEnterByteCoins">Enter Byte Coins with the slider</span>
+					</button>
 				</div>
 				<div class="table-responsive">
 					<table class="table table-hover table-condensed table-bordered">
