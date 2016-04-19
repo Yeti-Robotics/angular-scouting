@@ -264,7 +264,6 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			robot_defended: false,
 			end_game: "none",
 			rating: "1",
-			score: 0,
 			comments: ""
 		};
 	};
