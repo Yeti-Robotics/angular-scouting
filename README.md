@@ -17,10 +17,9 @@
   - [ ] Allow people to edit scouting form data to fix typos
   - [ ] Show people's past and pending wagers 
 - [ ] Make default value of score field on scouting form blank so jQuery validate catches premature submissions
-- [ ] Add admin action to reset everything for new competition
-  - [ ] Export scout_data and defenses tables to file
-  - [ ] Empty scout_data and defenses tables
+- [ ] Add admin action to reset as much as possible for new competition
   - [ ] Change API event code and year
   - [ ] Reset everyone's ByteCoins to 200
   - [ ] Delete any outstanding wagers
   - [ ] Flush schedule
+  - [ ] Notify that scout_data and defenses table need to be exported and truncated (alert/modal/info message?) 
