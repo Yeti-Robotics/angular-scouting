@@ -2,7 +2,7 @@
 // database connection variables
 $dbserver = "localhost";
 $dbuser = "root";
-$dbpassword = "";
+$dbpassword = "root";
 $dbname = "scouting";
 
 // FMSAPI variables

@@ -121,7 +121,13 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
 			$rootScope.user.name = result.name;
 			$rootScope.user.username = $scope.scouterUsername;
 			$rootScope.loggedIn = true;
-			$location.path('/wager');
+			if($scope.scouterUsername == "admin")
+			{
+			  $location.path('/admin');
+			}else
+			{
+			  $location.path('/wager');
+			}
 		}, function (response) {
 			$("#loginForm").validate().showErrors({
 				"loginFields": "Invalid username/password"
@@ -264,6 +270,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			robot_defended: false,
 			end_game: "none",
 			rating: "1",
+			score: 0,
 			comments: ""
 		};
 	};
