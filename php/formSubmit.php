@@ -4,9 +4,9 @@ include("functions.php");
 header('Content-Type: application/json');
 $postData = json_decode(file_get_contents("php://input"), true);
 $query = "INSERT INTO scout_data (name, match_number,
-         team, robot_moved, auto_balls_crossed, auto_balls_high,
+         team, robot_moved, auto_gear, auto_balls_crossed, auto_balls_high,
          auto_balls_low, teleop_balls_high, teleop_balls_low,
-		 robot_defended, end_game, rating, score, comments)
+		 robot_defended, climbed, rating, score, comments)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 if($postData["robot_moved"]) {
@@ -19,20 +19,30 @@ if($postData["robot_defended"]) {
 } else {
 	$robot_defended = 0;
 }
-
+if($postData["climbed"]) {
+	$climbed = 1;
+} else {
+	$climbed = 0;
+}
+if($postData["auto_gear"]) {
+	$auto_gear = 1;
+} else {
+	$auto_gear = 0;
+}
 if($stmt = $db->prepare($query)) {
-    $stmt->bind_param("siiiiiiiiisiis",
+    $stmt->bind_param("siiiiiiiiiiiis",
         $postData["name"],
         $postData["match_number"],
 		$postData["team_number"],
         $robot_moved,
+        $auto_gear,
         $postData["auto_balls_crossed"],
         $postData["auto_balls_high"],
         $postData["auto_balls_low"],
         $postData["teleop_balls_high"],
         $postData["teleop_balls_low"],
         $robot_defended,
-		$postData["end_game"],
+        $climbed,
         $postData["rating"],
 		$postData["score"],
         strip_tags($postData["comments"]));
@@ -44,7 +54,7 @@ if($stmt = $db->prepare($query)) {
     }
     $insert_id = $stmt->insert_id;
 
-	$defense_query = "INSERT INTO `defenses` (`id`, `gametime`, `low_bar`, `portcullis`, `cheval_de_frise`, `moat`, `ramparts`, `drawbridge`, `sally_port`, `rock_wall`, `rough_terrain`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+	/*$defense_query = "INSERT INTO `defenses` (`id`, `gametime`, `low_bar`, `portcullis`, `cheval_de_frise`, `moat`, `ramparts`, `drawbridge`, `sally_port`, `rock_wall`, `rough_terrain`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	if($defense_stmt = $db->prepare($defense_query)) {
 		$auto = "auto";
 		$defense_stmt->bind_param("isiiiiiiiii", $insert_id,
@@ -64,7 +74,7 @@ if($stmt = $db->prepare($query)) {
 		$db->close();
 		die ( '{"message":"Failed creating defenses statement"}' );
 	}
-
+*/
 	if($defense_stmt = $db->prepare($defense_query)) {
 		$teleop = "teleop";
 		$defense_stmt->bind_param("isiiiiiiiii", $insert_id,
