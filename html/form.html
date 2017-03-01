@@ -1,237 +1,243 @@
 <div id="match-modal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" type="button" data-dismiss="modal" aria-label="close"><span>&times;</span></button>
-                <h4 class="modal-title">Match Selector</h4>
-            </div>
-            <div class="modal-body">
-                <div ng-show="matches.length > 0">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">#</th>
-                                    <th class="text-center danger" colspan="3">Red Alliance</th>
-                                    <th class="text-center info" colspan="3">Blue Alliance</th>
-                                </tr>
-                                <tr>
-                                    <th></th>
-                                    <th class="text-center danger">Red 1</th>
-                                    <th class="text-center danger">Red 2</th>
-                                    <th class="text-center danger">Red 3</th>
-                                    <th class="text-center info">Blue 1</th>
-                                    <th class="text-center info">Blue 2</th>
-                                    <th class="text-center info">Blue 3</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="match in matches">
-                                    <td class="text-center">{{match.number}}</td>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button class="close" type="button" data-dismiss="modal" aria-label="close"><span>&times;</span></button>
+				<h4 class="modal-title">Match Selector</h4>
+			</div>
+			<div class="modal-body">
+				<div ng-show="matches.length > 0">
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th class="text-center">#</th>
+									<th class="text-center danger" colspan="3">Red Alliance</th>
+									<th class="text-center info" colspan="3">Blue Alliance</th>
+								</tr>
+								<tr>
+									<th></th>
+									<th class="text-center danger">Red 1</th>
+									<th class="text-center danger">Red 2</th>
+									<th class="text-center danger">Red 3</th>
+									<th class="text-center info">Blue 1</th>
+									<th class="text-center info">Blue 2</th>
+									<th class="text-center info">Blue 3</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="match in matches">
+									<td class="text-center">{{match.number}}</td>
 
-                                    <td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[0])">{{match.teams.red[0]}}</td>
-                                    <td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[1])">{{match.teams.red[1]}}</td>
-                                    <td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[2])">{{match.teams.red[2]}}</td>
+									<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[0])">{{match.teams.red[0]}}</td>
+									<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[1])">{{match.teams.red[1]}}</td>
+									<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[2])">{{match.teams.red[2]}}</td>
 
-                                    <td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[0])">{{match.teams.blue[0]}}</td>
-                                    <td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[1])">{{match.teams.blue[1]}}</td>
-                                    <td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[2])">{{match.teams.blue[2]}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div ng-show="matches.length == 0">
-                    <h4>No matches to display at this time</h4>
-                </div>
-            </div>
-        </div>
-    </div>
+									<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[0])">{{match.teams.blue[0]}}</td>
+									<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[1])">{{match.teams.blue[1]}}</td>
+									<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[2])">{{match.teams.blue[2]}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div ng-show="matches.length == 0">
+					<h4>No matches to display at this time</h4>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="container-fluid">
-    <form id="scouting_form" ng-submit="submit()">
-        <fieldset>
-            <legend>Info</legend>
-            <div class="form-group">
-                <div>
-                    <label for="name">Your name:</label>
-                    <input name="name" id="name" ng-model="formData.name" type="text" class="form-control" placeholder="Enter your name" required>
-                </div>
-                <div ng-show="!matchesReceived || !settings.validateTeams">
-                    <div>
-                        <label for="match_number">Match #:</label>
-                        <input name="match_number" id="match_number" ng-model="formData.match_number" type="number" class="form-control" placeholder="Enter the match number" required>
-                    </div>
-                    <div>
-                        <label for="team_number">Team #:</label>
-                        <input name="team_number" id="team_number" ng-model="formData.team_number" type="number" class="form-control" placeholder="Enter the team number" required>
-                    </div>
-                </div>
-                <div ng-show="matchesReceived && settings.validateTeams">
-                    <br/>
-                    <button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal">Choose a match</button>
-                    <br/>
-                    <div ng-show="selectedTeam != false">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">Match Number</th>
-                                    <th class="text-center">Team Number</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-center">{{formData.match_number}}</td>
-                                    <td class="text-center">{{formData.team_number}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </fieldset>
+	<form id="scouting_form" ng-submit="submit()">
+		<fieldset>
+			<legend>Info</legend>
+			<div class="form-group">
+				<div>
+					<label for="name">Your name:</label>
+					<input name="name" id="name" ng-model="formData.name" type="text" class="form-control" placeholder="Enter your name" required>
+				</div>
 
-        <fieldset>
-            <legend>Autonomous</legend>
-            <div class="form-group">
-                <br>
-                <label for="robot_moved">Did the robot cross the mobility line?</label>
-                <input ng-model="formData.robot_moved" type="checkbox">
-                <div ng-show="formData.robot_moved">
-                    <br>
-                    <label for="auto_gear">Did the robot put a gear on the peg</label>
-                    <input ng-model="formData.auto_gear" type="checkbox">
-                    <br/> <br>
-                    <label for="autoHighGoal">Attempted High Goal?</label>
-                    <input ng-model="formData.autoHighGoal" type="checkbox">
-                    <div ng-show="formData.autoHighGoal">
-                        <label for="autoHighAccuracy">Acurracy</label>
-                        <select name="autoHighAcurracy" ng-model="formData.autoHighAcurracy" class="form-control">
-                            <option value="3" selected="selected">0% (No Acurracy)</option>
-                            <option value="2">~30% (Low Acurracy)</option>
-                            <option value="1">~50% (Medium Acurracy)</option>
-                            <option value="0">~80% (High Acurracy)</option>
-                        </select>
-                         <label for="autoShootSpeed">How fast did they shoot?</label>
-                        <select name="autoShootSpeed" ng-model="formData.autoShootSpeed" class="form-control">
-                            <option value="4" selected="selected">Slow</option>
-                            <option value="3">Moderate</option>
-                            <option value="2">Fast</option>
-                            <option value="1">Super Fast</option>
-                            <option value="0">LightSpeed</option>
-                        </select>
-                    </div>
-                    <br/> <br>
+				<div ng-show="!matchesReceived || !settings.validateTeams">
+					<div>
+						<label for="match_number">Match #:</label>
+						<input name="match_number" id="match_number" ng-model="formData.match_number" type="number" class="form-control" placeholder="Enter the match number" required>
+					</div>
+					<div>
+						<label for="team_number">Team #:</label>
+						<input name="team_number" id="team_number" ng-model="formData.team_number" type="number" class="form-control" placeholder="Enter the team number" required>
+					</div>
+				</div>
 
-                    <label for="autoLowGoal">Attempted Low Goal?</label>
-                    <input ng-model="formData.autoLowGoal" type="checkbox">
-                    <div ng-show="formData.autoLowGoal">
-                        <label for="autoLowAccuracy">Acurracy</label>
-                        <select name="autoLowAcurracy" ng-model="formData.autoLowAcurracy" class="form-control">
-                            <option value="3" selected="selected">0% (No Acurracy)</option>
-                            <option value="2">~30% (Low Acurracy)</option>
-                            <option value="1">~50% (Medium Acurracy)</option>
-                            <option value="0">~80% (High Acurracy)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </fieldset>
-        <br>
-        <br>
-        <fieldset>
-            <legend>Tele-Op</legend>
-             <label for="teleHighGoal">Attempted High Goal?</label>
-                    <input ng-model="formData.teleHighGoal" type="checkbox">
-                    <div ng-show="formData.teleHighGoal">
-                        <label for="teleHighAccuracy">Acurracy</label>
-                        <select name="teleHighAcurracy" ng-model="formData.teleHighAcurracy" class="form-control">
-                            <option value="0" selected="selected">0% (No Acurracy)</option>
-                            <option value="2">~30% (Low Acurracy)</option>
-                            <option value="1">~50% (Medium Acurracy)</option>
-                            <option value="3">~80% (High Acurracy)</option>
-                        </select> <br>
-                        <label for="teleShootSpeed">How fast did they shoot?</label>
-                        <select name="teleShootSpeed" ng-model="formData.teleShootSpeed" class="form-control">
-                            <option value="4" selected="selected">Slow</option>
-                            <option value="3">Moderate</option>
-                            <option value="2">Fast</option>
-                            <option value="1">Super Fast</option>
-                            <option value="0">LightSpeed</option>
-                        </select>
-                    </div>
-                    <br/> <br>
+				<div ng-show="matchesReceived && settings.validateTeams">
+					<br/>
+					<button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal">Choose a match</button>
+					<br/>
+					<div ng-show="selectedTeam != false">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th class="text-center">Match Number</th>
+									<th class="text-center">Team Number</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="text-center">{{formData.match_number}}</td>
+									<td class="text-center">{{formData.team_number}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</fieldset>
 
-                    <label for="teleLowGoal">Attempted Low Goal?</label>
-                    <input ng-model="formData.teleLowGoal" type="checkbox">
-                    <div ng-show="formData.teleLowGoal">
-                        <label for="teleLowAccuracy">Acurracy</label>
-                        <select name="teleLowAcurracy" ng-model="formData.autoLowAcurracy" class="form-control">
-                            <option value="0" selected="selected">0% (No Acurracy)</option>
-                            <option value="1">~50% (Medium Acurracy)</option>
-                            <option value="2">~30% (Low Acurracy)</option>
-                            <option value="3">~80% (High Acurracy)</option>
-                        </select>
-                    </div>    
-                    <br> <br>
-            <label for="teleGears">How many gears did the robot get on the peg?</label>
-            <select name="teleGears" ng-model="formData.teleGears" class="form-control">
-                            <option value="0" selected="selected">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                              </select>
-             <br> 
-             <br>
-             <label for="load">How many fuels can the robot carry?</label>
-             <select name="load" ng-model="formData.load" class="form-control">
-                            <option value="4" selected="selected">Less than 50</option>
-                            <option value="3">~50</option>
-                            <option value="2">~100</option>
-                            <option value="1">~150</option>
-                            <option value="0">More than 150</option>
-                        </select>
-            <br> 
-             <br>
-            <label for="robot_defended">Did the robot attempt to defend?</label>
-            <input ng-model="formData.robot_defended" type="checkbox">
-        </fieldset>
-        <br>
-        <br>
-        <br>
-        <br>
-        <fieldset>
-            <legend>Endgame</legend>
-            <label for="climbed">Did the robot rope climb?</label>
-            <input ng-model="formData.climbed" name="climbed" type="checkbox">
-        </fieldset>
-        <br>
-        <br>
-        <fieldset>
-            <legend>Misc.</legend>
-            <div class="form-group">
-                <label for="score">Score:</label>
-                <input name="score" id="score" class="form-control" type="number" ng-model="formData.score" placeholder="Enter the alliance's score" required/>
-            </div>
-            <div class="form-group">
-                <label>Comments:</label>
-                <br/>
-                <textarea name="comments" id="comments" class="form-control" ng-model="formData.comments" rows="5" required></textarea>
-            </div>
-        </fieldset>
+		<fieldset>
+			<legend>Autonomous</legend>
+			<div class="form-group">
+				<label for="robot_moved">Did the robot cross the mobility line?</label>
+				<input ng-model="formData.robot_moved" type="checkbox">
+				<div ng-show="formData.robot_moved">
 
-        <div class="form-group">
-            <button class="btn btn-primary btn-block" type="submit">Submit</button>
-        </div>
-    </form>
+					<label for="auto_gear">Did the robot put a gear on the peg</label>
+					<input ng-model="formData.auto_gear" type="checkbox" name="auto_gear">
+
+					<br>
+
+					<label for="autoHighGoal">Attempted High Goal?</label>
+					<input ng-model="formData.autoHighGoal" type="checkbox" name="autoHighGoal">
+					<div ng-show="formData.autoHighGoal">
+						<label for="autoHighAccuracy">Acurracy</label>
+						<select name="autoHighAcurracy" ng-model="formData.autoHighAcurracy" class="form-control">
+							<option value="0" selected="selected">0% (No Acurracy)</option>
+							<option value="1">~30% (Low Acurracy)</option>
+							<option value="2">~50% (Medium Acurracy)</option>
+							<option value="3">~80% (High Acurracy)</option>
+						</select>
+
+						<label for="autoShootSpeed">How fast did they shoot?</label>
+						<select name="autoShootSpeed" ng-model="formData.autoShootSpeed" class="form-control">
+							<option value="0" selected="selected">Slow</option>
+							<option value="1">Moderate</option>
+							<option value="3">Fast</option>
+							<option value="4">Super Fast</option>
+							<option value="5">LightSpeed</option>
+						</select>
+					</div>
+
+					<br>
+
+					<label for="autoLowGoal">Attempted Low Goal?</label>
+					<input ng-model="formData.autoLowGoal" type="checkbox" name="autoLowGoal">
+					<div ng-show="formData.autoLowGoal">
+						<label for="autoLowAccuracy">Acurracy</label>
+						<select name="autoLowAcurracy" ng-model="formData.autoLowAcurracy" class="form-control">
+							<option value="0" selected="selected">0% (No Acurracy)</option>
+							<option value="1">~30% (Low Acurracy)</option>
+							<option value="2">~50% (Medium Acurracy)</option>
+							<option value="3">~80% (High Acurracy)</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+
+		<fieldset>
+			<legend>Tele-Op</legend>
+
+			<label for="teleHighGoal">Attempted High Goal?</label>
+			<input ng-model="formData.teleHighGoal" type="checkbox" name="teleHighGoal">
+
+			<div ng-show="formData.teleHighGoal">
+				<label for="teleHighAccuracy">Acurracy</label>
+				<select name="teleHighAcurracy" ng-model="formData.teleHighAcurracy" class="form-control">
+					<option value="0" selected="selected">0% (No Acurracy)</option>
+					<option value="1">~30% (Low Acurracy)</option>
+					<option value="2">~50% (Medium Acurracy)</option>
+					<option value="3">~80% (High Acurracy)</option>
+				</select>
+				<label for="teleShootSpeed">How fast did they shoot?</label>
+				<select name="teleShootSpeed" ng-model="formData.teleShootSpeed" class="form-control">
+					<option value="0" selected="selected">Slow</option>
+					<option value="1">Moderate</option>
+					<option value="2">Fast</option>
+					<option value="3">Super Fast</option>
+					<option value="4">LightSpeed</option>
+				</select>
+			</div>
+
+			<br>
+			<br>
+
+			<label for="teleLowGoal">Attempted Low Goal?</label>
+			<input ng-model="formData.teleLowGoal" type="checkbox" name="teleLowGoal">
+			<div ng-show="formData.teleLowGoal">
+				<label for="teleLowAccuracy">Acurracy</label>
+				<select name="teleLowAcurracy" ng-model="formData.autoLowAcurracy" class="form-control">
+					<option value="0" selected="selected">0% (No Acurracy)</option>
+					<option value="1">~50% (Medium Acurracy)</option>
+					<option value="2">~30% (Low Acurracy)</option>
+					<option value="3">~80% (High Acurracy)</option>
+				</select>
+			</div>
+
+			<br>
+			<br>
+
+			<label for="teleGears">How many gears did the robot get on the peg?</label>
+			<select name="teleGears" ng-model="formData.teleGears" class="form-control">
+				<option value="0" selected="selected">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+			</select>
+
+			<br>
+
+			<label for="load">How many fuels can the robot carry?</label>
+			<select name="load" ng-model="formData.load" class="form-control">
+				<option value="0" selected="selected">Less than 50</option>
+				<option value="1">~50</option>
+				<option value="2">~100</option>
+				<option value="3">~150</option>
+				<option value="4">More than 150</option>
+			</select>
+		</fieldset>
+
+		<fieldset>
+			<legend>Endgame</legend>
+			<label for="climbed">Did the robot rope climb?</label>
+			<input ng-model="formData.climbed" name="climbed" type="checkbox">
+		</fieldset>
+
+		<br>
+
+		<fieldset>
+			<legend>Misc.</legend>
+			<div class="form-group">
+				<label for="score">Score:</label>
+				<input name="score" id="score" class="form-control" type="number" ng-model="formData.score" placeholder="Enter the alliance's score" required/>
+			</div>
+			<div class="form-group">
+				<label>Comments:</label>
+				<br/>
+				<textarea name="comments" id="comments" class="form-control" ng-model="formData.comments" rows="5" required></textarea>
+			</div>
+		</fieldset>
+
+		<div class="form-group">
+			<button class="btn btn-primary btn-block" type="submit">Submit</button>
+		</div>
+	</form>
 </div>

@@ -22,27 +22,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `defenses`
---
-
-CREATE TABLE IF NOT EXISTS `defenses` (
-  `id` int(11) NOT NULL,
-  `low_bar` int(11) NOT NULL,
-  `portcullis` int(11) NOT NULL,
-  `cheval_de_frise` int(11) NOT NULL,
-  `moat` int(11) NOT NULL,
-  `ramparts` int(11) NOT NULL,
-  `drawbridge` int(11) NOT NULL,
-  `sally_port` int(11) NOT NULL,
-  `rock_wall` int(11) NOT NULL,
-  `rough_terrain` int(11) NOT NULL,
-  `gametime` text NOT NULL,
-  KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `pit_comments`
 --
 
@@ -115,17 +94,22 @@ CREATE TABLE IF NOT EXISTS `scout_data` (
   `scout_data_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
   `match_number` int(11) NOT NULL,
-  `team` int(11) NOT NULL,
+  `team_number` int(11) NOT NULL,
   `robot_moved` tinyint(1) NOT NULL,
-  `auto_gear text NOT NULL,
-  `auto_balls_crossed` int(11) NOT NULL,
-  `auto_balls_high` int(11) NOT NULL,
-  `auto_balls_low` int(11) NOT NULL,
-  `teleop_balls_high` int(11) NOT NULL,
-  `teleop_balls_low` int(11) NOT NULL,
-  `robot_defended` tinyint(1) NOT NULL,
-  `climbed` text NOT NULL,
-  `rating` int(11) NOT NULL,
+  `auto_gear tinyint(1) NOT NULL,
+  `autoHighGoal` tinyint(1) NOT NULL,
+  `autoHighAcurracy` int(11) NOT NULL,
+  `autoShootSpeed` int(11) NOT NULL,
+  `autoLowGoal` tinyint(1) NOT NULL,
+  `autoLowAccuracy` int(11) NOT NULL,
+  `teleHighGoal` tinyint(1) NOT NULL,
+  `teleHighAcurracy` int(11) NOT NULL,
+  `teleShootSpeed` int(11) NOT NULL,
+  `teleLowGoal` tinyint(1) NOT NULL,
+  `autoLowAcurracy` int(11) NOT NULL,
+  `teleGears` tinyint(1) NOT NULL,
+  `load` int(11) NOT NULL,
+  `climbed` tinyint(1) NOT NULL,
   `score` int(11) NOT NULL,
   `comments` text NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
