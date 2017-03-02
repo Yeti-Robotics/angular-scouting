@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `scout_data` (
   `match_number` int(11) NOT NULL,
   `team_number` int(11) NOT NULL,
   `robot_moved` tinyint(1) NOT NULL,
-  `auto_gear tinyint(1) NOT NULL,
+  `auto_gear` tinyint(1) NOT NULL,
   `autoHighGoal` tinyint(1) NOT NULL,
   `autoHighAcurracy` int(11) NOT NULL,
   `autoShootSpeed` int(11) NOT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `scout_data` (
   `comments` text NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`scout_data_id`),
-  KEY `team` (`team`)
+  KEY `team_number` (`team_number`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=270 ;
 
 -- --------------------------------------------------------

@@ -19,7 +19,7 @@ $query = "INSERT INTO scout_data (name,
 			teleLowGoal,
 			autoLowAcurracy,
 			teleGears,
-            load,
+            `load`,
             climbed,
 			score,
 			comments)
