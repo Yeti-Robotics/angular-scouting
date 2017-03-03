@@ -240,15 +240,15 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			robot_moved: false,
 			auto_gear: false,
 			autoHighGoal: false,
-			autoHighAcurracy: "0",
+			autoHighAccuracy: "0",
 			autoShootSpeed: "0",
 			autoLowGoal: false,
 			autoLowAccuracy: "0",
 			teleHighGoal: false,
-			teleHighAcurracy: "0",
+			teleHighAccuracy: "0",
 			teleShootSpeed: "0",
 			teleLowGoal: false,
-			autoLowAcurracy: "0",
+			teleLowAccuracy: "0",
 			teleGears: "0",
 			load: "0",
 			climbed: false,
@@ -273,12 +273,12 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			$("body").scrollTop(0);
 			displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
 
-			$scope.formData.autoHighAcurracy = parseInt($scope.formData.autoHighAcurracy);
+			$scope.formData.autoHighAccuracy = parseInt($scope.formData.autoHighAccuracy);
 			$scope.formData.autoShootSpeed = parseInt($scope.formData.autoShootSpeed);
 			$scope.formData.autoLowAccuracy = parseInt($scope.formData.autoLowAccuracy);
-			$scope.formData.teleHighAcurracy = parseInt($scope.formData.teleHighAcurracy);
+			$scope.formData.teleHighAccuracy = parseInt($scope.formData.teleHighAccuracy);
 			$scope.formData.teleShootSpeed = parseInt($scope.formData.teleShootSpeed);
-			$scope.formData.autoLowAcurracy = parseInt($scope.formData.autoLowAcurracy);
+			$scope.formData.teleLowAccuracy = parseInt($scope.formData.teleLowAccuracy);
 			$scope.formData.teleGears = parseInt($scope.formData.teleGears);
 			$scope.formData.load = parseInt($scope.formData.load);
 
@@ -501,10 +501,9 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 		$scope.data = response.data;
 		for (var i = 0; i < $scope.data.length; i++) {
 			$scope.data[i].team = parseInt($scope.data[i].team);
-			$scope.data[i].totalHighGoals = parseInt($scope.data[i].totalHighGoals);
-			$scope.data[i].totalLowGoals = parseInt($scope.data[i].totalLowGoals);
-			$scope.data[i].totalLowBars = parseInt($scope.data[i].totalLowBars);
-			$scope.data[i].gamesDefended = parseInt($scope.data[i].gamesDefended);
+			$scope.data[i].avgScore = parseInt($scope.data[i].avgScore);
+			$scope.data[i].totalGears = parseInt($scope.data[i].totalGears);
+			$scope.data[i].avgClimbed = parseInt($scope.data[i].avgClimbed);
 			$scope.data[i].name = $scope.data[i].name != null ? $scope.data[i].name : "Name unavailable";
 		}
 	});

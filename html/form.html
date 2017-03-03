@@ -109,12 +109,12 @@
 					<label for="autoHighGoal">Attempted High Goal?</label>
 					<input ng-model="formData.autoHighGoal" type="checkbox" name="autoHighGoal">
 					<div ng-show="formData.autoHighGoal">
-						<label for="autoHighAccuracy">Acurracy</label>
-						<select name="autoHighAcurracy" ng-model="formData.autoHighAcurracy" class="form-control">
-							<option value="0" selected="selected">0% (No Acurracy)</option>
-							<option value="1">~30% (Low Acurracy)</option>
-							<option value="2">~50% (Medium Acurracy)</option>
-							<option value="3">~80% (High Acurracy)</option>
+						<label for="autoHighAccuracy">Accuracy</label>
+						<select name="autoHighAccuracy" ng-model="formData.autoHighAccuracy" class="form-control">
+							<option value="0" selected="selected">0% (No Accuracy)</option>
+							<option value="1">~30% (Low Accuracy)</option>
+							<option value="2">~50% (Medium Accuracy)</option>
+							<option value="3">~80% (High Accuracy)</option>
 						</select>
 
 						<label for="autoShootSpeed">How fast did they shoot?</label>
@@ -132,12 +132,12 @@
 					<label for="autoLowGoal">Attempted Low Goal?</label>
 					<input ng-model="formData.autoLowGoal" type="checkbox" name="autoLowGoal">
 					<div ng-show="formData.autoLowGoal">
-						<label for="autoLowAccuracy">Acurracy</label>
-						<select name="autoLowAcurracy" ng-model="formData.autoLowAcurracy" class="form-control">
-							<option value="0" selected="selected">0% (No Acurracy)</option>
-							<option value="1">~30% (Low Acurracy)</option>
-							<option value="2">~50% (Medium Acurracy)</option>
-							<option value="3">~80% (High Acurracy)</option>
+						<label for="autoLowAccuracy">Accuracy</label>
+						<select name="autoLowAccuracy" ng-model="formData.autoLowAccuracy" class="form-control">
+							<option value="0" selected="selected">0% (No Accuracy)</option>
+							<option value="1">~30% (Low Accuracy)</option>
+							<option value="2">~50% (Medium Accuracy)</option>
+							<option value="3">~80% (High Accuracy)</option>
 						</select>
 					</div>
 				</div>
@@ -150,13 +150,13 @@
 			<label for="teleHighGoal">Attempted High Goal?</label>
 			<input ng-model="formData.teleHighGoal" type="checkbox" name="teleHighGoal">
 
-			<div ng-show="formData.teleHighGoal">
-				<label for="teleHighAccuracy">Acurracy</label>
-				<select name="teleHighAcurracy" ng-model="formData.teleHighAcurracy" class="form-control">
-					<option value="0" selected="selected">0% (No Acurracy)</option>
-					<option value="1">~30% (Low Acurracy)</option>
-					<option value="2">~50% (Medium Acurracy)</option>
-					<option value="3">~80% (High Acurracy)</option>
+			<div ng-show="formData.teleHighGoal" class="form-group">
+				<label for="teleHighAccuracy">Accuracy</label>
+				<select name="teleHighAccuracy" ng-model="formData.teleHighAccuracy" class="form-control">
+					<option value="0" selected="selected">0% (No Accuracy)</option>
+					<option value="1">~30% (Low Accuracy)</option>
+					<option value="2">~50% (Medium Accuracy)</option>
+					<option value="3">~80% (High Accuracy)</option>
 				</select>
 				<label for="teleShootSpeed">How fast did they shoot?</label>
 				<select name="teleShootSpeed" ng-model="formData.teleShootSpeed" class="form-control">
@@ -169,21 +169,19 @@
 			</div>
 
 			<br>
-			<br>
 
 			<label for="teleLowGoal">Attempted Low Goal?</label>
 			<input ng-model="formData.teleLowGoal" type="checkbox" name="teleLowGoal">
-			<div ng-show="formData.teleLowGoal">
-				<label for="teleLowAccuracy">Acurracy</label>
-				<select name="teleLowAcurracy" ng-model="formData.autoLowAcurracy" class="form-control">
-					<option value="0" selected="selected">0% (No Acurracy)</option>
-					<option value="1">~50% (Medium Acurracy)</option>
-					<option value="2">~30% (Low Acurracy)</option>
-					<option value="3">~80% (High Acurracy)</option>
+			<div ng-show="formData.teleLowGoal" class="form-group">
+				<label for="teleLowAccuracy">Accuracy</label>
+				<select name="teleLowAccuracy" ng-model="formData.teleLowAccuracy" class="form-control">
+					<option value="0" selected="selected">0% (No Accuracy)</option>
+					<option value="1">~50% (Medium Accuracy)</option>
+					<option value="2">~30% (Low Accuracy)</option>
+					<option value="3">~80% (High Accuracy)</option>
 				</select>
 			</div>
 
-			<br>
 			<br>
 
 			<label for="teleGears">How many gears did the robot get on the peg?</label>
