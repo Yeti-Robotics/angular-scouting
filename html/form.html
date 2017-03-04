@@ -176,8 +176,8 @@
 				<label for="teleLowAccuracy">Accuracy</label>
 				<select name="teleLowAccuracy" ng-model="formData.teleLowAccuracy" class="form-control">
 					<option value="0" selected="selected">0% (No Accuracy)</option>
-					<option value="1">~50% (Medium Accuracy)</option>
-					<option value="2">~30% (Low Accuracy)</option>
+					<option value="1">~30% (Low Accuracy)</option>
+					<option value="2">~50% (Medium Accuracy)</option>
 					<option value="3">~80% (High Accuracy)</option>
 				</select>
 			</div>
@@ -203,7 +203,7 @@
 
 			<br>
 
-			<label for="load">How many fuels can the robot carry?</label>
+			<label for="load">How much fuel can the robot carry?</label>
 			<select name="load" ng-model="formData.load" class="form-control">
 				<option value="0" selected="selected">Less than 50</option>
 				<option value="1">~50</option>
@@ -215,7 +215,7 @@
 
 		<fieldset>
 			<legend>Endgame</legend>
-			<label for="climbed">Did the robot rope climb?</label>
+			<label for="climbed">Did the robot climb the rope?</label>
 			<input ng-model="formData.climbed" name="climbed" type="checkbox">
 		</fieldset>
 

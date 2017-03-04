@@ -488,8 +488,8 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 
 app.controller("ListController", function ($rootScope, $scope, $http) {
 	'use strict';
-	$scope.sortType = 'team';
-	$scope.sortReverse = false;
+	$scope.sortType = 'avgScore';
+	$scope.sortReverse = true;
 
 	$scope.filterTeams = function (value) {
 		var searchRegExp = new RegExp($scope.search, "i");
@@ -718,10 +718,27 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		$scope.range = function (n) {
 			return new Array(n);
 		};
-
-		$scope.autoString = $scope.data.rankingInfo.autoString.auto_common_defense + " | " + $scope.data.rankingInfo.autoString.auto_common_scoring.high + " | " + $scope.data.rankingInfo.autoString.auto_common_scoring.low;
-		$scope.canLowBar = ($scope.data.rankingInfo.totalLowBars > 0);
-
+		
+		for (var i = 0; i < $scope.data.misc.length; i++) {
+			switch ($scope.data.misc[i].load) {
+				case 0:
+					$scope.data.misc[i].load = "Less than 50";
+					break;
+				case 1:
+					$scope.data.misc[i].load = "~50";
+					break;
+				case 2:
+					$scope.data.misc[i].load = "~100";
+					break;
+				case 3:
+					$scope.data.misc[i].load = "~150";
+					break;
+				case 4:
+					$scope.data.misc[i].load = "More than 150";
+					break;
+			}
+		}
+		
 		console.log($scope.data);
 	}, function (response) {
 		$scope.error = response.data.error;

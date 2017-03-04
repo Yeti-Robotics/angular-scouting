@@ -94,10 +94,10 @@ if ($result) {
     while ($row = $result->fetch_assoc()) {
     	$row['avgScore'] = intval($row['avgScore']);
     	$row['totalGears'] = intval($row['totalGears']);
-    	$row['autoHighAcc'] = intval($row['autoHighAcc']);
-    	$row['teleHighAcc'] = intval($row['teleHighAcc']);
-    	$row['autoLowAcc'] = floatval($row['autoLowAcc']);
-    	$row['teleLowAcc'] = intval($row['teleLowAcc']);
+    	$row['autoHighAcc'] = $row['autoHighAcc'];
+    	$row['teleHighAcc'] = $row['teleHighAcc'];
+    	$row['autoLowAcc'] = $row['autoLowAcc'];
+    	$row['teleLowAcc'] = $row['teleLowAcc'];
     	$row['avgClimbed'] = intval($row['avgClimbed']);
     	$row['team'] = intval($row['team']);
 		$row['name'] = getTeamInfo($db, intval($row['team']))['name'];

@@ -83,7 +83,7 @@ function checkPitData($db, $teamNumber) {
 }
 
 function checkTeamData($db, $teamNumber) {
-	$query = "SELECT * FROM `scout_data` WHERE team = ?";
+	$query = "SELECT * FROM `scout_data` WHERE team_number = ?";
 
     if ($stmt = $db->prepare($query)) {
         $stmt->bind_param("i", $teamNumber);
@@ -612,10 +612,10 @@ function getTeamDefenseTable($db, $team){
     }
 }
 
-function getTeamBouldersTable($db, $team) {
-    $query = "SELECT match_number, auto_balls_high, auto_balls_low, 
-                teleop_balls_high, teleop_balls_low
-                FROM scout_data WHERE team=?";
+function getTeamMainMatchTable($db, $team) {
+    $query = "SELECT match_number, auto_gear, autoHighGoal, autoHighAccuracy, autoShootSpeed, autoLowGoal, autoLowAccuracy, teleHighGoal, teleHighAccuracy, teleShootSpeed, teleLowGoal, teleLowAccuracy, teleGears
+	FROM `scout_data`
+	WHERE team_number = ?";
     $return = array();
     if($stmt = $db->prepare($query)) {
         $stmt->bind_param("i", $team);
@@ -625,13 +625,21 @@ function getTeamBouldersTable($db, $team) {
             while ($row = $result->fetch_assoc()) {
                 $return["auto"][] = array(
 					"match_number" => $row["match_number"],
-					"balls_scored_low" => $row["auto_balls_low"],
-					"balls_scored_high" => $row["auto_balls_high"]
+					"auto_gear" => $row["auto_gear"],
+					"autoHighGoal" => $row["autoHighGoal"],
+					"autoHighAccuracy" => $row["autoHighAccuracy"],
+					"autoShootSpeed" => $row["autoShootSpeed"],
+					"autoLowGoal" => $row["autoLowGoal"],
+					"autoLowAccuracy" => $row["autoLowAccuracy"]
 				);
 				$return["teleop"][] = array(
 					"match_number" => $row["match_number"],
-					"balls_scored_low" => $row["teleop_balls_low"],
-					"balls_scored_high" => $row["teleop_balls_high"]
+					"teleGears" => $row["teleGears"],
+					"teleHighGoal" => $row["teleHighGoal"],
+					"teleHighAccuracy" => $row["teleHighAccuracy"],
+					"teleShootSpeed" => $row["teleShootSpeed"],
+					"teleLowGoal" => $row["teleLowGoal"],
+					"teleLowAccuracy" => $row["teleLowAccuracy"]
 				);
             }
         }
@@ -1023,34 +1031,91 @@ function getTeamAutoStringWTables($db, $team, $defenses, $balls){
 }
 
 function getTeamRankings($db, $team){
-	$query = "SELECT totalLowBars.*, gcd.gcdName, totalHighGoals.totalHighGoals, totalLowGoals.totalLowGoals, gamesDefended.gamesDefended
-FROM (SELECT team, SUM(low_bar) AS totalLowBars
-FROM defenses
-LEFT JOIN scout_data ON defenses.id = scout_data.scout_data_id
-GROUP BY team) AS totalLowBars
-LEFT JOIN (SELECT team, CASE GREATEST(SUM(low_bar), SUM(portcullis), SUM(cheval_de_frise), SUM(moat), SUM(ramparts), SUM(drawbridge), SUM(sally_port), SUM(rock_wall), SUM(rough_terrain))
-	WHEN SUM(low_bar) THEN 'Low bar'
-	WHEN SUM(portcullis) THEN 'Portcullis'
-	WHEN SUM(cheval_de_frise) THEN 'Cheval de frise'
-	WHEN SUM(moat) THEN 'Moat'
-	WHEN SUM(ramparts) THEN 'Ramparts'
-	WHEN SUM(drawbridge) THEN 'Drawbridge'
-	WHEN SUM(sally_port) THEN 'Sally port'
-	WHEN SUM(rock_wall) THEN 'Rock wall'
-	WHEN SUM(rough_terrain) THEN 'Rough terrain'
-END AS gcdName
-FROM defenses
-LEFT JOIN scout_data ON defenses.id = scout_data.scout_data_id
-GROUP BY team) AS gcd ON totalLowBars.team = gcd.team
-LEFT JOIN (SELECT team, ROUND(SUM(teleop_balls_high) + SUM(auto_balls_high)) AS totalHighGoals
-FROM scout_data
-GROUP BY team) AS totalHighGoals ON totalLowBars.team = totalHighGoals.team
-LEFT JOIN (SELECT team, ROUND(SUM(teleop_balls_low) + SUM(auto_balls_low)) AS totalLowGoals
-FROM scout_data
-GROUP BY team) AS totalLowGoals ON totalLowBars.team = totalLowGoals.team
-LEFT JOIN (SELECT team, CONCAT(ROUND((SUM(robot_defended) / COUNT(match_number)) * 100), '%') AS gamesDefended
-FROM scout_data
- GROUP BY team) AS gamesDefended ON totalLowBars.team = gamesDefended.team WHERE totalLowBars.team = ?";
+	$query = "SELECT team_number AS team, avgScoreTable.avgScore AS avgScore, gearTable.totalGears AS totalGears, autoHighAcc.accName AS autoHighAcc, teleHighAcc.accName AS teleHighAcc, autoLowAcc.accName AS autoLowAcc, teleLowAcc.accName AS teleLowAcc, climbTable.avgClimbed AS avgClimbed
+	FROM scout_data
+
+	LEFT JOIN (SELECT team_number AS team, ROUND(AVG(score)) AS avgScore
+	FROM `scout_data`
+	GROUP BY team_number) as avgScoreTable ON avgScoreTable.team = scout_data.team_number
+
+	LEFT JOIN (SELECT team_number AS team, SUM(auto_gear) + SUM(teleGears) AS totalGears
+	FROM `scout_data`
+	GROUP BY team_number) as gearTable ON gearTable.team = scout_data.team_number
+
+	LEFT JOIN (SELECT team_number AS team, ROUND(AVG(climbed) * 100) AS avgClimbed
+	FROM `scout_data`
+	GROUP BY team_number) AS climbTable ON climbTable.team = scout_data.team_number
+
+	LEFT JOIN (SELECT t1.team, CASE t1.autoHighAccuracy
+	WHEN 0 THEN '0% (No Accuracy)'
+	WHEN 1 THEN '~30% (Low Accuracy)'
+	WHEN 2 THEN '~50% (Medium Accuracy)'
+	WHEN 3 THEN '~80% (High Accuracy)'
+	END AS accName
+	FROM (SELECT team_number AS team, autoHighAccuracy, COUNT(*) AS autoHighAccCount
+	FROM scout_data
+	GROUP BY autoHighAccuracy, team_number) AS t1
+	JOIN (SELECT t1.team AS team, MAX(t1.autoHighAccCount) AS maxAutoHighAccCount
+	FROM (SELECT team_number AS team, autoHighAccuracy, COUNT(*) AS autoHighAccCount
+	FROM scout_data
+	GROUP BY autoHighAccuracy, team_number) AS t1
+	GROUP BY t1.team) AS t2 ON t1.team = t2.team AND t1.autoHighAccCount = t2.maxAutoHighAccCount
+	GROUP BY t1.team
+	ORDER BY t1.team DESC) AS autoHighAcc ON autoHighAcc.team = scout_data.team_number
+
+	LEFT JOIN (SELECT t1.team, CASE t1.teleHighAccuracy
+	WHEN 0 THEN '0% (No Accuracy)'
+	WHEN 1 THEN '~30% (Low Accuracy)'
+	WHEN 2 THEN '~50% (Medium Accuracy)'
+	WHEN 3 THEN '~80% (High Accuracy)'
+	END AS accName
+	FROM (SELECT team_number AS team, teleHighAccuracy, COUNT(*) AS teleHighAccCount
+	FROM scout_data
+	GROUP BY teleHighAccuracy, team_number) AS t1
+	JOIN (SELECT t1.team AS team, MAX(t1.teleHighAccCount) AS maxAutoLowAccCount
+	FROM (SELECT team_number AS team, teleHighAccuracy, COUNT(*) AS teleHighAccCount
+	FROM scout_data
+	GROUP BY teleHighAccuracy, team_number) AS t1
+	GROUP BY t1.team) AS t2 ON t1.team = t2.team AND t1.teleHighAccCount = t2.maxAutoLowAccCount
+	GROUP BY t1.team
+	ORDER BY t1.team DESC) AS teleHighAcc ON teleHighAcc.team = scout_data.team_number
+
+	LEFT JOIN (SELECT t1.team, CASE t1.autoLowAccuracy
+	WHEN 0 THEN '0% (No Accuracy)'
+	WHEN 1 THEN '~30% (Low Accuracy)'
+	WHEN 2 THEN '~50% (Medium Accuracy)'
+	WHEN 3 THEN '~80% (High Accuracy)'
+	END AS accName
+	FROM (SELECT team_number AS team, autoLowAccuracy, COUNT(*) AS autoLowAccCount
+	FROM scout_data
+	GROUP BY autoLowAccuracy, team_number) AS t1
+	JOIN (SELECT t1.team AS team, MAX(t1.autoLowAccCount) AS maxAutoLowAccCount
+	FROM (SELECT team_number AS team, autoLowAccuracy, COUNT(*) AS autoLowAccCount
+	FROM scout_data
+	GROUP BY autoLowAccuracy, team_number) AS t1
+	GROUP BY t1.team) AS t2 ON t1.team = t2.team AND t1.autoLowAccCount = t2.maxAutoLowAccCount
+	GROUP BY t1.team
+	ORDER BY t1.team DESC) AS autoLowAcc ON autoLowAcc.team = scout_data.team_number
+
+	LEFT JOIN (SELECT t1.team, CASE t1.teleLowAccuracy
+	WHEN 0 THEN '0% (No Accuracy)'
+	WHEN 1 THEN '~30% (Low Accuracy)'
+	WHEN 2 THEN '~50% (Medium Accuracy)'
+	WHEN 3 THEN '~80% (High Accuracy)'
+	END AS accName
+	FROM (SELECT team_number AS team, teleLowAccuracy, COUNT(*) AS teleLowAccCount
+	FROM scout_data
+	GROUP BY teleLowAccuracy, team_number) AS t1
+	JOIN (SELECT t1.team AS team, MAX(t1.teleLowAccCount) AS maxAutoLowAccCount
+	FROM (SELECT team_number AS team, teleLowAccuracy, COUNT(*) AS teleLowAccCount
+	FROM scout_data
+	GROUP BY teleLowAccuracy, team_number) AS t1
+	GROUP BY t1.team) AS t2 ON t1.team = t2.team AND t1.teleLowAccCount = t2.maxAutoLowAccCount
+	GROUP BY t1.team
+	ORDER BY t1.team DESC) AS teleLowAcc ON teleLowAcc.team = scout_data.team_number
+
+	WHERE team_number = ?
+	GROUP BY team";
 	if($stmt = $db->prepare($query)){
 		$stmt->bind_param("i", $team);
 		$stmt->execute();
