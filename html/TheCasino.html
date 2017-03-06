@@ -113,7 +113,8 @@
 		</div>
 	</div>
 </div>
-<div class="container-fluid">
+<h1 class="text-center" ng-show="!settings.enableCasino">Wagering is currently disabled</h1>
+<div class="container-fluid" ng-show="settings.enableCasino">
 	<fieldset>
 		<legend>Your Byte Coins: {{byteCoins}}</legend>
 		<div class="btn-group btn-group-vertical center-block" data-toggle="buttons">

@@ -270,6 +270,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	$scope.submit = function () {
 		if ($('#scouting_form').valid()) {
 			console.log("valid");
+			$("button[type='submit']").addClass("disabled");
 			$("body").scrollTop(0);
 			displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
 
@@ -289,6 +290,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 				console.log(response.data);
 				$('#scouting_form').trigger('reset');
 				displayMessage("<strong>Success!</strong> Now do it again.", "success");
+			$("button[type='submit']").removeClass("disabled");
 				$scope.resetForm();
 			}, function (response) {
 				console.log("Error during submission");
@@ -739,6 +741,102 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 			}
 		}
 		
+		for (var i = 0; i < $scope.data.match.teleop.length; i++) {
+			switch ($scope.data.match.teleop[i].teleHighAccuracy) {
+				case 0:
+					$scope.data.match.teleop[i].teleHighAccuracy = "0% (No Accuracy)";
+					break;
+				case 1:
+					$scope.data.match.teleop[i].teleHighAccuracy = "~30% (Low Accuracy)";
+					break;
+				case 2:
+					$scope.data.match.teleop[i].teleHighAccuracy = "~50% (Medium Accuracy)";
+					break;
+				case 3:
+					$scope.data.match.teleop[i].teleHighAccuracy = "~80% (High Accuracy)";
+					break;
+			}
+			switch ($scope.data.match.teleop[i].teleLowAccuracy) {
+				case 0:
+					$scope.data.match.teleop[i].teleLowAccuracy = "0% (No Accuracy)";
+					break;
+				case 1:
+					$scope.data.match.teleop[i].teleLowAccuracy = "~30% (Low Accuracy)";
+					break;
+				case 2:
+					$scope.data.match.teleop[i].teleLowAccuracy = "~50% (Medium Accuracy)";
+					break;
+				case 3:
+					$scope.data.match.teleop[i].teleLowAccuracy = "~80% (High Accuracy)";
+					break;
+			}
+			switch ($scope.data.match.auto[i].autoHighAccuracy) {
+				case 0:
+					$scope.data.match.auto[i].autoHighAccuracy = "0% (No Accuracy)";
+					break;
+				case 1:
+					$scope.data.match.auto[i].autoHighAccuracy = "~30% (Low Accuracy)";
+					break;
+				case 2:
+					$scope.data.match.auto[i].autoHighAccuracy = "~50% (Medium Accuracy)";
+					break;
+				case 3:
+					$scope.data.match.auto[i].autoHighAccuracy = "~80% (High Accuracy)";
+					break;
+			}
+			switch ($scope.data.match.auto[i].autoLowAccuracy) {
+				case 0:
+					$scope.data.match.auto[i].autoLowAccuracy = "0% (No Accuracy)";
+					break;
+				case 1:
+					$scope.data.match.auto[i].autoLowAccuracy = "~30% (Low Accuracy)";
+					break;
+				case 2:
+					$scope.data.match.auto[i].autoLowAccuracy = "~50% (Medium Accuracy)";
+					break;
+				case 3:
+					$scope.data.match.auto[i].autoLowAccuracy = "~80% (High Accuracy)";
+					break;
+			}
+		}
+		
+		for (var i = 0; i < $scope.data.match.teleop.length; i++) {
+			switch ($scope.data.match.teleop[i].teleShootSpeed) {
+				case 0:
+					$scope.data.match.teleop[i].teleShootSpeed = "Slow";
+					break;
+				case 1:
+					$scope.data.match.teleop[i].teleShootSpeed = "Moderate";
+					break;
+				case 2:
+					$scope.data.match.teleop[i].teleShootSpeed = "Fast";
+					break;
+				case 3:
+					$scope.data.match.teleop[i].teleShootSpeed = "Super Fast";
+					break;
+				case 4:
+					$scope.data.match.teleop[i].teleShootSpeed = "LightSpeed";
+					break;
+			}
+			switch ($scope.data.match.auto[i].autoShootSpeed) {
+				case 0:
+					$scope.data.match.auto[i].autoShootSpeed = "Slow";
+					break;
+				case 1:
+					$scope.data.match.auto[i].autoShootSpeed = "Moderate";
+					break;
+				case 2:
+					$scope.data.match.auto[i].autoShootSpeed = "Fast";
+					break;
+				case 3:
+					$scope.data.match.auto[i].autoShootSpeed = "Super Fast";
+					break;
+				case 4:
+					$scope.data.match.auto[i].autoShootSpeed = "LightSpeed";
+					break;
+			}
+		}
+		
 		console.log($scope.data);
 	}, function (response) {
 		$scope.error = response.data.error;
@@ -750,11 +848,13 @@ app.controller('AdminPageController', function ($rootScope, $scope, $http, $wind
 	'use strict';
 
 	$scope.prettySettings = {
-		validateTeams: ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled"
+		validateTeams: ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled",
+		enableCasino: ($rootScope.settings.enableCasino == true) ? "Enabled" : "Disabled"
 	};
 
 	$scope.updatePrettySettings = function () {
 		$scope.prettySettings.validateTeams = ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled";
+		$scope.prettySettings.enableCasino = ($rootScope.settings.enableCasino == true) ? "Enabled" : "Disabled";
 	};
 
 	$scope.adminAction = function (pageAction, setting, value) {
