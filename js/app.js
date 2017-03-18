@@ -202,8 +202,6 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	$scope.maxMatchNumber = 54;
 	
 	$scope.minTeamNumber = 587;
-	
-	$scope.matchTeamVerified = false;
 
 	$rootScope.getCurrentSettings(function () {
 		if ($rootScope.settings.validateTeams) {
@@ -258,7 +256,6 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			teleGears: "0",
 			load: "0",
 			climbed: false,
-			score: 0,
 			comments: ""
 		};
 	};
