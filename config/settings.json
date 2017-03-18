@@ -1,4 +1,4 @@
 {
-    "validateTeams": true,
+    "validateTeams": false,
     "enableCasino": true
 }
