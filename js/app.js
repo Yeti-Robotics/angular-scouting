@@ -198,6 +198,12 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	$scope.selectedTeam = false;
 
 	$scope.matches = [];
+	
+	$scope.maxMatchNumber = 54;
+	
+	$scope.minTeamNumber = 587;
+	
+	$scope.matchTeamVerified = false;
 
 	$rootScope.getCurrentSettings(function () {
 		if ($rootScope.settings.validateTeams) {
@@ -262,6 +268,19 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 		$("#comments").rules("add", {
 			required: true
 		});
+		$("#team_number").rules("add", {
+			min: $scope.minTeamNumber,
+			messages: {
+				min: "This team number is too low!"
+			}
+		});
+		$("#match_number").rules("add", {
+			max: $scope.maxMatchNumber,
+			messages: {
+				max: "This match number is too high!"
+			}
+		});
+		
 		console.log('Inititalize validation');
 
 		$scope.resetForm();
