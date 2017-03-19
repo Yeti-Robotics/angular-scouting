@@ -199,9 +199,11 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 
 	$scope.matches = [];
 	
-	$scope.maxMatchNumber = 54;
+	$scope.maxMatchNumber = 540;
 	
 	$scope.minTeamNumber = 587;
+	
+	$scope.matchNumber = 1;
 
 	$rootScope.getCurrentSettings(function () {
 		if ($rootScope.settings.validateTeams) {
@@ -241,6 +243,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	$scope.resetForm = function () {
 		$scope.formData = {
 			name: $rootScope.user.name,
+			match_number: $scope.matchNumber,
 			robot_moved: false,
 			auto_gear: false,
 			autoHighGoal: false,
@@ -259,6 +262,13 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			comments: ""
 		};
 	};
+	
+	$http.get("php/getLastMatch.php").then(function (response) {
+	$scope.matchNumber = $scope.formData.match_number = parseInt(response.data) + 1;
+	}, function (response) {
+		displayMessage("Could not get this match", "danger");
+		console.log(response.data)		
+	});
 
 	$(document).ready(function () {
 		$scope.validator = $('#scouting_form').validate();
@@ -307,6 +317,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 				$('#scouting_form').trigger('reset');
 				displayMessage("<strong>Success!</strong> Now do it again.", "success");
 			$("button[type='submit']").removeClass("disabled");
+				$scope.matchNumber++;
 				$scope.resetForm();
 			}, function (response) {
 				console.log("Error during submission");
@@ -365,7 +376,7 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
 	var num = 0;
 
 	$scope.addPicture = function () {
-		$scope.picNum.push(num);
+		$scope.picNum.unshift(num);
 		num++;
 	};
 
