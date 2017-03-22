@@ -11,15 +11,61 @@ function displayMessage(message, alertType, timeVisible) {
 
 app.run(function ($rootScope, $location, $http, $window) {
 	'use strict';
-	$rootScope.user = {
-		username: '',
-		name: '',
-		byteCoins: 0,
-		logOut: function () {
-			$window.sessionStorage.removeItem('token');
-			this.name = '';
-			$rootScope.loggedIn = false;
-		}
+
+	$rootScope.loggedIn = !($window.sessionStorage.token == null);
+	
+	var checkedLogin = false;
+	
+	$rootScope.validateLogin = function () {
+		$http.get('php/validateSession.php', {
+			params: {
+				token: $window.sessionStorage["token"]
+			}
+		}).then(function (response) {
+			if (response.data == 'false') {
+				$rootScope.user.logOut();
+				$location.path('/login');
+			}
+			
+			if ($rootScope.loggedIn) {
+				$http.get("php/getSessionUser.php", {
+					params: {
+						token: $window.sessionStorage.token
+					}
+				}).then(function (response) {
+					$rootScope.user = {
+						username: response.data.username,
+						name: response.data.name,
+						byteCoins: response.data.byteCoins,
+						logOut: function () {
+							$window.sessionStorage.removeItem('token');
+							this.name = '';
+							$rootScope.loggedIn = false;
+						}
+					}
+				}, function (response) {
+					$rootScope.validateLogin();
+				});
+			} else {
+				$rootScope.user = {
+					username: '',
+					name: '',
+					byteCoins: 0,
+					logOut: function () {
+						$window.sessionStorage.removeItem('token');
+						this.name = '';
+						$rootScope.loggedIn = false;
+					}
+				};
+			}
+			
+			checkedLogin = true;
+		}, function (response) {
+			$rootScope.user.logOut();
+			$location.path('/login');
+			
+			checkedLogin = true;
+		});
 	};
 
 	$rootScope.getCurrentSettings = function (onSettingsUpdate) {
@@ -39,8 +85,6 @@ app.run(function ($rootScope, $location, $http, $window) {
 
 	$rootScope.getCurrentSettings();
 
-	$rootScope.loggedIn = !($window.sessionStorage.token == null);
-
 	$rootScope.log = function () {
 		if ($rootScope.loggedIn) {
 			$window.sessionStorage.removeItem('token');
@@ -48,30 +92,16 @@ app.run(function ($rootScope, $location, $http, $window) {
 		$rootScope.loggedIn = !$rootScope.loggedIn;
 	};
 
-	$rootScope.validateLogin = function () {
-		$http.get('php/validateSession.php', {
-			params: {
-				token: $window.sessionStorage["token"]
-			}
-		}).then(function (response) {
-			if (response.data == 'false') {
-				$rootScope.user.logOut();
-				$location.path('/login');
-			}
-		}, function (response) {
-			$rootScope.user.logOut();
-			$location.path('/login');
-		});
-	};
-
 	$rootScope.$watch(function () {
 		return $location.path();
 	}, function () {
-		if ($location.path() == '/wager') {
-			$rootScope.validateLogin();
-		} else if ($location.path() == '/admin' && $rootScope.user.username != 'admin') {
-			console.log("If you are looking at this, then you probably tried to force your way in here. If you tried to force your way in here, you could probably find the funciton that logged this. But be warned. Our security is more complicated than an if statement, and deeper then some client-side javascript. If you think you can hack this, then Game On. (But seriously don't cause I don't want to deal with incorrect data)");
-			$location.path('/');
+		if (checkedLogin) {
+			if ($location.path() == '/wager') {
+				$rootScope.validateLogin();
+			} else if ($location.path() == '/admin' && $rootScope.user.username != 'admin') {
+				console.log("If you are looking at this, then you probably tried to force your way in here. If you tried to force your way in here, you could probably find the funciton that logged this. But be warned. Our security is more complicated than an if statement, and deeper then some client-side javascript. If you think you can hack this, then Game On. (But seriously don't cause I don't want to deal with incorrect data)");
+				$location.path('/');
+			}
 		}
 	});
 });

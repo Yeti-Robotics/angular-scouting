@@ -284,14 +284,18 @@ function validateToken($db, $token) {
 }
 
 function getSessionUser($db, $token) {
-    $query = "SELECT name FROM sessions LEFT JOIN scouters ON sessions.id = scouters.id WHERE token = ?";
+    $query = "SELECT name, username, byteCoins FROM sessions LEFT JOIN scouters ON sessions.id = scouters.id WHERE token = ?";
     if (validateToken($db, $token)) {
         if($stmt = $db->prepare($query)) {
             $stmt->bind_param("s", $token);
             $stmt->execute();
             $result = $stmt->get_result();
             while($row = $result->fetch_array()) {
-                return $row[0];
+                return [
+					"name" => $row["name"],
+					"username" => $row["username"],
+					"byteCoins" => $row["byteCoins"]
+				];
             }
         } else {
             header('HTTP/1.1 500 SQL Error', true, 500);
