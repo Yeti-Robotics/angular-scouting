@@ -901,6 +901,31 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	});
 });
 
+app.controller("ScouterController", function($scope, $http, $routeParams) {
+	'use strict';
+
+	$scope.scouterId = $routeParams.scouterId;
+
+	$scope.error = "";
+
+	$scope.commentSection = {
+		comments: []
+	};
+
+	$http.get("php/getScouter.php", {
+		params: {
+			scouterId: $routeParams.scouterId
+		}
+	}).then(function (response) {
+		$scope.data = response.data;
+
+		console.log($scope.data)
+	}, function (response) {
+		$scope.error = response.data.error;
+		console.log($scope.error);
+	});
+});
+
 app.controller('AdminPageController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
 
@@ -1011,6 +1036,9 @@ app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
 	}).when("/register", {
 		templateUrl: 'html/register.html',
 		controller: 'RegisterController'
+	}).when("/scouter/:scouterId", {
+		templateUrl: 'html/scouter.html',
+		controller: 'ScouterController'
 	}).when("/admin", {
 		templateUrl: 'html/admin.html',
 		controller: 'AdminPageController'

@@ -465,6 +465,20 @@ function checkForUser($db, $username) {
 	}
 }
 
+function checkForUserFromId($db, $id) {
+	$query = "SELECT id FROM scouters WHERE id = ?";
+	if($stmt = $db->prepare($query)) {
+		$stmt->bind_param("i", $id);
+        	$stmt->execute();
+        	$stmt->store_result();
+        	if($stmt->num_rows > 0) {
+        		return true;
+        	} else {
+        		return false;
+        	}
+	}
+}
+
 function updateQualificationWagers($db, $matchNum) {
 	updateMatchData();
     $query = "SELECT * FROM `wagers` WHERE matchPredicted <= ?";

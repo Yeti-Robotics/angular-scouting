@@ -1,0 +1,22 @@
+<div class="container-fluid">
+	<div ng-show="error != ''">
+		<h1 class="text-center">{{error}}</h1>
+	</div>
+	<div ng-show="error == ''">
+		<h2 class="page-header"><span ng-show="data.teamInfo.name != null">Scouting Page for {{data.scouter.name}}</span></h2>
+		<br/>
+		<br/>
+		<h2 class="small">ByteCoins: {{data.scouter.bytecoins}}</h2>
+
+		<fieldset>
+			<legend>Comments:</legend>
+			<div class="container-fluid" ng-repeat="comment in data.comments">
+				<div class="row">
+					<p>{{comment.comments}}</p>
+					<p>For match #{{comment.match_number}}, Team {{comment.team_number}} {{comment.timestamp}}</p>
+					<hr/>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+</div>
