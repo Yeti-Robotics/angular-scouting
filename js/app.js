@@ -3,71 +3,21 @@
 var app;
 app = angular.module('app', ['ngRoute']);
 
-function displayMessage(message, alertType, timeVisible) {
-	"use strict";
-	timeVisible = timeVisible == undefined ? 3000 : timeVisible;
+function displayMessage(message, alertType, timeVisible = 3000) {
 	$('.message-container').html(message).removeClass('alert-success alert-info alert-warning alert-danger').addClass('alert-' + alertType).stop(true).slideDown(500).delay(timeVisible).slideUp(500);
 }
 
-app.run(function ($rootScope, $location, $http, $window) {
+app.run(function ($rootScope, $location, $http, $window, AccountService) {
 	'use strict';
 
-	$rootScope.loggedIn = !($window.sessionStorage.token == null);
+	$rootScope.loggedIn = $window.sessionStorage.token != null;
 	
-	var checkedLogin = false;
-	
-	$rootScope.validateLogin = function () {
-		$http.get('php/validateSession.php', {
-			params: {
-				token: $window.sessionStorage["token"]
-			}
-		}).then(function (response) {
-			if (response.data == 'false') {
-				$rootScope.user.logOut();
-				$location.path('/login');
-			}
-			
-			if ($rootScope.loggedIn) {
-				$http.get("php/getSessionUser.php", {
-					params: {
-						token: $window.sessionStorage.token
-					}
-				}).then(function (response) {
-					$rootScope.user = {
-						username: response.data.username,
-						name: response.data.name,
-						byteCoins: response.data.byteCoins,
-						logOut: function () {
-							$window.sessionStorage.removeItem('token');
-							this.name = '';
-							$rootScope.loggedIn = false;
-						}
-					}
-				}, function (response) {
-					$rootScope.validateLogin();
-				});
-			} else {
-				$rootScope.user = {
-					username: '',
-					name: '',
-					byteCoins: 0,
-					logOut: function () {
-						$window.sessionStorage.removeItem('token');
-						this.name = '';
-						$rootScope.loggedIn = false;
-					}
-				};
-			}
-			
-			checkedLogin = true;
-		}, function (response) {
-			$rootScope.user.logOut();
-			$location.path('/login');
-			
-			checkedLogin = true;
-		});
+	$rootScope.user = {
+		username: '',
+		name: '',
+		byteCoins: 0
 	};
-
+	
 	$rootScope.getCurrentSettings = function (onSettingsUpdate) {
 		$http.get("php/getSettings.php").then(function (response) {
 			$rootScope.settings = response.data;
@@ -85,30 +35,64 @@ app.run(function ($rootScope, $location, $http, $window) {
 
 	$rootScope.getCurrentSettings();
 
-	$rootScope.log = function () {
-		if ($rootScope.loggedIn) {
-			$window.sessionStorage.removeItem('token');
-		}
-		$rootScope.loggedIn = !$rootScope.loggedIn;
-	};
-
-	$rootScope.$watch(function () {
-		return $location.path();
-	}, function () {
-		if (checkedLogin) {
-			if ($location.path() == '/wager') {
-				$rootScope.validateLogin();
-			} else if ($location.path() == '/admin' && $rootScope.user.username != 'admin') {
-				console.log("If you are looking at this, then you probably tried to force your way in here. If you tried to force your way in here, you could probably find the funciton that logged this. But be warned. Our security is more complicated than an if statement, and deeper then some client-side javascript. If you think you can hack this, then Game On. (But seriously don't cause I don't want to deal with incorrect data)");
-				$location.path('/');
-			}
-		}
-	});
 });
 
-app.controller('LoginController', function ($rootScope, $scope, $http, $location, $window) {
+app.service("AccountService", function ($http, $q, $window, $rootScope, $location) {
 	'use strict';
+	
+	this.login = function (username, password) {
+		var deferred = $q.defer();
+		
+		$http.post("php/login.php", {
+			username: username,
+			pswd: password
+		}).then(function (response) {
+			deferred.resolve(response);
+		}, function (response) {
+			deferred.reject(response);
+		});
+		
+		return deferred.promise;
+	};
+	
+	this.logout = function () {
+		$http.post("php/logout.php", {
+			token: $window.sessionStorage["token"]
+		}).finally(function (response) {
+			$window.sessionStorage.removeItem("token");
+			$rootScope.loggedIn = false;
+			$rootScope.user = {
+				username: '',
+				name: '',
+				byteCoins: 0
+			};
+			$location.path("/login");
+		});
+	}
+	
+	this.validateSession = function () {
+		var deferred = $q.defer();
+		
+		$http.post("php/validateSession.php", {
+			token: $window.sessionStorage["token"]
+		}).then(function (response) {
+			if (response.data == "false") {
+				deferred.reject(response);
+			} else {
+				deferred.resolve(response);
+				$rootScope.user = response.data;
+			}
+		}, function (response) {
+			deferred.reject(response);
+		});
+		
+		return deferred.promise;
+	};
+});
 
+app.controller('LoginController', function (AccountService, $rootScope, $scope, $http, $location, $window) {
+	'use strict';
+	
 	$(document).ready(function () {
 		$('#loginForm').validate();
 		$('#username').rules("add", {
@@ -142,26 +126,38 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
 	});
 
 	$scope.login = function () {
-		$http.post('php/checkUser.php', {
-			username: $scope.scouterUsername,
-			pswd: $scope.scouterPswd
-		}).then(function (response) {
-			var result = response.data;
-			$window.sessionStorage["token"] = result.token;
-			$rootScope.user.name = result.name;
-			$rootScope.user.username = $scope.scouterUsername;
-			$rootScope.loggedIn = true;
-			if ($scope.scouterUsername == "admin") {
-				$location.path('/admin');
-			} else {
-				$location.path('/wager');
-			}
-		}, function (response) {
-			$("#loginForm").validate().showErrors({
-				"loginFields": "Invalid username/password"
+		if (!$rootScope.loggedIn) {
+			AccountService.login($scope.scouterUsername, $scope.scouterPswd).then(function (response) {
+				var result = response.data;
+				console.log(result);
+				$window.sessionStorage["token"] = result.token;
+				$rootScope.loggedIn = true;
+				if ($scope.scouterUsername == "admin") {
+					$location.path('/admin');
+				} else {
+					$location.path('/wager');
+				}
+			}, function (response) {
+				$("#loginForm").validate().showErrors({
+					"loginFields": "Invalid username/password"
+				});
 			});
-		});
+		}
 	};
+	
+	if ($rootScope.loggedIn) {
+		$location.path("/wager");
+	}
+});
+
+app.controller("LogoutController", function (AccountService, $rootScope, $http, $location, $window) {
+	'use strict';
+	
+	if($rootScope.loggedIn) {
+		AccountService.logout();
+	} else {
+		$location.path("/login");
+	}
 });
 
 app.controller('RegisterController', function ($scope, $http, $location) {
@@ -220,8 +216,14 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 	};
 });
 
-app.controller('FormController', function ($rootScope, $scope, $http, $window) {
+app.controller('FormController', function ($rootScope, $scope, $http, $window, AccountService) {
 	'use strict';
+	
+	if ($rootScope.loggedIn) {
+		AccountService.validateSession().then(function (response) {
+			$scope.resetForm();
+		});
+	}
 
 	$scope.matchesReceived = true;
 
@@ -568,8 +570,15 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 	});
 });
 
-app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
+app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window, AccountService) {
 	'use strict';
+	
+	AccountService.validateSession().then(function (response) {
+		$scope.refreshByteCoins();
+	}, function (response) {
+		AccountService.logout();
+		displayMessage("Session expired, please log in again", "danger");
+	});
 
 	$scope.refreshByteCoins = function () {
 		$http.post("php/getByteCoins.php", {
@@ -581,8 +590,6 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 			displayMessage("Could not properly get your number of Byte Coins. Please log in and try again", "danger");
 		});
 	};
-
-	$scope.refreshByteCoins();
 
 	$scope.manuallyEnterByteCoins = false;
 
@@ -901,8 +908,21 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	});
 });
 
-app.controller('AdminPageController', function ($rootScope, $scope, $http, $window) {
+app.controller('AdminPageController', function ($rootScope, $scope, $http, $window, $location, AccountService) {
 	'use strict';
+	
+	AccountService.validateSession().then(function (response) {
+		if ($rootScope.user.username != "admin") {
+			console.log("If you are looking at this, then you probably tried to force your way in here. If you tried to force your way in here, you could probably find the funciton that logged this. But be warned. Our security is more complicated than an if statement, and deeper then some client-side javascript. If you think you can hack this, then Game On. (But seriously don't cause I don't want to deal with incorrect data)");
+			AccountService.logout();
+		}
+	}, function (response) {
+		if ($rootScope.user.username != "admin") {
+			console.log("If you are looking at this, then you probably tried to force your way in here. If you tried to force your way in here, you could probably find the funciton that logged this. But be warned. Our security is more complicated than an if statement, and deeper then some client-side javascript. If you think you can hack this, then Game On. (But seriously don't cause I don't want to deal with incorrect data)");
+			AccountService.logout();
+		}
+	});
+	
 
 	$scope.prettySettings = {
 		validateTeams: ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled",
@@ -1008,6 +1028,9 @@ app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
 	}).when("/login", {
 		templateUrl: 'html/login.html',
 		controller: 'LoginController'
+	}).when("/logout", {
+		templateUrl: 'html/login.html',
+		controller: 'LogoutController'
 	}).when("/register", {
 		templateUrl: 'html/register.html',
 		controller: 'RegisterController'

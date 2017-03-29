@@ -283,6 +283,22 @@ function validateToken($db, $token) {
     }
 }
 
+function deleteToken($db, $token, $username) {
+	$query = "DELETE FROM sessions WHERE token = ?";
+
+	if ($stmt = $db->prepare($query)) {
+		$stmt->bind_param("s", $token);
+		$stmt->execute();
+		if ($stmt->error) {
+			header('HTTP/1.1 500 SQL Error', true, 500);
+			die ( '{"message":"Failed creating statement"}' );
+		}
+	} else {
+		header('HTTP/1.1 500 SQL Error', true, 500);
+		die ( '{"message":"Failed creating statement"}' );
+	}
+}
+
 function getSessionUser($db, $token) {
     $query = "SELECT name, username, byteCoins FROM sessions LEFT JOIN scouters ON sessions.id = scouters.id WHERE token = ?";
     if (validateToken($db, $token)) {
@@ -362,22 +378,6 @@ function startSession($db, $username, $pswdHash) {
             die ( '{"message":"Failed creating statement"}' );
         }
     } else {
-        return false;
-    }
-    
-    $query = "INSERT INTO sessions (id, token) VALUES (?, ?)";
-    $token = ($pswdHash . md5(time()));
-    if (checkPassword($db, $username, $pswdHash)) {
-        if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("is", getUserId($db, $username, $pswdHash), $token);
-            $stmt->execute();
-            return $token;
-        } else {
-            header('HTTP/1.1 500 SQL Error', true, 500);
-            die ( '{"message":"Failed creating statement"}' );
-        }
-    }
-    else {
         return false;
     }
 }
