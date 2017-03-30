@@ -28,11 +28,11 @@
 							<tbody>
 								<tr ng-repeat="match in matches">
 									<td class="text-center">{{match.number}}</td>
-									
+
 									<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[0])">{{match.teams.red[0]}}</td>
 									<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[1])">{{match.teams.red[1]}}</td>
 									<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[2])">{{match.teams.red[2]}}</td>
-									
+
 									<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[0])">{{match.teams.blue[0]}}</td>
 									<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[1])">{{match.teams.blue[1]}}</td>
 									<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[2])">{{match.teams.blue[2]}}</td>
@@ -58,6 +58,7 @@
 					<label for="name">Your name:</label>
 					<input name="name" id="name" ng-model="formData.name" type="text" class="form-control" placeholder="Enter your name" required>
 				</div>
+
 				<div ng-show="!matchesReceived || !settings.validateTeams">
 					<div>
 						<label for="match_number">Match #:</label>
@@ -68,6 +69,7 @@
 						<input name="team_number" id="team_number" ng-model="formData.team_number" type="number" class="form-control" placeholder="Enter the team number" required>
 					</div>
 				</div>
+
 				<div ng-show="matchesReceived && settings.validateTeams">
 					<br/>
 					<button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal">Choose a match</button>
@@ -95,65 +97,132 @@
 		<fieldset>
 			<legend>Autonomous</legend>
 			<div class="form-group">
-				<label for="robot_moved">Did the robot reach a defense?</label>
+				<label for="robot_moved">Did the robot cross the mobility line?</label>
 				<input ng-model="formData.robot_moved" type="checkbox">
 				<div ng-show="formData.robot_moved">
-					<div defenses-crossed-selector model-to="formData.auto_defense_crossed"></div>
-					<label for="cans_auto">How many balls did it get into the opponents courtyard?</label>
-					<select ng-model="formData.auto_balls_crossed" class="form-control">
-						<option value="0" selected="selected">0</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-					</select>
-					<div balls-scored-selector model-to="formData.auto_balls_scored"></div>
+
+					<label for="auto_gear">Did the robot put a gear on the peg</label>
+					<input ng-model="formData.auto_gear" type="checkbox" name="auto_gear">
+
+					<br>
+
+					<label for="autoHighGoal">Attempted High Goal?</label>
+					<input ng-model="formData.autoHighGoal" type="checkbox" name="autoHighGoal">
+					<div ng-show="formData.autoHighGoal">
+						<label for="autoHighAccuracy">Accuracy</label>
+						<select name="autoHighAccuracy" ng-model="formData.autoHighAccuracy" class="form-control">
+							<option value="0" selected="selected">0% (No Accuracy)</option>
+							<option value="1">~30% (Low Accuracy)</option>
+							<option value="2">~50% (Medium Accuracy)</option>
+							<option value="3">~80% (High Accuracy)</option>
+						</select>
+
+						<label for="autoShootSpeed">How fast did they shoot?</label>
+						<select name="autoShootSpeed" ng-model="formData.autoShootSpeed" class="form-control">
+							<option value="0" selected="selected">Slow</option>
+							<option value="1">Moderate</option>
+							<option value="3">Fast</option>
+							<option value="4">Super Fast</option>
+							<option value="5">LightSpeed</option>
+						</select>
+					</div>
+
+					<br>
+
+					<label for="autoLowGoal">Attempted Low Goal?</label>
+					<input ng-model="formData.autoLowGoal" type="checkbox" name="autoLowGoal">
+					<div ng-show="formData.autoLowGoal">
+						<label for="autoLowAccuracy">Accuracy</label>
+						<select name="autoLowAccuracy" ng-model="formData.autoLowAccuracy" class="form-control">
+							<option value="0" selected="selected">0% (No Accuracy)</option>
+							<option value="1">~30% (Low Accuracy)</option>
+							<option value="2">~50% (Medium Accuracy)</option>
+							<option value="3">~80% (High Accuracy)</option>
+						</select>
+					</div>
 				</div>
 			</div>
 		</fieldset>
-		<br>
-		<br>
-		<br>
-		<br>
+
 		<fieldset>
 			<legend>Tele-Op</legend>
-			<div defenses-crossed-selector model-to="formData.teleop_defense_crossed"></div>
-			<div balls-scored-selector model-to="formData.teleop_balls_scored"></div>
-			<label for="robot_defended">Did the robot attempt to defend?</label>
-			<input ng-model="formData.robot_defended" type="checkbox">
-		</fieldset>
-		<br>
-		<br>
-		<br>
-		<br>
-		<fieldset>
-			<legend>Endgame</legend>
-			<select ng-model="formData.end_game" class="form-control">
-				<option value="none" selected="selected">None</option>
-				<option value="scaling">Climbing</option>
-				<option value="challenging">Parking in front of the tower</option>
-			</select>
-		</fieldset>
-		<br>
-		<br>
-		<br>
-		<br>
-		<fieldset>
-			<legend>Misc.</legend>
-			<div class="form-group">
-				<label for="rating" convert-to-number>Rating:</label>
-				<select name="rating" id="rating" ng-model="formData.rating">
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-					<option value="6">6</option>
-					<option value="7">7</option>
-					<option value="8">8</option>
-					<option value="9">9</option>
-					<option value="10">10</option>
+
+			<label for="teleHighGoal">Attempted High Goal?</label>
+			<input ng-model="formData.teleHighGoal" type="checkbox" name="teleHighGoal">
+
+			<div ng-show="formData.teleHighGoal" class="form-group">
+				<label for="teleHighAccuracy">Accuracy</label>
+				<select name="teleHighAccuracy" ng-model="formData.teleHighAccuracy" class="form-control">
+					<option value="0" selected="selected">0% (No Accuracy)</option>
+					<option value="1">~30% (Low Accuracy)</option>
+					<option value="2">~50% (Medium Accuracy)</option>
+					<option value="3">~80% (High Accuracy)</option>
+				</select>
+				<label for="teleShootSpeed">How fast did they shoot?</label>
+				<select name="teleShootSpeed" ng-model="formData.teleShootSpeed" class="form-control">
+					<option value="0" selected="selected">Slow</option>
+					<option value="1">Moderate</option>
+					<option value="2">Fast</option>
+					<option value="3">Super Fast</option>
+					<option value="4">LightSpeed</option>
 				</select>
 			</div>
+
+			<br>
+
+			<label for="teleLowGoal">Attempted Low Goal?</label>
+			<input ng-model="formData.teleLowGoal" type="checkbox" name="teleLowGoal">
+			<div ng-show="formData.teleLowGoal" class="form-group">
+				<label for="teleLowAccuracy">Accuracy</label>
+				<select name="teleLowAccuracy" ng-model="formData.teleLowAccuracy" class="form-control">
+					<option value="0" selected="selected">0% (No Accuracy)</option>
+					<option value="1">~30% (Low Accuracy)</option>
+					<option value="2">~50% (Medium Accuracy)</option>
+					<option value="3">~80% (High Accuracy)</option>
+				</select>
+			</div>
+
+			<br>
+
+			<label for="teleGears">How many gears did the robot get on the peg?</label>
+			<select name="teleGears" ng-model="formData.teleGears" class="form-control">
+				<option value="0" selected="selected">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+			</select>
+
+			<br>
+
+			<label for="load">How much fuel can the robot carry?</label>
+			<select name="load" ng-model="formData.load" class="form-control">
+				<option value="0" selected="selected">Less than 50</option>
+				<option value="1">~50</option>
+				<option value="2">~100</option>
+				<option value="3">~150</option>
+				<option value="4">More than 150</option>
+			</select>
+		</fieldset>
+
+		<fieldset>
+			<legend>Endgame</legend>
+			<label for="climbed">Did the robot climb the rope?</label>
+			<input ng-model="formData.climbed" name="climbed" type="checkbox">
+		</fieldset>
+
+		<br>
+
+		<fieldset>
+			<legend>Misc.</legend>
 			<div class="form-group">
 				<label for="score">Score:</label>
 				<input name="score" id="score" class="form-control" type="number" ng-model="formData.score" placeholder="Enter the alliance's score" required/>

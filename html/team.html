@@ -15,69 +15,49 @@
 				<table class="table table-striped">
 					<tr>
 						<th>Team #</th>
-						<th>Lowbar</th>
-						<th>Most Common Defense</th>
-						<th>Total High</th>
-						<th>Total Low</th>
-						<th>% Games Defending </th>
-						<th>Autonomous description</th>
+						<th>Total gears scored</th>
+						<th>Auto high goal accuracy</th>
+						<th>Teleop high goal accuracy</th>
+						<th>Auto low goal accuracy</th>
+						<th>Teleop low goal accuracy </th>
+						<th>% games climbed</th>
 					</tr>
 					<tr class="team_row">
 						<td>{{teamNumber}}</td>
-						<td><span class="glyphicon glyphicon-ok" ng-show="canLowBar" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!canLowBar" style="color:red"></span></td>
-						<td>{{data.rankingInfo.gcdName}}</td>
-						<td>{{data.rankingInfo.totalHighGoals}}</td>
-						<td>{{data.rankingInfo.totalLowGoals}}</td>
-						<td>{{data.rankingInfo.gamesDefended}}</td>
-						<td>{{autoString}}</td>
+						<td>{{data.rankingInfo.totalGears}}</td>
+						<td>{{data.rankingInfo.autoHighAcc}}</td>
+						<td>{{data.rankingInfo.teleHighAcc}}</td>
+						<td>{{data.rankingInfo.autoLowAcc}}</td>
+						<td>{{data.rankingInfo.teleLowAcc}}</td>
+						<td>{{data.rankingInfo.avgClimbed}}%</td>
 					</tr>
 				</table>
 			</div>
 		</fieldset>
 		<fieldset>
 			<legend>Teleop</legend>
-			<h4>Boulders Scored</h4>
 			<div class="table-responsive">
 				<table class="table table-striped">
 					<thead>
 						<tr>
 							<th>Match #</th>
-							<th>High goal</th>
-							<th>Low goal</th>
+							<th>Scored gear</th>
+							<th>Attempted high goal</th>
+							<th>High goal accuracy</th>
+							<th>High goal shooting speed</th>
+							<th>Attempted low goal</th>
+							<th>Low goal accuracy</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="match in data.balls.teleop | orderBy : 'match_number' : false">
+						<tr ng-repeat="match in data.match.teleop | orderBy : 'match_number' : false">
 							<td>{{match.match_number}}</td>
-							<td>{{match.balls_scored_high}}</td>
-							<td>{{match.balls_scored_low}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<h4>Defenses Crossed</h4>
-			<div class="table-responsive">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>Match #</th>
-							<th class="text-center">Defenses</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="match in data.defenses.teleop | orderBy : 'match_number' : false">
-							<td>{{match.match_number}}</td>
-							<td class="row">
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Portcullis" class="col-xs-2 col-md-1" src="images/defenses/portcullis.png" ng-repeat="a in range(match.portcullis) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Cheval de frise" class="col-xs-2 col-md-1" src="images/defenses/cheval-de-frise.png" ng-repeat="a in range(match.cheval_de_frise) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Moat" class="col-xs-2 col-md-1" src="images/defenses/moat.png" ng-repeat="a in range(match.moat) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Ramparts" class="col-xs-2 col-md-1" src="images/defenses/ramparts.png" ng-repeat="a in range(match.ramparts) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Drawbridge" class="col-xs-2 col-md-1" src="images/defenses/drawbridge.png" ng-repeat="a in range(match.drawbridge) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Sally port" class="col-xs-2 col-md-1" src="images/defenses/sally-port.png" ng-repeat="a in range(match.sally_port) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Rock wall" class="col-xs-2 col-md-1" src="images/defenses/rock-wall.png" ng-repeat="a in range(match.rock_wall) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Rough terrain" class="col-xs-2 col-md-1" src="images/defenses/rough-terrain.png" ng-repeat="a in range(match.rough_terrain) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Low bar" class="col-xs-2 col-md-1" src="images/defenses/low-bar.png" ng-repeat="a in range(match.low_bar) track by $index" />
-							</td>
+							<td>{{match.teleGears}}</td>
+							<td><span class="glyphicon glyphicon-ok" ng-show="match.teleHighGoal" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!match.teleHighGoal" style="color:red"></span></td>
+							<td>{{match.teleHighAccuracy}}</td>
+							<td>{{match.teleShootSpeed}}</td>
+							<td><span class="glyphicon glyphicon-ok" ng-show="match.teleLowGoal" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!match.teleLowGoal" style="color:red"></span></td>
+							<td>{{match.teleLowAccuracy}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -85,67 +65,49 @@
 		</fieldset>
 		<fieldset>
 			<legend>Autonomous</legend>
-			<h4>Boulders Scored</h4>
 			<div class="table-responsive">
 				<table class="table table-striped">
 					<thead>
 						<tr>
 							<th>Match #</th>
-							<th>High goal</th>
-							<th>Low goal</th>
+							<th>Gears scored</th>
+							<th>Attempted high goal</th>
+							<th>High goal accuracy</th>
+							<th>High goal shooting speed</th>
+							<th>Attempted low goal</th>
+							<th>Low goal accuracy</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="match in data.balls.auto | orderBy : 'match_number' : false">
+						<tr ng-repeat="match in data.match.auto | orderBy : 'match_number' : false">
 							<td>{{match.match_number}}</td>
-							<td>{{match.balls_scored_high}}</td>
-							<td>{{match.balls_scored_low}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<h4>Defenses Crossed</h4>
-			<div class="table-responsive">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>Match #</th>
-							<th class="text-center">Defenses</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="match in data.defenses.auto | orderBy : 'match_number' : false">
-							<td>{{match.match_number}}</td>
-							<td class="row">
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Portcullis" class="col-xs-2 col-md-1" src="images/defenses/portcullis.png" ng-repeat="a in range(match.portcullis) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Cheval de frise" class="col-xs-2 col-md-1" src="images/defenses/cheval-de-frise.png" ng-repeat="a in range(match.cheval_de_frise) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Moat" class="col-xs-2 col-md-1" src="images/defenses/moat.png" ng-repeat="a in range(match.moat) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Ramparts" class="col-xs-2 col-md-1" src="images/defenses/ramparts.png" ng-repeat="a in range(match.ramparts) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Drawbridge" class="col-xs-2 col-md-1" src="images/defenses/drawbridge.png" ng-repeat="a in range(match.drawbridge) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Sally port" class="col-xs-2 col-md-1" src="images/defenses/sally-port.png" ng-repeat="a in range(match.sally_port) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Rock wall" class="col-xs-2 col-md-1" src="images/defenses/rock-wall.png" ng-repeat="a in range(match.rock_wall) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Rough terrain" class="col-xs-2 col-md-1" src="images/defenses/rough-terrain.png" ng-repeat="a in range(match.rough_terrain) track by $index" />
-								<img tabindex="0" role="button" data-toggle="tooltip" title="Low bar" class="col-xs-2 col-md-1" src="images/defenses/low-bar.png" ng-repeat="a in range(match.low_bar) track by $index" />
-							</td>
+							<td><span class="glyphicon glyphicon-ok" ng-show="match.auto_gear" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!match.auto_gear" style="color:red"></span></td>
+							<td><span class="glyphicon glyphicon-ok" ng-show="match.autoHighGoal" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!match.autoHighGoal" style="color:red"></span></td>
+							<td>{{match.autoHighAccuracy}}</td>
+							<td>{{match.autoShootSpeed}}</td>
+							<td><span class="glyphicon glyphicon-ok" ng-show="match.autoLowGoal" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!match.autoLowGoal" style="color:red"></span></td>
+							<td>{{match.autoLowAccuracy}}</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</fieldset>
 		<fieldset>
-			<legend>Endgame</legend>
+			<legend>Misc.</legend>
 			<div class="table-responsive">
 				<table class="table table-striped">
 					<thead>
 						<tr>
 							<th>Match #</th>
-							<th>Endgame</th>
+							<th>Climbed</th>
+							<th>Fuel carrying capacity</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="match in data.endgame | orderBy : 'match_number' : false">
+						<tr ng-repeat="match in data.misc | orderBy : 'match_number' : false">
 							<td>{{match.match_number}}</td>
-							<td>{{match.end_game}}</td>
+							<td><span class="glyphicon glyphicon-ok" ng-show="match.climbed" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!match.climbed" style="color:red"></span></td>
+							<td>{{match.load}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -155,8 +117,8 @@
 			<legend>Comments:</legend>
 			<div class="container-fluid" ng-repeat="comment in data.commentSection">
 				<div class="row">
-					<p>{{comment.comments}} <small style="font-size: 11px">Rating: {{comment.rating}}</small></p>
-					<p>-- {{comment.name}}, {{comment.timeStamp}} for match #{{comment.match_number}}, {{comment.timestamp}}</p>
+					<p>{{comment.comments}}</p>
+					<p>-- {{comment.name}}, for match #{{comment.match_number}}, {{comment.timestamp}}</p>
 					<hr/>
 				</div>
 			</div>

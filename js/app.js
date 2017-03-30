@@ -3,25 +3,21 @@
 var app;
 app = angular.module('app', ['ngRoute']);
 
-function displayMessage(message, alertType, timeVisible) {
-    "use strict";
-	timeVisible = timeVisible == undefined ? 3000 : timeVisible;
-    $('.message-container').html(message).removeClass('alert-success alert-info alert-warning alert-danger').addClass('alert-' + alertType).stop(true).slideDown(500).delay(timeVisible).slideUp(500);
+function displayMessage(message, alertType, timeVisible = 3000) {
+	$('.message-container').html(message).removeClass('alert-success alert-info alert-warning alert-danger').addClass('alert-' + alertType).stop(true).slideDown(500).delay(timeVisible).slideUp(500);
 }
 
-app.run(function ($rootScope, $location, $http, $window) {
+app.run(function ($rootScope, $location, $http, $window, AccountService) {
 	'use strict';
+
+	$rootScope.loggedIn = $window.sessionStorage.token != null;
+	
 	$rootScope.user = {
 		username: '',
 		name: '',
-		byteCoins: 0,
-		logOut: function () {
-			$window.sessionStorage.removeItem('token');
-			this.name = '';
-			$rootScope.loggedIn = false;
-		}
+		byteCoins: 0
 	};
-	
+
 	$rootScope.getCurrentSettings = function (onSettingsUpdate) {
 		$http.get("php/getSettings.php").then(function (response) {
 			$rootScope.settings = response.data;
@@ -36,47 +32,65 @@ app.run(function ($rootScope, $location, $http, $window) {
 			}
 		});
 	}
-	
+
 	$rootScope.getCurrentSettings();
 
-	$rootScope.loggedIn = !($window.sessionStorage.token == null);
-
-	$rootScope.log = function () {
-		if ($rootScope.loggedIn) {
-			$window.sessionStorage.removeItem('token');
-		}
-		$rootScope.loggedIn = !$rootScope.loggedIn;
-	};
-
-	$rootScope.validateLogin = function () {
-		$http.get('php/validateSession.php', {
-			params: {
-				token: $window.sessionStorage["token"]
-			}
-		}).then(function (response) {
-			if (response.data == 'false') {
-				$rootScope.user.logOut();
-				$location.path('/login');
-			}
-		}, function (response) {
-			$rootScope.user.logOut();
-			$location.path('/login');
-		});
-	};
-
-	$rootScope.$watch(function () {
-		return $location.path();
-	}, function () {
-		if ($location.path() == '/wager') {
-			$rootScope.validateLogin();
-		} else if ($location.path() == '/admin' && $rootScope.user.username != 'admin') {
-			console.log("If you are looking at this, then you probably tried to force your way in here. If you tried to force your way in here, you could probably find the funciton that logged this. But be warned. Our security is more complicated than an if statement, and deeper then some client-side javascript. If you think you can hack this, then Game On. (But seriously don't cause I don't want to deal with incorrect data)");
-			$location.path('/');
-		}
-	});
 });
 
-app.controller('LoginController', function ($rootScope, $scope, $http, $location, $window) {
+app.service("AccountService", function ($http, $q, $window, $rootScope, $location) {
+	'use strict';
+
+	this.login = function (username, password) {
+		var deferred = $q.defer();
+
+		$http.post("php/login.php", {
+			username: username,
+			pswd: password
+		}).then(function (response) {
+			deferred.resolve(response);
+		}, function (response) {
+			deferred.reject(response);
+		});
+
+		return deferred.promise;
+	};
+
+	this.logout = function () {
+		$http.post("php/logout.php", {
+			token: $window.sessionStorage["token"]
+		}).finally(function (response) {
+			$window.sessionStorage.removeItem("token");
+			$rootScope.loggedIn = false;
+			$rootScope.user = {
+				username: '',
+				name: '',
+				byteCoins: 0
+			};
+			$location.path("/login");
+		});
+	}
+
+	this.validateSession = function () {
+		var deferred = $q.defer();
+
+		$http.post("php/validateSession.php", {
+			token: $window.sessionStorage["token"]
+		}).then(function (response) {
+			if (response.data == "false") {
+				deferred.reject(response);
+			} else {
+				deferred.resolve(response);
+				$rootScope.user = response.data;
+			}
+		}, function (response) {
+			deferred.reject(response);
+		});
+
+		return deferred.promise;
+	};
+});
+
+app.controller('LoginController', function (AccountService, $rootScope, $scope, $http, $location, $window) {
 	'use strict';
 
 	$(document).ready(function () {
@@ -112,28 +126,38 @@ app.controller('LoginController', function ($rootScope, $scope, $http, $location
 	});
 
 	$scope.login = function () {
-		$http.post('php/checkUser.php', {
-			username: $scope.scouterUsername,
-			pswd: $scope.scouterPswd
-		}).then(function (response) {
-			var result = response.data;
-			$window.sessionStorage["token"] = result.token;
-			$rootScope.user.name = result.name;
-			$rootScope.user.username = $scope.scouterUsername;
-			$rootScope.loggedIn = true;
-			if($scope.scouterUsername == "admin")
-			{
-			  $location.path('/admin');
-			}else
-			{
-			  $location.path('/wager');
-			}
-		}, function (response) {
-			$("#loginForm").validate().showErrors({
-				"loginFields": "Invalid username/password"
+		if (!$rootScope.loggedIn) {
+			AccountService.login($scope.scouterUsername, $scope.scouterPswd).then(function (response) {
+				var result = response.data;
+				console.log(result);
+				$window.sessionStorage["token"] = result.token;
+				$rootScope.loggedIn = true;
+				if ($scope.scouterUsername == "admin") {
+					$location.path('/admin');
+				} else {
+					$location.path('/wager');
+				}
+			}, function (response) {
+				$("#loginForm").validate().showErrors({
+					"loginFields": "Invalid username/password"
+				});
 			});
-		});
+		}
 	};
+
+	if ($rootScope.loggedIn) {
+		$location.path("/wager");
+	}
+});
+
+app.controller("LogoutController", function (AccountService, $rootScope, $http, $location, $window) {
+	'use strict';
+
+	if($rootScope.loggedIn) {
+		AccountService.logout();
+	} else {
+		$location.path("/login");
+	}
 });
 
 app.controller('RegisterController', function ($scope, $http, $location) {
@@ -192,15 +216,27 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 	};
 });
 
-app.controller('FormController', function ($rootScope, $scope, $http, $window) {
+app.controller('FormController', function ($rootScope, $scope, $http, $window, AccountService) {
 	'use strict';
-	
+
+	if ($rootScope.loggedIn) {
+		AccountService.validateSession().then(function (response) {
+			$scope.resetForm();
+		});
+	}
+
 	$scope.matchesReceived = true;
-	
+
 	$scope.selectedTeam = false;
-	
+
 	$scope.matches = [];
 	
+	$scope.maxMatchNumber = 540;
+	
+	$scope.minTeamNumber = 587;
+	
+	$scope.matchNumber = 1;
+
 	$rootScope.getCurrentSettings(function () {
 		if ($rootScope.settings.validateTeams) {
 			$http.get("php/getFutureMatches.php").then(function (response) {
@@ -228,90 +264,83 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			});
 		}
 	});
-	
+
 	$scope.selectTeam = function (matchNumber, teamNumber) {
 		$scope.formData.match_number = matchNumber;
 		$scope.formData.team_number = teamNumber;
 		$scope.selectedTeam = true;
 		$("#match-modal").modal('hide');
 	};
-	
+
 	$scope.resetForm = function () {
 		$scope.formData = {
 			name: $rootScope.user.name,
+			match_number: $scope.matchNumber,
 			robot_moved: false,
-			auto_defense_crossed: {
-				portcullis: 0,
-				cheval_de_frise: 0,
-				moat: 0,
-				ramparts: 0,
-				drawbridge: 0,
-				sally_port: 0,
-				rock_wall: 0,
-				rough_terrain: 0,
-				low_bar: 0
-			},
-			auto_balls_crossed: 0,
-			auto_balls_scored: [],
-			auto_balls_high: 0,
-			auto_balls_low: 0,
-			teleop_defense_crossed: {
-				portcullis: 0,
-				cheval_de_frise: 0,
-				moat: 0,
-				ramparts: 0,
-				drawbridge: 0,
-				sally_port: 0,
-				rock_wall: 0,
-				rough_terrain: 0,
-				low_bar: 0
-			},
-			teleop_balls_scored: [],
-			teleop_balls_high: 0,
-			teleop_balls_low: 0,
-			robot_defended: false,
-			end_game: "none",
-			rating: "1",
-			score: 0,
+			auto_gear: false,
+			autoHighGoal: false,
+			autoHighAccuracy: "0",
+			autoShootSpeed: "0",
+			autoLowGoal: false,
+			autoLowAccuracy: "0",
+			teleHighGoal: false,
+			teleHighAccuracy: "0",
+			teleShootSpeed: "0",
+			teleLowGoal: false,
+			teleLowAccuracy: "0",
+			teleGears: "0",
+			load: "0",
+			climbed: false,
 			comments: ""
 		};
 	};
 	
+	$http.get("php/getLastMatch.php").then(function (response) {
+	$scope.matchNumber = $scope.formData.match_number = parseInt(response.data) + 1;
+	}, function (response) {
+		displayMessage("Could not get this match", "danger");
+		console.log(response.data)		
+	});
+
 	$(document).ready(function () {
 		$scope.validator = $('#scouting_form').validate();
 		$("#comments").rules("add", {
 			required: true
 		});
+		$("#team_number").rules("add", {
+			min: $scope.minTeamNumber,
+			messages: {
+				min: "This team number is too low!"
+			}
+		});
+		$("#match_number").rules("add", {
+			max: $scope.maxMatchNumber,
+			messages: {
+				max: "This match number is too high!"
+			}
+		});
+		
 		console.log('Inititalize validation');
-		 
+
 		$scope.resetForm();
 	});
 
 	$scope.submit = function () {
 		if ($('#scouting_form').valid()) {
 			console.log("valid");
+			$("button[type='submit']").addClass("disabled");
 			$("body").scrollTop(0);
 			displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
-			$scope.formData.rating = parseInt($scope.formData.rating);
 
-			$scope.formData.auto_balls_scored.forEach(function (e) {
-				if (e.goal === 'High') {
-					$scope.formData.auto_balls_high++;
-				} else {
-					$scope.formData.auto_balls_low++;
-				}
-			});
+			$scope.formData.autoHighAccuracy = parseInt($scope.formData.autoHighAccuracy);
+			$scope.formData.autoShootSpeed = parseInt($scope.formData.autoShootSpeed);
+			$scope.formData.autoLowAccuracy = parseInt($scope.formData.autoLowAccuracy);
+			$scope.formData.teleHighAccuracy = parseInt($scope.formData.teleHighAccuracy);
+			$scope.formData.teleShootSpeed = parseInt($scope.formData.teleShootSpeed);
+			$scope.formData.teleLowAccuracy = parseInt($scope.formData.teleLowAccuracy);
+			$scope.formData.teleGears = parseInt($scope.formData.teleGears);
+			$scope.formData.load = parseInt($scope.formData.load);
 
-			$scope.formData.teleop_balls_scored.forEach(function (e) {
-				if (e.goal === 'High') {
-					$scope.formData.teleop_balls_high++;
-				} else {
-					$scope.formData.teleop_balls_low++;
-				}
-			});
-			//So we dont send more data then we need to
-			delete $scope.formData.auto_balls_scored;
-			delete $scope.formData.teleop_balls_scored;
 			$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
 				console.log("submitted");
 				$scope.matches.shift();
@@ -319,6 +348,8 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 				console.log(response.data);
 				$('#scouting_form').trigger('reset');
 				displayMessage("<strong>Success!</strong> Now do it again.", "success");
+			$("button[type='submit']").removeClass("disabled");
+				$scope.matchNumber++;
 				$scope.resetForm();
 			}, function (response) {
 				console.log("Error during submission");
@@ -377,7 +408,7 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
 	var num = 0;
 
 	$scope.addPicture = function () {
-		$scope.picNum.push(num);
+		$scope.picNum.unshift(num);
 		num++;
 	};
 
@@ -431,7 +462,7 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 	'use strict';
 
 	$scope.teamNumber = $routeParams.teamNumber;
-	
+
 	$scope.error = "";
 
 	$scope.teamLink = function () {
@@ -475,13 +506,13 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 		}
 	}).then(function (response) {
 		$scope.data = response.data;
-		
+
 		if ($scope.data.teamInfo.name != null) {
 			$scope.name = $scope.data.teamInfo.name + ($scope.data.teamInfo.name[$scope.data.teamInfo.name.length - 1] == "s" ? "'" : "'s");
 		} else {
 			$scope.name = $scope.teamNumber + "'s";
 		}
-		
+
 		if (response.data.commentSection != null) {
 			for (var i = 0; i < response.data.commentSection.length; i++) {
 				$scope.pitData.comments.push({
@@ -518,8 +549,8 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 
 app.controller("ListController", function ($rootScope, $scope, $http) {
 	'use strict';
-	$scope.sortType = 'team';
-	$scope.sortReverse = false;
+	$scope.sortType = 'avgScore';
+	$scope.sortReverse = true;
 
 	$scope.filterTeams = function (value) {
 		var searchRegExp = new RegExp($scope.search, "i");
@@ -531,40 +562,43 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 		$scope.data = response.data;
 		for (var i = 0; i < $scope.data.length; i++) {
 			$scope.data[i].team = parseInt($scope.data[i].team);
-			$scope.data[i].totalHighGoals = parseInt($scope.data[i].totalHighGoals);
-			$scope.data[i].totalLowGoals = parseInt($scope.data[i].totalLowGoals);
-			$scope.data[i].totalLowBars = parseInt($scope.data[i].totalLowBars);
-			$scope.data[i].gamesDefended = parseInt($scope.data[i].gamesDefended);
+			$scope.data[i].avgScore = parseInt($scope.data[i].avgScore);
+			$scope.data[i].totalGears = parseInt($scope.data[i].totalGears);
+			$scope.data[i].avgClimbed = parseInt($scope.data[i].avgClimbed);
 			$scope.data[i].name = $scope.data[i].name != null ? $scope.data[i].name : "Name unavailable";
 		}
 	});
 });
 
-app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
+app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window, AccountService) {
 	'use strict';
-	
+
+	AccountService.validateSession().then(function (response) {
+		$scope.refreshByteCoins();
+	}, function (response) {
+		AccountService.logout();
+		displayMessage("Session expired, please log in again", "danger");
+	});
+
 	$scope.refreshByteCoins = function () {
 		$http.post("php/getByteCoins.php", {
 			token: $window.sessionStorage["token"]
 		}).then(function (response) {
 			$rootScope.user.byteCoins = $scope.byteCoins = response.data;
-			$scope.maxByteCoins = $rootScope.user.byteCoins < 200 ? 200 : $rootScope.user.byteCoins;
-			$("#byteCoinsWagered").slider('setAttribute', 'max', $scope.maxByteCoins);
+			$("#byteCoinsWagered").slider('setAttribute', 'max', parseInt($scope.byteCoins) + 1);
 		}, function (response) {
 			displayMessage("Could not properly get your number of Byte Coins. Please log in and try again", "danger");
 		});
 	};
-	
-	$scope.refreshByteCoins();
-	
+
 	$scope.manuallyEnterByteCoins = false;
-	
+
 	$scope.toggleManualByteCoins = function () {
 		$scope.manuallyEnterByteCoins = !$scope.manuallyEnterByteCoins;
 	}
-	
+
 	$scope.selectedMatch = false;
-	
+
 	$scope.selectMatch = function (match) {
 		$scope.selectedMatch = {
 			number: match.matchNumber,
@@ -605,7 +639,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 			teams[2].teamNumber + " vs " + teams[3].teamNumber + "-" +
 			teams[4].teamNumber + "-" + teams[5].teamNumber;
 	};
-	
+
 	$scope.resetForm = function () {
 		console.log($("#confirm-wager-modal").modal('hide'));
 		$("#byteCoinsWagered").slider('setValue', 0);
@@ -633,7 +667,7 @@ app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
 			}
 		}
 	};
-	
+
 	$(document).ready(function () {
 		$scope.resetForm();
 	});
@@ -713,23 +747,14 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	'use strict';
 
 	$scope.teamNumber = $routeParams.teamNumber;
-	
+
 	$scope.error = "";
 
-	$scope.team = {
-		number: 0,
-		avgStackHeight: 0,
-		avgStacksPerMatch: 0,
-		heighestStackMade: 0,
-		rating: 0
-	};
-
-	$scope.stacks = [];
 
 	$scope.commentSection = {
 		comments: []
 	};
-	
+
 	$(document).ready(function () {
 		setTimeout(function () {
 			$('[data-toggle="tooltip"]').each(function () {
@@ -749,20 +774,133 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		}
 	}).then(function (response) {
 		$scope.data = response.data;
-		
+
 		if ($scope.data.teamInfo.name != null) {
 			$scope.pitName = $scope.data.teamInfo.name + ($scope.data.teamInfo.name[$scope.data.teamInfo.name.length - 1] == "s" ? "'" : "'s");
 		} else {
 			$scope.pitName = $scope.teamNumber + "'s";
 		}
-		
+
 		$scope.range = function (n) {
 			return new Array(n);
 		};
-
-		$scope.autoString = $scope.data.rankingInfo.autoString.auto_common_defense + " | " + $scope.data.rankingInfo.autoString.auto_common_scoring.high + " | " + $scope.data.rankingInfo.autoString.auto_common_scoring.low;
-		$scope.canLowBar = ($scope.data.rankingInfo.totalLowBars > 0);
-
+		
+		for (var i = 0; i < $scope.data.misc.length; i++) {
+			switch ($scope.data.misc[i].load) {
+				case 0:
+					$scope.data.misc[i].load = "Less than 50";
+					break;
+				case 1:
+					$scope.data.misc[i].load = "~50";
+					break;
+				case 2:
+					$scope.data.misc[i].load = "~100";
+					break;
+				case 3:
+					$scope.data.misc[i].load = "~150";
+					break;
+				case 4:
+					$scope.data.misc[i].load = "More than 150";
+					break;
+			}
+		}
+		
+		for (var i = 0; i < $scope.data.match.teleop.length; i++) {
+			switch ($scope.data.match.teleop[i].teleHighAccuracy) {
+				case 0:
+					$scope.data.match.teleop[i].teleHighAccuracy = "0% (No Accuracy)";
+					break;
+				case 1:
+					$scope.data.match.teleop[i].teleHighAccuracy = "~30% (Low Accuracy)";
+					break;
+				case 2:
+					$scope.data.match.teleop[i].teleHighAccuracy = "~50% (Medium Accuracy)";
+					break;
+				case 3:
+					$scope.data.match.teleop[i].teleHighAccuracy = "~80% (High Accuracy)";
+					break;
+			}
+			switch ($scope.data.match.teleop[i].teleLowAccuracy) {
+				case 0:
+					$scope.data.match.teleop[i].teleLowAccuracy = "0% (No Accuracy)";
+					break;
+				case 1:
+					$scope.data.match.teleop[i].teleLowAccuracy = "~30% (Low Accuracy)";
+					break;
+				case 2:
+					$scope.data.match.teleop[i].teleLowAccuracy = "~50% (Medium Accuracy)";
+					break;
+				case 3:
+					$scope.data.match.teleop[i].teleLowAccuracy = "~80% (High Accuracy)";
+					break;
+			}
+			switch ($scope.data.match.auto[i].autoHighAccuracy) {
+				case 0:
+					$scope.data.match.auto[i].autoHighAccuracy = "0% (No Accuracy)";
+					break;
+				case 1:
+					$scope.data.match.auto[i].autoHighAccuracy = "~30% (Low Accuracy)";
+					break;
+				case 2:
+					$scope.data.match.auto[i].autoHighAccuracy = "~50% (Medium Accuracy)";
+					break;
+				case 3:
+					$scope.data.match.auto[i].autoHighAccuracy = "~80% (High Accuracy)";
+					break;
+			}
+			switch ($scope.data.match.auto[i].autoLowAccuracy) {
+				case 0:
+					$scope.data.match.auto[i].autoLowAccuracy = "0% (No Accuracy)";
+					break;
+				case 1:
+					$scope.data.match.auto[i].autoLowAccuracy = "~30% (Low Accuracy)";
+					break;
+				case 2:
+					$scope.data.match.auto[i].autoLowAccuracy = "~50% (Medium Accuracy)";
+					break;
+				case 3:
+					$scope.data.match.auto[i].autoLowAccuracy = "~80% (High Accuracy)";
+					break;
+			}
+		}
+		
+		for (var i = 0; i < $scope.data.match.teleop.length; i++) {
+			switch ($scope.data.match.teleop[i].teleShootSpeed) {
+				case 0:
+					$scope.data.match.teleop[i].teleShootSpeed = "Slow";
+					break;
+				case 1:
+					$scope.data.match.teleop[i].teleShootSpeed = "Moderate";
+					break;
+				case 2:
+					$scope.data.match.teleop[i].teleShootSpeed = "Fast";
+					break;
+				case 3:
+					$scope.data.match.teleop[i].teleShootSpeed = "Super Fast";
+					break;
+				case 4:
+					$scope.data.match.teleop[i].teleShootSpeed = "LightSpeed";
+					break;
+			}
+			switch ($scope.data.match.auto[i].autoShootSpeed) {
+				case 0:
+					$scope.data.match.auto[i].autoShootSpeed = "Slow";
+					break;
+				case 1:
+					$scope.data.match.auto[i].autoShootSpeed = "Moderate";
+					break;
+				case 2:
+					$scope.data.match.auto[i].autoShootSpeed = "Fast";
+					break;
+				case 3:
+					$scope.data.match.auto[i].autoShootSpeed = "Super Fast";
+					break;
+				case 4:
+					$scope.data.match.auto[i].autoShootSpeed = "LightSpeed";
+					break;
+			}
+		}
+		
 		console.log($scope.data);
 	}, function (response) {
 		$scope.error = response.data.error;
@@ -770,33 +908,73 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	});
 });
 
-app.controller('AdminPageController', function ($rootScope, $scope, $http, $window) {
+app.controller("ScouterController", function($scope, $http, $routeParams) {
 	'use strict';
-	
-	$scope.prettySettings = {
-		validateTeams: ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled"
+
+	$scope.scouterId = $routeParams.scouterId;
+
+	$scope.error = "";
+
+	$scope.commentSection = {
+		comments: []
 	};
-	
+
+	$http.get("php/getScouter.php", {
+		params: {
+			scouterId: $routeParams.scouterId
+		}
+	}).then(function (response) {
+		$scope.data = response.data;
+
+		console.log($scope.data)
+	}, function (response) {
+		$scope.error = response.data.error;
+		console.log($scope.error);
+	});
+});
+
+app.controller('AdminPageController', function ($rootScope, $scope, $http, $window, $location, AccountService) {
+	'use strict';
+
+	AccountService.validateSession().then(function (response) {
+		if ($rootScope.user.username != "admin") {
+			console.log("If you are looking at this, then you probably tried to force your way in here. If you tried to force your way in here, you could probably find the funciton that logged this. But be warned. Our security is more complicated than an if statement, and deeper then some client-side javascript. If you think you can hack this, then Game On. (But seriously don't cause I don't want to deal with incorrect data)");
+			AccountService.logout();
+		}
+	}, function (response) {
+		if ($rootScope.user.username != "admin") {
+			console.log("If you are looking at this, then you probably tried to force your way in here. If you tried to force your way in here, you could probably find the funciton that logged this. But be warned. Our security is more complicated than an if statement, and deeper then some client-side javascript. If you think you can hack this, then Game On. (But seriously don't cause I don't want to deal with incorrect data)");
+			AccountService.logout();
+		}
+	});
+
+
+	$scope.prettySettings = {
+		validateTeams: ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled",
+		enableCasino: ($rootScope.settings.enableCasino == true) ? "Enabled" : "Disabled"
+	};
+
 	$scope.updatePrettySettings = function () {
 		$scope.prettySettings.validateTeams = ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled";
+		$scope.prettySettings.enableCasino = ($rootScope.settings.enableCasino == true) ? "Enabled" : "Disabled";
 	};
-	
+
 	$scope.adminAction = function (pageAction, setting, value) {
 		var post = {
 			token: $window.sessionStorage["token"],
 			action: pageAction
 		};
 		switch (pageAction) {
-			case 'update_team':
-				post.teamNumber = $scope.teamNumber;
-				break;
-			case 'update_wagers':
-				post.matchNumber = $scope.matchNumber;
-				break;
-			case 'updateSettings':
-				post.setting = setting;
-				post.settingValue = value == 'true' ? true : false;
-				break;
+		case 'update_team':
+			post.teamNumber = $scope.teamNumber;
+			break;
+		case 'update_wagers':
+			post.matchNumber = $scope.matchNumber;
+			break;
+		case 'updateSettings':
+			post.setting = setting;
+			post.settingValue = value == 'true' ? true : false;
+			break;
 		}
 		$http.post("php/adminAction.php", post).then(function (response) {
 			$rootScope.getCurrentSettings(function () {
@@ -875,9 +1053,15 @@ app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
 	}).when("/login", {
 		templateUrl: 'html/login.html',
 		controller: 'LoginController'
+	}).when("/logout", {
+		templateUrl: 'html/login.html',
+		controller: 'LogoutController'
 	}).when("/register", {
 		templateUrl: 'html/register.html',
 		controller: 'RegisterController'
+	}).when("/scouter/:scouterId", {
+		templateUrl: 'html/scouter.html',
+		controller: 'ScouterController'
 	}).when("/admin", {
 		templateUrl: 'html/admin.html',
 		controller: 'AdminPageController'

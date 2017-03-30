@@ -9,15 +9,14 @@ $timestamps = array();
 $names = array();
 $matchNumber = array();
 $team = 0;
-
 if ($teamNumber) {
 	if (checkTeamData($db, $teamNumber)) {
 		$response = array();
 
 		//Comments query
-		$query = "SELECT team, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, name, match_number, rating
+		$query = "SELECT team_number, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, name, match_number
 				FROM scout_data
-				WHERE team = ?";
+				WHERE team_number = ?";
 		if ($stmt = $db->prepare($query)){
 			$stmt->bind_param("i", $teamNumber);
 			$stmt->execute();
@@ -35,18 +34,19 @@ if ($teamNumber) {
 			die('{"error": "Failed to get comments"}');
 		}
 
-		//Boulders and endgame query
-		$query = "SELECT match_number, end_game
-			FROM scout_data WHERE team=?";
+		//Misc. stats query
+		$query = "SELECT match_number, `load`, climbed
+			FROM scout_data WHERE team_number=?";
 		if($stmt = $db->prepare($query)) {
 			$stmt->bind_param("i", $teamNumber);
 			$stmt->execute();
 			$result = $stmt->get_result();
 			if ($result) {
 				while ($row = $result->fetch_assoc()) {
-					$response["endgame"][] = array(
+					$response["misc"][] = array(
 						"match_number" => $row["match_number"],
-						"end_game" => $row["end_game"]
+						"load" => $row["load"],
+						"climbed" => $row["climbed"]
 					);
 				}
 			}
@@ -55,10 +55,8 @@ if ($teamNumber) {
 			die('{"error": "Failed to get data"}');
 		}
 
-		$response["balls"] = getTeamBouldersTable($db, $teamNumber);
-		$response['defenses'] = getTeamDefenseTable($db, $teamNumber);
+		$response["match"] = getTeamMainMatchTable($db, $teamNumber);
 		$response["rankingInfo"] = getTeamRankings($db, $teamNumber);
-		$response["rankingInfo"]["autoString"] = getTeamAutoStringWTables($db, $teamNumber, $response['defenses'], $response["balls"]);
 		$response['teamInfo'] = getTeamInfo($db, $teamNumber);
 		echo(json_encode($response));
 	} else {
