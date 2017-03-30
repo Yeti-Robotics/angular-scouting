@@ -3,9 +3,10 @@
 		<h1 class="text-center">{{error}}</h1>
 	</div>
 	<div ng-show="error == ''">
-		<h2 class="page-header">Scouting Page for <span ng-show="data.scouter.name != null">{{data.scouter.name}}</span><span ng-show="data.scouter.name == null">{{scouterId}}</span></h2>
-		<h3>ByteCoins: {{data.scouter.bytecoins}}</h3>
-		<br />
+		<h2 class="page-header">Scouting Page for <span ng-show="data.scouter.name != null">{{data.scouter.name}}</span><span ng-show="data.scouter.name == null">{{scouterId}}</span>
+		<br/>
+		<span class="small">ByteCoins: {{data.scouter.bytecoins}}</span></h2>
+		<br/>
 		<fieldset>
 			<legend>Comments:</legend>
 			<div class="container-fluid" ng-repeat="comment in data.comments">
