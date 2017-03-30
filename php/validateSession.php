@@ -1,11 +1,16 @@
 <?php
+
 include("connect.php");
 include("functions.php");
 
-if (isset($_GET["token"])) {
-    die(json_encode(validateToken($db, $_GET["token"])));
+$params = json_decode(file_get_contents('php://input'), true);
+
+if (validateToken($db, $params["token"])) {
+	die(json_encode(getSessionUser($db, $params["token"])));
 } else {
-    die(json_encode(false));
+	die(json_encode(false));
 }
+
 $db->close();
+
 ?>
