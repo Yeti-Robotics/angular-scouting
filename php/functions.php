@@ -752,7 +752,7 @@ function getTeamAutoString($db, $team){
             }
         } else {
             //cd, c2d
-            if ($autoCases.['crosses_defense'] > $autoCases['crosses_two_defenses']) {
+            if ($autoCases['crosses_defense'] > $autoCases['crosses_two_defenses']) {
                 //cd
                 $return['auto_common_defense'] = "Crosses a defense";
             } else {
