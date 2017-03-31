@@ -135,7 +135,7 @@ app.controller('LoginController', function (AccountService, $rootScope, $scope, 
 				if ($scope.scouterUsername == "admin") {
 					$location.path('/admin');
 				} else {
-					$location.path('/wager');
+					$location.path('/scoutingForm');
 				}
 			}, function (response) {
 				$("#loginForm").validate().showErrors({
@@ -218,12 +218,13 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 
 app.controller('FormController', function ($rootScope, $scope, $http, $window, AccountService) {
 	'use strict';
-
-	if ($rootScope.loggedIn) {
-		AccountService.validateSession().then(function (response) {
-			$scope.resetForm();
-		});
-	}
+	
+    AccountService.validateSession().then(function (response) {
+        $scope.resetForm();
+    }, function (response) {
+        AccountService.logout();
+		displayMessage("It's time to stop", "danger");
+    });
 
 	$scope.matchesReceived = true;
 
@@ -1029,18 +1030,15 @@ app.directive('picture', function () {
 app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
 	'use strict';
 
-	$routeProvider.when('/', {
-		templateUrl: 'html/form.html',
-		controller: 'FormController'
+    $routeProvider.when('/', {
+		templateUrl: 'html/list.html',
+		controller: 'ListController'
 	}).when('/wager', {
 		templateUrl: 'html/TheCasino.html',
 		controller: 'JoeBannanas'
-	}).when("/list", {
-		templateUrl: 'html/list.html',
-		controller: 'ListController'
-	}).when("/leaderboards", {
-		templateUrl: 'html/leaderboards.html',
-		controller: 'LeaderboardsController'
+	}).when("/scoutingForm", {
+		templateUrl: 'html/form.html',
+		controller: 'FormController'
 	}).when("/team/:teamNumber", {
 		templateUrl: 'html/team.html',
 		controller: 'TeamController'
