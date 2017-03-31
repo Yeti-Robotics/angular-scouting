@@ -136,7 +136,7 @@ app.controller('LoginController', function (AccountService, $rootScope, $scope, 
 				if ($scope.scouterUsername == "admin") {
 					$location.path('/admin');
 				} else {
-					$location.path('/scoutingForm');
+					$location.path('/scouting');
 				}
 			}, function (response) {
 				$("#loginForm").validate().showErrors({
@@ -1036,15 +1036,15 @@ app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
 		templateUrl: 'html/list.html',
 		controller: 'ListController'
 	}).when('/wager', {
-		templateUrl: 'html/TheCasino.html',
+		templateUrl: 'html/casino.html',
 		controller: 'JoeBannanas'
-	}).when("/scoutingForm", {
+	}).when("/scouting", {
 		templateUrl: 'html/form.html',
 		controller: 'FormController'
 	}).when("/team/:teamNumber", {
 		templateUrl: 'html/team.html',
 		controller: 'TeamController'
-	}).when("/pitForm", {
+	}).when("/pit-scouting", {
 		templateUrl: 'html/pitForm.html',
 		controller: 'PitFormController'
 	}).when("/pit/:teamNumber", {

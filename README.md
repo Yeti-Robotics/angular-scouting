@@ -7,7 +7,7 @@
 - [ ] Design wager system w/ sign in number & password
   - [x] Store session tokens in database to stay logged in on reload
   - [x] Update people's wagers after a match ends, e.g. when a stand scouting form is submitted
-  - [x] Fix [getByteCoins.php](php/getByteCoins.php) returning an error when [TheCasino.html](html/TheCasino.html) is loaded
+  - [x] Fix [getByteCoins.php](php/getByteCoins.php) returning an error when [casino.html](html/casino.html) is loaded
   - [x] Ensure wagers are only made for future matches by using the FRC API
   - [x] Limit people to wagering a minimum of 200 ByteCoins
   - [x] Let people manually edit slider values for more precision using a text field

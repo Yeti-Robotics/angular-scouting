@@ -118,7 +118,8 @@
 			<div class="container-fluid" ng-repeat="comment in data.commentSection">
 				<div class="row">
 					<p>{{comment.comments}}</p>
-					<p>-- <a ng-href="#/scouter/{{comment.id}}">{{comment.name}}</a>, for match #{{comment.match_number}}, {{comment.timestamp}}</p>
+					<p ng-show="comment.name != 'Name unavailable'">-- <a ng-href="#/scouter/{{comment.id}}">{{comment.name}}</a>, for match #{{comment.match_number}}, {{comment.timestamp}}</p>
+					<p ng-show="comment.name == 'Name unavailable'">-- {{comment.name}}, for match #{{comment.match_number}}, {{comment.timestamp}}</p>
 					<hr/>
 				</div>
 			</div>

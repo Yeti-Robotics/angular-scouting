@@ -14,7 +14,7 @@ if ($teamNumber) {
 		$response = array();
 
 		//Comments query
-		$query = "SELECT team_number, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, name, match_number, scout_data.id AS id
+		$query = "SELECT team_number, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, scouters.name, match_number, scout_data.id AS id
 				FROM scout_data
                 LEFT JOIN scouters
                 ON scout_data.id = scouters.id
@@ -28,6 +28,9 @@ if ($teamNumber) {
 				while ($row = $result->fetch_assoc()) {
 					//print_r($row);
 					$row['timestamp'] = timeAgo($row['timestamp']);
+					if ($row["name"] == null) {
+						$row["name"] = "Name unavailable";
+					}
 					$response['commentSection'][] = $row;
 				}
 			}
