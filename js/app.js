@@ -64,6 +64,7 @@ app.service("AccountService", function ($http, $q, $window, $rootScope, $locatio
 			$rootScope.user = {
 				username: '',
 				name: '',
+                id: '',
 				byteCoins: 0
 			};
 			$location.path("/login");
@@ -274,8 +275,9 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 	};
 
 	$scope.resetForm = function () {
+        console.log($rootScope.user);
 		$scope.formData = {
-			name: $rootScope.user.name,
+			id: $rootScope.user.id,
 			match_number: $scope.matchNumber,
 			robot_moved: false,
 			auto_gear: false,

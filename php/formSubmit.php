@@ -3,7 +3,7 @@ include("connect.php");
 include("functions.php");
 header('Content-Type: application/json');
 $postData = json_decode(file_get_contents("php://input"), true);
-$query = "INSERT INTO scout_data (name,
+$query = "INSERT INTO scout_data (id,
 			match_number,
 			team_number,
             robot_moved,
@@ -62,8 +62,8 @@ if($postData["climbed"]) {
 }
 
 if($stmt = $db->prepare($query)) {
-    $stmt->bind_param("siiiiiiiiiiiiiiiiiis",
-        $postData["name"],
+    $stmt->bind_param("iiiiiiiiiiiiiiiiiiis",
+        $postData["id"],
         $postData["match_number"],
 		$postData["team_number"],
         $robot_moved,

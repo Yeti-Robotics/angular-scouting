@@ -300,7 +300,7 @@ function deleteToken($db, $token, $username) {
 }
 
 function getSessionUser($db, $token) {
-    $query = "SELECT name, username, byteCoins FROM sessions LEFT JOIN scouters ON sessions.id = scouters.id WHERE token = ?";
+    $query = "SELECT name, sessions.id AS id, username, byteCoins FROM sessions LEFT JOIN scouters ON sessions.id = scouters.id WHERE token = ?";
     if (validateToken($db, $token)) {
         if($stmt = $db->prepare($query)) {
             $stmt->bind_param("s", $token);
@@ -310,15 +310,15 @@ function getSessionUser($db, $token) {
                 return [
 					"name" => $row["name"],
 					"username" => $row["username"],
-					"byteCoins" => $row["byteCoins"]
+					"byteCoins" => $row["byteCoins"],
+                    "id" => $row["id"]
 				];
             }
         } else {
             header('HTTP/1.1 500 SQL Error', true, 500);
-            die ( '{"message":"Failed creating statement"}' );
+            die ( '{"message":"Failed creating getSessionUser statement"}' );
         }
-    }
-    else {
+    } else {
         return false;
     }
 }

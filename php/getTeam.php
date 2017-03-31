@@ -14,8 +14,10 @@ if ($teamNumber) {
 		$response = array();
 
 		//Comments query
-		$query = "SELECT team_number, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, name, match_number
+		$query = "SELECT team_number, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, name, match_number, scout_data.id AS id
 				FROM scout_data
+                LEFT JOIN scouters
+                ON scout_data.id = scouters.id
 				WHERE team_number = ?";
 		if ($stmt = $db->prepare($query)){
 			$stmt->bind_param("i", $teamNumber);

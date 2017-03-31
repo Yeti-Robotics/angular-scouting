@@ -32,9 +32,9 @@ if ($scouterId) {
 		//Comments query
 		$query = "SELECT team_number, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, match_number
 				FROM scout_data
-				WHERE name = ?";
+				WHERE id = ?";
 		if ($stmt = $db->prepare($query)){
-			$stmt->bind_param("s", $response['scouter']['name']);
+			$stmt->bind_param("i", $scouterId);
 			$stmt->execute();
 			$result = $stmt->get_result();
 			if ($result) {
