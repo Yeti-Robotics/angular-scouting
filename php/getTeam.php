@@ -14,7 +14,7 @@ if ($teamNumber) {
 		$response = array();
 
 		//Comments query
-		$query = "SELECT team_number, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, scouters.name, match_number, scout_data.id AS id
+		$query = "SELECT team_number, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, name, match_number, scout_data.id AS id
 				FROM scout_data
                 LEFT JOIN scouters
                 ON scout_data.id = scouters.id
