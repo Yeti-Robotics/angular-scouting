@@ -16,6 +16,9 @@
   - [ ] Allow users to edit their own comments
   - [ ] Allow admin to edit anyone's comments
   - [ ] Show people's past and pending wagers
+- [ ] Implement comment liking
+  - [ ] Only admin can like comments (because of sql limitations)
+  - [ ] Display top comments somewhere
 - [ ] Add nice way of manually inputting all teams in a competition if api validation isn't working
 - [x] Make default value of score field on scouting form blank so jQuery validate catches premature submissions
 - [ ] Add admin action to reset everything for new competition
