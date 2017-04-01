@@ -233,9 +233,9 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 
 	$scope.matches = [];
 	
-	$scope.maxMatchNumber = 540;
+	$scope.maxMatchNumber = 64;
 	
-	$scope.minTeamNumber = 587;
+	$scope.minTeamNumber = 435;
 	
 	$scope.matchNumber = 1;
 
