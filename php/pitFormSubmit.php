@@ -2,7 +2,7 @@
 include('connect.php');
 include('functions.php');
 $teamNumber = $_POST['teamNumber'];
-$scouterName = $_POST['name'];
+$scouterId = $_POST['id'];
 $comment = isset($_POST['comment']) ? $_POST['comment'] : null;
 
 if(isset($_FILES["files"])) {
@@ -24,12 +24,12 @@ if(isset($_FILES["files"])) {
 
 //Comments submission
 if($comment != null && !isset($_FILES["files"])) {
-    $query = "INSERT INTO pit_comments (team_number, pit_comments, scouter_name)
+    $query = "INSERT INTO pit_comments (team_number, pit_comments, id)
                 VALUES (?, ?, ?)";
-    if($stmt = $db->prepare($query)){
+    if($stmt = $db->prepare($query)) {
         $stmt->bind_param("iss", $teamNumber, 
                     $comment, 
-                    $scouterName);
+                    $scouterId);
             $stmt->execute();
             $insert_id = $stmt->insert_id;
     } else {
@@ -40,12 +40,12 @@ if($comment != null && !isset($_FILES["files"])) {
 }
 
 if (isset($_FILES["files"]) && $comment == null) {
-    $query = "INSERT INTO pit_pictures (team_number, scouter_name, pic_num)
+    $query = "INSERT INTO pit_pictures (team_number, id, pic_num)
                 VALUES (?, ?, ?)";
     foreach ($picNums as $picNum) {
         if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("isi", $teamNumber, 
-                        $scouterName,
+            $stmt->bind_param("iii", $teamNumber, 
+                        $scouterId,
                         $picNum);
                 $stmt->execute();
                 $insert_id = $stmt->insert_id;
@@ -59,12 +59,12 @@ if (isset($_FILES["files"]) && $comment == null) {
 
 if (isset($_FILES["files"]) && $comment != null) {
     //Insert pictures into database
-    $query = "INSERT INTO pit_pictures (team_number, scouter_name, pic_num)
+    $query = "INSERT INTO pit_pictures (team_number, id, pic_num)
                 VALUES (?, ?, ?)";
     foreach ($picNums as $picNum) {
         if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("isi", $teamNumber, 
-                        $scouterName,
+            $stmt->bind_param("iii", $teamNumber, 
+                        $scouterId,
                         $picNum);
                 $stmt->execute();
                 $insert_id = $stmt->insert_id;
@@ -76,12 +76,12 @@ if (isset($_FILES["files"]) && $comment != null) {
     }
     
     //Insert comment into database
-    $query = "INSERT INTO pit_comments (team_number, pit_comments, scouter_name)
+    $query = "INSERT INTO pit_comments (team_number, pit_comments, id)
                 VALUES (?, ?, ?)";
     if($stmt = $db->prepare($query)){
-        $stmt->bind_param("iss", $teamNumber, 
+        $stmt->bind_param("isi", $teamNumber, 
                     $comment, 
-                    $scouterName);
+                    $scouterId);
             $stmt->execute();
             $insert_id = $stmt->insert_id;
     } else {

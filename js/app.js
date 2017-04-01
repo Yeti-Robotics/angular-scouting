@@ -364,8 +364,23 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 	};
 });
 
-app.controller('PitFormController', function ($rootScope, $scope, $http, $window) {
+app.controller('PitFormController', function ($rootScope, $scope, $http, $window, AccountService) {
 	'use strict';
+	
+	AccountService.validateSession().then(function (response) {
+        $scope.resetForm();
+    }, function (response) {
+        AccountService.logout();
+		displayMessage("It's time to stop", "danger");
+    });
+	
+	$scope.resetForm = function () {
+		$scope.pitFormData = {
+			id: $rootScope.user.id
+		};
+		$scope.pictures = [];
+		$scope.picNum = [];
+	};
 
 	$(document).ready(function () {
 		$('#pitForm').validate();
@@ -386,14 +401,6 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
 		$("#comments").rules("remove", "required");
 	};
 
-	$scope.pitFormData = {
-		name: $rootScope.user.name
-	};
-
-	$scope.pictures = [];
-
-	$scope.picNum = [];
-
 	$scope.updateDisplay = function (picture, rowNum) {
 		var reader = new FileReader();
 		var file = picture.files[0];
@@ -411,8 +418,9 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
 	var num = 0;
 
 	$scope.addPicture = function () {
-		$scope.picNum.unshift(num);
+		$scope.picNum.push(num);
 		num++;
+		console.log($scope.picNum);  
 	};
 
 	$scope.removePicture = function (picture) {
@@ -444,11 +452,7 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
 				console.log("submitted");
 				console.log(response.data);
 				$('body').scrollTop(0);
-				$scope.pitFormData = {
-					name: $rootScope.user.name
-				};
-				$scope.pictures = [];
-				$scope.picNum = [];
+				$scope.resetForm();
 				displayMessage("<strong>Success!</strong> Now do it again.", "success");
 			}, function (response) {
 				console.log("Error during submission");

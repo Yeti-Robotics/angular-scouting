@@ -1,22 +1,23 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.10.4
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
--- Host: mysql.yetirobotics.org
--- Generation Time: Mar 16, 2016 at 01:31 PM
--- Server version: 5.6.25
--- PHP Version: 5.6.18
+-- Host: 127.0.0.1
+-- Generation Time: Apr 01, 2017 at 02:24 PM
+-- Server version: 10.1.9-MariaDB
+-- PHP Version: 5.6.15
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `yetirobotics_org_scouting`
+-- Database: `scouting`
 --
 
 -- --------------------------------------------------------
@@ -25,14 +26,13 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Table structure for table `pit_comments`
 --
 
-CREATE TABLE IF NOT EXISTS `pit_comments` (
-  `pit_scout_data_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `pit_comments` (
+  `pit_scout_data_id` int(11) NOT NULL,
   `team_number` int(11) NOT NULL,
   `pit_comments` mediumtext NOT NULL,
-  `scouter_name` text NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`pit_scout_data_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+  `id` int(11) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -40,14 +40,13 @@ CREATE TABLE IF NOT EXISTS `pit_comments` (
 -- Table structure for table `pit_pictures`
 --
 
-CREATE TABLE IF NOT EXISTS `pit_pictures` (
-  `pit_scout_data_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `pit_pictures` (
+  `pit_scout_data_id` int(11) NOT NULL,
   `team_number` int(11) NOT NULL,
   `pic_num` int(11) DEFAULT NULL,
-  `scouter_name` text NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`pit_scout_data_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+  `id` int(11) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -55,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `pit_pictures` (
 -- Table structure for table `rankings`
 --
 
-CREATE TABLE IF NOT EXISTS `rankings` (
+CREATE TABLE `rankings` (
   `team_number` int(11) NOT NULL,
   `event_key` tinytext,
   `team_name` text NOT NULL,
@@ -66,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `rankings` (
   `ties` tinyint(4) NOT NULL,
   `next_match_number` tinyint(4) DEFAULT NULL,
   `next_match_time` datetime DEFAULT NULL,
-  `lastmodified` timestamp NOT NULL
+  `lastmodified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -75,14 +74,13 @@ CREATE TABLE IF NOT EXISTS `rankings` (
 -- Table structure for table `scouters`
 --
 
-CREATE TABLE IF NOT EXISTS `scouters` (
-  `id` int(6) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `scouters` (
+  `id` int(6) NOT NULL,
   `name` tinytext NOT NULL,
   `username` text NOT NULL,
   `pswd` tinytext NOT NULL,
-  `byteCoins` int(11) NOT NULL DEFAULT '200',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+  `byteCoins` int(11) NOT NULL DEFAULT '200'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -90,8 +88,8 @@ CREATE TABLE IF NOT EXISTS `scouters` (
 -- Table structure for table `scout_data`
 --
 
-CREATE TABLE IF NOT EXISTS `scout_data` (
-  `scout_data_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `scout_data` (
+  `scout_data_id` int(11) NOT NULL,
   `id` int(11) NOT NULL,
   `match_number` int(11) NOT NULL,
   `team_number` int(11) NOT NULL,
@@ -112,10 +110,8 @@ CREATE TABLE IF NOT EXISTS `scout_data` (
   `climbed` tinyint(1) NOT NULL,
   `score` int(11) NOT NULL,
   `comments` text NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`scout_data_id`),
-  KEY `team_number` (`team_number`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=270 ;
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -123,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `scout_data` (
 -- Table structure for table `sessions`
 --
 
-CREATE TABLE IF NOT EXISTS `sessions` (
+CREATE TABLE `sessions` (
   `id` int(11) NOT NULL,
   `token` text NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -135,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 -- Table structure for table `team_info`
 --
 
-CREATE TABLE IF NOT EXISTS `team_info` (
+CREATE TABLE `team_info` (
   `team_number` int(11) DEFAULT NULL,
   `team_name` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -146,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `team_info` (
 -- Table structure for table `wagers`
 --
 
-CREATE TABLE IF NOT EXISTS `wagers` (
+CREATE TABLE `wagers` (
   `associatedId` int(11) NOT NULL,
   `wagerType` text NOT NULL,
   `wageredByteCoins` int(11) NOT NULL,
@@ -154,3 +150,60 @@ CREATE TABLE IF NOT EXISTS `wagers` (
   `alliancePredicted` text,
   `withenPoints` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `pit_comments`
+--
+ALTER TABLE `pit_comments`
+  ADD PRIMARY KEY (`pit_scout_data_id`);
+
+--
+-- Indexes for table `pit_pictures`
+--
+ALTER TABLE `pit_pictures`
+  ADD PRIMARY KEY (`pit_scout_data_id`);
+
+--
+-- Indexes for table `scouters`
+--
+ALTER TABLE `scouters`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `scout_data`
+--
+ALTER TABLE `scout_data`
+  ADD PRIMARY KEY (`scout_data_id`),
+  ADD KEY `team_number` (`team_number`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `pit_comments`
+--
+ALTER TABLE `pit_comments`
+  MODIFY `pit_scout_data_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `pit_pictures`
+--
+ALTER TABLE `pit_pictures`
+  MODIFY `pit_scout_data_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `scouters`
+--
+ALTER TABLE `scouters`
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+--
+-- AUTO_INCREMENT for table `scout_data`
+--
+ALTER TABLE `scout_data`
+  MODIFY `scout_data_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=428;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

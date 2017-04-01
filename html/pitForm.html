@@ -1,13 +1,11 @@
 <div class="container-fluid">
+   <h4>Scouting as {{user.name}}</h4>
     <form id="pitForm" enctype="multipart/form-data" ng-submit="submit()">
         <fieldset>
-            <div class="input-group">
-                <span class="input-group-addon">Team #</span>
-                <input ng-model="pitFormData.teamNumber" class="form-control" type='number' name='teamnumber' id='teamnumber' placeholder='Enter Team Number here' required>
-            </div>
-            <div class="input-group">
-                <span class="input-group-addon">Your name</span>
-                <input ng-model="pitFormData.name" class="form-control" id="scouter_name" type="text" name='scouter_name' placeholder='Please enter your name' required>
+           <legend>Info</legend>
+            <div class="form-group">
+				<label for="teamnumber">Team #</label>
+				<input ng-model="pitFormData.teamNumber" class="form-control" type='number' name='teamnumber' id='teamnumber' placeholder='Enter Team Number here' required>
             </div>
         </fieldset>
         <fieldset>

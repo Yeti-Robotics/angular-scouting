@@ -1183,8 +1183,9 @@ function getPic($team, $pic) {
 }
 
 function getPitComments($db, $team) {
-	$query = "SELECT team_number AS 'Team', pit_comments AS 'Pit Scouters Comments', scouter_name AS 'Pit Scouter', UNIX_TIMESTAMP(timestamp) AS timestamp
+	$query = "SELECT team_number AS 'Team', pit_comments AS 'Pit Scouters Comments', name AS 'Pit Scouter', UNIX_TIMESTAMP(timestamp) AS timestamp
 				FROM pit_comments
+				LEFT JOIN scouters ON scouters.id = pit_comments.id
 				WHERE team_number = ? AND pit_comments != ''";
 	//Time stamps?
 	if($stmt = $db->prepare($query)) {
@@ -1203,8 +1204,9 @@ function getPicInfo($db, $team) {
     for ($i = 0; $i < count($dir); $i++) {
         $dir[$i] = intval(substr($dir[$i], 0, -4));
     }
-	$query = "SELECT team_number AS 'Team', scouter_name AS 'Pit Scouter', pic_num AS 'Picture Number', UNIX_TIMESTAMP(timestamp) AS timestamp
+	$query = "SELECT team_number AS 'Team', name AS 'Pit Scouter', pic_num AS 'Picture Number', UNIX_TIMESTAMP(timestamp) AS timestamp
 				FROM pit_pictures
+				LEFT JOIN scouters ON scouters.id = pit_pictures.id
 				WHERE team_number = ?";
     for ($i = 0; $i < count($dir); $i++) {
         $query .= " " . ($i == 0 ? "AND (" : "OR ") . "pic_num = $dir[$i]" . ($i == (count($dir) - 1) ? ")" : "");
