@@ -27,4 +27,5 @@
   - [ ] Change API event code and year
   - [ ] Reset everyone's ByteCoins to 200
   - [ ] Delete any outstanding wagers
-  - [x] Flush schedule
+  - [x] Flush schedule-
+ - [ ] Switch to TBA API
