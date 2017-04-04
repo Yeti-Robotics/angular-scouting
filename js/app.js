@@ -11,7 +11,7 @@ app.run(function ($rootScope, $location, $http, $window, AccountService) {
 	'use strict';
 
 	$rootScope.loggedIn = $window.sessionStorage.token != null;
-	
+
 	$rootScope.user = {
 		username: '',
 		name: '',
@@ -64,7 +64,7 @@ app.service("AccountService", function ($http, $q, $window, $rootScope, $locatio
 			$rootScope.user = {
 				username: '',
 				name: '',
-                id: '',
+				id: '',
 				byteCoins: 0
 			};
 			$location.path("/login");
@@ -154,7 +154,7 @@ app.controller('LoginController', function (AccountService, $rootScope, $scope, 
 app.controller("LogoutController", function (AccountService, $rootScope, $http, $location, $window) {
 	'use strict';
 
-	if($rootScope.loggedIn) {
+	if ($rootScope.loggedIn) {
 		AccountService.logout();
 	} else {
 		$location.path("/login");
@@ -219,63 +219,113 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 
 app.controller('FormController', function ($rootScope, $scope, $http, $window, AccountService) {
 	'use strict';
-	
-    AccountService.validateSession().then(function (response) {
-        $scope.resetForm();
-    }, function (response) {
-        AccountService.logout();
+
+	AccountService.validateSession().then(function (response) {
+		$scope.resetForm();
+	}, function (response) {
+		AccountService.logout();
 		displayMessage("It's time to stop", "danger");
-    });
+	});
 
 	$scope.matchesReceived = true;
 
 	$scope.selectedTeam = false;
 
 	$scope.matches = [];
-	
+
 	$scope.maxMatchNumber = 64;
-	
+
 	$scope.minTeamNumber = 435;
-	
+
 	$scope.matchNumber = 1;
 
 	$rootScope.getCurrentSettings(function () {
 		if ($rootScope.settings.validateTeams) {
 			$http.get("php/getFutureMatches.php").then(function (response) {
 				for (var i = 0; i < response.data.Schedule.length; i++) {
-					$scope.matches.push({
-						teams: {
-							red: [
-								response.data.Schedule[i].Teams[0].teamNumber,
-								response.data.Schedule[i].Teams[1].teamNumber,
-								response.data.Schedule[i].Teams[2].teamNumber
-							],
-							blue: [
-								response.data.Schedule[i].Teams[3].teamNumber,
-								response.data.Schedule[i].Teams[4].teamNumber,
-								response.data.Schedule[i].Teams[5].teamNumber
-							]
-						},
-						number: response.data.Schedule[i].matchNumber
-					});
+					if ($rootScope.settings.blue1Closest) {
+						$scope.matches.push({
+							teams: {
+								red: [
+									response.data.Schedule[i].Teams[2].teamNumber,
+									response.data.Schedule[i].Teams[1].teamNumber,
+									response.data.Schedule[i].Teams[0].teamNumber
+								],
+								blue: [
+									response.data.Schedule[i].Teams[3].teamNumber,
+									response.data.Schedule[i].Teams[4].teamNumber,
+									response.data.Schedule[i].Teams[5].teamNumber
+								]
+							},
+							number: response.data.Schedule[i].matchNumber
+						});
+					} else {
+						$scope.matches.push({
+							teams: {
+								red: [
+									response.data.Schedule[i].Teams[1].teamNumber,
+									response.data.Schedule[i].Teams[1].teamNumber,
+									response.data.Schedule[i].Teams[2].teamNumber
+								],
+								blue: [
+									response.data.Schedule[i].Teams[5].teamNumber,
+									response.data.Schedule[i].Teams[4].teamNumber,
+									response.data.Schedule[i].Teams[3].teamNumber
+								]
+							},
+							number: response.data.Schedule[i].matchNumber
+						});
+					}
 				}
+				$scope.formData.match_number = $scope.matches.length;
 				$scope.matchesReceived = true;
+				console.log($scope.matches);
 			}, function (response) {
 				displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
 				$scope.matchesReceived = false;
 			});
 		}
 	});
+	
+	$scope.selectStation = function (allianceStation) {
+		$scope.selectedStation = allianceStation;
+		$scope.selectTeam();
+	};
 
-	$scope.selectTeam = function (matchNumber, teamNumber) {
-		$scope.formData.match_number = matchNumber;
-		$scope.formData.team_number = teamNumber;
-		$scope.selectedTeam = true;
-		$("#match-modal").modal('hide');
+	$scope.selectTeam = function () {
+		if ($scope.formData.match_number > $scope.matches.length) {
+			$scope.formData.match_number = $scope.matches.length;
+		}
+		if ($scope.formData.match_number < 1) {
+			$scope.formData.match_number = 1;
+		}
+		if ($scope.formData.match_number != undefined && $scope.selectedStation != undefined) {
+			$scope.selectedTeam = true;
+			switch ($scope.selectedStation) {
+				case 'red closest':
+					$scope.formData.team_number = $scope.matches[$scope.formData.match_number - 1].teams.red[0];
+					break;
+				case 'red middle':
+					$scope.formData.team_number = $scope.matches[$scope.formData.match_number - 1].teams.red[1];
+					break;
+				case 'red farthest':
+					$scope.formData.team_number = $scope.matches[$scope.formData.match_number - 1].teams.red[2];
+					break;
+				case 'blue closest':
+					$scope.formData.team_number = $scope.matches[$scope.formData.match_number - 1].teams.blue[0];
+					break;
+				case 'blue middle':
+					$scope.formData.team_number = $scope.matches[$scope.formData.match_number - 1].teams.blue[1];
+					break;
+				case 'blue farthest':
+					$scope.formData.team_number = $scope.matches[$scope.formData.match_number - 1].teams.blue[2];
+					break;
+			}
+		}
 	};
 
 	$scope.resetForm = function () {
-        console.log($rootScope.user);
+		console.log($rootScope.user);
 		$scope.formData = {
 			id: $rootScope.user.id,
 			match_number: $scope.matchNumber,
@@ -297,13 +347,13 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 			comments: ""
 		};
 	};
-	
-	$http.get("php/getLastMatch.php").then(function (response) {
-	$scope.matchNumber = $scope.formData.match_number = parseInt(response.data) + 1;
-	}, function (response) {
-		displayMessage("Could not get this match", "danger");
-		console.log(response.data)		
-	});
+
+//	$http.get("php/getLastMatch.php").then(function (response) {
+//		$scope.matchNumber = $scope.formData.match_number = parseInt(response.data) + 1;
+//	}, function (response) {
+//		displayMessage("Could not get this match", "danger");
+//		console.log(response.data)
+//	});
 
 	$(document).ready(function () {
 		$scope.validator = $('#scouting_form').validate();
@@ -322,7 +372,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 				max: "This match number is too high!"
 			}
 		});
-		
+
 		console.log('Inititalize validation');
 
 		$scope.resetForm();
@@ -351,7 +401,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 				console.log(response.data);
 				$('#scouting_form').trigger('reset');
 				displayMessage("<strong>Success!</strong> Now do it again.", "success");
-			$("button[type='submit']").removeClass("disabled");
+				$("button[type='submit']").removeClass("disabled");
 				$scope.matchNumber++;
 				$scope.resetForm();
 			}, function (response) {
@@ -366,14 +416,14 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 
 app.controller('PitFormController', function ($rootScope, $scope, $http, $window, AccountService) {
 	'use strict';
-	
+
 	AccountService.validateSession().then(function (response) {
-        $scope.resetForm();
-    }, function (response) {
-        AccountService.logout();
+		$scope.resetForm();
+	}, function (response) {
+		AccountService.logout();
 		displayMessage("It's time to stop", "danger");
-    });
-	
+	});
+
 	$scope.resetForm = function () {
 		$scope.pitFormData = {
 			id: $rootScope.user.id
@@ -420,7 +470,7 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
 	$scope.addPicture = function () {
 		$scope.picNum.push(num);
 		num++;
-		console.log($scope.picNum);  
+		console.log($scope.picNum);
 	};
 
 	$scope.removePicture = function (picture) {
@@ -791,7 +841,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		$scope.range = function (n) {
 			return new Array(n);
 		};
-		
+
 		for (var i = 0; i < $scope.data.misc.length; i++) {
 			switch ($scope.data.misc[i].load) {
 				case 0:
@@ -811,7 +861,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 					break;
 			}
 		}
-		
+
 		for (var i = 0; i < $scope.data.match.teleop.length; i++) {
 			switch ($scope.data.match.teleop[i].teleHighAccuracy) {
 				case 0:
@@ -870,7 +920,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 					break;
 			}
 		}
-		
+
 		for (var i = 0; i < $scope.data.match.teleop.length; i++) {
 			switch ($scope.data.match.teleop[i].teleShootSpeed) {
 				case 0:
@@ -907,7 +957,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 					break;
 			}
 		}
-		
+
 		console.log($scope.data);
 	}, function (response) {
 		$scope.error = response.data.error;
@@ -915,7 +965,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	});
 });
 
-app.controller("ScouterController", function($scope, $http, $routeParams) {
+app.controller("ScouterController", function ($scope, $http, $routeParams) {
 	'use strict';
 
 	$scope.scouterId = $routeParams.scouterId;
@@ -955,15 +1005,16 @@ app.controller('AdminPageController', function ($rootScope, $scope, $http, $wind
 		}
 	});
 
-
 	$scope.prettySettings = {
 		validateTeams: ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled",
-		enableCasino: ($rootScope.settings.enableCasino == true) ? "Enabled" : "Disabled"
+		enableCasino: ($rootScope.settings.enableCasino == true) ? "Enabled" : "Disabled",
+		blue1Closest: ($rootScope.settings.blue1Closest == true) ? "closest" : "farthest"
 	};
 
 	$scope.updatePrettySettings = function () {
 		$scope.prettySettings.validateTeams = ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled";
 		$scope.prettySettings.enableCasino = ($rootScope.settings.enableCasino == true) ? "Enabled" : "Disabled";
+		$scope.prettySettings.blue1Closest = ($rootScope.settings.blue1Closest == true) ? "closest" : "farthest";
 	};
 
 	$scope.adminAction = function (pageAction, setting, value) {
@@ -972,16 +1023,16 @@ app.controller('AdminPageController', function ($rootScope, $scope, $http, $wind
 			action: pageAction
 		};
 		switch (pageAction) {
-		case 'update_team':
-			post.teamNumber = $scope.teamNumber;
-			break;
-		case 'update_wagers':
-			post.matchNumber = $scope.matchNumber;
-			break;
-		case 'updateSettings':
-			post.setting = setting;
-			post.settingValue = value == 'true' ? true : false;
-			break;
+			case 'update_team':
+				post.teamNumber = $scope.teamNumber;
+				break;
+			case 'update_wagers':
+				post.matchNumber = $scope.matchNumber;
+				break;
+			case 'updateSettings':
+				post.setting = setting;
+				post.settingValue = value == 'true' ? true : false;
+				break;
 		}
 		$http.post("php/adminAction.php", post).then(function (response) {
 			$rootScope.getCurrentSettings(function () {
@@ -1036,7 +1087,7 @@ app.directive('picture', function () {
 app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
 	'use strict';
 
-    $routeProvider.when('/', {
+	$routeProvider.when('/', {
 		templateUrl: 'html/list.html',
 		controller: 'ListController'
 	}).when('/wager', {

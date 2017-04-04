@@ -25,7 +25,8 @@ function getFutureMatches($db) {
 			$uncompletedMatchs[] = $matchResults[$i];
 		}
 	}
-	return $uncompletedMatchs;
+//	return $uncompletedMatchs;
+	return $matchResults;
 }
 
 function getSettings() {

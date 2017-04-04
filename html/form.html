@@ -1,54 +1,3 @@
-<div id="match-modal" class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button class="close" type="button" data-dismiss="modal" aria-label="close"><span>&times;</span></button>
-				<h4 class="modal-title">Match Selector</h4>
-			</div>
-			<div class="modal-body">
-				<div ng-show="matches.length > 0">
-					<div class="table-responsive">
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th class="text-center">#</th>
-									<th class="text-center danger" colspan="3">Red Alliance</th>
-									<th class="text-center info" colspan="3">Blue Alliance</th>
-								</tr>
-								<tr>
-									<th></th>
-									<th class="text-center danger">Red 1</th>
-									<th class="text-center danger">Red 2</th>
-									<th class="text-center danger">Red 3</th>
-									<th class="text-center info">Blue 1</th>
-									<th class="text-center info">Blue 2</th>
-									<th class="text-center info">Blue 3</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="match in matches">
-									<td class="text-center">{{match.number}}</td>
-
-									<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[0])">{{match.teams.red[0]}}</td>
-									<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[1])">{{match.teams.red[1]}}</td>
-									<td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[2])">{{match.teams.red[2]}}</td>
-
-									<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[0])">{{match.teams.blue[0]}}</td>
-									<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[1])">{{match.teams.blue[1]}}</td>
-									<td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[2])">{{match.teams.blue[2]}}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div ng-show="matches.length == 0">
-					<h4>No matches to display at this time</h4>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
 <div class="container-fluid">
 	<h4>Scouting as {{user.name}}</h4>
 	<form id="scouting_form" ng-submit="submit()">
@@ -67,20 +16,36 @@
 				</div>
 
 				<div ng-show="matchesReceived && settings.validateTeams">
-					<br/>
-					<button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal">Choose a match</button>
-					<br/>
+					<div class="input-group">
+						<span class="input-group-addon">Match #:</span>
+						<input name="match_number" id="match_number" ng-model="formData.match_number" ng-change="selectTeam()" type="number" class="form-control" placeholder="Enter the match number" required>
+						<div class="input-group-btn">
+							<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Alliance station <span class="caret"></span></button>
+							<ul class="dropdown-menu dropdown-menu-left">
+								<li><a href="" ng-click="selectStation('red closest')">Red closest</a></li>
+								<li><a href="" ng-click="selectStation('red middle')">Red middle</a></li>
+								<li><a href="" ng-click="selectStation('red farthest')">Red farthest</a></li>
+								<li class="divider" role="separator"></li>
+								<li><a href="" ng-click="selectStation('blue closest')">Blue closest</a></li>
+								<li><a href="" ng-click="selectStation('blue middle')">Blue middle</a></li>
+								<li><a href="" ng-click="selectStation('blue farthest')">Blue farthest</a></li>
+							</ul>
+						</div>
+					</div>
 					<div ng-show="selectedTeam != false">
+						<br/>
 						<table class="table table-bordered">
 							<thead>
 								<tr>
 									<th class="text-center">Match Number</th>
+									<th class="text-center">Alliance Station</th>
 									<th class="text-center">Team Number</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td class="text-center">{{formData.match_number}}</td>
+									<td class="text-center text-capitalize">{{selectedStation}}</td>
 									<td class="text-center">{{formData.team_number}}</td>
 								</tr>
 							</tbody>
