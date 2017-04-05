@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2017 at 02:24 PM
+-- Generation Time: Apr 05, 2017 at 07:48 PM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -181,6 +181,12 @@ ALTER TABLE `scout_data`
   ADD KEY `team_number` (`team_number`);
 
 --
+-- Indexes for table `team_info`
+--
+ALTER TABLE `team_info`
+  ADD UNIQUE KEY `team_number` (`team_number`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -198,7 +204,7 @@ ALTER TABLE `pit_pictures`
 -- AUTO_INCREMENT for table `scouters`
 --
 ALTER TABLE `scouters`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `scout_data`
 --
