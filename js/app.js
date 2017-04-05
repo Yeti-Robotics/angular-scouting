@@ -238,6 +238,8 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 	$scope.minTeamNumber = 435;
 
 	$scope.matchNumber = 1;
+	
+	$scope.selectedStation = "alliance station";
 
 	$rootScope.getCurrentSettings(function () {
 		if ($rootScope.settings.validateTeams) {

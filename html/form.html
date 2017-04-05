@@ -20,32 +20,30 @@
 						<span class="input-group-addon">Match #:</span>
 						<input name="match_number" id="match_number" ng-model="formData.match_number" ng-change="selectTeam()" type="number" class="form-control" placeholder="Enter the match number" required>
 						<div class="input-group-btn">
-							<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Alliance station <span class="caret"></span></button>
+							<button ng-class="{'btn-danger': selectedStation.includes('red'), 'btn-primary': selectedStation.includes('blue'), 'btn-default': !selectedStation.includes('red') && !selectedStation.includes('blue')}" class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="text-capitalize">{{selectedStation}}</span> <span class="caret"></span></button>
 							<ul class="dropdown-menu dropdown-menu-left">
-								<li><a href="" ng-click="selectStation('red closest')">Red closest</a></li>
-								<li><a href="" ng-click="selectStation('red middle')">Red middle</a></li>
-								<li><a href="" ng-click="selectStation('red farthest')">Red farthest</a></li>
+								<li><a href="" ng-click="selectStation('red closest')">Red Closest</a></li>
+								<li><a href="" ng-click="selectStation('red middle')">Red Middle</a></li>
+								<li><a href="" ng-click="selectStation('red farthest')">Red Farthest</a></li>
 								<li class="divider" role="separator"></li>
-								<li><a href="" ng-click="selectStation('blue closest')">Blue closest</a></li>
-								<li><a href="" ng-click="selectStation('blue middle')">Blue middle</a></li>
-								<li><a href="" ng-click="selectStation('blue farthest')">Blue farthest</a></li>
+								<li><a href="" ng-click="selectStation('blue closest')">Blue Closest</a></li>
+								<li><a href="" ng-click="selectStation('blue middle')">Blue Middle</a></li>
+								<li><a href="" ng-click="selectStation('blue farthest')">Blue Farthest</a></li>
 							</ul>
 						</div>
 					</div>
 					<div ng-show="selectedTeam != false">
 						<br/>
-						<table class="table table-bordered">
+						<table id="selectedTeamTable" class="table table-bordered">
 							<thead>
 								<tr>
 									<th class="text-center">Match Number</th>
-									<th class="text-center">Alliance Station</th>
 									<th class="text-center">Team Number</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody class="table-danger">
 								<tr>
 									<td class="text-center">{{formData.match_number}}</td>
-									<td class="text-center text-capitalize">{{selectedStation}}</td>
 									<td class="text-center">{{formData.team_number}}</td>
 								</tr>
 							</tbody>
