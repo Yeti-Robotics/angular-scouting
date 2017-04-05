@@ -17,7 +17,9 @@ function getLastMatch($db) {
 
 function getFutureMatches($db) {
 	//$matchResults = getMatchSchedule(); //For server
-	$matchResults = json_decode(file_get_contents("../json/NCMCLMatchResults.json"), true)["Schedule"]; //For localhost
+	include("../config/config.php");
+    $fileName = "../json/" . $tournamentKey . "MatchResults.json";
+	$matchResults = json_decode(file_get_contents($fileName), true)["Schedule"]; //For localhost
 	$lastMatch = getLastMatch($db);
 	$uncompletedMatchs = array();
 	for ($i = 0; $i < count($matchResults); $i++) {
@@ -201,31 +203,34 @@ function nextMatch() {
 function updateTeamInfo($db, $teamNumber) {
 	$ch = curl_init();
 	include("../config/config.php");
-	curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/teams?teamNumber=$teamNumber");
+	curl_setopt($ch, CURLOPT_URL, $TBAapiServer . "team/frc" . $teamNumber);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_HEADER, false);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array (
 		"Accept: application/json",
-		"Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
+		"X-TBA-App-Id: $TBAAppId"
 	));
 
-	$responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true)["teams"][0];
+	$responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true);
 	curl_close($ch);
 
 	$robotInfo["teamNumber"] = intval($teamNumber);
-	$robotInfo["name"] = isset($responsejson["nameShort"]) ? $responsejson["nameShort"] : null;
+	$robotInfo["name"] = isset($responsejson["nickname"]) ? $responsejson["nickname"] : null;
 
 	if ($robotInfo["name"] != null) {
-		$query = "INSERT INTO team_info (team_number, team_name) VALUES (?, ?)";
+		$query = "INSERT INTO team_info (team_number, team_name) VALUES (?, ?)
+	ON DUPLICATE KEY UPDATE team_name = ?";
 		if($stmt = $db->prepare($query)) {
-			$stmt->bind_param("is", $teamNumber, $robotInfo["name"]);
+			$stmt->bind_param("iss", $robotInfo["teamNumber"], $robotInfo["name"], $robotInfo["name"]);
 			$stmt->execute();
 			if ($stmt->error) {
 				header('HTTP/1.1 500 SQL Error', true, 500);
 				$db->close();
 				die('{"message":"'.$stmt->error.'"}');
+			} else {
+				$db->close();
 			}
 		}
 	}
@@ -243,7 +248,7 @@ function getTeamInfo($db, $teamNumber) {
         $stmt->bind_param("i", $teamNumber);
         $stmt->execute();
         $stmt->store_result();
-        if($stmt->num_rows == 0) {
+        if ($stmt->num_rows == 0) {
 			$robotInfo = updateTeamInfo($db, $teamNumber);
         } else {
             $query = "SELECT * FROM team_info WHERE team_number = ?";
