@@ -2,22 +2,16 @@
 // database connection variables
 $dbserver = "localhost";
 $dbuser = "root";
-$dbpassword = "";
+$dbpassword = "root";
 $dbname = "scouting";
 
-// FMSAPI variables
-$tournamentKey = "NCASH";
-$tournamentYear = 2016;
-$authUser = "user";
-$authToken = "token";
-$apiServer = "https://frc-api.firstinspires.org/v2.0";
-
 // TBA API variables
+$eventKey = "2017nccmp";
 $appIdteamNumber = "frc3506";
 $appDescription = "scouting-system";
 $appVersion = "v3.1";
-$TBAAppId = "{$appIdteamNumber}:{$appDescription}:{$appVersion}";
-$TBAapiServer = "https://www.thebluealliance.com/api/v2/";
+$TBAAppId = "$appIdteamNumber:$appDescription:$appVersion";
+$TBAapiServer = "https://www.thebluealliance.com/api/v2";
 
 // Admin Account details
 $adminUsername = "admin";

@@ -18,7 +18,7 @@ function getLastMatch($db) {
 function getFutureMatches($db) {
 	//$matchResults = getMatchSchedule(); //For server
 	include("../config/config.php");
-    $fileName = "../json/" . $tournamentKey . "MatchResults.json";
+    $fileName = "../json/{$eventKey}MatchResults.json";
 	$matchResults = json_decode(file_get_contents($fileName), true)["Schedule"]; //For localhost
 	$lastMatch = getLastMatch($db);
 	$uncompletedMatchs = array();
@@ -106,20 +106,20 @@ function checkTeamData($db, $teamNumber) {
 //returns if the match data updated or not
 function updateMatchData() {
 	include("../config/config.php");
-    $fileName = "../json/" . $tournamentKey . "MatchResults.json";
+    $fileName = "../json/{$eventKey}MatchResults.json";
 	if (!file_exists($fileName)) {
 		file_put_contents($fileName, "{}");
 	}
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/schedule/$tournamentKey/qual/hybrid");
+    curl_setopt($ch, CURLOPT_URL, "$TBAapiServer/event/$eventKey/matches");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HEADER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, array (
         "Accept: application/json",
-        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken),
+        "X-TBA-App-Id: $TBAAppId",
         "If-Modified-Since: " . date(DATE_RSS, file_exists($fileName) ? filemtime($fileName) : time())
     ));
 
@@ -137,17 +137,9 @@ function updateMatchData() {
     }
 
     $responsejson = json_decode(trim(substr($responsejson, strpos($responsejson, "\r\n\r\n"))), true);
+	
     if (!strpos($headers["Status-Code"], "304") && $responsejson != null) {
-        $file = fopen($fileName, "r+");
-		$currentSchedule = json_decode(file_get_contents($fileName), true);
-		foreach($currentSchedule as $match) {
-			if($match["matchNumber"] == $responsejson["Schedule"][0]["matchNumber"]) {
-				$match = $responsejson;
-			}
-		}
-		$currentSchedule["Schedule"][] = $responsejson["Schedule"][0];
-        fwrite($file, json_encode($currentSchedule));
-        fclose($file);
+		file_put_contents($fileName, json_encode($responsejson, JSON_PRETTY_PRINT));
 		return true;
     } else {
 		return false;
@@ -156,46 +148,62 @@ function updateMatchData() {
 
 function flushSchedule() {
 	include("../config/config.php");
-    $fileName = "../json/" . $tournamentKey . "MatchResults.json";
+	$fileName = "../json/{$eventKey}MatchResults.json";
 	if (!file_exists($fileName)) {
 		file_put_contents($fileName, "{}");
 	}
-    $ch = curl_init();
+	$ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "$apiServer/$tournamentYear/schedule/$tournamentKey/qual/hybrid");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HEADER, false);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+	curl_setopt($ch, CURLOPT_URL, "$TBAapiServer/event/$eventKey/matches");
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_HEADER, false);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array (
-        "Accept: application/json",
-        "Authorization: Basic " . base64_encode($authUser . ":" . $authToken)
-    ));
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array (
+		"Accept: application/json",
+		"X-TBA-App-Id: $TBAAppId"
+	));
 
-    $responsejson = curl_exec($ch);
+	$responsejson = curl_exec($ch);
 	curl_close($ch);
-	$file = fopen($fileName, "w");
-	fwrite($file, $responsejson);
-	fclose($file);
+	
+	file_put_contents($fileName, $responsejson);
 }
 
 function getMatchSchedule() {
 	updateMatchData();
 	include("../config/config.php");
-    $fileName = "../json/" . $tournamentKey . "MatchResults.json";
-	return json_decode(file_get_contents($fileName), true)["Schedule"];
+    $fileName = "../json/{$eventKey}MatchResults.json";
+	return json_decode(file_get_contents($fileName), true);
 }
 
 function getMatchResults($matchNumber) {
-    $matchData = getMatchSchedule()[$matchNumber - 1];
-    return $matchData["actualStartTime"] != null ? $matchData : false;
+	$schedule = getMatchSchedule();
+    $matchData = [];
+	for ($i = 0; $i < count($schedule); $i++) {
+		if ($schedule[$i]["match_number"] == $matchNumber) {
+			$matchData[$schedule[$i]["comp_level"]] = $schedule[$i]["alliances"]["blue"]["score"] != -1 ? $schedule[$i] : false;
+		}
+	}
+    return $matchData;
 }
 
 function nextMatch() {
 	$schedule = getMatchSchedule();
+	$matches = [];
+	
 	foreach($schedule as $match) {
-		if(empty($match["actualStartTime"])) {
-			return $match["matchNumber"];
+		if($match["alliances"]["blue"]["score"] == -1) {
+			$matches[] = $match["match_number"];
+		}
+	}
+	if (count($matches) < 1) {
+		return false;
+	}
+	$nextMatchNumber = min($matches);
+	foreach ($schedule as $match) {
+		if ($match["match_number"] == $nextMatchNumber) {
+			return $match;
 		}
 	}
 }
@@ -203,10 +211,10 @@ function nextMatch() {
 function updateTeamInfo($db, $teamNumber) {
 	$ch = curl_init();
 	include("../config/config.php");
-	curl_setopt($ch, CURLOPT_URL, $TBAapiServer . "team/frc" . $teamNumber);
+	curl_setopt($ch, CURLOPT_URL, "$TBAapiServer/team/frc$teamNumber");
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_HEADER, false);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array (
 		"Accept: application/json",

@@ -4,7 +4,7 @@ include('functions.php');
 include('../config/config.php');
 
 $teamNumber = json_decode(file_get_contents('php://input'), true);
-$fileName = "../json/" . $tournamentKey . "MatchResults.json";
+$fileName = "../json/{$eventKey}MatchResults.json";
 $schedule = getMatchSchedule();
 $teams = array();
 
