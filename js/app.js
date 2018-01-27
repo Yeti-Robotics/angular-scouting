@@ -217,15 +217,8 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 	};
 });
 
-app.controller('FormController', function ($rootScope, $scope, $http, $window, AccountService) {
+app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
-
-	AccountService.validateSession().then(function (response) {
-		$scope.resetForm();
-	}, function (response) {
-		AccountService.logout();
-		displayMessage("It's time to stop", "danger");
-	});
 
 	$scope.matchesReceived = true;
 
@@ -329,26 +322,10 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 	$scope.resetForm = function () {
 		console.log($rootScope.user);
 		$scope.formData = {
-			id: $rootScope.user.id,
-			match_number: $scope.matchNumber,
-			robot_moved: false,
-			auto_gear: false,
-			autoHighGoal: false,
-			autoHighAccuracy: "0",
-			autoShootSpeed: "0",
-			autoLowGoal: false,
-			autoLowAccuracy: "0",
-			teleHighGoal: false,
-			teleHighAccuracy: "0",
-			teleShootSpeed: "0",
-			teleLowGoal: false,
-			teleLowAccuracy: "0",
-			teleGears: "0",
-			load: "0",
-			climbed: false,
-			comments: ""
 		};
 	};
+
+	$scope.resetForm();
 
 //	$http.get("php/getLastMatch.php").then(function (response) {
 //		$scope.matchNumber = $scope.formData.match_number = parseInt(response.data) + 1;
@@ -358,73 +335,67 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 //	});
 
 	$(document).ready(function () {
-		$scope.validator = $('#scouting_form').validate();
-		$("#comments").rules("add", {
-			required: true
-		});
-		$("#team_number").rules("add", {
-			min: $scope.minTeamNumber,
-			messages: {
-				min: "This team number is too low!"
-			}
-		});
-		$("#match_number").rules("add", {
-			max: $scope.maxMatchNumber,
-			messages: {
-				max: "This match number is too high!"
-			}
-		});
+		// $scope.validator = $('#scouting_form').validate();
+		// $("#comments").rules("add", {
+		// 	required: true
+		// });
+		// $("#team_number").rules("add", {
+		// 	min: $scope.minTeamNumber,
+		// 	messages: {
+		// 		min: "This team number is too low!"
+		// 	}
+		// });
+		// $("#match_number").rules("add", {
+		// 	max: $scope.maxMatchNumber,
+		// 	messages: {
+		// 		max: "This match number is too high!"
+		// 	}
+		// });
 
-		console.log('Inititalize validation');
+		// console.log('Inititalize validation');
 
-		$scope.resetForm();
+		// $scope.resetForm();
 	});
 
 	$scope.submit = function () {
-		if ($('#scouting_form').valid()) {
-			console.log("valid");
-			$("button[type='submit']").addClass("disabled");
-			$("body").scrollTop(0);
-			displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
+		console.log($scope.formData);
+		// if ($('#scouting_form').valid()) {
+		// 	console.log("valid");
+		// 	$("button[type='submit']").addClass("disabled");
+		// 	$("body").scrollTop(0);
+		// 	displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
 
-			$scope.formData.autoHighAccuracy = parseInt($scope.formData.autoHighAccuracy);
-			$scope.formData.autoShootSpeed = parseInt($scope.formData.autoShootSpeed);
-			$scope.formData.autoLowAccuracy = parseInt($scope.formData.autoLowAccuracy);
-			$scope.formData.teleHighAccuracy = parseInt($scope.formData.teleHighAccuracy);
-			$scope.formData.teleShootSpeed = parseInt($scope.formData.teleShootSpeed);
-			$scope.formData.teleLowAccuracy = parseInt($scope.formData.teleLowAccuracy);
-			$scope.formData.teleGears = parseInt($scope.formData.teleGears);
-			$scope.formData.load = parseInt($scope.formData.load);
+		// 	$scope.formData.autoHighAccuracy = parseInt($scope.formData.autoHighAccuracy);
+		// 	$scope.formData.autoShootSpeed = parseInt($scope.formData.autoShootSpeed);
+		// 	$scope.formData.autoLowAccuracy = parseInt($scope.formData.autoLowAccuracy);
+		// 	$scope.formData.teleHighAccuracy = parseInt($scope.formData.teleHighAccuracy);
+		// 	$scope.formData.teleShootSpeed = parseInt($scope.formData.teleShootSpeed);
+		// 	$scope.formData.teleLowAccuracy = parseInt($scope.formData.teleLowAccuracy);
+		// 	$scope.formData.teleGears = parseInt($scope.formData.teleGears);
+		// 	$scope.formData.load = parseInt($scope.formData.load);
 
-			$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
-				console.log("submitted");
-				$scope.matches.shift();
-				$rootScope.getCurrentSettings();
-				console.log(response.data);
-				$('#scouting_form').trigger('reset');
-				displayMessage("<strong>Success!</strong> Now do it again.", "success");
-				$("button[type='submit']").removeClass("disabled");
-				$scope.matchNumber++;
-				$scope.resetForm();
-			}, function (response) {
-				console.log("Error during submission");
-				console.log(response.data);
-			});
-		} else {
-			console.log("Not valid");
-		}
+		// 	$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
+		// 		console.log("submitted");
+		// 		$scope.matches.shift();
+		// 		$rootScope.getCurrentSettings();
+		// 		console.log(response.data);
+		// 		$('#scouting_form').trigger('reset');
+		// 		displayMessage("<strong>Success!</strong> Now do it again.", "success");
+		// 		$("button[type='submit']").removeClass("disabled");
+		// 		$scope.matchNumber++;
+		// 		$scope.resetForm();
+		// 	}, function (response) {
+		// 		console.log("Error during submission");
+		// 		console.log(response.data);
+		// 	});
+		// } else {
+		// 	console.log("Not valid");
+		// }
 	};
 });
 
-app.controller('PitFormController', function ($rootScope, $scope, $http, $window, AccountService) {
+app.controller('PitFormController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
-
-	AccountService.validateSession().then(function (response) {
-		$scope.resetForm();
-	}, function (response) {
-		AccountService.logout();
-		displayMessage("It's time to stop", "danger");
-	});
 
 	$scope.resetForm = function () {
 		$scope.pitFormData = {
@@ -433,6 +404,8 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
 		$scope.pictures = [];
 		$scope.picNum = [];
 	};
+
+	$scope.resetForm();
 
 	$(document).ready(function () {
 		$('#pitForm').validate();
