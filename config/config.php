@@ -2,8 +2,8 @@
 // database connection variables
 $dbserver = "localhost";
 $dbuser = "root";
-$dbpassword = "root";
-$dbname = "scouting";
+$dbpassword = "";
+$dbname = "yeti_scouting";
 
 // TBA API variables
 $eventKey = "2017nccmp";
