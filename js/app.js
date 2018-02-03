@@ -444,18 +444,16 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 
 	$scope.filterTeams = function (value) {
 		var searchRegExp = new RegExp($scope.search, "i");
-		var teamString = value.team.toString();
-		return value.name != null ? (value.name.match(searchRegExp) || teamString.match(searchRegExp)) : teamString.match(searchRegExp);
+		var teamString = value.team_number.toString();
+		return value.team_name != null ? (value.team_name.match(searchRegExp) || teamString.match(searchRegExp)) : teamString.match(searchRegExp);
 	}
 
 	$http.get('php/list.php').then(function (response) {
 		$scope.data = response.data;
 		for (var i = 0; i < $scope.data.length; i++) {
-			$scope.data[i].team = parseInt($scope.data[i].team);
-			$scope.data[i].avgScore = parseInt($scope.data[i].avgScore);
-			$scope.data[i].totalGears = parseInt($scope.data[i].totalGears);
-			$scope.data[i].avgClimbed = parseInt($scope.data[i].avgClimbed);
-			$scope.data[i].name = $scope.data[i].name != null ? $scope.data[i].name : "Name unavailable";
+			$scope.data[i].avg_score = parseInt($scope.data[i].avg_score);
+			$scope.data[i].team_number = parseInt($scope.data[i].team_number);
+			$scope.data[i].team_name = $scope.data[i].team_name != null ? $scope.data[i].team_name : "Name unavailable";
 		}
 	});
 });

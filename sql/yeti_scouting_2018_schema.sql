@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 03, 2018 at 08:47 PM
+-- Generation Time: Feb 03, 2018 at 09:25 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -31,23 +31,23 @@ SET time_zone = "+00:00";
 CREATE TABLE `form_data` (
   `id` int(11) NOT NULL,
   `auto_check` tinyint(1) NOT NULL DEFAULT '0',
-  `auto_defend` tinyint(1) DEFAULT '0',
-  `auto_scale` tinyint(1) DEFAULT '0',
-  `auto_speed` int(11) DEFAULT '1',
-  `bar_climb` tinyint(1) DEFAULT '0',
+  `auto_defend` tinyint(1) NOT NULL DEFAULT '0',
+  `auto_scale` tinyint(1) NOT NULL DEFAULT '0',
+  `auto_speed` int(11) NOT NULL DEFAULT '1',
+  `bar_climb` tinyint(1) NOT NULL DEFAULT '0',
   `comment` varchar(500) NOT NULL,
   `cube_ranking` int(11) NOT NULL,
-  `enemy_switch_cubes` int(11) DEFAULT '0',
-  `help_climb` tinyint(1) DEFAULT '0',
+  `enemy_switch_cubes` int(11) NOT NULL DEFAULT '0',
+  `help_climb` tinyint(1) NOT NULL DEFAULT '0',
   `match_number` int(11) NOT NULL,
-  `other_climb` varchar(255) DEFAULT NULL,
-  `ramp_climb` tinyint(1) DEFAULT '0',
+  `other_climb` varchar(255) NOT NULL,
+  `ramp_climb` tinyint(1) NOT NULL DEFAULT '0',
   `scale_cubes` int(11) NOT NULL DEFAULT '0',
   `score` int(11) NOT NULL,
   `switch_cubes` int(11) NOT NULL DEFAULT '0',
   `team_number` int(11) NOT NULL,
   `tele_check` tinyint(1) NOT NULL DEFAULT '0',
-  `tele_defense` tinyint(1) DEFAULT '0',
+  `tele_defense` tinyint(1) NOT NULL DEFAULT '0',
   `tele_speed` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -193,25 +193,25 @@ ALTER TABLE `team_info`
 -- AUTO_INCREMENT for table `form_data`
 --
 ALTER TABLE `form_data`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `pit_comments`
 --
 ALTER TABLE `pit_comments`
-  MODIFY `pit_scout_data_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `pit_scout_data_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `pit_pictures`
 --
 ALTER TABLE `pit_pictures`
-  MODIFY `pit_scout_data_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `pit_scout_data_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `scouters`
 --
 ALTER TABLE `scouters`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

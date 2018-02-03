@@ -25,25 +25,25 @@ $query = "INSERT INTO form_data (
 			tele_speed)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-$autoCheck = isset($postData['autoCheck']) ? intval($postData['autoCheck']) : null;
-$autoDefend = isset($postData['autoDefend']) ? intval($postData['autoDefend']) : null;
-$autoScale = isset($postData['autoScale']) ? intval($postData['autoScale']) : null;
-$autoSpeed = isset($postData['autoSpeed']) ? $postData['autoSpeed'] : null;
-$barClimb = isset($postData['barClimb']) ? intval($postData['barClimb']) : null;
-$comment = isset($postData['comment']) ? strip_tags($postData['comment']) : null;
-$cubeRanking = isset($postData['cubeRanking']) ? $postData['cubeRanking'] : null;
-$enemySwitchCubes = isset($postData['enemySwitchCubes']) ? $postData['enemySwitchCubes'] : null;
-$helpClimb = isset($postData['helpClimb']) ? intval($postData['helpClimb']) : null;
-$matchNumber = isset($postData['matchNumber']) ? $postData['matchNumber'] : null;
-$otherClimb = isset($postData['otherClimb']) ? strip_tags($postData['otherClimb']) : null;
-$rampClimb = isset($postData['rampClimb']) ? intval($postData['rampClimb']) : null;
-$scaleCubes = isset($postData['scaleCubes']) ? $postData['scaleCubes'] : null;
-$score = isset($postData['score']) ? $postData['score'] : null;
-$switchCubes = isset($postData['switchCubes']) ? $postData['switchCubes'] : null;
-$teamNumber = isset($postData['teamNumber']) ? $postData['teamNumber'] : null;
-$teleCheck = isset($postData['teleCheck']) ? intval($postData['teleCheck']) : null;
-$teleDefense = isset($postData['teleDefense']) ? intval($postData['teleDefense']) : null;
-$teleSpeed = isset($postData['teleSpeed']) ? $postData['teleSpeed'] : null;
+$autoCheck = isset($postData['autoCheck']) ? intval($postData['autoCheck']) : '';
+$autoDefend = isset($postData['autoDefend']) ? intval($postData['autoDefend']) : '';
+$autoScale = isset($postData['autoScale']) ? intval($postData['autoScale']) : '';
+$autoSpeed = isset($postData['autoSpeed']) ? $postData['autoSpeed'] : '';
+$barClimb = isset($postData['barClimb']) ? intval($postData['barClimb']) : '';
+$comment = isset($postData['comment']) ? strip_tags($postData['comment']) : '';
+$cubeRanking = isset($postData['cubeRanking']) ? $postData['cubeRanking'] : '';
+$enemySwitchCubes = isset($postData['enemySwitchCubes']) ? $postData['enemySwitchCubes'] : '';
+$helpClimb = isset($postData['helpClimb']) ? intval($postData['helpClimb']) : '';
+$matchNumber = isset($postData['matchNumber']) ? $postData['matchNumber'] : '';
+$otherClimb = isset($postData['otherClimb']) ? strip_tags($postData['otherClimb']) : '';
+$rampClimb = isset($postData['rampClimb']) ? intval($postData['rampClimb']) : '';
+$scaleCubes = isset($postData['scaleCubes']) ? $postData['scaleCubes'] : '';
+$score = isset($postData['score']) ? $postData['score'] : '';
+$switchCubes = isset($postData['switchCubes']) ? $postData['switchCubes'] : '';
+$teamNumber = isset($postData['teamNumber']) ? $postData['teamNumber'] : '';
+$teleCheck = isset($postData['teleCheck']) ? intval($postData['teleCheck']) : '';
+$teleDefense = isset($postData['teleDefense']) ? intval($postData['teleDefense']) : '';
+$teleSpeed = isset($postData['teleSpeed']) ? $postData['teleSpeed'] : '';
 
 if($stmt = $db->prepare($query)) {
 	$stmt->bind_param("iiiiisiiiisiiiiiiii",

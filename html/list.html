@@ -23,44 +23,13 @@
 						<span ng-show="sortType == 'avgScore' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
 						<span ng-show="sortType == 'avgScore' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'totalGears'; sortReverse = !sortReverse">Total gears scored
-						<span ng-show="sortType == 'totalGears' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'totalGears' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-					</th>
-					<th ng-click="sortType = 'autoHighAcc'; sortReverse = !sortReverse">Auto high goal accuracy
-						<span ng-show="sortType == 'autoHighAcc' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'autoHighAcc' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-					</th>
-					<th ng-click="sortType = 'teleHighAcc'; sortReverse = !sortReverse">Teleop high goal accuracy
-						<span ng-show="sortType == 'teleHighAcc' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'teleHighAcc' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-					</th>
-					<th ng-click="sortType = 'autoLowAcc'; sortReverse = !sortReverse">Auto low goal accuracy
-						<span ng-show="sortType == 'autoLowAcc' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'autoLowAcc' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-					</th>
-					<th ng-click="sortType = 'teleLowAcc'; sortReverse = !sortReverse">Teleop low goal accuracy
-						<span ng-show="sortType == 'teleLowAcc' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'teleLowAcc' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-					</th>
-					<th ng-click="sortType = 'avgClimbed'; sortReverse = !sortReverse">% games climbed
-						<span ng-show="sortType == 'avgClimbed' && sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'avgClimbed' && !sortReverse" class="glyphicon glyphicon-triangle-top"></span>
-					</th>
-		
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="row in data | orderBy:sortType:sortReverse | filter:filterTeams">
-					<td><a href="#/team/{{row.team}}">{{row.team}}</a></td>
-					<td><a href="#/team/{{row.team}}">{{row.name}}</a></td>
-					<td>{{row.avgScore}}</td>
-					<td>{{row.totalGears}}</td>
-					<td>{{row.autoHighAcc}}</td>
-					<td>{{row.teleHighAcc}}</td>
-					<td>{{row.autoLowAcc}}</td>
-					<td>{{row.teleLowAcc}}</td>
-					<td>{{row.avgClimbed}}%</td>
+					<td><a href="#/team/{{row.team_number}}">{{row.team_number}}</a></td>
+					<td><a href="#/team/{{row.team_number}}">{{row.team_name}}</a></td>
+					<td>{{row.avg_score | number:2}}</td>
 				</tr>
 			</tbody>
 		</table>
