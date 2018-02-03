@@ -1,25 +1,25 @@
-<!-- Basic information panel: -->
 <div class="container-fluid">
-    <h4 style="font-weight: bold">Scouting as {{user.name}}</h4>
+    <h4>Scouting as {{user.name}}</h4>
     <form id="scouting_form" enctype="multipart/form-data" ng-submit="submit()">
-        <div class="panel panel-default" ng-submit="submit()">
+
+        <!-- Basic information panel: -->
+        <div class="panel panel-default">
             <div class="panel-heading ">
                 <h3 class="panel-title ">Basic Info:</h3>
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <label for="teamnumber">Team #</label>
-                    <input ng-model="formData.teamNumber" class="form-control" type='number' name='teamnumber' id='teamnumber' placeholder='Enter Team Number here'>
+                    <label class="required" for="teamnumber">Team #</label>
+                    <input ng-model="formData.teamNumber" class="form-control" type='number' name='teamnumber' id='teamnumber' placeholder='Enter Team Number here' required>
                 </div>
                 <div class="form-group">
-                    <label for="matchNumber">What Match is it?</label>
-                    <input ng-model="formData.matchNumber" type="text" class="form-control" id="matchNumber" placeholder="Enter the Current Match" >
+                    <label class="required" for="matchNumber">What Match is it?</label>
+                    <input ng-model="formData.matchNumber" type="number" class="form-control" id="matchNumber" placeholder="Enter the Current Match" required>
                 </div>
             </div>
         </div>
 
         <!-- Autonomous panel: -->
-
         <div class="panel panel-default ">
             <div class="panel-heading ">
                 <h3 class="panel-title ">Autonomous:</h3>
@@ -28,25 +28,25 @@
 
                 <div class="form-group">
                     <label>
-                        <button type="button" onclick="return getData()" class="btn btn-primary" (click)="autoCheck = !autoCheck"> Did the robot cross the Autonomous line?</button>
-                        <span class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"></span>
-                        <span class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"></span>
+                        <button type="button" class="btn btn-primary" ng-click="formData.autoCheck = !formData.autoCheck"> Did the robot cross the Autonomous line?</button>
+                        <span ng-if="formData.autoCheck" class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"> Yes</span>
+                        <span ng-if="!formData.autoCheck" class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"> No</span>
                     </label>
-                    <ul>
+                    <ul ng-if="formData.autoCheck">
                         <li for="autoScale">Did the robot put a cube on the alliance scale?
-                            <input type="checkbox" id="autoScale">
+                            <input ng-model="formData.autoScale" type="checkbox" id="autoScale">
                         </li>
                         <br>
                         <li for="autoSwitch">Did the robot put a cube on the alliance switch?
-                            <input type="checkbox" id="autoSwitch">
+                            <input ng-model="formData.autoSwitch" type="checkbox" id="autoSwitch">
                         </li>
                         <br>
                         <li for="autoDefend">Did the robot put a cube on the enemy switch?
-                            <input type="checkbox" id="autoDefend">
+                            <input ng-model="formData.autoDefend" type="checkbox" id="autoDefend">
                         </li>
                         <br>
                         <li>How fast was the robot in Auto (1-5). Slowest = 1, Fastest = 5
-                            <select class="form-control">
+                            <select ng-model="formData.autoSpeed" class="form-control">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -68,14 +68,14 @@
             <div class="panel-body">
                 <div>
                     <p style="font-weight: bold">Cubes placed on alliance scale:</p>
-                    <input  type="number" id="allianceScore" class="form-control" placeholder="#">
+                    <input ng-model="formData.scaleCubes" type="number" class="form-control" placeholder="#">
                     <p style="font-weight: bold" style="margin-top: 10px">Cubes placed on alliance switch:</p>
-                    <input  type="number" id="allianceScore" class="form-control" placeholder="#">
+                    <input ng-model="formData.switchCubes" type="number" class="form-control" placeholder="#">
                     <p style="font-weight: bold" style="margin-top: 10px">Cubes placed on enemy switch:</p>
-                    <input   type="number" id="allianceScore" class="form-control" placeholder="#">
+                    <input ng-model="formData.enemySwitchCubes" type="number" class="form-control" placeholder="#">
                     <div class="panel panel-default" style="margin-top: 15px">
                         <label>How well did this robot place cubes (1-5). Worst = 1, Perfect = 5
-                            <select  class="form-control">
+                            <select ng-model="formData.cubeRanking" class="form-control">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -86,12 +86,12 @@
                     </div>
                     <div class="panel panel-default" style="margin-top: 15px">
                         <label for="teleDefense">Did this robot play defense?
-                            <input  type="checkbox" id="teleDefense">
+                            <input ng-model="formData.teleDefense" type="checkbox" id="teleDefense">
                         </label>
                     </div>
                     <div class="panel panel-default">
                         <label>How fast was the robot in teleop (1-5). Slowest = 1, Fastest = 5
-                            <select  class="form-control">
+                            <select ng-model="formData.teleSpeed" class="form-control">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -102,24 +102,24 @@
                     </div>
                     <div>
                         <label>
-                            <button type="button" onclick="return getData()" class="btn btn-primary" (click)="teleCheck = !teleCheck"> Did the robot climb or help others climb?</button>
-                            <span class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"></span>
-                            <span class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"></span>
+                            <button type="button" class="btn btn-primary" ng-click="formData.teleCheck = !formData.teleCheck"> Did the robot climb or help others climb?</button>
+                            <span ng-if="formData.teleCheck" class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"> Yes</span>
+                            <span ng-if="!formData.teleCheck" class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"> No</span>
                         </label>
-                        <ul>
+                        <ul ng-if="formData.teleCheck">
                             <li for="helpClimb">Did the robot deploy a ramp?
-                                <input type="checkbox" id="helpClimb">
+                                <input ng-model="formData.helpClimb" type="checkbox" id="helpClimb">
                             </li>
                             <br>
                             <li for="rampClimb">Did the robot climb a ramp?
-                                <input type="checkbox" id="rampClimb">
+                                <input ng-model="formData.rampClimb" type="checkbox" id="rampClimb">
                             </li>
                             <br>
                             <li for="barClimb">Did the robot climb the bar?
-                                <input type="checkbox" id="barClimb">
+                                <input ng-model="formData.barClimb" type="checkbox" id="barClimb">
                             </li>
                             <li style="margin-top: 15px" for="otherClimb">Other:
-                                <input type="text" id="otherClimb">
+                                <input ng-model="formData.otherClimb" type="text" id="otherClimb">
                             </li>
                         </ul>
                     </div>
@@ -134,10 +134,10 @@
                 <h3 class="panel-title ">Other:</h3>
             </div>
             <div class="panel-body">
-                <p style="font-weight: bold">Alliance Score:</p>
-                <input  type="number" id="allianceScore" class="form-control" placeholder="Score:">
-                <p style="font-weight: bold; margin-top: 10px">Comments:</p>
-                <textarea  id="scouterComment" class="form-control" rows="3" placeholder="Enter Comments: Strategy, Failures, Human Players, Power Ups etc"></textarea>
+                <label class="required" for="allianceScore">Alliance Score:</label>
+                <input ng-model="formData.score" type="number" id="allianceScore" class="form-control" placeholder="Score:" required>
+                <label class="required" for="scouterComment">Comments:</label>
+                <textarea ng-model="formData.comment" id="scouterComment" class="form-control" rows="3" placeholder="Enter Comments: Strategy, Failures, Human Players, Power Ups etc" required></textarea>
             </div>
             <div class="form-group">
                 <button class="btn btn-block btn-primary" type="submit">Submit</button>

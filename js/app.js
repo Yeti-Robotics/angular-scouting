@@ -220,177 +220,35 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	'use strict';
 
-	$scope.matchesReceived = true;
-
-	$scope.selectedTeam = false;
-
-	$scope.matches = [];
-
-	$scope.maxMatchNumber = 64;
-
-	$scope.minTeamNumber = 435;
-
-	$scope.matchNumber = 1;
-	
-	$scope.selectedStation = "alliance station";
-
-	$rootScope.getCurrentSettings(function () {
-		if ($rootScope.settings.validateTeams) {
-			$http.get("php/getFutureMatches.php").then(function (response) {
-				for (var i = 0; i < response.data.Schedule.length; i++) {
-					if ($rootScope.settings.blue1Closest) {
-						$scope.matches.push({
-							teams: {
-								red: [
-									response.data.Schedule[i].Teams[2].teamNumber,
-									response.data.Schedule[i].Teams[1].teamNumber,
-									response.data.Schedule[i].Teams[0].teamNumber
-								],
-								blue: [
-									response.data.Schedule[i].Teams[3].teamNumber,
-									response.data.Schedule[i].Teams[4].teamNumber,
-									response.data.Schedule[i].Teams[5].teamNumber
-								]
-							},
-							number: response.data.Schedule[i].matchNumber
-						});
-					} else {
-						$scope.matches.push({
-							teams: {
-								red: [
-									response.data.Schedule[i].Teams[1].teamNumber,
-									response.data.Schedule[i].Teams[1].teamNumber,
-									response.data.Schedule[i].Teams[2].teamNumber
-								],
-								blue: [
-									response.data.Schedule[i].Teams[5].teamNumber,
-									response.data.Schedule[i].Teams[4].teamNumber,
-									response.data.Schedule[i].Teams[3].teamNumber
-								]
-							},
-							number: response.data.Schedule[i].matchNumber
-						});
-					}
-				}
-				$scope.formData.match_number = $scope.matches.length;
-				$scope.matchesReceived = true;
-				console.log($scope.matches);
-			}, function (response) {
-				displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
-				$scope.matchesReceived = false;
-			});
-		}
-	});
-	
-	$scope.selectStation = function (allianceStation) {
-		$scope.selectedStation = allianceStation;
-		$scope.selectTeam();
-	};
-
-	$scope.selectTeam = function () {
-		if ($scope.formData.match_number > $scope.matches.length) {
-			$scope.formData.match_number = $scope.matches.length;
-		}
-		if ($scope.formData.match_number < 1) {
-			$scope.formData.match_number = 1;
-		}
-		if ($scope.formData.match_number != undefined && $scope.selectedStation != undefined) {
-			$scope.selectedTeam = true;
-			switch ($scope.selectedStation) {
-				case 'red closest':
-					$scope.formData.team_number = $scope.matches[$scope.formData.match_number - 1].teams.red[0];
-					break;
-				case 'red middle':
-					$scope.formData.team_number = $scope.matches[$scope.formData.match_number - 1].teams.red[1];
-					break;
-				case 'red farthest':
-					$scope.formData.team_number = $scope.matches[$scope.formData.match_number - 1].teams.red[2];
-					break;
-				case 'blue closest':
-					$scope.formData.team_number = $scope.matches[$scope.formData.match_number - 1].teams.blue[0];
-					break;
-				case 'blue middle':
-					$scope.formData.team_number = $scope.matches[$scope.formData.match_number - 1].teams.blue[1];
-					break;
-				case 'blue farthest':
-					$scope.formData.team_number = $scope.matches[$scope.formData.match_number - 1].teams.blue[2];
-					break;
-			}
-		}
-	};
-
 	$scope.resetForm = function () {
-		console.log($rootScope.user);
 		$scope.formData = {
+			autoCheck: false,
+			teleCheck: false,
+			cubeRanking: '1',
+			teleSpeed: '1',
+			scaleCubes: 0,
+			switchCubes: 0,
+			enemySwitchCubes: 0
 		};
 	};
 
 	$scope.resetForm();
 
-//	$http.get("php/getLastMatch.php").then(function (response) {
-//		$scope.matchNumber = $scope.formData.match_number = parseInt(response.data) + 1;
-//	}, function (response) {
-//		displayMessage("Could not get this match", "danger");
-//		console.log(response.data)
-//	});
-
 	$(document).ready(function () {
-		// $scope.validator = $('#scouting_form').validate();
-		// $("#comments").rules("add", {
-		// 	required: true
-		// });
-		// $("#team_number").rules("add", {
-		// 	min: $scope.minTeamNumber,
-		// 	messages: {
-		// 		min: "This team number is too low!"
-		// 	}
-		// });
-		// $("#match_number").rules("add", {
-		// 	max: $scope.maxMatchNumber,
-		// 	messages: {
-		// 		max: "This match number is too high!"
-		// 	}
-		// });
-
-		// console.log('Inititalize validation');
-
-		// $scope.resetForm();
+		$scope.validator = $('#scouting_form').validate();
 	});
 
 	$scope.submit = function () {
-		console.log($scope.formData);
-		// if ($('#scouting_form').valid()) {
-		// 	console.log("valid");
-		// 	$("button[type='submit']").addClass("disabled");
-		// 	$("body").scrollTop(0);
-		// 	displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
-
-		// 	$scope.formData.autoHighAccuracy = parseInt($scope.formData.autoHighAccuracy);
-		// 	$scope.formData.autoShootSpeed = parseInt($scope.formData.autoShootSpeed);
-		// 	$scope.formData.autoLowAccuracy = parseInt($scope.formData.autoLowAccuracy);
-		// 	$scope.formData.teleHighAccuracy = parseInt($scope.formData.teleHighAccuracy);
-		// 	$scope.formData.teleShootSpeed = parseInt($scope.formData.teleShootSpeed);
-		// 	$scope.formData.teleLowAccuracy = parseInt($scope.formData.teleLowAccuracy);
-		// 	$scope.formData.teleGears = parseInt($scope.formData.teleGears);
-		// 	$scope.formData.load = parseInt($scope.formData.load);
-
-		// 	$http.post('php/formSubmit.php', $scope.formData).then(function (response) {
-		// 		console.log("submitted");
-		// 		$scope.matches.shift();
-		// 		$rootScope.getCurrentSettings();
-		// 		console.log(response.data);
-		// 		$('#scouting_form').trigger('reset');
-		// 		displayMessage("<strong>Success!</strong> Now do it again.", "success");
-		// 		$("button[type='submit']").removeClass("disabled");
-		// 		$scope.matchNumber++;
-		// 		$scope.resetForm();
-		// 	}, function (response) {
-		// 		console.log("Error during submission");
-		// 		console.log(response.data);
-		// 	});
-		// } else {
-		// 	console.log("Not valid");
-		// }
+		if ($('#scouting_form').valid()) {
+			$http.post('php/formSubmit.php', $scope.formData)
+				.then(function (data) {
+					displayMessage('Form submitted successfully', 'success');
+					$scope.resetForm();
+				}, function (error) {
+					displayMessage('Failed to submit form', 'danger');
+					console.error(error);
+				});
+		}
 	};
 });
 

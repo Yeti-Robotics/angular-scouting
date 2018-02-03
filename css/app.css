@@ -2,12 +2,21 @@ label.error {
     color: red;
 }
 
+label.required::after {
+	content: ' *';
+	color: red;
+}
+
 .required, .error {
     border-color: red !important;
 }
 
 .message-container {
-	display: none
+	display: none;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 2000;
 }
 
 .confirm-header {

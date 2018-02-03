@@ -3,96 +3,77 @@ include("connect.php");
 include("functions.php");
 header('Content-Type: application/json');
 $postData = json_decode(file_get_contents("php://input"), true);
-$query = "INSERT INTO scout_data (id,
+$query = "INSERT INTO form_data (
+			auto_check,
+			auto_defend,
+			auto_scale,
+			auto_speed,
+			bar_climb,
+			comment,
+			cube_ranking,
+			enemy_switch_cubes,
+			help_climb,
 			match_number,
-			team_number,
-            robot_moved,
-            auto_gear,
-			autoHighGoal,
-            autoHighAccuracy,
-            autoShootSpeed,
-            autoLowGoal,
-            autoLowAccuracy,
-			teleHighGoal,
-			teleHighAccuracy,
-            teleShootSpeed,
-			teleLowGoal,
-			teleLowAccuracy,
-			teleGears,
-            `load`,
-            climbed,
+			other_climb,
+			ramp_climb,
+			scale_cubes,
 			score,
-			comments)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			switch_cubes,
+			team_number,
+			tele_check,
+			tele_defense,
+			tele_speed)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-if($postData["robot_moved"]) {
-	$robot_moved = 1;
-} else {
-	$robot_moved = 0;
-}
-if($postData["auto_gear"]) {
-	$auto_gear = 1;
-} else {
-	$auto_gear = 0;
-}
-if($postData["autoHighGoal"]) {
-	$autoHighGoal = 1;
-} else {
-	$autoHighGoal = 0;
-}
-if($postData["autoLowGoal"]) {
-	$autoLowGoal = 1;
-} else {
-	$autoLowGoal = 0;
-}
-if($postData["teleHighGoal"]) {
-	$teleHighGoal = 1;
-} else {
-	$teleHighGoal = 0;
-}
-if($postData["teleLowGoal"]) {
-	$teleLowGoal = 1;
-} else {
-	$teleLowGoal = 0;
-}
-if($postData["climbed"]) {
-	$climbed = 1;
-} else {
-	$climbed = 0;
-}
+$autoCheck = isset($postData['autoCheck']) ? intval($postData['autoCheck']) : null;
+$autoDefend = isset($postData['autoDefend']) ? intval($postData['autoDefend']) : null;
+$autoScale = isset($postData['autoScale']) ? intval($postData['autoScale']) : null;
+$autoSpeed = isset($postData['autoSpeed']) ? $postData['autoSpeed'] : null;
+$barClimb = isset($postData['barClimb']) ? intval($postData['barClimb']) : null;
+$comment = isset($postData['comment']) ? strip_tags($postData['comment']) : null;
+$cubeRanking = isset($postData['cubeRanking']) ? $postData['cubeRanking'] : null;
+$enemySwitchCubes = isset($postData['enemySwitchCubes']) ? $postData['enemySwitchCubes'] : null;
+$helpClimb = isset($postData['helpClimb']) ? intval($postData['helpClimb']) : null;
+$matchNumber = isset($postData['matchNumber']) ? $postData['matchNumber'] : null;
+$otherClimb = isset($postData['otherClimb']) ? strip_tags($postData['otherClimb']) : null;
+$rampClimb = isset($postData['rampClimb']) ? intval($postData['rampClimb']) : null;
+$scaleCubes = isset($postData['scaleCubes']) ? $postData['scaleCubes'] : null;
+$score = isset($postData['score']) ? $postData['score'] : null;
+$switchCubes = isset($postData['switchCubes']) ? $postData['switchCubes'] : null;
+$teamNumber = isset($postData['teamNumber']) ? $postData['teamNumber'] : null;
+$teleCheck = isset($postData['teleCheck']) ? intval($postData['teleCheck']) : null;
+$teleDefense = isset($postData['teleDefense']) ? intval($postData['teleDefense']) : null;
+$teleSpeed = isset($postData['teleSpeed']) ? $postData['teleSpeed'] : null;
 
 if($stmt = $db->prepare($query)) {
-    $stmt->bind_param("iiiiiiiiiiiiiiiiiiis",
-        $postData["id"],
-        $postData["match_number"],
-		$postData["team_number"],
-        $robot_moved,
-        $auto_gear,
-		$autoHighGoal,
-		$postData["autoHighAccuracy"],
-        $postData["autoShootSpeed"],
-		$autoLowGoal,
-        $postData["autoLowAccuracy"],
-		$teleHighGoal,
-        $postData["teleHighAccuracy"],
-        $postData["teleShootSpeed"],
-		$teleLowGoal,
-        $postData["teleLowAccuracy"],
-		$postData["teleGears"],
-		$postData["load"],
-        $climbed,
-		$postData["score"],
-        strip_tags($postData["comments"]));
+	$stmt->bind_param("iiiiisiiiisiiiiiiii",
+		$autoCheck,
+		$autoDefend,
+		$autoScale,
+		$autoSpeed,
+		$barClimb,
+		$comment,
+		$cubeRanking,
+		$enemySwitchCubes,
+		$helpClimb,
+		$matchNumber,
+		$otherClimb,
+		$rampClimb,
+		$scaleCubes,
+		$score,
+		$switchCubes,
+		$teamNumber,
+		$teleCheck,
+		$teleDefense,
+		$teleSpeed
+	);
     $stmt->execute();
     if ($stmt->error) {
         header('HTTP/1.1 500 SQL Error', true, 500);
         $db->close();
 	    die('{"message":"'.$stmt->error.'"}');
     }
-    $insert_id = $stmt->insert_id;
-
-	updateQualificationWagers($db, $postData["match_number"]);
-	updateTeamInfo($db, $postData["team_number"]);
+	$insert_id = $stmt->insert_id;
 } else {
     header('HTTP/1.1 500 SQL Error', true, 500);
     $db->close();
