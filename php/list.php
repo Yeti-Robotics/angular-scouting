@@ -3,7 +3,7 @@ include ("connect.php");
 include ("functions.php");
 header('Content-Type: application/json');
 $query = "
-SELECT f.team_number, t.team_name, AVG(f.score) as avg_score
+SELECT f.team_number, t.team_name, AVG(f.score) as avg_score, f.bar_climb
 FROM form_data f
 LEFT JOIN team_info t ON t.team_number = f.team_number
 GROUP BY f.team_number

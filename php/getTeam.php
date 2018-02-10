@@ -4,7 +4,7 @@ include ("functions.php");
 header('Content-Type: application/json');
 
 $teamNumber = isset($_GET["teamNumber"]) ? $_GET["teamNumber"] : -1;
-$comments = array();
+$comment = array();
 $timestamps = array();
 $names = array();
 $matchNumber = array();
@@ -12,13 +12,12 @@ $team = 0;
 if ($teamNumber) {
 	if (checkTeamData($db, $teamNumber)) {
 		$response = array();
-
-		//Comments query
-		$query = "SELECT team_number, comments, UNIX_TIMESTAMP(timestamp) AS timestamp, name, match_number, scout_data.id AS id
-				FROM scout_data
-                LEFT JOIN scouters
-                ON scout_data.id = scouters.id
+//QUERY #1
+		Comments query
+		$query = "SELECT team_number, comment, UNIX_TIMESTAMP(timestamp) AS timestamp, name, match_number, id
+				FROM form_data
 				WHERE team_number = ?";
+		
 		if ($stmt = $db->prepare($query)){
 			$stmt->bind_param("i", $teamNumber);
 			$stmt->execute();
@@ -38,31 +37,31 @@ if ($teamNumber) {
 			header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
 			die('{"error": "Failed to get comments"}');
 		}
+//QUERY # 2 
+		// Misc. stats query
+		// $query = "SELECT match_number, climbed
+		// 	FROM form_data WHERE team_number=?";
+		// if($stmt = $db->prepare($query)) {
+		// 	$stmt->bind_param("i", $teamNumber);
+		// 	$stmt->execute();
+		// 	$result = $stmt->get_result();
+		// 	if ($result) {
+		// 		while ($row = $result->fetch_assoc()) {
+		// 			$response["misc"][] = array(
+		// 				"match_number" => $row["match_number"],
+		// 				"load" => $row["load"],
+		// 				"climbed" => $row["climbed"]
+		// 			);
+		// 		}
+		// 	}
+		// } else {
+		// 	header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
+		// 	die('{"error": "Failed to get data"}');
+		// }
 
-		//Misc. stats query
-		$query = "SELECT match_number, `load`, climbed
-			FROM scout_data WHERE team_number=?";
-		if($stmt = $db->prepare($query)) {
-			$stmt->bind_param("i", $teamNumber);
-			$stmt->execute();
-			$result = $stmt->get_result();
-			if ($result) {
-				while ($row = $result->fetch_assoc()) {
-					$response["misc"][] = array(
-						"match_number" => $row["match_number"],
-						"load" => $row["load"],
-						"climbed" => $row["climbed"]
-					);
-				}
-			}
-		} else {
-			header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
-			die('{"error": "Failed to get data"}');
-		}
-
-		$response["match"] = getTeamMainMatchTable($db, $teamNumber);
-		$response["rankingInfo"] = getTeamRankings($db, $teamNumber);
-		$response['teamInfo'] = getTeamInfo($db, $teamNumber);
+		 $response["match"] = getTeamMainMatchTable($db, $teamNumber);
+		 $response["rankingInfo"] = getTeamRankings($db, $teamNumber);
+		 $response['teamInfo'] = getTeamInfo($db, $teamNumber);
 		echo(json_encode($response));
 	} else {
 		header('HTTP/1.1 500 Internal Server Error', true, 500);

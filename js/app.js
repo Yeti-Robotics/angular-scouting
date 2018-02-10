@@ -451,172 +451,12 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 	$http.get('php/list.php').then(function (response) {
 		$scope.data = response.data;
 		for (var i = 0; i < $scope.data.length; i++) {
+			$scope.data[i].bar_climb = parseInt($scope.data[i].bar_climb);
 			$scope.data[i].avg_score = parseInt($scope.data[i].avg_score);
 			$scope.data[i].team_number = parseInt($scope.data[i].team_number);
 			$scope.data[i].team_name = $scope.data[i].team_name != null ? $scope.data[i].team_name : "Name unavailable";
 		}
 	});
-});
-
-app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window, AccountService) {
-	'use strict';
-
-	AccountService.validateSession().then(function (response) {
-		$scope.refreshByteCoins();
-	}, function (response) {
-		AccountService.logout();
-		displayMessage("Session expired, please log in again", "danger");
-	});
-
-	$scope.refreshByteCoins = function () {
-		$http.post("php/getByteCoins.php", {
-			token: $window.sessionStorage["token"]
-		}).then(function (response) {
-			$rootScope.user.byteCoins = $scope.byteCoins = response.data;
-			$("#byteCoinsWagered").slider('setAttribute', 'max', parseInt($scope.byteCoins) + 1);
-		}, function (response) {
-			displayMessage("Could not properly get your number of Byte Coins. Please log in and try again", "danger");
-		});
-	};
-
-	$scope.manuallyEnterByteCoins = false;
-
-	$scope.toggleManualByteCoins = function () {
-		$scope.manuallyEnterByteCoins = !$scope.manuallyEnterByteCoins;
-	}
-
-	$scope.selectedMatch = false;
-
-	$scope.selectMatch = function (match) {
-		$scope.selectedMatch = {
-			number: match.matchNumber,
-			red: [
-				match.Teams[0].teamNumber,
-				match.Teams[1].teamNumber,
-				match.Teams[2].teamNumber
-			],
-			blue: [
-				match.Teams[3].teamNumber,
-				match.Teams[4].teamNumber,
-				match.Teams[5].teamNumber
-			]
-		};
-		$scope.currentWager.matchPredicted = match.matchNumber;
-		$("#match-modal").modal('hide');
-	}
-
-	$scope.reportSuccess = function (wager) {
-		$scope.refreshByteCoins();
-	};
-
-	$scope.reportError = function (error) {
-		$scope.lastError = error;
-	};
-	$scope.generateMatchs = function () {
-		$http.get("php/currentWageringMatches.php").then(function (response) {
-			$scope.Schedule = response.data["Schedule"];
-			console.log($scope.Schedule);
-		}, function (response) {
-			displayMessage("Failed to get match data", "danger");
-		});
-	}
-	$scope.generateMatchs();
-
-	$scope.toOptionLabel = function (teams) {
-		return teams[0].teamNumber + "-" + teams[1].teamNumber + "-" +
-			teams[2].teamNumber + " vs " + teams[3].teamNumber + "-" +
-			teams[4].teamNumber + "-" + teams[5].teamNumber;
-	};
-
-	$scope.resetForm = function () {
-		console.log($("#confirm-wager-modal").modal('hide'));
-		$("#byteCoinsWagered").slider('setValue', 0);
-		$scope.selectedMatch = false;
-		$scope.currentWager = {
-			wagerType: '',
-			wageredByteCoins: 0,
-			alliancePredicted: '',
-			matchPredicted: 0,
-			withenPoints: 0,
-			minPointsPredicted: 0,
-			getMultiplier: function () {
-				if (this.wagerType === "alliance") {
-					return 2;
-				} else if (this.wagerType === "closeMatch") {
-					return 5 - (parseInt(this.withenPoints, 10) / (12.5));
-				} else if (this.wagerType === "points") {
-					return (parseInt(this.minPointsPredicted, 10) / 110) + (parseInt(this.minPointsPredicted, 10) / 350);
-				} else {
-					return 0;
-				}
-			},
-			getValue: function () {
-				return Math.floor(this.wageredByteCoins * this.getMultiplier());
-			}
-		}
-	};
-
-	$(document).ready(function () {
-		$scope.resetForm();
-	});
-
-	$scope.changeWager = function (wagerType) {
-		$scope.currentWager.wagerType = wagerType;
-	};
-	//Templates
-	$scope.allianceWager = {
-		alliancePredicted: '',
-		matchPredicted: 0
-	};
-	$scope.closeMatchWager = {
-		withenPoints: 0, //People will get points if the scored points are less then the number set here (for predicting close games)
-		matchPredicted: 0
-	};
-	$scope.pointsWager = {
-		alliancePredicted: '',
-		minPointsPredicted: 0, //only applies to allinaces, negative if less than
-		matchPredicted: 0
-	};
-
-	$scope.sendWager = function () {
-		$("#confirm-wager-modal").modal('hide');
-		$rootScope.validateLogin();
-		var postObject = {};
-		if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
-			postObject = {
-				token: $window.sessionStorage["token"],
-				wagerType: "alliance",
-				wageredByteCoins: $scope.currentWager.wageredByteCoins,
-				matchPredicted: $scope.currentWager.matchPredicted,
-				alliancePredicted: $scope.currentWager.alliancePredicted
-			};
-		} else if ($scope.currentWager.wagerType === "closeMatch" && $scope.currentWager.withenPoints && $scope.currentWager.matchPredicted) {
-			postObject = {
-				token: $window.sessionStorage["token"],
-				wagerType: "closeMatch",
-				wageredByteCoins: $scope.currentWager.wageredByteCoins,
-				matchPredicted: $scope.currentWager.matchPredicted,
-				withenPoints: $scope.currentWager.withenPoints
-			};
-		} else if ($scope.currentWager.wagerType === "points" && $scope.currentWager.minPointsPredicted && $scope.currentWager.matchPredicted) {
-			postObject = {
-				token: $window.sessionStorage["token"],
-				wagerType: "points",
-				wageredByteCoins: $scope.currentWager.wageredByteCoins,
-				matchPredicted: $scope.currentWager.matchPredicted,
-				alliancePredicted: $scope.currentWager.alliancePredicted,
-				withenPoints: $scope.currentWager.minPointsPredicted
-			};
-		} else {
-			displayMessage("Incorrect wager format. Did you fill all of the fields?", "danger");
-		}
-		$http.post("php/wager.php", postObject).then(function (response) {
-			$scope.reportSuccess(response.data.message);
-			$scope.resetForm();
-		}, function (response) {
-			displayMessage("Failed to send Wager", "danger");
-		});
-	};
 });
 
 app.controller("LeaderboardsController", function ($scope, $http) {
@@ -640,7 +480,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 
 
 	$scope.commentSection = {
-		comments: []
+		comment: []
 	};
 
 	$(document).ready(function () {
@@ -673,122 +513,25 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 			return new Array(n);
 		};
 
-		for (var i = 0; i < $scope.data.misc.length; i++) {
-			switch ($scope.data.misc[i].load) {
-				case 0:
-					$scope.data.misc[i].load = "Less than 50";
-					break;
-				case 1:
-					$scope.data.misc[i].load = "~50";
-					break;
-				case 2:
-					$scope.data.misc[i].load = "~100";
-					break;
-				case 3:
-					$scope.data.misc[i].load = "~150";
-					break;
-				case 4:
-					$scope.data.misc[i].load = "More than 150";
-					break;
-			}
-		}
-
-		for (var i = 0; i < $scope.data.match.teleop.length; i++) {
-			switch ($scope.data.match.teleop[i].teleHighAccuracy) {
-				case 0:
-					$scope.data.match.teleop[i].teleHighAccuracy = "0% (No Accuracy)";
-					break;
-				case 1:
-					$scope.data.match.teleop[i].teleHighAccuracy = "~30% (Low Accuracy)";
-					break;
-				case 2:
-					$scope.data.match.teleop[i].teleHighAccuracy = "~50% (Medium Accuracy)";
-					break;
-				case 3:
-					$scope.data.match.teleop[i].teleHighAccuracy = "~80% (High Accuracy)";
-					break;
-			}
-			switch ($scope.data.match.teleop[i].teleLowAccuracy) {
-				case 0:
-					$scope.data.match.teleop[i].teleLowAccuracy = "0% (No Accuracy)";
-					break;
-				case 1:
-					$scope.data.match.teleop[i].teleLowAccuracy = "~30% (Low Accuracy)";
-					break;
-				case 2:
-					$scope.data.match.teleop[i].teleLowAccuracy = "~50% (Medium Accuracy)";
-					break;
-				case 3:
-					$scope.data.match.teleop[i].teleLowAccuracy = "~80% (High Accuracy)";
-					break;
-			}
-			switch ($scope.data.match.auto[i].autoHighAccuracy) {
-				case 0:
-					$scope.data.match.auto[i].autoHighAccuracy = "0% (No Accuracy)";
-					break;
-				case 1:
-					$scope.data.match.auto[i].autoHighAccuracy = "~30% (Low Accuracy)";
-					break;
-				case 2:
-					$scope.data.match.auto[i].autoHighAccuracy = "~50% (Medium Accuracy)";
-					break;
-				case 3:
-					$scope.data.match.auto[i].autoHighAccuracy = "~80% (High Accuracy)";
-					break;
-			}
-			switch ($scope.data.match.auto[i].autoLowAccuracy) {
-				case 0:
-					$scope.data.match.auto[i].autoLowAccuracy = "0% (No Accuracy)";
-					break;
-				case 1:
-					$scope.data.match.auto[i].autoLowAccuracy = "~30% (Low Accuracy)";
-					break;
-				case 2:
-					$scope.data.match.auto[i].autoLowAccuracy = "~50% (Medium Accuracy)";
-					break;
-				case 3:
-					$scope.data.match.auto[i].autoLowAccuracy = "~80% (High Accuracy)";
-					break;
-			}
-		}
-
-		for (var i = 0; i < $scope.data.match.teleop.length; i++) {
-			switch ($scope.data.match.teleop[i].teleShootSpeed) {
-				case 0:
-					$scope.data.match.teleop[i].teleShootSpeed = "Slow";
-					break;
-				case 1:
-					$scope.data.match.teleop[i].teleShootSpeed = "Moderate";
-					break;
-				case 2:
-					$scope.data.match.teleop[i].teleShootSpeed = "Fast";
-					break;
-				case 3:
-					$scope.data.match.teleop[i].teleShootSpeed = "Super Fast";
-					break;
-				case 4:
-					$scope.data.match.teleop[i].teleShootSpeed = "LightSpeed";
-					break;
-			}
-			switch ($scope.data.match.auto[i].autoShootSpeed) {
-				case 0:
-					$scope.data.match.auto[i].autoShootSpeed = "Slow";
-					break;
-				case 1:
-					$scope.data.match.auto[i].autoShootSpeed = "Moderate";
-					break;
-				case 2:
-					$scope.data.match.auto[i].autoShootSpeed = "Fast";
-					break;
-				case 3:
-					$scope.data.match.auto[i].autoShootSpeed = "Super Fast";
-					break;
-				case 4:
-					$scope.data.match.auto[i].autoShootSpeed = "LightSpeed";
-					break;
-			}
-		}
-
+		// for (var i = 0; i < $scope.data.misc.length; i++) {
+		// 	switch ($scope.data.misc[i].load) {
+		// 		case 0:
+		// 			$scope.data.misc[i].load = "Less than 50";
+		// 			break;
+		// 		case 1:
+		// 			$scope.data.misc[i].load = "~50";
+		// 			break;
+		// 		case 2:
+		// 			$scope.data.misc[i].load = "~100";
+		// 			break;
+		// 		case 3:
+		// 			$scope.data.misc[i].load = "~150";
+		// 			break;
+		// 		case 4:
+		// 			$scope.data.misc[i].load = "More than 150";
+		// 			break;
+		// 	}
+		// }
 		console.log($scope.data);
 	}, function (response) {
 		$scope.error = response.data.error;
@@ -804,7 +547,7 @@ app.controller("ScouterController", function ($scope, $http, $routeParams) {
 	$scope.error = "";
 
 	$scope.commentSection = {
-		comments: []
+		comment: []
 	};
 
 	$http.get("php/getScouter.php", {

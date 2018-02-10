@@ -23,13 +23,28 @@
 						<span ng-show="sortType == 'avgScore' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
 						<span ng-show="sortType == 'avgScore' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
+					<th ng-click="sortType = 'avgSpeed'; sortReverse = !sortReverse">Avg Speed (1-5)
+							<span ng-show="sortType == 'avgSpeed' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="sortType == 'avgSpeed' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
+					<th ng-click="sortType = 'canClimb'; sortReverse = !sortReverse">Can Climb?
+							<span ng-show="sortType == 'canClimb' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="sortType == 'canClimb' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
+					<th ng-click="sortType = 'sumCube'; sortReverse = !sortReverse">Total Cubes Placed
+							<span ng-show="sortType == 'sumCube' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+							<span ng-show="sortType == 'sumCube' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="row in data | orderBy:sortType:sortReverse | filter:filterTeams">
 					<td><a href="#/team/{{row.team_number}}">{{row.team_number}}</a></td>
-					<td><a href="#/team/{{row.team_number}}">{{row.team_name}}</a></td>
+					<td><a >{{row.team_name}}</a></td>
 					<td>{{row.avg_score | number:2}}</td>
+					<td></td>
+					<td><span class="glyphicon glyphicon-ok" ng-show="row.bar_climb" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!row.bar_climb" style="color:red"></span></td>
+					<td></td>
 				</tr>
 			</tbody>
 		</table>
