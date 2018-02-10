@@ -33,8 +33,8 @@
     	<br/>
     	<fieldset>
     	    <legend>Comments</legend>
-    	    <div class="container-fluid" ng-repeat="comment in pitData.comments">
-    	        <div class="row">
+    	    <div class="container-fluid">
+    	        <div class="row" ng-repeat="comment in pitData.comments">
     	            <p>{{comment.comment}}</p>
     	            <p>-- {{comment.commenter}}, {{comment.timeStamp}}
     	                <hr/>
