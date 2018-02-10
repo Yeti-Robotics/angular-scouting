@@ -4,9 +4,9 @@
 		<h1 class="text-center">{{error}}</h1>
 	</div>
 	<div ng-show="error == ''">
-		<h2 class="page-header">Team {{teamNumber}} -- {{data.team_name}} <span ng-show="data.teamInfo.name != null"> {{teamNumber}}</span>
+		<h2 class="page-header">Team {{teamNumber}} -- {{data.team.team_name}}
 		   <br/>
-				<a class="small" ng-href="#/pit/{{teamNumber}}">{{pitName}} pit</a>
+				<a class="btn btn-primary" ng-href="#/pit/{{teamNumber}}">Pit Pictures and Comments</a>
 		   <br/>
 		</h2>
 	</div>
@@ -17,60 +17,69 @@
 			<h3 class="panel-title ">Robot Ranking:</h3>
 		</div>
 		<div class="panel-body">
-			<div>
-				<li>Avg. Speed ranking in auto (1-5): </li>
-				<li>Avg. Speed ranking in teleop (1-5):</li>
-				<li>Avg. Cube placing ranking in teleop (0-5):</li>
-				<li>Total cubes placed on switch in teleop:</li>
-				<li>Total cubes on enemy switch in teleop:</li>
-				<li>Total cubes places on scale in teleop:</li>
-			</div>
+			<table class="table table-striped table-hover">
+					<tbody>
+						<tr>
+							<td>Avg. Speed ranking in auto (1-5):</td>
+							<td>{{data.stats.avg_auto_speed | number:2}}</td>
+
+						</tr>
+						<tr>
+							<td>Avg. Speed ranking in teleop (1-5):</td>
+							<td>{{data.stats.avg_tele_speed}}</td>
+						</tr>
+						<tr>
+							<td>Avg. Cube placing ranking in teleop (1-5):</td>
+							<td>{{data.stats.avg_cube_ranking}}</td>
+						</tr>
+						<tr>
+							<td>Total cubes placed on switch in teleop:</td>
+							<td>{{data.stats.total_switch_cubes}}</td>
+						</tr>
+						<tr>
+							<td>Total cubes on enemy switch in teleop:</td>
+							<td>{{data.stats.total_enemy_switch_cubes}}</td>
+						</tr>
+						<tr>
+							<td>Total cubes places on scale in teleop:</td>
+							<td>{{data.stats.total_scale_cubes}}</td>
+						</tr>
+						
+						
+					</tbody>
+			</table>
 		</div>
 	</div>
-
-	<!--ROBOT STATS -->
-	<div class="panel panel-default">
-		<div class="panel-heading ">
-			<h3 class="panel-title ">Robot Stats:</h3>
-		</div>
-		<div class="panel-body">
-		</div>
-	</div>
-
 	<!--MATCH DATA -->
 	<div class="panel panel-default">
 		<div class="panel-heading ">
 			<h3 class="panel-title ">Match Data:</h3>
 		</div>
 		<div class="panel-body">
-			<div>
-				<div class="table-responsive">
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th>Match #</th>
-								<th>Auto Speed (1-5)</th>
-								<th>Tele Speed (1-5)</th>
-								<th>Cube Placing (0-5)</th>
-								<th>Switch Cubes</th>
-								<th>Enemy Cubes</th>
-								<th>Scale cubes</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="data in data.formData">
-								<td>{{data.match_number}}</td>
-								<td>{{data.auto_speed}}</td>
-								<td>{{data.tele_speed}}</td>
-								<td>{{data.cube_ranking}}</td>
-								<td>{{data.switch_cubes}}</td>
-								<td>{{data.enemy_switch_cubes}}</td>
-								<td>{{data.scale_cubes}}</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>Match #</th>
+						<th>Auto Speed (1-5)</th>
+						<th>Tele Speed (1-5)</th>
+						<th>Cube Placing (0-5)</th>
+						<th>Switch Cubes</th>
+						<th>Enemy Cubes</th>
+						<th>Scale cubes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="data in data.formData">
+						<td>{{data.match_number}}</td>
+						<td>{{data.auto_speed}}</td>
+						<td>{{data.tele_speed}}</td>
+						<td>{{data.cube_ranking}}</td>
+						<td>{{data.switch_cubes}}</td>
+						<td>{{data.enemy_switch_cubes}}</td>
+						<td>{{data.scale_cubes}}</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 
@@ -80,13 +89,20 @@
 			<h3 class="panel-title ">Comments:</h3>
 		</div>
 		<div class="panel-body">
-			<div>
-				<div class="container-fluid" ng-repeat="data in data.formData">
-					<div class="row">
-						<p>{{data.comment}} <br/> - {{data.name}}</p>
-					</div>
-				</div> 
-			</div>
+			<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th>Match #:</th>
+						<th>Comment:</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="data in data.formData">
+						<td>{{data.match_number}}</td>
+						<td>{{data.comment}} <br/> - {{data.name}}</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </div>

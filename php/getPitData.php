@@ -31,7 +31,7 @@ if ($teamNumber) {
 		die(json_encode($response));
 	} else {
 		header('HTTP/1.1 500 Internal Server Error', true, 500);
-		die('{"error": "No team data"}');
+		die('{"error": "No Pictures or Comments"}');
 	}
 } else {
     header($_SERVER['SERVER_PROTOCOL'] . '403 No headers', true, 403);
