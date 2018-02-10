@@ -9,55 +9,9 @@
 				<a class="small" ng-href="#/pit/{{teamNumber}}">{{pitName}} pit</a>
 		   <br/>
 		</h2>
-
-<!--ROBOT STATS -->
-	<div class="panel panel-default">
-		<div class="panel-heading ">
-			<h3 class="panel-title ">Robot Stats:</h3>
-		</div>
-		<div class="panel-body">
-			<div>
-				<ul>
-					<li>Average Alliance Score:</li>
-					<li>Places cubes on the its aliance's switch in auto?
-						<span class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"> Yes</span>
-						<span class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"> No</span>
-					</li>
-					<li>Places cubes on the scale in auto?
-						<span class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"> Yes</span>
-						<span class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"> No</span>
-					</li>
-					<li>Places cubes on the opponents switch in auto?
-						<span class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"> Yes</span>
-						<span class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"> No</span>
-					</li>
-					<li>Places cubes on the scale in teleop?
-						<span class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"> Yes</span>
-						<span class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"> No</span>
-					</li>
-					<li>Places cubes on the switch in teleop?
-						<span class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"> Yes</span>
-						<span class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"> No</span>
-					</li>
-					<li>Plays defense in teleop?
-						<span class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"> Yes</span>
-						<span class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"> No</span>
-					</li>
-					<li>Can this robot climb?
-						<span class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"> Yes</span>
-						<span class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"> No</span>
-					</li>
-					<li>Climbs ramp?
-						<span class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"> Yes</span>
-						<span class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"> No</span>
-					</li>
-					<li>Other climbing comments:</li>
-				</ul>
-			</div>
-		</div>
 	</div>
 
-<!--ROBOT RANKKING -->
+	<!--ROBOT RANKKING -->
 	<div class="panel panel-default">
 		<div class="panel-heading ">
 			<h3 class="panel-title ">Robot Ranking:</h3>
@@ -74,7 +28,16 @@
 		</div>
 	</div>
 
-<!--MATCH DATA -->
+	<!--ROBOT STATS -->
+	<div class="panel panel-default">
+		<div class="panel-heading ">
+			<h3 class="panel-title ">Robot Stats:</h3>
+		</div>
+		<div class="panel-body">
+		</div>
+	</div>
+
+	<!--MATCH DATA -->
 	<div class="panel panel-default">
 		<div class="panel-heading ">
 			<h3 class="panel-title ">Match Data:</h3>
@@ -95,14 +58,14 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="match in data.match.teleop | orderBy : 'match_number' : false">
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+							<tr ng-repeat="data in data.formData">
+								<td>{{data.match_number}}</td>
+								<td>{{data.auto_speed}}</td>
+								<td>{{data.tele_speed}}</td>
+								<td>{{data.cube_ranking}}</td>
+								<td>{{data.switch_cubes}}</td>
+								<td>{{data.enemy_switch_cubes}}</td>
+								<td>{{data.scale_cubes}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -118,247 +81,12 @@
 		</div>
 		<div class="panel-body">
 			<div>
-				<div class="container-fluid" ng-repeat="comment in data.commentSection">
+				<div class="container-fluid" ng-repeat="data in data.formData">
 					<div class="row">
-						<p>{{comment.comment}}</p>
-						<p ng-show="comment.name != 'Name unavailable'">-- <a ng-href="#/scouter/{{comment.id}}">{{comment.name}}</a>, for match #{{comment.match_number}}, {{comment.timestamp}}</p>
-						<p ng-show="comment.name == 'Name unavailable'">-- {{comment.name}}, for match #{{comment.match_number}}, {{comment.timestamp}}</p>
+						<p>{{data.comment}} <br/> - {{data.name}}</p>
 					</div>
 				</div> 
 			</div>
 		</div>
-	</div>
-
-<!-- PICTURES
-<div class="panel panel-default">
-		<div class="panel-heading ">
-			<h3 class="panel-title ">Pictures:</h3>
-		</div>
-		<div class="panel-body">
-			<div>
-			</div>
-		</div>
-	</div> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		<!-- <fieldset>
-			<legend>Ranking</legend>
-			<div class="table-responsive">
-				<table class="table table-striped">
-					<tr>
-						<th>Team #</th>
-						<th>Total gears scored</th>
-						<th>Auto high goal accuracy</th>
-						<th>Teleop high goal accuracy</th>
-						<th>Auto low goal accuracy</th>
-						<th>Teleop low goal accuracy </th>
-						<th>% games climbed</th>
-					</tr>
-					<tr class="team_row">
-						<td>{{teamNumber}}</td>
-						<td>{{data.rankingInfo.totalGears}}</td>
-						<td>{{data.rankingInfo.autoHighAcc}}</td>
-						<td>{{data.rankingInfo.teleHighAcc}}</td>
-						<td>{{data.rankingInfo.autoLowAcc}}</td>
-						<td>{{data.rankingInfo.teleLowAcc}}</td>
-						<td>{{data.rankingInfo.avgClimbed}}%</td>
-					</tr>
-				</table>
-			</div>
-		</fieldset>
-		<fieldset>
-			<legend>Teleop</legend>
-			<div class="table-responsive">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>Match #</th>
-							<th>Scored gear</th>
-							<th>Attempted high goal</th>
-							<th>High goal accuracy</th>
-							<th>High goal shooting speed</th>
-							<th>Attempted low goal</th>
-							<th>Low goal accuracy</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="match in data.match.teleop | orderBy : 'match_number' : false">
-							<td>{{match.match_number}}</td>
-							<td>{{match.teleGears}}</td>
-							<td><span class="glyphicon glyphicon-ok" ng-show="match.teleHighGoal" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!match.teleHighGoal" style="color:red"></span></td>
-							<td>{{match.teleHighAccuracy}}</td>
-							<td>{{match.teleShootSpeed}}</td>
-							<td><span class="glyphicon glyphicon-ok" ng-show="match.teleLowGoal" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!match.teleLowGoal" style="color:red"></span></td>
-							<td>{{match.teleLowAccuracy}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</fieldset>
-		<fieldset>
-			<legend>Autonomous</legend>
-			<div class="table-responsive">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>Match #</th>
-							<th>Gears scored</th>
-							<th>Attempted high goal</th>
-							<th>High goal accuracy</th>
-							<th>High goal shooting speed</th>
-							<th>Attempted low goal</th>
-							<th>Low goal accuracy</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="match in data.match.auto | orderBy : 'match_number' : false">
-							<td>{{match.match_number}}</td>
-							<td><span class="glyphicon glyphicon-ok" ng-show="match.auto_gear" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!match.auto_gear" style="color:red"></span></td>
-							<td><span class="glyphicon glyphicon-ok" ng-show="match.autoHighGoal" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!match.autoHighGoal" style="color:red"></span></td>
-							<td>{{match.autoHighAccuracy}}</td>
-							<td>{{match.autoShootSpeed}}</td>
-							<td><span class="glyphicon glyphicon-ok" ng-show="match.autoLowGoal" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!match.autoLowGoal" style="color:red"></span></td>
-							<td>{{match.autoLowAccuracy}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</fieldset>
-		<fieldset>
-			<legend>Misc.</legend>
-			<div class="table-responsive">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>Match #</th>
-							<th>Climbed</th>
-							<th>Fuel carrying capacity</th>
-						</tr>
-					</thead>
-					<tbody>
-						<!-- <tr ng-repeat="match in data.misc | orderBy : 'match_number' : false">
-							<td>{{match.match_number}}</td>
-							<td><span class="glyphicon glyphicon-ok" ng-show="match.climbed" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!match.climbed" style="color:red"></span></td>
-							<td>{{match.load}}</td>
-						</tr> -->
-					<!-- </tbody>
-				</table>
-			</div>
-		</fieldset> -->
-		<!-- <fieldset> -->
-			<!-- <legend>Comments:</legend> -->
-			<!-- <div class="container-fluid" ng-repeat="comment in data.commentSection">
-				<div class="row">
-					<p>{{comment.comment}}</p>
-					<p ng-show="comment.name != 'Name unavailable'">-- <a ng-href="#/scouter/{{comment.id}}">{{comment.name}}</a>, for match #{{comment.match_number}}, {{comment.timestamp}}</p>
-					<p ng-show="comment.name == 'Name unavailable'">-- {{comment.name}}, for match #{{comment.match_number}}, {{comment.timestamp}}</p>
-					<hr/>
-				</div>
-			</div> -->
-		<!-- </fieldset> --> 
 	</div>
 </div>

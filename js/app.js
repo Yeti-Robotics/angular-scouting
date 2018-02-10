@@ -475,26 +475,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	'use strict';
 
 	$scope.teamNumber = $routeParams.teamNumber;
-
 	$scope.error = "";
-
-
-	$scope.commentSection = {
-		comment: []
-	};
-
-	$(document).ready(function () {
-		setTimeout(function () {
-			$('[data-toggle="tooltip"]').each(function () {
-				$(this).attr("style", "outline: none");
-				$(this).tooltip({
-					container: 'body',
-					placement: 'top',
-					trigger: 'focus'
-				});
-			});
-		}, 1000);
-	});
 
 	$http.get("php/getTeam.php", {
 		params: {
@@ -502,40 +483,10 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		}
 	}).then(function (response) {
 		$scope.data = response.data;
-
-		if ($scope.data.teamInfo.name != null) {
-			$scope.pitName = $scope.data.teamInfo.name + ($scope.data.teamInfo.name[$scope.data.teamInfo.name.length - 1] == "s" ? "'" : "'s");
-		} else {
-			$scope.pitName = $scope.teamNumber + "'s";
-		}
-
-		$scope.range = function (n) {
-			return new Array(n);
-		};
-
-		// for (var i = 0; i < $scope.data.misc.length; i++) {
-		// 	switch ($scope.data.misc[i].load) {
-		// 		case 0:
-		// 			$scope.data.misc[i].load = "Less than 50";
-		// 			break;
-		// 		case 1:
-		// 			$scope.data.misc[i].load = "~50";
-		// 			break;
-		// 		case 2:
-		// 			$scope.data.misc[i].load = "~100";
-		// 			break;
-		// 		case 3:
-		// 			$scope.data.misc[i].load = "~150";
-		// 			break;
-		// 		case 4:
-		// 			$scope.data.misc[i].load = "More than 150";
-		// 			break;
-		// 	}
-		// }
 		console.log($scope.data);
 	}, function (response) {
 		$scope.error = response.data.error;
-		console.log($scope.error);
+		console.error($scope.error);
 	});
 });
 
