@@ -1,15 +1,15 @@
  <!-- PAGE HEADER -->
 <div class="container-fluid">
-	<div ng-show="error != ''">
-		<h1 class="text-center">{{error}}</h1>
-	</div>
-	<div ng-show="error == ''">
-		<h2 class="page-header">Team {{teamNumber}} -- {{data.team.team_name}}
-		   <br/>
-				<a class="btn btn-primary" ng-href="#/pit/{{teamNumber}}">Pit Pictures and Comments</a>
-		   <br/>
-		</h2>
-	</div>
+		<div>
+		<h2 ng-show="error == ''" >Team {{teamNumber}} -- {{data.team.team_name}} 
+			<a class="btn btn-primary" ng-href="#/pit/{{teamNumber}}">Pit Pictures and Comments</a></h2>
+		</div>
+		<div ng-show="error != ''">
+				<h1 class="text-center">{{error}}</h1>
+		</div>
+		<div>
+			<h3><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></h3> <br>
+		</div>
 
 	<!--ROBOT RANKKING -->
 	<div class="panel panel-default">
@@ -17,20 +17,59 @@
 			<h3 class="panel-title ">Robot Ranking:</h3>
 		</div>
 		<div class="panel-body">
-			<table class="table table-striped table-hover">
+			<table class="table table-striped table-hover table-bordered">
 					<tbody>
 						<tr>
 							<td>Avg. Speed ranking in auto (1-5):</td>
-							<td>{{data.stats.avg_auto_speed | number:2}}</td>
-
+							<td> 
+								<!-- Success -->
+								<div  class="progress">
+									<div ng-if="data.stats.avg_auto_speed >= 4" class="progress-bar progress-bar-striped active progress-bar-success" role="progressbar" aria-valuenow="{{data.stats.avg_auto_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_auto_speed/5*100}}%;">
+										{{data.stats.avg_auto_speed | number:2}}
+									</div>
+								<!-- Okay-ish -->
+									<div ng-if="data.stats.avg_auto_speed > 2" class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar" aria-valuenow="{{data.stats.avg_auto_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_auto_speed/5*100}}%;">
+										{{data.stats.avg_auto_speed | number:2}}
+									</div>
+								<!-- Sucks -->
+									<div ng-if="2 >= data.stats.avg_auto_speed" class="progress-bar progress-bar-striped active progress-bar-danger" role="progressbar" aria-valuenow="{{data.stats.avg_auto_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_auto_speed/5*100}}%;">
+										{{data.stats.avg_auto_speed | number:2}}
+									</div>
+								</div  >
+								<!---->
+							</td>
 						</tr>
 						<tr>
 							<td>Avg. Speed ranking in teleop (1-5):</td>
-							<td>{{data.stats.avg_tele_speed}}</td>
+							<td>
+								<div  class="progress">
+									<div ng-if="data.stats.avg_tele_speed >= 4" class="progress-bar progress-bar-striped active progress-bar-success" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_tele_speed/5*100}}%;">
+										{{data.stats.avg_tele_speed | number:2}}
+									</div>
+									<div ng-if="data.stats.avg_tele_speed > 2" class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_tele_speed/5*100}}%;">
+										{{data.stats.avg_tele_speed | number:2}}
+									</div>
+									<div ng-if="2 >= data.stats.avg_tele_speed" class="progress-bar progress-bar-striped active progress-bar-danger" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_tele_speed/5*100}}%;">
+										{{data.stats.avg_tele_speed}} | number:2}}
+									</div>
+								</div>
+							</td>
 						</tr>
 						<tr>
 							<td>Avg. Cube placing ranking in teleop (1-5):</td>
-							<td>{{data.stats.avg_cube_ranking}}</td>
+							<td>
+								<div  class="progress">
+									<div ng-if="data.stats.avg_cube_ranking >= 4" class="progress-bar progress-bar-striped active progress-bar-success" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_cube_ranking/5*100}}%;">
+										{{data.stats.avg_tele_speed | number:2}}
+									</div>
+									<div ng-if="data.stats.avg_cube_ranking > 2" class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_cube_ranking/5*100}}%;">
+										{{data.stats.avg_tele_speed | number:2}}
+									</div>
+									<div ng-if="2 >= data.stats.avg_cube_ranking" class="progress-bar progress-bar-striped active progress-bar-danger" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_cube_ranking/5*100}}%;">
+										{{data.stats.avg_cube_ranking}} | number:2}}
+									</div>
+								</div>
+							</td>
 						</tr>
 						<tr>
 							<td>Total cubes placed on switch in teleop:</td>
@@ -44,10 +83,61 @@
 							<td>Total cubes places on scale in teleop:</td>
 							<td>{{data.stats.total_scale_cubes}}</td>
 						</tr>
-						
-						
+						<tr>
+							<td></td>
+							<td>{{data.stats.climb_accuracy | number:0}} %</td>
+						</tr>
+						<tr>
+							<td>rtg</td>
+							<td>{{data.stats.avg_auto_defend | number:0}} % </td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>{{data.stats.avg_tele_check | number:0}} %</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>{{data.stats.avg_auto_check | number:0}} %</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>{{data.stats.avg_help_climb | number:0}} %</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>{{data.stats.avg_ramp_climb | number:0}} %</td>
+						</tr>	
+						<tr>
+							<td></td>
+							<td>{{data.stats.avg_tele_defense | number:0}} %</td>
+						</tr>
 					</tbody>
 			</table>
+			<div class="panel-group">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+					<h4 class="panel-title">
+						<a href="javascript:;" data-toggle="collapse" data-target="#collapse1">Other Climbing Comments</a>
+					</h4>
+					</div>
+					<div id="collapse1" class="panel-collapse collapse">
+						<table class="table table-hover table-striped table-bordered">
+							<thead>
+								<tr>
+									<th>Match #:</th>
+									<th>Other Climb:</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="data in data.formData">
+									<td>{{data.match_number}}</td>
+									<td>{{data.other_climb}} <br/> - {{data.name}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!--MATCH DATA -->
@@ -55,7 +145,7 @@
 		<div class="panel-heading ">
 			<h3 class="panel-title ">Match Data:</h3>
 		</div>
-		<div class="panel-body">
+		<div class="panel-body table-responsive">
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>

@@ -44,3 +44,9 @@ label.required::after {
 	border-radius: 4px;
 	padding: 2px;
 }
+
+.progress {
+	background-color: #aaa;
+	-webkit-box-shadow: black;
+	box-shadow: black;
+  }

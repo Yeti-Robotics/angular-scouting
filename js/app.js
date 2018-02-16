@@ -488,6 +488,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		$scope.error = response.data.error;
 		console.error($scope.error);
 	});
+
 });
 
 app.controller("ScouterController", function ($scope, $http, $routeParams) {
