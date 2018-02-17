@@ -26,8 +26,8 @@ SET time_zone = "+00:00";
 -- Dumping data for table `scouters`
 --
 
-INSERT IGNORE INTO `scouters` (`id`, `name`, `username`, `pswd`, `byteCoins`) VALUES
-(1, 'Yeti Robotics', 'yeti', '4e563b71ca562d5731ad94a208fa0af5', 200);
+INSERT IGNORE INTO `scouters` (`name`, `username`, `pswd`, `byteCoins`) VALUES
+('Yeti Robotics', 'yeti', '4e563b71ca562d5731ad94a208fa0af5', 200);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
