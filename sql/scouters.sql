@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 17, 2018 at 07:17 PM
+-- Generation Time: Feb 17, 2018 at 10:04 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -23,11 +23,16 @@ SET time_zone = "+00:00";
 --
 
 --
+-- Truncate table before insert `scouters`
+--
+
+TRUNCATE TABLE `scouters`;
+--
 -- Dumping data for table `scouters`
 --
 
-INSERT IGNORE INTO `scouters` (`name`, `username`, `pswd`, `byteCoins`) VALUES
-('Yeti Robotics', 'yeti', '4e563b71ca562d5731ad94a208fa0af5', 200);
+INSERT IGNORE INTO `scouters` (`id`, `name`, `username`, `pswd`, `byteCoins`, `team_number`) VALUES
+(1, 'Yeti Robotics', 'yeti', '4e563b71ca562d5731ad94a208fa0af5', 200, 3506);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -9,7 +9,7 @@ if ($teamNumber) {
 	$query = "SELECT f.*, s.name
 		FROM form_data f
 		LEFT JOIN scouters s ON s.id = f.scouter_id
-		WHERE team_number = ?";
+		WHERE f.team_number = ?";
 	if ($stmt = $db->prepare($query)) {
 		$stmt->bind_param("i", $teamNumber);
 		$stmt->execute();
@@ -21,7 +21,7 @@ if ($teamNumber) {
 		}
 	} else {
 		header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
-		die('{"error": "Failed to retrive team data, problem with query"}');
+		die('{"error": "Failed to retrive team data, problem with query 1"}');
 	}
 
 	$query = "SELECT * FROM team_info WHERE team_number = ?";
@@ -36,7 +36,7 @@ if ($teamNumber) {
 		}
 	} else {
 		header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
-		die('{"error": "Failed to retrive team data, problem with query"}');
+		die('{"error": "Failed to retrive team data, problem with query 2"}');
 	}
 
 	$query = "SELECT AVG(auto_speed) AS avg_auto_speed, 
@@ -68,7 +68,7 @@ if ($teamNumber) {
 		}
 	} else {
 		header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
-		die('{"error": "Failed to retrive team data, problem with query"}');
+		die('{"error": "Failed to retrive team data, problem with query 3"}');
 	}
 
 	echo(json_encode($response));

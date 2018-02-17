@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 17, 2018 at 09:19 PM
+-- Generation Time: Feb 17, 2018 at 10:01 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -116,7 +116,8 @@ CREATE TABLE `scouters` (
   `name` tinytext NOT NULL,
   `username` varchar(50) NOT NULL,
   `pswd` tinytext NOT NULL,
-  `byteCoins` int(11) NOT NULL DEFAULT '200'
+  `byteCoins` int(11) NOT NULL DEFAULT '200',
+  `team_number` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

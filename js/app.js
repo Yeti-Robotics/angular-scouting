@@ -191,7 +191,8 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 			$http.post('php/register.php', {
 				name: $scope.name,
 				username: $scope.username,
-				password: $scope.password
+				password: $scope.password,
+				teamNumber: $scope.teamNumber
 			}).then(function (response) {
 				$location.path("/login");
 				console.log(response.data);
