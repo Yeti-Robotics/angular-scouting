@@ -363,13 +363,14 @@ function startSession($db, $username, $pswdHash) {
     $token = ($pswdHash . md5(time()));
     if (checkPassword($db, $username, $pswdHash)) {
         if($stmt = $db->prepare($query)) {
-            $stmt->bind_param("i", getUserId($db, $username, $pswdHash));
+            $userId = getUserId($db, $username, $pswdHash);
+            $stmt->bind_param("i", $userId);
             $stmt->execute();
             $stmt->store_result();
             if($stmt->num_rows > 0) {
                 $query = "UPDATE sessions SET token = ? WHERE id = ?";
                 if($stmt = $db->prepare($query)) {
-                    $stmt->bind_param("si", $token, getUserId($db, $username, $pswdHash));
+                    $stmt->bind_param("si", $token, $userId);
                     $stmt->execute();
                     return $token;
                 } else {
@@ -379,7 +380,7 @@ function startSession($db, $username, $pswdHash) {
             } else {
                 $query = "INSERT INTO sessions (id, token) VALUES (?, ?)";
                 if($stmt = $db->prepare($query)) {
-                    $stmt->bind_param("is", getUserId($db, $username, $pswdHash), $token);
+                    $stmt->bind_param("is", $userId, $token);
                     $stmt->execute();
                     return $token;
                 } else {
@@ -1199,7 +1200,7 @@ function getPic($team, $pic) {
 function getPitComments($db, $team) {
 	$query = "SELECT team_number AS 'Team', pit_comments AS 'Pit Scouters Comments', name AS 'Pit Scouter', UNIX_TIMESTAMP(timestamp) AS timestamp
 				FROM pit_comments
-				LEFT JOIN scouters ON scouters.id = pit_comments.id
+				LEFT JOIN scouters ON scouters.id = pit_comments.scouter_id
 				WHERE team_number = ? AND pit_comments != ''";
 	//Time stamps?
 	if($stmt = $db->prepare($query)) {
@@ -1220,7 +1221,7 @@ function getPicInfo($db, $team) {
     }
 	$query = "SELECT team_number AS 'Team', name AS 'Pit Scouter', pic_num AS 'Picture Number', UNIX_TIMESTAMP(timestamp) AS timestamp
 				FROM pit_pictures
-				LEFT JOIN scouters ON scouters.id = pit_pictures.id
+				LEFT JOIN scouters ON scouters.id = pit_pictures.scouter_id
 				WHERE team_number = ?";
     for ($i = 0; $i < count($dir); $i++) {
         $query .= " " . ($i == 0 ? "AND (" : "OR ") . "pic_num = $dir[$i]" . ($i == (count($dir) - 1) ? ")" : "");

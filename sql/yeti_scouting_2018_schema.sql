@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 17, 2018 at 07:27 PM
+-- Generation Time: Feb 17, 2018 at 09:19 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -50,7 +50,7 @@ CREATE TABLE `form_data` (
   `tele_check` tinyint(1) NOT NULL DEFAULT '0',
   `tele_defense` tinyint(1) NOT NULL DEFAULT '0',
   `tele_speed` int(11) NOT NULL DEFAULT '1',
-  `name` varchar(50) NOT NULL
+  `scouter_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -64,7 +64,7 @@ CREATE TABLE `pit_comments` (
   `pit_scout_data_id` int(11) NOT NULL,
   `team_number` int(11) NOT NULL,
   `pit_comments` mediumtext NOT NULL,
-  `id` int(11) NOT NULL,
+  `scouter_id` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -79,7 +79,7 @@ CREATE TABLE `pit_pictures` (
   `pit_scout_data_id` int(11) NOT NULL,
   `team_number` int(11) NOT NULL,
   `pic_num` int(11) DEFAULT NULL,
-  `id` int(11) NOT NULL,
+  `scouter_id` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

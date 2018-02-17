@@ -164,37 +164,30 @@ app.controller("LogoutController", function (AccountService, $rootScope, $http, 
 app.controller('RegisterController', function ($scope, $http, $location) {
 	'use strict';
 
-	$scope.password = '';
-	$scope.confirmPassword = '';
-	$scope.username = '';
-	$scope.firstName = '';
-	$scope.lastName = '';
-	$scope.name = '';
-
-	$scope.validate = function () {
-		return $scope.username.length > 0 && $scope.password.length > 0 && $scope.password === $scope.confirmPassword;
-	};
+	$scope.teams = [
+		{
+			teamNumber: 3506,
+			name: 'Yeti Robotics'
+		}
+	];
 
 	$(document).ready(function () {
-		$("#registerForm").validate();
-		$("#username").rules("add", {
-			messages: {
-				required: "You must have a username!"
-			}
-		});
-		$("#password").rules("add", {
-			messages: {
-				required: "You must have a password!"
+		$("#registerForm").validate({
+            rules : {
+                password : {
+                    minlength : 3
+                },
+                confirmPassword : {
+                    minlength : 3,
+                    equalTo : "#password"
+                }
 			}
 		});
 	});
 
 	$scope.register = function () {
-		if ($scope.validate()) {
+		if ($('#registerForm').valid()) {
 			console.log('registered');
-			$scope.firstName = $scope.firstName[0].toUpperCase() + $scope.firstName.slice(1);
-			$scope.lastName = $scope.lastName[0].toUpperCase() + $scope.lastName.slice(1);
-			$scope.name = $scope.firstName + ' ' + $scope.lastName;
 			$http.post('php/register.php', {
 				name: $scope.name,
 				username: $scope.username,
@@ -208,17 +201,19 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 					"username": "Username already taken"
 				});
 			});
-		} else {
-			$("#registerForm").validate().showErrors({
-				"password": "Passwords do not match",
-				"confirmPassword": "Passwords do not match"
-			});
 		}
 	};
 });
 
-app.controller('FormController', function ($rootScope, $scope, $http, $window) {
+app.controller('FormController', function ($rootScope, $scope, $http, $window, AccountService) {
 	'use strict';
+
+	AccountService.validateSession().then(function (response) {
+		$scope.resetForm();
+	}, function(error) {
+		AccountService.logout();
+		displayMessage('You are logged out', 'warning');
+	});
 
 	$scope.resetForm = function () {
 		$scope.formData = {
@@ -228,11 +223,10 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 			teleSpeed: '1',
 			scaleCubes: 0,
 			switchCubes: 0,
-			enemySwitchCubes: 0
+			enemySwitchCubes: 0,
+			scouterId: $rootScope.user.id
 		};
 	};
-
-	$scope.resetForm();
 
 	$(document).ready(function () {
 		$scope.validator = $('#scouting_form').validate();
@@ -252,8 +246,15 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window) {
 	};
 });
 
-app.controller('PitFormController', function ($rootScope, $scope, $http, $window) {
+app.controller('PitFormController', function ($rootScope, $scope, $http, $window, AccountService) {
 	'use strict';
+
+	AccountService.validateSession().then(function (response) {
+		$scope.resetForm();
+	}, function(error) {
+		AccountService.logout();
+		displayMessage('You are logged out', 'warning');
+	});
 
 	$scope.resetForm = function () {
 		$scope.pitFormData = {
@@ -262,8 +263,6 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
 		$scope.pictures = [];
 		$scope.picNum = [];
 	};
-
-	$scope.resetForm();
 
 	$(document).ready(function () {
 		$('#pitForm').validate();

@@ -24,10 +24,10 @@ if(isset($_FILES["files"])) {
 
 //Comments submission
 if($comment != null && !isset($_FILES["files"])) {
-    $query = "INSERT INTO pit_comments (team_number, pit_comments, id)
+    $query = "INSERT INTO pit_comments (team_number, pit_comments, scouter_id)
                 VALUES (?, ?, ?)";
     if($stmt = $db->prepare($query)) {
-        $stmt->bind_param("iss", $teamNumber, 
+        $stmt->bind_param("isi", $teamNumber, 
                     $comment, 
                     $scouterId);
             $stmt->execute();
@@ -35,12 +35,12 @@ if($comment != null && !isset($_FILES["files"])) {
     } else {
         header('HTTP/1.1 500 SQL Error', true, 500);
         $db->close();
-        die ( '{"message":"Failed creating statement"}' );
+        die ( '{"message":"Failed creating statement 1"}' );
     }
 }
 
 if (isset($_FILES["files"]) && $comment == null) {
-    $query = "INSERT INTO pit_pictures (team_number, id, pic_num)
+    $query = "INSERT INTO pit_pictures (team_number, scouter_id, pic_num)
                 VALUES (?, ?, ?)";
     foreach ($picNums as $picNum) {
         if($stmt = $db->prepare($query)) {
@@ -52,14 +52,14 @@ if (isset($_FILES["files"]) && $comment == null) {
         } else {
             header('HTTP/1.1 500 SQL Error', true, 500);
             $db->close();
-            die ( '{"message":"Failed creating statement"}' );
+            die ( '{"message":"Failed creating statement 2"}' );
         }
     }
 }
 
 if (isset($_FILES["files"]) && $comment != null) {
     //Insert pictures into database
-    $query = "INSERT INTO pit_pictures (team_number, id, pic_num)
+    $query = "INSERT INTO pit_pictures (team_number, scouter_id, pic_num)
                 VALUES (?, ?, ?)";
     foreach ($picNums as $picNum) {
         if($stmt = $db->prepare($query)) {
@@ -71,12 +71,12 @@ if (isset($_FILES["files"]) && $comment != null) {
         } else {
             header('HTTP/1.1 500 SQL Error', true, 500);
             $db->close();
-            die ( '{"message":"Failed creating statement"}' );
+            die ( '{"message":"Failed creating statement 3"}' );
         }
     }
     
     //Insert comment into database
-    $query = "INSERT INTO pit_comments (team_number, pit_comments, id)
+    $query = "INSERT INTO pit_comments (team_number, pit_comments, scouter_id)
                 VALUES (?, ?, ?)";
     if($stmt = $db->prepare($query)){
         $stmt->bind_param("isi", $teamNumber, 
@@ -87,7 +87,7 @@ if (isset($_FILES["files"]) && $comment != null) {
     } else {
         header('HTTP/1.1 500 SQL Error', true, 500);
         $db->close();
-        die ( '{"message":"Failed creating statement"}' );
+        die ( '{"message":"Failed creating statement 4"}' );
     }
 }
 

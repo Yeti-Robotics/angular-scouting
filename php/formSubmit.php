@@ -22,8 +22,8 @@ $query = "INSERT INTO form_data (
 			team_number,
 			tele_check,
 			tele_defense,
-			tele_speed, 
-			name)
+			tele_speed,
+			scouter_id)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $autoCheck = isset($postData['autoCheck']) ? intval($postData['autoCheck']) : '';
@@ -45,10 +45,10 @@ $teamNumber = isset($postData['teamNumber']) ? $postData['teamNumber'] : '';
 $teleCheck = isset($postData['teleCheck']) ? intval($postData['teleCheck']) : '';
 $teleDefense = isset($postData['teleDefense']) ? intval($postData['teleDefense']) : '';
 $teleSpeed = isset($postData['teleSpeed']) ? $postData['teleSpeed'] : '';
-$name = isset($postData['name']) ? $postData['name'] : '';
+$scouterId = isset($postData['scouterId']) ? intval($postData['scouterId']) : '';
 
 if($stmt = $db->prepare($query)) {
-	$stmt->bind_param("iiiiisiiiisiiiiiiiis",
+	$stmt->bind_param("iiiiisiiiisiiiiiiiii",
 		$autoCheck,
 		$autoDefend,
 		$autoScale,
@@ -68,7 +68,7 @@ if($stmt = $db->prepare($query)) {
 		$teleCheck,
 		$teleDefense,
 		$teleSpeed,
-		$name
+		$scouterId
 	);
     $stmt->execute();
     if ($stmt->error) {

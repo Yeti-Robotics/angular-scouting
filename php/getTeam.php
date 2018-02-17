@@ -6,7 +6,10 @@ header('Content-Type: application/json');
 $teamNumber = isset($_GET["teamNumber"]) ? $_GET["teamNumber"] : -1;
 $response = array();
 if ($teamNumber) {
-	$query = "SELECT * FROM form_data WHERE team_number = ?";
+	$query = "SELECT f.*, s.name
+		FROM form_data f
+		LEFT JOIN scouters s ON s.id = f.scouter_id
+		WHERE team_number = ?";
 	if ($stmt = $db->prepare($query)) {
 		$stmt->bind_param("i", $teamNumber);
 		$stmt->execute();
