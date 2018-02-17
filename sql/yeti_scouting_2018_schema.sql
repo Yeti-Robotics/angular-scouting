@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 17, 2018 at 07:17 PM
+-- Generation Time: Feb 17, 2018 at 07:27 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -114,7 +114,7 @@ DROP TABLE IF EXISTS `scouters`;
 CREATE TABLE `scouters` (
   `id` int(6) NOT NULL,
   `name` tinytext NOT NULL,
-  `username` text NOT NULL,
+  `username` varchar(50) NOT NULL,
   `pswd` tinytext NOT NULL,
   `byteCoins` int(11) NOT NULL DEFAULT '200'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -327,7 +327,8 @@ ALTER TABLE `pit_pictures`
 -- Indexes for table `scouters`
 --
 ALTER TABLE `scouters`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `team_info`
