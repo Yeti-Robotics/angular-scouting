@@ -477,6 +477,19 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	$scope.teamNumber = $routeParams.teamNumber;
 	$scope.error = "";
 
+	$scope.chooseBar = function (value) {
+		if(value <= 1) {
+			value *= 100;
+		}
+		if(value >= 80) {
+			return "progress-bar-success"
+		} else if(value < 80 && value > 60) {
+			return "progress-bar-warning"
+		} else {
+			return "progress-bar-danger"
+		}
+	}
+
 	$http.get("php/getTeam.php", {
 		params: {
 			teamNumber: $routeParams.teamNumber

@@ -22,35 +22,19 @@
 						<tr>
 							<td>Avg. Speed ranking in auto (1-5):</td>
 							<td> 
-								<!-- Success -->
-								<div  class="progress">
-									<div ng-if="data.stats.avg_auto_speed >= 4" class="progress-bar progress-bar-striped active progress-bar-success" role="progressbar" aria-valuenow="{{data.stats.avg_auto_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_auto_speed/5*100}}%;">
+								<div class="progress">
+									<div ng-class="chooseBar(data.stats.avg_auto_speed/5)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{data.stats.avg_auto_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_auto_speed/5*100}}%;">
 										{{data.stats.avg_auto_speed | number:2}}
 									</div>
-								<!-- Okay-ish -->
-									<div ng-if="data.stats.avg_auto_speed > 2" class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar" aria-valuenow="{{data.stats.avg_auto_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_auto_speed/5*100}}%;">
-										{{data.stats.avg_auto_speed | number:2}}
-									</div>
-								<!-- Sucks -->
-									<div ng-if="2 >= data.stats.avg_auto_speed" class="progress-bar progress-bar-striped active progress-bar-danger" role="progressbar" aria-valuenow="{{data.stats.avg_auto_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_auto_speed/5*100}}%;">
-										{{data.stats.avg_auto_speed | number:2}}
-									</div>
-								</div  >
-								<!---->
+								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>Avg. Speed ranking in teleop (1-5):</td>
 							<td>
-								<div  class="progress">
-									<div ng-if="data.stats.avg_tele_speed >= 4" class="progress-bar progress-bar-striped active progress-bar-success" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_tele_speed/5*100}}%;">
+								<div class="progress">
+									<div ng-class="chooseBar(data.stats.avg_tele_speed/5)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_tele_speed/5*100}}%;">
 										{{data.stats.avg_tele_speed | number:2}}
-									</div>
-									<div ng-if="data.stats.avg_tele_speed > 2" class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_tele_speed/5*100}}%;">
-										{{data.stats.avg_tele_speed | number:2}}
-									</div>
-									<div ng-if="2 >= data.stats.avg_tele_speed" class="progress-bar progress-bar-striped active progress-bar-danger" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_tele_speed/5*100}}%;">
-										{{data.stats.avg_tele_speed}} | number:2}}
 									</div>
 								</div>
 							</td>
@@ -59,14 +43,8 @@
 							<td>Avg. Cube placing ranking in teleop (1-5):</td>
 							<td>
 								<div  class="progress">
-									<div ng-if="data.stats.avg_cube_ranking >= 4" class="progress-bar progress-bar-striped active progress-bar-success" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_cube_ranking/5*100}}%;">
-										{{data.stats.avg_tele_speed | number:2}}
-									</div>
-									<div ng-if="data.stats.avg_cube_ranking > 2" class="progress-bar progress-bar-striped active progress-bar-warning" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_cube_ranking/5*100}}%;">
-										{{data.stats.avg_tele_speed | number:2}}
-									</div>
-									<div ng-if="2 >= data.stats.avg_cube_ranking" class="progress-bar progress-bar-striped active progress-bar-danger" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_cube_ranking/5*100}}%;">
-										{{data.stats.avg_cube_ranking}} | number:2}}
+									<div ng-class="chooseBar(data.stats.avg_cube_ranking/5)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_cube_ranking/5*100}}%;">
+										{{data.stats.avg_cube_ranking | number:2}}
 									</div>
 								</div>
 							</td>
@@ -84,32 +62,74 @@
 							<td>{{data.stats.total_scale_cubes}}</td>
 						</tr>
 						<tr>
-							<td></td>
-							<td>{{data.stats.climb_accuracy | number:0}} %</td>
+							<td>Likelihood of Climbing the Bar:</td>
+							<td>
+								<div class="progress">
+									<div ng-class="chooseBar(data.stats.climb_accuracy)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.climb_accuracy}}%;">
+											{{data.stats.climb_accuracy | number:0}} %
+									</div>
+								</div>
+							</td>
 						</tr>
 						<tr>
-							<td>rtg</td>
-							<td>{{data.stats.avg_auto_defend | number:0}} % </td>
+							<td>Likelihood of Placing Cube on Enemy Switch in Auto: </td>
+							<td>
+								<div class="progress">
+									<div ng-class="chooseBar(data.stats.avg_auto_defend)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_auto_defend}}%;">
+										{{data.stats.avg_auto_defend | number:0}} %
+									</div>
+								</div>
+							 </td>
 						</tr>
 						<tr>
-							<td></td>
-							<td>{{data.stats.avg_tele_check | number:0}} %</td>
+							<td>Likelihood of Climbing or Helping Others Climb</td>
+							<td>
+								<div class="progress">
+									<div ng-class="chooseBar(data.stats.avg_tele_check)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_tele_check}}%;">
+										{{data.stats.avg_tele_check | number:0}} %
+									</div>
+								</div>
+							</td>
 						</tr>
 						<tr>
-							<td></td>
-							<td>{{data.stats.avg_auto_check | number:0}} %</td>
+							<td>Likelihood of Crossing the Auto Line: </td>
+							<td>
+								<div class="progress">
+									<div ng-class="chooseBar(data.stats.avg_auto_check)" class="progress-bar progress-bar-striped active" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_auto_check}}%;">
+										{{data.stats.avg_auto_check | number:0}} %
+									</div>
+								</div>
+							</td>
 						</tr>
 						<tr>
-							<td></td>
-							<td>{{data.stats.avg_help_climb | number:0}} %</td>
+							<td>Likelihood of Helping other Robots climb: </td>
+							<td>
+								<div class="progress">
+									<div ng-class="chooseBar(data.stats.avg_help_climb)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_help_climb}}%;">
+											{{data.stats.avg_help_climb | number:0}} %
+									</div>
+								</div>
+							</td>
 						</tr>
 						<tr>
-							<td></td>
-							<td>{{data.stats.avg_ramp_climb | number:0}} %</td>
+							<td>Likelihood of Robot Climbing via a Ramp:</td>
+							<td>
+								<div class="progress">
+									<div ng-class="chooseBar(data.stats.avg_ramp_climb)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_ramp_climb}}%;">
+											{{data.stats.avg_ramp_climb | number:0}} %
+									</div>
+								</div>
+							</td>
 						</tr>	
 						<tr>
-							<td></td>
-							<td>{{data.stats.avg_tele_defense | number:0}} %</td>
+							<td>Likelihood  of Defending in Auto</td>
+							<td>
+								<div class="progress">
+									<div ng-class="chooseBar(data.stats.avg_tele_defense)" class="progress-bar progress-bar-striped active" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_tele_defense}}%;">
+											{{data.stats.avg_tele_defense | number:0}} %
+									</div>
+								</div>
+							</td>
 						</tr>
 					</tbody>
 			</table>
