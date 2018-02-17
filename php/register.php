@@ -4,7 +4,7 @@ include('functions.php');
 header('Content-Type: application/json');
 $postData = json_decode(file_get_contents("php://input"), true);
 if(checkForUser($db, $postData["username"]) == false) {
-	$query = "INSERT INTO scouters (name, username, pswd, team_number) VALUES (?, ?, ?)";
+	$query = "INSERT INTO scouters (name, username, pswd, team_number) VALUES (?, ?, ?, ?)";
 	if($stmt = $db->prepare($query)) {
 		$stmt->bind_param("sssi",
 			$postData["name"],

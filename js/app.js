@@ -168,6 +168,10 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 		{
 			teamNumber: 3506,
 			name: 'Yeti Robotics'
+		},
+		{
+			teamNumber: 4290,
+			name: 'Bots of War'
 		}
 	];
 
@@ -442,21 +446,33 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 	$scope.sortType = 'avgScore';
 	$scope.sortReverse = true;
 
+	$http.get('php/getScouterTeams.php',).then(function (response) {
+		$scope.teams = response.data;
+		if ($scope.teams.length) {
+			$scope.currentTeam = $scope.teams[0].team_number;
+			$scope.loadData($scope.currentTeam);
+		}
+	});
+
+	$scope.loadData = function(teamNumber) {
+		$http.get('php/list.php', {
+			params: {teamNumber: teamNumber}
+		}).then(function (response) {
+			$scope.data = response.data;
+			for (var i = 0; i < $scope.data.length; i++) {
+				$scope.data[i].bar_climb = parseInt($scope.data[i].bar_climb);
+				$scope.data[i].avg_score = parseInt($scope.data[i].avg_score);
+				$scope.data[i].team_number = parseInt($scope.data[i].team_number);
+				$scope.data[i].team_name = $scope.data[i].team_name != null ? $scope.data[i].team_name : "Name unavailable";
+			}
+		});
+	};
+
 	$scope.filterTeams = function (value) {
 		var searchRegExp = new RegExp($scope.search, "i");
 		var teamString = value.team_number.toString();
 		return value.team_name != null ? (value.team_name.match(searchRegExp) || teamString.match(searchRegExp)) : teamString.match(searchRegExp);
 	}
-
-	$http.get('php/list.php').then(function (response) {
-		$scope.data = response.data;
-		for (var i = 0; i < $scope.data.length; i++) {
-			$scope.data[i].bar_climb = parseInt($scope.data[i].bar_climb);
-			$scope.data[i].avg_score = parseInt($scope.data[i].avg_score);
-			$scope.data[i].team_number = parseInt($scope.data[i].team_number);
-			$scope.data[i].team_name = $scope.data[i].team_name != null ? $scope.data[i].team_name : "Name unavailable";
-		}
-	});
 });
 
 app.controller("LeaderboardsController", function ($scope, $http) {
