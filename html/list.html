@@ -36,13 +36,17 @@
 							<span ng-show="sortType == 'avgSpeed' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
 							<span ng-show="sortType == 'avgSpeed' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'canClimb'; sortReverse = !sortReverse">Can Climb?
+					<th ng-click="sortType = 'canClimb'; sortReverse = !sortReverse">Climbing Success?
 							<span ng-show="sortType == 'canClimb' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
 							<span ng-show="sortType == 'canClimb' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'sumCube'; sortReverse = !sortReverse">Total Cubes Placed
+					<th ng-click="sortType = 'sumCube'; sortReverse = !sortReverse">Total Cubes Placed in Teleop
 							<span ng-show="sortType == 'sumCube' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
 							<span ng-show="sortType == 'sumCube' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
+					<th ng-click="sortType = 'autoCube'; sortReverse = !sortReverse">Total Cubes Placed in Auto
+						<span ng-show="sortType == 'autoCube' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'autoCube' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
 				</tr>
 			</thead>
@@ -51,9 +55,10 @@
 					<td><a href="#/team/{{row.team_number}}">{{row.team_number}}</a></td>
 					<td><a href="#/team/{{row.team_number}}">{{row.team_name}}</a></td>
 					<td>{{row.avg_score | number:2}}</td>
-					<td></td>
-					<td><span class="glyphicon glyphicon-ok" ng-show="row.bar_climb" style="color:green"></span><span class="glyphicon glyphicon-remove danger" ng-show="!row.bar_climb" style="color:red"></span></td>
-					<td></td>
+					<td>{{row.avg_tele_speed | number: 2}}</td>
+					<td>{{row.avg_climb*100 | number: 2}} %</td>
+					<td>{{row.total_cubes}}</td>
+					<td>{{row.total_auto_cubes}}</td>
 				</tr>
 			</tbody>
 		</table>

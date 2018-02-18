@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 $postData = json_decode(file_get_contents("php://input"), true);
 $query = "INSERT INTO form_data (
 			auto_check,
-			auto_defend,
+			auto_switch,
 			auto_scale,
 			auto_speed,
 			bar_climb,
@@ -27,7 +27,7 @@ $query = "INSERT INTO form_data (
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $autoCheck = isset($postData['autoCheck']) ? intval($postData['autoCheck']) : '';
-$autoDefend = isset($postData['autoDefend']) ? intval($postData['autoDefend']) : '';
+$autoSwitch = isset($postData['autoSwitch']) ? intval($postData['autoSwitch']) : '';
 $autoScale = isset($postData['autoScale']) ? intval($postData['autoScale']) : '';
 $autoSpeed = isset($postData['autoSpeed']) ? $postData['autoSpeed'] : '';
 $barClimb = isset($postData['barClimb']) ? intval($postData['barClimb']) : '';
@@ -50,7 +50,7 @@ $scouterId = isset($postData['scouterId']) ? intval($postData['scouterId']) : ''
 if($stmt = $db->prepare($query)) {
 	$stmt->bind_param("iiiiisiiiisiiiiiiiii",
 		$autoCheck,
-		$autoDefend,
+		$autoSwitch,
 		$autoScale,
 		$autoSpeed,
 		$barClimb,

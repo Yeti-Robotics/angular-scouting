@@ -223,6 +223,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 	$scope.resetForm = function () {
 		$scope.formData = {
 			autoCheck: false,
+			autoSpeed: '1',
 			teleCheck: false,
 			cubeRanking: '1',
 			teleSpeed: '1',
@@ -242,6 +243,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 			$http.post('php/formSubmit.php', $scope.formData)
 				.then(function (data) {
 					displayMessage('Form submitted successfully', 'success');
+					console.log($scope.formData);
 					$scope.resetForm();
 				}, function (error) {
 					displayMessage('Failed to submit form', 'danger');
@@ -499,7 +501,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		}
 		if(value >= 80) {
 			return "progress-bar-success"
-		} else if(value < 80 && value > 60) {
+		} else if(value < 80 && value > 40) {
 			return "progress-bar-warning"
 		} else {
 			return "progress-bar-danger"

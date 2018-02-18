@@ -32,7 +32,7 @@ DROP TABLE IF EXISTS `form_data`;
 CREATE TABLE `form_data` (
   `id` int(11) NOT NULL,
   `auto_check` tinyint(1) NOT NULL DEFAULT '0',
-  `auto_defend` tinyint(1) NOT NULL DEFAULT '0',
+  `auto_switch` tinyint(1) NOT NULL DEFAULT '0',
   `auto_scale` tinyint(1) NOT NULL DEFAULT '0',
   `auto_speed` int(11) NOT NULL DEFAULT '1',
   `bar_climb` tinyint(1) NOT NULL DEFAULT '0',
