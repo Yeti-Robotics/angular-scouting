@@ -449,8 +449,8 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 	$http.get('php/getScouterTeams.php',).then(function (response) {
 		$scope.teams = response.data;
 		if ($scope.teams.length) {
-			$scope.currentTeam = $scope.teams[0].team_number;
-			$scope.loadData($scope.currentTeam);
+			$scope.currentTeam = $scope.teams[0];
+			$scope.loadData($scope.currentTeam.team_number);
 		}
 	});
 
