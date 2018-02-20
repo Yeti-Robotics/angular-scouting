@@ -396,51 +396,62 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 		}
 	}
 
-	$http.get('php/getPitData.php', {
-		params: {
-			teamNumber: $routeParams.teamNumber
+	$http.get('php/getScouterTeams.php',).then(function (response) {
+		$scope.teams = response.data;
+		if ($scope.teams.length) {
+			$scope.currentTeam = $scope.teams[0];
+			$scope.loadData($scope.currentTeam.team_number);
 		}
-	}).then(function (response) {
-		$scope.data = response.data;
-
-		if ($scope.data.teamInfo.name != null) {
-			$scope.name = $scope.data.teamInfo.name + ($scope.data.teamInfo.name[$scope.data.teamInfo.name.length - 1] == "s" ? "'" : "'s");
-		} else {
-			$scope.name = $scope.teamNumber + "'s";
-		}
-
-		if (response.data.commentSection != null) {
-			for (var i = 0; i < response.data.commentSection.length; i++) {
-				$scope.pitData.comments.push({
-					comment: response.data.commentSection[i]['Pit Scouters Comments'],
-					commenter: response.data.commentSection[i]['Pit Scouter'],
-					timeStamp: response.data.commentSection[i]['timestamp']
-				});
-			}
-		} else {
-			$scope.noComments = true;
-		}
-		if (response.data.pics != null) {
-			for (var i = 0; i < response.data.pics.length; i++) {
-				$scope.pitData.pictures.push({
-					pictureNumber: response.data.pics[i]['Picture Number'],
-					photographer: response.data.pics[i]['Pit Scouter'],
-					timeStamp: response.data.pics[i]['timestamp']
-				});
-			}
-			$scope.picIndex = 0;
-		} else {
-			$scope.noPictures = true;
-		}
-
-		$(document).ready(function () {
-			if ($scope.noComments && $scope.noPictures) {
-				$("#errorModal").modal("show");
-			}
-		});
-	}, function (response) {
-		$scope.error = response.data.error;
 	});
+
+	$scope.loadData = function(scoutingTeam) {
+		$http.get('php/getPitData.php', {
+			params: {
+				teamNumber: $routeParams.teamNumber,
+				scoutingTeam: scoutingTeam
+			}
+		}).then(function (response) {
+			$scope.data = response.data;
+
+			if ($scope.data.teamInfo.name != null) {
+				$scope.name = $scope.data.teamInfo.name + ($scope.data.teamInfo.name[$scope.data.teamInfo.name.length - 1] == "s" ? "'" : "'s");
+			} else {
+				$scope.name = $scope.teamNumber + "'s";
+			}
+
+			if (response.data.commentSection != null) {
+				for (var i = 0; i < response.data.commentSection.length; i++) {
+					$scope.pitData.comments.push({
+						comment: response.data.commentSection[i]['Pit Scouters Comments'],
+						commenter: response.data.commentSection[i]['Pit Scouter'],
+						timeStamp: response.data.commentSection[i]['timestamp']
+					});
+				}
+			} else {
+				$scope.noComments = true;
+			}
+			if (response.data.pics != null) {
+				for (var i = 0; i < response.data.pics.length; i++) {
+					$scope.pitData.pictures.push({
+						pictureNumber: response.data.pics[i]['Picture Number'],
+						photographer: response.data.pics[i]['Pit Scouter'],
+						timeStamp: response.data.pics[i]['timestamp']
+					});
+				}
+				$scope.picIndex = 0;
+			} else {
+				$scope.noPictures = true;
+			}
+
+			$(document).ready(function () {
+				if ($scope.noComments && $scope.noPictures) {
+					$("#errorModal").modal("show");
+				}
+			});
+		}, function (response) {
+			$scope.error = response.data.error;
+		});
+	};
 });
 
 app.controller("ListController", function ($rootScope, $scope, $http) {
@@ -462,9 +473,12 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 		}).then(function (response) {
 			$scope.data = response.data;
 			for (var i = 0; i < $scope.data.length; i++) {
-				$scope.data[i].bar_climb = parseInt($scope.data[i].bar_climb);
+				$scope.data[i].avg_climb = parseInt($scope.data[i].avg_climb);
 				$scope.data[i].avg_score = parseInt($scope.data[i].avg_score);
 				$scope.data[i].team_number = parseInt($scope.data[i].team_number);
+				$scope.data[i].avg_tele_speed = parseInt($scope.data[i].avg_tele_speed);
+				$scope.data[i].total_cubes = parseInt($scope.data[i].total_cubes);
+				$scope.data[i].total_auto_cubes = parseInt($scope.data[i].total_auto_cubes);
 				$scope.data[i].team_name = $scope.data[i].team_name != null ? $scope.data[i].team_name : "Name unavailable";
 			}
 		});
@@ -495,6 +509,30 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	$scope.teamNumber = $routeParams.teamNumber;
 	$scope.error = "";
 
+	$http.get('php/getScouterTeams.php',).then(function (response) {
+		$scope.teams = response.data;
+		if ($scope.teams.length) {
+			$scope.currentTeam = $scope.teams[0];
+			$scope.loadData($scope.currentTeam.team_number);
+		}
+	});
+
+	$scope.loadData = function(scoutingTeam) {
+		$http.get("php/getTeam.php", {
+			params: {
+				teamNumber: $routeParams.teamNumber,
+				scoutingTeam: scoutingTeam
+			}
+		}).then(function (response) {
+			$scope.data = response.data;
+			console.log($scope.data);
+		}, function (response) {
+			$scope.error = response.data.error;
+			console.error($scope.error);
+		});
+	};
+
+
 	$scope.chooseBar = function (value) {
 		if(value <= 1) {
 			value *= 100;
@@ -507,18 +545,6 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 			return "progress-bar-danger"
 		}
 	}
-
-	$http.get("php/getTeam.php", {
-		params: {
-			teamNumber: $routeParams.teamNumber
-		}
-	}).then(function (response) {
-		$scope.data = response.data;
-		console.log($scope.data);
-	}, function (response) {
-		$scope.error = response.data.error;
-		console.error($scope.error);
-	});
 
 });
 

@@ -47,13 +47,16 @@ function updateSettings($updatedSettings) {
 	}
 }
 
-function checkPitData($db, $teamNumber) {
-	$query = "SELECT * FROM `pit_comments` WHERE pit_comments.team_number = ?";
+function checkPitData($db, $teamNumber, $scoutingTeam) {
+	$query = "SELECT p.*, s.team_number AS scouting_team
+    FROM `pit_comments` p
+    LEFT JOIN scouters s ON s.id = p.scouter_id
+    WHERE p.team_number = ? AND s.team_number = ?";
 	$hasComments;
 	$hasPics;
 
     if ($stmt = $db->prepare($query)) {
-        $stmt->bind_param("i", $teamNumber);
+        $stmt->bind_param("ii", $teamNumber, $scoutingTeam);
         $stmt->execute();
         $stmt->store_result();
         if ($stmt->num_rows > 0) {
@@ -66,10 +69,13 @@ function checkPitData($db, $teamNumber) {
         die ( '{"message":"Failed creating statement"}' );
     }
 	
-	$query = "SELECT * FROM `pit_pictures` WHERE pit_pictures.team_number = ?";
+	$query = "SELECT q.*, s.team_number AS scouting_team
+    FROM `pit_pictures` q
+    LEFT JOIN scouters s ON s.id = q.scouter_id
+    WHERE q.team_number = ? AND s.team_number = ?";
 	
     if ($stmt = $db->prepare($query)) {
-        $stmt->bind_param("i", $teamNumber);
+        $stmt->bind_param("ii", $teamNumber, $scoutingTeam);
         $stmt->execute();
         $stmt->store_result();
         if ($stmt->num_rows > 0) {
@@ -1197,14 +1203,18 @@ function getPic($team, $pic) {
 	return $file[0];
 }
 
-function getPitComments($db, $team) {
-	$query = "SELECT p.team_number AS 'Team', p.pit_comments AS 'Pit Scouters Comments', s.name AS 'Pit Scouter', UNIX_TIMESTAMP(p.timestamp) AS timestamp
-				FROM pit_comments p
-				LEFT JOIN scouters s ON s.id = p.scouter_id
-				WHERE p.team_number = ? AND p.pit_comments != ''";
+function getPitComments($db, $team, $scoutingTeam) {
+	$query = "SELECT p.team_number AS 'Team', 
+    p.pit_comments AS 'Pit Scouters Comments', 
+    s.name AS 'Pit Scouter', 
+    UNIX_TIMESTAMP(p.timestamp) AS timestamp,
+    s.team_number AS scoting_team
+    FROM pit_comments p
+    LEFT JOIN scouters s ON s.id = p.scouter_id
+    WHERE p.team_number = ? AND p.pit_comments != '' AND s.team_number = ?";
 	//Time stamps?
 	if($stmt = $db->prepare($query)) {
-		$stmt->bind_param("i", $team);
+		$stmt->bind_param("ii", $team, $scoutingTeam);
 		$stmt->execute();
 		return $stmt->get_result();
 	}
@@ -1213,22 +1223,26 @@ function getPitComments($db, $team) {
 	}
 }
 
-function getPicInfo($db, $team) {
+function getPicInfo($db, $team, $scoutingTeam) {
     $dir = scandir("../pics/$team");
     array_splice($dir, 0, 2);
     for ($i = 0; $i < count($dir); $i++) {
         $dir[$i] = intval(substr($dir[$i], 0, -4));
     }
-	$query = "SELECT p.team_number AS 'Team', s.name AS 'Pit Scouter', p.pic_num AS 'Picture Number', UNIX_TIMESTAMP(p.timestamp) AS timestamp
-				FROM pit_pictures p
-				LEFT JOIN scouters s ON s.id = p.scouter_id
-				WHERE p.team_number = ?";
+	$query = "SELECT p.team_number AS 'Team', 
+    s.name AS 'Pit Scouter', 
+    p.pic_num AS 'Picture Number', 
+    UNIX_TIMESTAMP(p.timestamp) AS timestamp,
+    s.team_number AS scouting_team
+    FROM pit_pictures p
+    LEFT JOIN scouters s ON s.id = p.scouter_id
+    WHERE p.team_number = ? AND s.team_number =?";
     for ($i = 0; $i < count($dir); $i++) {
         $query .= " " . ($i == 0 ? "AND (" : "OR ") . "pic_num = $dir[$i]" . ($i == (count($dir) - 1) ? ")" : "");
     }
 	//Time stamps?
 	if($stmt = $db->prepare($query)) {
-		$stmt->bind_param("i", $team);
+		$stmt->bind_param("ii", $team, $scoutingTeam );
 		$stmt->execute();
 		return $stmt->get_result();
 	}

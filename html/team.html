@@ -1,5 +1,14 @@
  <!-- PAGE HEADER -->
 <div class="container-fluid">
+		<div class="form-group">
+			<label for="scoutTeam">Scouted by:</label>
+			<select id="scoutTeam"
+					class="form-control"
+					ng-model="currentTeam"
+					ng-change="loadData(currentTeam.team_number)"
+					ng-options="team as (team.team_number + ' - ' + team.team_name) for team in teams track by team.team_number">
+			</select>
+		</div>
 		<div>
 		<h2 ng-show="error == ''" >Team {{teamNumber}} -- {{data.team.team_name}} 
 			<a class="btn btn-primary" ng-href="#/pit/{{teamNumber}}">Pit Pictures and Comments</a></h2>

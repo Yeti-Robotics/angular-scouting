@@ -4,14 +4,16 @@ include ("functions.php");
 header('Content-Type: application/json');
 
 $teamNumber = isset($_GET["teamNumber"]) ? $_GET["teamNumber"] : -1;
+$scoutingTeam = $_GET['scoutingTeam'];
+
 $response = array();
 if ($teamNumber) {
-	$query = "SELECT f.*, s.name
-		FROM form_data f
-		LEFT JOIN scouters s ON s.id = f.scouter_id
-		WHERE f.team_number = ?";
+	$query = "SELECT f.*, s.name, s.team_number AS scouting_team
+	FROM form_data f
+	LEFT JOIN scouters s ON s.id = f.scouter_id
+	WHERE f.team_number = ? AND s.team_number = ?";
 	if ($stmt = $db->prepare($query)) {
-		$stmt->bind_param("i", $teamNumber);
+		$stmt->bind_param("ii", $teamNumber, $scoutingTeam);
 		$stmt->execute();
 		$result = $stmt->get_result();
 		if ($result) {
@@ -39,27 +41,29 @@ if ($teamNumber) {
 		die('{"error": "Failed to retrive team data, problem with query 2"}');
 	}
 
-	$query = "SELECT AVG(auto_speed) AS avg_auto_speed, 
-		AVG(tele_speed) AS avg_tele_speed,
-		AVG(cube_ranking) AS avg_cube_ranking,
-		SUM(switch_cubes) AS total_switch_cubes,
-		SUM(scale_cubes) AS total_scale_cubes,
-		SUM(enemy_switch_cubes) AS total_enemy_switch_cubes,
-		SUM(switch_cubes + enemy_switch_cubes + scale_cubes) AS total_cubes,
-		SUM(auto_scale) AS total_auto_scale, 
-		SUM(auto_switch) AS total_auto_switch,
-		AVG(bar_climb)*100 AS climb_accuracy,
-		AVG(tele_check)*100 AS avg_tele_check,
-		AVG(auto_check)*100 AS avg_auto_check,
-		AVG(help_climb)*100 AS avg_help_climb,
-		AVG(ramp_climb)*100 AS avg_ramp_climb,
-		AVG(tele_defense)*100 AS avg_tele_defense
-	FROM form_data
-	WHERE team_number = ?
-	GROUP BY team_number
+	$query = "SELECT AVG(f.auto_speed) AS avg_auto_speed, 
+		AVG(f.tele_speed) AS avg_tele_speed,
+		AVG(f.cube_ranking) AS avg_cube_ranking,
+		SUM(f.switch_cubes) AS total_switch_cubes,
+		SUM(f.scale_cubes) AS total_scale_cubes,
+		SUM(f.enemy_switch_cubes) AS total_enemy_switch_cubes,
+		SUM(f.switch_cubes + enemy_switch_cubes + scale_cubes) AS total_cubes,
+		SUM(f.auto_scale) AS total_auto_scale, 
+		SUM(f.auto_switch) AS total_auto_switch,
+		AVG(f.bar_climb)*100 AS climb_accuracy,
+		AVG(f.tele_check)*100 AS avg_tele_check,
+		AVG(f.auto_check)*100 AS avg_auto_check,
+		AVG(f.help_climb)*100 AS avg_help_climb,
+		AVG(f.ramp_climb)*100 AS avg_ramp_climb,
+		AVG(f.tele_defense)*100 AS avg_tele_defense,
+		s.team_number AS scouting_team
+	FROM form_data f
+	LEFT JOIN scouters s ON s.id = f.scouter_id
+	WHERE f.team_number = ? AND s.team_number = ?
+	GROUP BY f.team_number 
 	";
 	if ($stmt = $db->prepare($query)) {
-		$stmt->bind_param("i", $teamNumber);
+		$stmt->bind_param("ii", $teamNumber, $scoutingTeam);
 		$stmt->execute();
 		$result = $stmt->get_result();
 		if ($result) {
@@ -78,4 +82,6 @@ if ($teamNumber) {
     header($_SERVER['SERVER_PROTOCOL'] . '403 No headers', true, 403);
     die('{"error": "Failed to retrive team data"}');
 }
+
+
 ?>
