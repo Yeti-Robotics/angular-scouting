@@ -420,6 +420,8 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 			}
 
 			if (response.data.commentSection != null) {
+				$scope.noComments = false;
+				$scope.pitData.comments.splice(0);
 				for (var i = 0; i < response.data.commentSection.length; i++) {
 					$scope.pitData.comments.push({
 						comment: response.data.commentSection[i]['Pit Scouters Comments'],
@@ -431,6 +433,8 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 				$scope.noComments = true;
 			}
 			if (response.data.pics != null) {
+				$scope.noPictures = false;
+				$scope.pitData.pictures.splice(0);
 				for (var i = 0; i < response.data.pics.length; i++) {
 					$scope.pitData.pictures.push({
 						pictureNumber: response.data.pics[i]['Picture Number'],
