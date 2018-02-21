@@ -19,6 +19,7 @@
             </div>
         </div>
 
+            
         <!-- Autonomous panel: -->
         <div class="panel panel-default ">
             <div class="panel-heading ">
@@ -28,31 +29,52 @@
 
                 <div class="form-group">
                     <label>
-                        <button type="button" class="btn btn-primary" ng-click="formData.autoCheck = !formData.autoCheck"> Did the robot cross the Autonomous line?</button>
+                        <button type="button" class="btn btn-info" ng-click="formData.autoCheck = !formData.autoCheck"> Did the robot cross the Autonomous line?</button>
                         <span ng-if="formData.autoCheck" class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"> Yes</span>
                         <span ng-if="!formData.autoCheck" class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"> No</span>
                     </label>
                     <ul ng-if="formData.autoCheck">
-                        <li for="autoScale">Did the robot put a cube on the alliance scale?
-                            <input ng-model="formData.autoScale" type="checkbox" id="autoScale">
+                        <li for="autoScale">How many cubes did the robot place on the alliance scale?
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" type='button'  ng-click="decrementAS()">
+                                        <span class="glyphicon glyphicon-triangle-bottom" ></span>
+                                    </button>
+                                </span>
+                                <input ng-model="formData.autoScale" type="number" id="autoScale" class="form-control width100"  placeholder="#">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" type='button' ng-click="incrementAS()">
+                                        <span class="glyphicon glyphicon-triangle-top" ></span>
+                                    </button>
+                                </span>
+                            </div>     
                         </li>
                         <br>
-                        <li for="autoSwitch">Did the robot put a cube on the alliance switch?
-                            <input ng-model="formData.autoSwitch" type="checkbox" id="autoSwitch">
+                        <li for="autoSwitch">How many cubes did the robot place on the alliance switch?
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" type='button'  ng-click="decrementAW()">
+                                        <span class="glyphicon glyphicon-triangle-bottom" ></span>
+                                    </button>
+                                </span>
+                                <input ng-model="formData.autoSwitch" type="number" id="autoSwitch" class="form-control width100"  placeholder="#">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" type='button' ng-click="incrementAW()">
+                                        <span class="glyphicon glyphicon-triangle-top" ></span>
+                                    </button>
+                                </span>
+                            </div>    
                         </li>
                         <br>
-                        <li for="autoSpeed">How fast was the robot in Auto (1-5). Slowest = 1, Fastest = 5
+                        <li for="autoSpeed">How fast was the robot in Auto (1-3). Slowest = 1, Fastest = 3
                             <select ng-model="formData.autoSpeed" class="form-control">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
                             </select>
                         </li>
                     </ul>
                 </div>
-
             </div>
         </div>
 
@@ -64,11 +86,47 @@
             <div class="panel-body">
                 <div>
                     <p style="font-weight: bold">Cubes placed on alliance scale:</p>
-                    <input ng-model="formData.scaleCubes" type="number" class="form-control" placeholder="#">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type='button'  ng-click="decrementSC()">
+                                <span class="glyphicon glyphicon-triangle-bottom" ></span>
+                            </button>
+                        </span>
+                        <input ng-model="formData.scaleCubes" type="number" class="form-control width100" placeholder="#">
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type='button' ng-click="incrementSC()">
+                                <span class="glyphicon glyphicon-triangle-top" ></span>
+                            </button>
+                        </span>
+                    </div>
                     <p style="font-weight: bold" style="margin-top: 10px">Cubes placed on alliance switch:</p>
-                    <input ng-model="formData.switchCubes" type="number" class="form-control" placeholder="#">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type='button'  ng-click="decrementWC()">
+                                <span class="glyphicon glyphicon-triangle-bottom" ></span>
+                            </button>
+                        </span>
+                        <input ng-model="formData.switchCubes" type="number" class="form-control width100"  placeholder="#">
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type='button' ng-click="incrementWC()">
+                                <span class="glyphicon glyphicon-triangle-top" ></span>
+                            </button>
+                        </span>
+                    </div>   
                     <p style="font-weight: bold" style="margin-top: 10px">Cubes placed on enemy switch:</p>
-                    <input ng-model="formData.enemySwitchCubes" type="number" class="form-control" placeholder="#">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type='button'  ng-click="decrementEC()">
+                                <span class="glyphicon glyphicon-triangle-bottom" ></span>
+                            </button>
+                        </span>
+                        <input ng-model="formData.enemySwitchCubes" type="number" class="form-control width100"  placeholder="#">
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type='button' ng-click="incrementEC()">
+                                <span class="glyphicon glyphicon-triangle-top" ></span>
+                            </button>
+                        </span>
+                    </div>   
                     <div class="panel panel-default" style="margin-top: 15px">
                         <label>How well did this robot place cubes (1-5). Worst = 1, Perfect = 5
                             <select ng-model="formData.cubeRanking" class="form-control">
@@ -86,19 +144,17 @@
                         </label>
                     </div>
                     <div class="panel panel-default">
-                        <label>How fast was the robot in teleop (1-5). Slowest = 1, Fastest = 5
+                        <label>How fast was the robot in teleop (1-3). Slowest = 1, Fastest = 3
                             <select ng-model="formData.teleSpeed" class="form-control">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
                             </select>
                         </label>
                     </div>
                     <div>
                         <label>
-                            <button type="button" class="btn btn-primary" ng-click="formData.teleCheck = !formData.teleCheck"> Did the robot climb or help others climb?</button>
+                            <button type="button" class="btn btn-info" ng-click="formData.teleCheck = !formData.teleCheck"> Did the robot climb or help others climb?</button>
                             <span ng-if="formData.teleCheck" class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"> Yes</span>
                             <span ng-if="!formData.teleCheck" class="glyphicon glyphicon-remove" style="color:red" aria-hidden="true"> No</span>
                         </label>

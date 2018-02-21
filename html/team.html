@@ -31,10 +31,10 @@
 			<table class="table table-striped table-hover table-bordered">
 					<tbody>
 						<tr>
-							<td>Avg. Speed ranking (1-5):</td>
+							<td>Avg. Speed ranking (1-3):</td>
 							<td> 
 								<div class="progress">
-									<div ng-class="chooseBar(data.stats.avg_auto_speed/5)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{data.stats.avg_auto_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_auto_speed/5*100}}%;">
+									<div ng-class="chooseBar(data.stats.avg_auto_speed/3)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{data.stats.avg_auto_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_auto_speed/3*100}}%;">
 										{{data.stats.avg_auto_speed | number:2}}
 									</div>
 								</div>
@@ -68,17 +68,17 @@
 	<div class="panel panel-default">
 		<div class="panel-heading ">
 			<h3 class="panel-title ">
-					<a href="javascript:;" data-toggle="collapse" data-target="#collapseTele">Robot Ranking in Teleop:</a>
+				<a href="javascript:;" data-toggle="collapse" data-target="#collapseTele">Robot Ranking in Teleop:</a>
 			</h3>	
 		</div>
 		<div id="collapseTele" class="panel-collapse collapse panel-body">
 			<table class="table table-striped table-hover table-bordered">
 				<tbody>
 					<tr>
-						<td>Avg. Speed Ranking (1-5):</td>
+						<td>Avg. Speed Ranking (1-3):</td>
 						<td>
 							<div class="progress">
-								<div ng-class="chooseBar(data.stats.avg_tele_speed/5)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_tele_speed/5*100}}%;">
+								<div ng-class="chooseBar(data.stats.avg_tele_speed/3)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{data.stats.avg_tele_speed}}" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_tele_speed/5*100}}%;">
 									{{data.stats.avg_tele_speed | number:2}}
 								</div>
 							</div>

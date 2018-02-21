@@ -224,6 +224,8 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 		$scope.formData = {
 			autoCheck: false,
 			autoSpeed: '1',
+			autoScale: 0,
+			autoSwitch: 0,
 			teleCheck: false,
 			cubeRanking: '1',
 			teleSpeed: '1',
@@ -251,6 +253,38 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 				});
 		}
 	};
+
+	$scope.incrementAS = function () {
+		$scope.formData.autoScale++;
+	};
+	$scope.decrementAS = function () {
+		$scope.formData.autoScale--;
+	};
+	$scope.incrementAW = function () {
+		$scope.formData.autoSwitch++;
+	};
+	$scope.decrementAW = function () {
+		$scope.formData.autoSwitch--;
+	};
+	$scope.incrementSC = function () {
+		$scope.formData.scaleCubes++;
+	};
+	$scope.decrementSC = function () {
+		$scope.formData.scaleCubes--;
+	};
+	$scope.incrementWC = function () {
+		$scope.formData.switchCubes++;
+	};
+	$scope.decrementWC = function () {
+		$scope.formData.switchCubes--;
+	};
+	$scope.incrementEC = function () {
+		$scope.formData.enemySwitchCubes++;
+	};
+	$scope.decrementEC = function () {
+		$scope.formData.enemySwitchCubes--;
+	};
+	
 });
 
 app.controller('PitFormController', function ($rootScope, $scope, $http, $window, AccountService) {
