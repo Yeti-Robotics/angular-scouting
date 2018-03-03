@@ -128,6 +128,20 @@
                             </button>
                         </span>
                     </div>   
+                    <p style="font-weight: bold" style="margin-top: 10px">Cubes placed in vault:</p>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type='button'  ng-click="formData.vaultCubes=formData.vaultCubes-1">
+                                <span class="glyphicon glyphicon-triangle-bottom" ></span>
+                            </button>
+                        </span>
+                        <input ng-model="formData.vaultCubes" type="number" class="form-control width100"  placeholder="#">
+                        <span class="input-group-btn">
+                            <button class="btn btn-info" type='button' ng-click="formData.vaultCubes=formData.vaultCubes+1">
+                                <span class="glyphicon glyphicon-triangle-top" ></span>
+                            </button>
+                        </span>
+                    </div>   
                     <div class="panel panel-default" style="margin-top: 15px">
                         <label>How well did this robot place cubes (1-5). Worst = 1, Perfect = 5
                             <select ng-model="formData.cubeRanking" class="form-control">

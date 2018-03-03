@@ -50,7 +50,8 @@ CREATE TABLE `form_data` (
   `tele_check` tinyint(1) NOT NULL DEFAULT '0',
   `tele_defense` tinyint(1) NOT NULL DEFAULT '0',
   `tele_speed` int(11) NOT NULL DEFAULT '1',
-  `scouter_id` int(11) NOT NULL
+  `scouter_id` int(11) NOT NULL,
+  `vault_cubes` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

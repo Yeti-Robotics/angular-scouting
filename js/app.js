@@ -232,6 +232,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 			scaleCubes: 0,
 			switchCubes: 0,
 			enemySwitchCubes: 0,
+			vaultCubes: 0,
 			scouterId: $rootScope.user.id
 		};
 	};
