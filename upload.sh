@@ -14,7 +14,8 @@ rm archive.zip
 scp archive.zip ${USERNAME}:/home/wampa3506/scouting
 
 # Unzip file archive
-ssh -tt ${USERNAME} << EOF
-cd /home/wampa3506/scouting
-unzip -o archive.zip
-rm archive.zip
+ssh ${USERNAME} << EOF
+    cd /home/wampa3506/scouting
+    unzip -o archive.zip
+    rm archive.zip
+EOF
