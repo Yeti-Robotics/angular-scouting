@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 17, 2018 at 10:01 PM
+-- Generation Time: Mar 03, 2018 at 06:54 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -103,22 +103,6 @@ CREATE TABLE `rankings` (
   `next_match_number` tinyint(4) DEFAULT NULL,
   `next_match_time` datetime DEFAULT NULL,
   `lastmodified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `scouters`
---
-
-DROP TABLE IF EXISTS `scouters`;
-CREATE TABLE `scouters` (
-  `id` int(6) NOT NULL,
-  `name` tinytext NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `pswd` tinytext NOT NULL,
-  `byteCoins` int(11) NOT NULL DEFAULT '200',
-  `team_number` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -326,13 +310,6 @@ ALTER TABLE `pit_pictures`
   ADD PRIMARY KEY (`pit_scout_data_id`);
 
 --
--- Indexes for table `scouters`
---
-ALTER TABLE `scouters`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`);
-
---
 -- Indexes for table `team_info`
 --
 ALTER TABLE `team_info`
@@ -359,12 +336,6 @@ ALTER TABLE `pit_comments`
 --
 ALTER TABLE `pit_pictures`
   MODIFY `pit_scout_data_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `scouters`
---
-ALTER TABLE `scouters`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
