@@ -4,7 +4,7 @@ set -e
 read -p "Enter user with domain, e.g. user@example.com: " USERNAME
 
 # Remove exisiting archive
-rm archive.zip
+rm -f archive.zip
 
 
 # Zip directory
