@@ -10,7 +10,7 @@ function displayMessage(message, alertType, timeVisible = 3000) {
 app.run(function ($rootScope, $location, $http, $window, AccountService) {
 	'use strict';
 
-	$rootScope.loggedIn = $window.sessionStorage.token != null;
+	$rootScope.loggedIn = $window.localStorage.token != null;
 
 	$rootScope.user = {
 		username: '',
@@ -57,9 +57,9 @@ app.service("AccountService", function ($http, $q, $window, $rootScope, $locatio
 
 	this.logout = function () {
 		$http.post("php/logout.php", {
-			token: $window.sessionStorage["token"]
+			token: $window.localStorage["token"]
 		}).finally(function (response) {
-			$window.sessionStorage.removeItem("token");
+			$window.localStorage.removeItem("token");
 			$rootScope.loggedIn = false;
 			$rootScope.user = {
 				username: '',
@@ -75,7 +75,7 @@ app.service("AccountService", function ($http, $q, $window, $rootScope, $locatio
 		var deferred = $q.defer();
 
 		$http.post("php/validateSession.php", {
-			token: $window.sessionStorage["token"]
+			token: $window.localStorage["token"]
 		}).then(function (response) {
 			if (response.data == "false") {
 				deferred.reject(response);
@@ -131,7 +131,7 @@ app.controller('LoginController', function (AccountService, $rootScope, $scope, 
 			AccountService.login($scope.scouterUsername, $scope.scouterPswd).then(function (response) {
 				var result = response.data;
 				console.log(result);
-				$window.sessionStorage["token"] = result.token;
+				$window.localStorage["token"] = result.token;
 				$rootScope.loggedIn = true;
 				if ($scope.scouterUsername == "admin") {
 					$location.path('/admin');
@@ -406,7 +406,7 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 	$scope.pitData = {
 		pictures: [],
 		comments: [],
-		token: $window.sessionStorage["token"]
+		token: $window.localStorage["token"]
 	}
 
 	$scope.picIndex;
@@ -641,7 +641,7 @@ app.controller('AdminPageController', function ($rootScope, $scope, $http, $wind
 
 	$scope.adminAction = function (pageAction, setting, value) {
 		var post = {
-			token: $window.sessionStorage["token"],
+			token: $window.localStorage["token"],
 			action: pageAction
 		};
 		switch (pageAction) {
