@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 03, 2018 at 06:54 PM
+-- Generation Time: Mar 16, 2018 at 09:52 PM
 -- Server version: 10.1.30-MariaDB
--- PHP Version: 7.2.1
+-- PHP Version: 5.6.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -51,7 +51,7 @@ CREATE TABLE `form_data` (
   `tele_defense` tinyint(1) NOT NULL DEFAULT '0',
   `tele_speed` int(11) NOT NULL DEFAULT '1',
   `scouter_id` int(11) NOT NULL,
-  `vault_cubes` int(11) NOT NULL
+  `vault_cubes` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -135,6 +135,7 @@ CREATE TABLE `team_info` (
 --
 
 INSERT INTO `team_info` (`team_number`, `team_name`) VALUES
+(1, 'The Juggernauts'),
 (8, 'Team 8'),
 (25, 'Raider Robotix'),
 (166, 'Chop Shop'),

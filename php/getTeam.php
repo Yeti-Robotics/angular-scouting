@@ -48,6 +48,7 @@ if ($teamNumber) {
 		SUM(f.scale_cubes) AS total_scale_cubes,
 		SUM(f.enemy_switch_cubes) AS total_enemy_switch_cubes,
 		SUM(f.switch_cubes + enemy_switch_cubes + scale_cubes) AS total_cubes,
+		SUM(f.vault_cubes) AS total_vault,
 		SUM(f.auto_scale) AS total_auto_scale, 
 		SUM(f.auto_switch) AS total_auto_switch,
 		AVG(f.bar_climb)*100 AS climb_accuracy,

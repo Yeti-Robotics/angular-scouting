@@ -48,6 +48,10 @@
 						<span ng-show="sortType == 'autoCube' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
 						<span ng-show="sortType == 'autoCube' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
+					<th ng-click="sortType = 'autoCube'; sortReverse = !sortReverse">Total Cubes Placed in Vault
+						<span ng-show="sortType == 'autoCube' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'autoCube' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -59,6 +63,7 @@
 					<td>{{row.avg_climb*100 | number: 2}} %</td>
 					<td>{{row.total_cubes}}</td>
 					<td>{{row.total_auto_cubes}}</td>
+					<td>{{row.total_vault}}</td>
 				</tr>
 			</tbody>
 		</table>

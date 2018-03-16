@@ -512,6 +512,7 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 		}).then(function (response) {
 			$scope.data = response.data;
 			for (var i = 0; i < $scope.data.length; i++) {
+				$scope.data[i].vault_cube = parseInt($scope.data[i].vault_cube);
 				$scope.data[i].avg_climb = parseInt($scope.data[i].avg_climb);
 				$scope.data[i].avg_score = parseInt($scope.data[i].avg_score);
 				$scope.data[i].team_number = parseInt($scope.data[i].team_number);
