@@ -5,15 +5,16 @@ header('Content-Type: application/json');
 
 $teamNumber = $_GET['teamNumber'];
 
-$query = "SELECT f.team_number, t.team_name, AVG(f.score) as avg_score, f.bar_climb, AVG(f.tele_check) as avg_climb,
-	AVG(f.tele_speed) as avg_tele_speed, SUM(f.switch_cubes + f.enemy_switch_cubes + f.scale_cubes) AS total_cubes,
-	SUM(f.auto_scale +f. auto_switch) AS total_auto_cubes,
-	SUM(f.vault_cubes) AS total_vault
-	FROM form_data f
-	JOIN scouters s ON s.id = f.scouter_id
-	LEFT JOIN team_info t ON t.team_number = f.team_number
-	WHERE s.team_number = ?
-	GROUP BY f.team_number";
+$query = "SELECT d.team_number, t.team_name, AVG(f.score) as avg_score, f.bar_climb, AVG(f.tele_check) as avg_climb,
+    AVG(f.tele_speed) as avg_tele_speed, SUM(f.switch_cubes + f.enemy_switch_cubes + f.scale_cubes) AS total_cubes,
+    SUM(f.auto_scale +f. auto_switch) AS total_auto_cubes,
+    SUM(f.vault_cubes) AS total_vault
+    FROM (SELECT DISTINCT p.team_number FROM pit_comments p
+UNION SELECT DISTINCT f.team_number FROM form_data f) AS d
+    LEFT JOIN form_data f on f.team_number = d.team_number
+    LEFT JOIN (SELECT * FROM scouters WHERE team_number = ?) s ON s.id = f.scouter_id
+    LEFT JOIN team_info t ON t.team_number = d.team_number
+    GROUP BY team_number";
 
 $output = array();
 if ($stmt = $db->prepare($query)) {

@@ -16,15 +16,12 @@
 		<div ng-show="error != ''">
 				<h1 class="text-center">{{error}}</h1>
 		</div>
-		<div>
-			<h3><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span></h3> <br>
-		</div>
 
 	<!--ROBOT RANKKING  IN AUTO-->
 	<div class="panel panel-default">
 		<div class="panel-heading ">
-			<h3 class="panel-title ">
-				<a href="javascript:;" data-toggle="collapse" data-target="#collapseAuto">Robot Ranking in Auto:</a>
+			<h3 class="panel-title" data-toggle="collapse" data-target="#collapseAuto" ng-click="autoCollapsed = !autoCollapsed">
+				Robot Ranking in Auto:<span style="float: right" ng-if="!autoCollapsed" class="glyphicon glyphicon-triangle-bottom"></span><span style="float: right" ng-if="autoCollapsed" class="glyphicon glyphicon-triangle-top"></span>
 			</h3>	
 		</div>
 		<div id="collapseAuto" class="panel-collapse collapse panel-body">
@@ -67,8 +64,8 @@
 	<!--ROBOT RANKKING  IN TELEOP-->
 	<div class="panel panel-default">
 		<div class="panel-heading ">
-			<h3 class="panel-title ">
-				<a href="javascript:;" data-toggle="collapse" data-target="#collapseTele">Robot Ranking in Teleop:</a>
+			<h3 class="panel-title" data-toggle="collapse" data-target="#collapseTele" ng-click="teleCollapsed = !teleCollapsed">
+				Robot Ranking in Teleop:<span style="float: right" ng-if="!teleCollapsed" class="glyphicon glyphicon-triangle-bottom"></span><span style="float: right" ng-if="teleCollapsed" class="glyphicon glyphicon-triangle-top"></span>
 			</h3>	
 		</div>
 		<div id="collapseTele" class="panel-collapse collapse panel-body">
@@ -147,7 +144,7 @@
 						<td>{{data.stats.total_scale_cubes}}</td>
 					</tr>
 					<tr>
-						<td>Total Vault Cubes:</td>
+						<td>Total Cubes Exchanged to Human Players:</td>
 						<td>{{data.stats.total_vault}}</td>
 					</tr>
 				</tbody>
@@ -208,14 +205,14 @@
 					</tr>
 				</tbody>
 			</table>
-			<div class="panel-group">
+			<div class="panel-group" ng-if="isClimbComment">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-					<h4 class="panel-title">
-						<a href="javascript:;" data-toggle="collapse" data-target="#collapse1">Specialized Climbing Comments</a>
+					<h4 class="panel-title" data-toggle="collapse" data-target="#collapseClimb" ng-click="climbCollapsed = !climbCollapsed">
+						Specialized Climbing Comments:<span style="float: right" ng-if="!climbCollapsed" class="glyphicon glyphicon-triangle-bottom"></span><span style="float: right" ng-if="climbCollapsed" class="glyphicon glyphicon-triangle-top"></span>
 					</h4>
 					</div>
-					<div id="collapse1" class="panel-collapse collapse">
+					<div id="collapseClimb" class="panel-collapse collapse panel-body">
 						<table class="table table-hover table-striped table-bordered">
 							<thead>
 								<tr>

@@ -48,7 +48,7 @@
 						<span ng-show="sortType == 'autoCube' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
 						<span ng-show="sortType == 'autoCube' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'autoCube'; sortReverse = !sortReverse">Total Cubes Placed in Vault
+					<th ng-click="sortType = 'autoCube'; sortReverse = !sortReverse">Total Cubes Exchanged to Human Player
 						<span ng-show="sortType == 'autoCube' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
 						<span ng-show="sortType == 'autoCube' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
@@ -56,11 +56,13 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="row in data | orderBy:sortType:sortReverse | filter:filterTeams">
-					<td><a href="#/team/{{row.team_number}}">{{row.team_number}}</a></td>
-					<td><a href="#/team/{{row.team_number}}">{{row.team_name}}</a></td>
-					<td>{{row.avg_score | number:2}}</td>
-					<td>{{row.avg_tele_speed | number: 2}}</td>
-					<td>{{row.avg_climb*100 | number: 2}} %</td>
+					<td ng-if="row.avg_score == 'No match scouting data available, only pit scouting data.'"><a href="#/pit/{{row.team_number}}">{{row.team_number}}</a></td>
+					<td ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'"><a href="#/team/{{row.team_number}}">{{row.team_number}}</a></td>
+					<td ng-if="row.avg_score == 'No match scouting data available, only pit scouting data.'"><a href="#/pit/{{row.team_number}}">{{row.team_name}}</a></td>
+					<td ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'"><a href="#/team/{{row.team_number}}">{{row.team_name}}</a></td>
+					<td>{{row.avg_score}}</td>
+					<td>{{row.avg_tele_speed}}</td>
+					<td>{{row.avg_climb}}<span ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'">%</span></td>
 					<td>{{row.total_cubes}}</td>
 					<td>{{row.total_auto_cubes}}</td>
 					<td>{{row.total_vault}}</td>

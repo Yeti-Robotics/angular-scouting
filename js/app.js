@@ -172,6 +172,10 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 		{
 			teamNumber: 4290,
 			name: 'Bots of War'
+		},
+		{
+			teamNumber: 6894,
+			name: 'Iced Java'
 		}
 	];
 
@@ -496,7 +500,7 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 app.controller("ListController", function ($rootScope, $scope, $http) {
 	'use strict';
 	$scope.sortType = 'avgScore';
-	$scope.sortReverse = true;
+	$scope.sortReverse = false;
 
 	$http.get('php/getScouterTeams.php',).then(function (response) {
 		$scope.teams = response.data;
@@ -512,13 +516,23 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 		}).then(function (response) {
 			$scope.data = response.data;
 			for (var i = 0; i < $scope.data.length; i++) {
-				$scope.data[i].vault_cubes = parseInt($scope.data[i].vault_cubes);
-				$scope.data[i].avg_climb = parseInt($scope.data[i].avg_climb);
-				$scope.data[i].avg_score = parseInt($scope.data[i].avg_score);
-				$scope.data[i].team_number = parseInt($scope.data[i].team_number);
-				$scope.data[i].avg_tele_speed = parseInt($scope.data[i].avg_tele_speed);
-				$scope.data[i].total_cubes = parseInt($scope.data[i].total_cubes);
-				$scope.data[i].total_auto_cubes = parseInt($scope.data[i].total_auto_cubes);
+				if ($scope.data[i].avg_score == null) {
+					$scope.data[i].vault_cubes = "No match scouting data available, only pit scouting data.";
+					$scope.data[i].avg_climb = "No match scouting data available, only pit scouting data.";
+					$scope.data[i].avg_score = "No match scouting data available, only pit scouting data.";
+					$scope.data[i].avg_tele_speed = "No match scouting data available, only pit scouting data.";
+					$scope.data[i].total_cubes = "No match scouting data available, only pit scouting data.";
+					$scope.data[i].total_auto_cubes = "No match scouting data available, only pit scouting data.";
+					$scope.data[i].total_vault = "No match scouting data available, only pit scouting data.";
+				} else {
+					$scope.data[i].vault_cubes = parseInt($scope.data[i].vault_cubes);
+					$scope.data[i].avg_climb = parseInt($scope.data[i].avg_climb) * 100;
+					$scope.data[i].avg_score = parseInt($scope.data[i].avg_score);
+					$scope.data[i].team_number = parseInt($scope.data[i].team_number);
+					$scope.data[i].avg_tele_speed = parseInt($scope.data[i].avg_tele_speed);
+					$scope.data[i].total_cubes = parseInt($scope.data[i].total_cubes);
+					$scope.data[i].total_auto_cubes = parseInt($scope.data[i].total_auto_cubes);
+				}
 				$scope.data[i].team_name = $scope.data[i].team_name != null ? $scope.data[i].team_name : "Name unavailable";
 			}
 		});
@@ -548,6 +562,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 
 	$scope.teamNumber = $routeParams.teamNumber;
 	$scope.error = "";
+	$scope.isClimbComment = false;
 
 	$http.get('php/getScouterTeams.php',).then(function (response) {
 		$scope.teams = response.data;
@@ -566,6 +581,12 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		}).then(function (response) {
 			$scope.data = response.data;
 			console.log($scope.data);
+			
+			for (var i = 0; i < $scope.data.formData.length; i++){
+				if ($scope.data.formData[i].other_climb != "") {
+					$scope.isClimbComment = true;
+				}
+			}
 		}, function (response) {
 			$scope.error = response.data.error;
 			console.error($scope.error);
