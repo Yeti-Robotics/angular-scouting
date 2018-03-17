@@ -526,8 +526,10 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 					$scope.data[i].total_vault = "No match scouting data available, only pit scouting data.";
 				} else {
 					$scope.data[i].vault_cubes = parseInt($scope.data[i].vault_cubes);
-					$scope.data[i].avg_climb = parseFloat($scope.data[i].avg_climb).toPrecision(2) * 100;
-					$scope.data[i].avg_score = parseFloat($scope.data[i].avg_score).toPrecision(2);
+					$scope.data[i].avg_climb = parseFloat($scope.data[i].avg_climb);
+					$scope.data[i].avg_climb = $scope.data[i].avg_climb.toFixed(4) * 100;
+					$scope.data[i].avg_score = parseFloat($scope.data[i].avg_score);
+					$scope.data[i].avg_score = $scope.data[i].avg_score.toFixed(2);
 					$scope.data[i].team_number = parseInt($scope.data[i].team_number);
 					$scope.data[i].avg_tele_speed = parseInt($scope.data[i].avg_tele_speed);
 					$scope.data[i].total_cubes = parseInt($scope.data[i].total_cubes);
