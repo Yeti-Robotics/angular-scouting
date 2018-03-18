@@ -3,7 +3,8 @@
 var app;
 app = angular.module('app', ['ngRoute']);
 
-function displayMessage(message, alertType, timeVisible = 3000) {
+function displayMessage(message, alertType, timeVisible) {
+	var timeVisible = timeVisible == undefined ? 3000 : timeVisible;
 	$('.message-container').html(message).removeClass('alert-success alert-info alert-warning alert-danger').addClass('alert-' + alertType).stop(true).slideDown(500).delay(timeVisible).slideUp(500);
 }
 
@@ -435,7 +436,7 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 		}
 	}
 
-	$http.get('php/getScouterTeams.php',).then(function (response) {
+	$http.get('php/getScouterTeams.php').then(function (response) {
 		$scope.teams = response.data;
 		if ($scope.teams.length) {
 			$scope.currentTeam = $scope.teams[0];
@@ -502,7 +503,7 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 	$scope.sortType = 'avgScore';
 	$scope.sortReverse = false;
 
-	$http.get('php/getScouterTeams.php',).then(function (response) {
+	$http.get('php/getScouterTeams.php').then(function (response) {
 		$scope.teams = response.data;
 		if ($scope.teams.length) {
 			$scope.currentTeam = $scope.teams[0];
@@ -566,7 +567,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	$scope.error = "";
 	$scope.isClimbComment = false;
 
-	$http.get('php/getScouterTeams.php',).then(function (response) {
+	$http.get('php/getScouterTeams.php').then(function (response) {
 		$scope.teams = response.data;
 		if ($scope.teams.length) {
 			$scope.currentTeam = $scope.teams[0];
