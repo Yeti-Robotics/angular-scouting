@@ -12,7 +12,7 @@ $query = "SELECT d.team_number, t.team_name, AVG(f.score) as avg_score, f.bar_cl
     FROM (SELECT DISTINCT p.team_number FROM pit_comments p
 UNION SELECT DISTINCT f.team_number FROM form_data f) AS d
     LEFT JOIN form_data f on f.team_number = d.team_number
-    LEFT JOIN (SELECT * FROM scouters WHERE team_number = ?) s ON s.id = f.scouter_id
+    JOIN (SELECT * FROM scouters WHERE team_number = ?) s ON s.id = f.scouter_id
     LEFT JOIN team_info t ON t.team_number = d.team_number
     GROUP BY team_number";
 
