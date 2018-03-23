@@ -6,63 +6,70 @@
 	</style>
 	<div class="form-group">
 		<label for="scoutTeam">Scouted by:</label>
-		<select id="scoutTeam"
-				class="form-control"
-				ng-model="currentTeam"
-				ng-change="loadData(currentTeam.team_number)"
-				ng-options="team as (team.team_number + ' - ' + team.team_name) for team in teams track by team.team_number">
+		<select id="scoutTeam" class="form-control" ng-model="currentTeam" ng-change="loadData(currentTeam.team_number)" ng-options="team_number as (team_number.team_number + ' - ' + team_number.team_name) for team_number in teams track by team_number.team_number">
 		</select>
 	</div>
 	<div class="form-group">
-		<input type="text" class="form-control" placeholder="Filter by team number or name" ng-model="search">
+		<input type="text" class="form-control" placeholder="Filter by team_number number or team_name" ng-model="search">
 	</div>
 	<div class="table-responsive">
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th ng-click="sortType = 'team'; sortReverse = !sortReverse">Team
-						<span ng-show="sortType == 'team' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'team' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					<th ng-click="sortType = 'team_number'; sortDescending = !sortDescending">Team
+						<span ng-show="sortType == 'team_number' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'team_number' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'name'; sortReverse = !sortReverse">Team name
-						<span ng-show="sortType == 'name' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'name' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					<th ng-click="sortType = 'team_name'; sortDescending = !sortDescending">Team team_name
+						<span ng-show="sortType == 'team_name' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'team_name' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'avgScore'; sortReverse = !sortReverse">Average Score
-						<span ng-show="sortType == 'avgScore' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'avgScore' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					<th ng-click="sortType = 'avg_score'; sortDescending = !sortDescending">Average Score
+						<span ng-show="sortType == 'avg_score' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'avg_score' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'avgSpeed'; sortReverse = !sortReverse">Avg Speed (1-5)
-							<span ng-show="sortType == 'avgSpeed' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-							<span ng-show="sortType == 'avgSpeed' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					<th ng-click="sortType = 'avg_tele_speed'; sortDescending = !sortDescending">Avg Speed (1-5)
+						<span ng-show="sortType == 'avg_tele_speed' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'avg_tele_speed' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'canClimb'; sortReverse = !sortReverse">Climbing Success?
-							<span ng-show="sortType == 'canClimb' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-							<span ng-show="sortType == 'canClimb' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					<th ng-click="sortType = 'avg_climb'; sortDescending = !sortDescending">Climbing Success?
+						<span ng-show="sortType == 'avg_climb' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'avg_climb' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'sumCube'; sortReverse = !sortReverse">Total Cubes Placed in Teleop
-							<span ng-show="sortType == 'sumCube' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-							<span ng-show="sortType == 'sumCube' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					<th ng-click="sortType = 'total_cubes'; sortDescending = !sortDescending">Total Cubes Placed in Teleop
+						<span ng-show="sortType == 'total_cubes' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'total_cubes' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'autoCube'; sortReverse = !sortReverse">Total Cubes Placed in Auto
-						<span ng-show="sortType == 'autoCube' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'autoCube' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					<th ng-click="sortType = 'total_auto_cubes'; sortDescending = !sortDescending">Total Cubes Placed in Auto
+						<span ng-show="sortType == 'total_auto_cubes' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'total_auto_cubes' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'autoCube'; sortReverse = !sortReverse">Total Cubes Exchanged to Human Player
-						<span ng-show="sortType == 'autoCube' && !sortReverse" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'autoCube' && sortReverse" class="glyphicon glyphicon-triangle-top"></span>
+					<th ng-click="sortType = 'total_vault'; sortDescending = !sortDescending">Total Cubes Exchanged to Human Player
+						<span ng-show="sortType == 'total_vault' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'total_vault' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="row in data | orderBy:sortType:sortReverse | filter:filterTeams">
-					<td ng-if="row.avg_score == 'No match scouting data available, only pit scouting data.'"><a href="#/pit/{{row.team_number}}">{{row.team_number}}</a></td>
-					<td ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'"><a href="#/team/{{row.team_number}}">{{row.team_number}}</a></td>
-					<td ng-if="row.avg_score == 'No match scouting data available, only pit scouting data.'"><a href="#/pit/{{row.team_number}}">{{row.team_name}}</a></td>
-					<td ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'"><a href="#/team/{{row.team_number}}">{{row.team_name}}</a></td>
+				<tr ng-repeat="row in data | orderBy:sortType:sortDescending | filter:filterTeams">
+					<td ng-if="row.avg_score == 'No match scouting data available, only pit scouting data.'">
+						<a href="#/pit/{{row.team_number}}">{{row.team_number}}</a>
+					</td>
+					<td ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'">
+						<a href="#/team/{{row.team_number}}">{{row.team_number}}</a>
+					</td>
+					<td ng-if="row.avg_score == 'No match scouting data available, only pit scouting data.'">
+						<a href="#/pit/{{row.team_number}}">{{row.team_name}}</a>
+					</td>
+					<td ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'">
+						<a href="#/team/{{row.team_number}}">{{row.team_name}}</a>
+					</td>
 					<td>{{row.avg_score}}</td>
 					<td>{{row.avg_tele_speed}}</td>
-					<td>{{row.avg_climb}}<span ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'">%</span></td>
+					<td>
+						{{row.avg_climb}}
+						<span ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'">%</span>
+					</td>
 					<td>{{row.total_cubes}}</td>
 					<td>{{row.total_auto_cubes}}</td>
 					<td>{{row.total_vault}}</td>

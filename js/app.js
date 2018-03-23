@@ -182,14 +182,14 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 
 	$(document).ready(function () {
 		$("#registerForm").validate({
-            rules : {
-                password : {
-                    minlength : 3
-                },
-                confirmPassword : {
-                    minlength : 3,
-                    equalTo : "#password"
-                }
+			rules: {
+				password: {
+					minlength: 3
+				},
+				confirmPassword: {
+					minlength: 3,
+					equalTo: "#password"
+				}
 			}
 		});
 	});
@@ -220,7 +220,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 
 	AccountService.validateSession().then(function (response) {
 		$scope.resetForm();
-	}, function(error) {
+	}, function (error) {
 		AccountService.logout();
 		displayMessage('You are logged out', 'warning');
 	});
@@ -264,33 +264,51 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 		$scope.formData.autoScale++;
 	};
 	$scope.decrementAS = function () {
-		$scope.formData.autoScale--;
+		if ($scope.formData.autoScale > 0) {
+			$scope.formData.autoScale--;
+		}
 	};
 	$scope.incrementAW = function () {
 		$scope.formData.autoSwitch++;
 	};
 	$scope.decrementAW = function () {
-		$scope.formData.autoSwitch--;
+		if ($scope.formData.autoSwitch > 0) {
+			$scope.formData.autoSwitch--;
+		}
 	};
 	$scope.incrementSC = function () {
 		$scope.formData.scaleCubes++;
 	};
 	$scope.decrementSC = function () {
-		$scope.formData.scaleCubes--;
+		if ($scope.formData.scaleCubes > 0) {
+			$scope.formData.scaleCubes--;
+		}
 	};
 	$scope.incrementWC = function () {
 		$scope.formData.switchCubes++;
 	};
 	$scope.decrementWC = function () {
-		$scope.formData.switchCubes--;
+		if ($scope.formData.switchCubes > 0) {
+			$scope.formData.switchCubes--;
+		}
 	};
 	$scope.incrementEC = function () {
 		$scope.formData.enemySwitchCubes++;
 	};
 	$scope.decrementEC = function () {
-		$scope.formData.enemySwitchCubes--;
+		if ($scope.formData.enemySwitchCubes > 0) {
+			$scope.formData.enemySwitchCubes--;
+		}
 	};
-	
+	$scope.incrementVC = function () {
+		$scope.formData.vaultCubes++;
+	};
+	$scope.decrementVC = function () {
+		if ($scope.formData.vaultCubes > 0) {
+			$scope.formData.vaultCubes--;
+		}
+	};
+
 });
 
 app.controller('PitFormController', function ($rootScope, $scope, $http, $window, AccountService) {
@@ -298,7 +316,7 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
 
 	AccountService.validateSession().then(function (response) {
 		$scope.resetForm();
-	}, function(error) {
+	}, function (error) {
 		AccountService.logout();
 		displayMessage('You are logged out', 'warning');
 	});
@@ -444,7 +462,7 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 		}
 	});
 
-	$scope.loadData = function(scoutingTeam) {
+	$scope.loadData = function (scoutingTeam) {
 		$http.get('php/getPitData.php', {
 			params: {
 				teamNumber: $routeParams.teamNumber,
@@ -500,8 +518,8 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 
 app.controller("ListController", function ($rootScope, $scope, $http) {
 	'use strict';
-	$scope.sortType = 'avgScore';
-	$scope.sortReverse = false;
+	$scope.sortType = 'avg_score';
+	$scope.sortDescending = false;
 
 	$http.get('php/getScouterTeams.php').then(function (response) {
 		$scope.teams = response.data;
@@ -511,33 +529,34 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 		}
 	});
 
-	$scope.loadData = function(teamNumber) {
+	$scope.loadData = function (teamNumber) {
 		$http.get('php/list.php', {
-			params: {teamNumber: teamNumber}
+			params: { teamNumber: teamNumber }
 		}).then(function (response) {
 			$scope.data = response.data;
 			for (var i = 0; i < $scope.data.length; i++) {
 				if ($scope.data[i].avg_score == null) {
-					$scope.data[i].vault_cubes = "No match scouting data available, only pit scouting data.";
-					$scope.data[i].avg_climb = "No match scouting data available, only pit scouting data.";
 					$scope.data[i].avg_score = "No match scouting data available, only pit scouting data.";
 					$scope.data[i].avg_tele_speed = "No match scouting data available, only pit scouting data.";
+					$scope.data[i].avg_climb = "No match scouting data available, only pit scouting data.";
 					$scope.data[i].total_cubes = "No match scouting data available, only pit scouting data.";
 					$scope.data[i].total_auto_cubes = "No match scouting data available, only pit scouting data.";
 					$scope.data[i].total_vault = "No match scouting data available, only pit scouting data.";
 				} else {
-					$scope.data[i].vault_cubes = parseInt($scope.data[i].vault_cubes);
-					$scope.data[i].avg_climb = parseFloat($scope.data[i].avg_climb) * 100;
-					$scope.data[i].avg_climb = $scope.data[i].avg_climb.toFixed(2);
-					$scope.data[i].avg_score = parseFloat($scope.data[i].avg_score);
-					$scope.data[i].avg_score = $scope.data[i].avg_score.toFixed(2);
 					$scope.data[i].team_number = parseInt($scope.data[i].team_number);
+					$scope.data[i].avg_score = parseFloat($scope.data[i].avg_score);
+					$scope.data[i].avg_score = parseFloat($scope.data[i].avg_score.toFixed(2));
 					$scope.data[i].avg_tele_speed = parseInt($scope.data[i].avg_tele_speed);
+					$scope.data[i].avg_climb = parseFloat($scope.data[i].avg_climb) * 100;
+					$scope.data[i].avg_climb = parseFloat($scope.data[i].avg_climb.toFixed(2));
 					$scope.data[i].total_cubes = parseInt($scope.data[i].total_cubes);
 					$scope.data[i].total_auto_cubes = parseInt($scope.data[i].total_auto_cubes);
+					$scope.data[i].total_vault = parseInt($scope.data[i].total_vault);
 				}
 				$scope.data[i].team_name = $scope.data[i].team_name != null ? $scope.data[i].team_name : "Name unavailable";
 			}
+
+			console.log($scope.data);
 		});
 	};
 
@@ -551,7 +570,7 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 app.controller("LeaderboardsController", function ($scope, $http) {
 	'use strict';
 	$scope.sortType = 'byteCoins';
-	$scope.sortReverse = true;
+	$scope.sortDesceding = true;
 	$http.get('php/leaderboards.php').then(function (response) {
 		$scope.data = response.data;
 		for (var i = 0; i < $scope.data.length; i++) {
@@ -566,6 +585,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	$scope.teamNumber = $routeParams.teamNumber;
 	$scope.error = "";
 	$scope.isClimbComment = false;
+	$scope.climbComments = [];
 
 	$http.get('php/getScouterTeams.php').then(function (response) {
 		$scope.teams = response.data;
@@ -575,7 +595,7 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		}
 	});
 
-	$scope.loadData = function(scoutingTeam) {
+	$scope.loadData = function (scoutingTeam) {
 		$http.get("php/getTeam.php", {
 			params: {
 				teamNumber: $routeParams.teamNumber,
@@ -584,10 +604,15 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		}).then(function (response) {
 			$scope.data = response.data;
 			console.log($scope.data);
-			
-			for (var i = 0; i < $scope.data.formData.length; i++){
+
+			for (var i = 0; i < $scope.data.formData.length; i++) {
 				if ($scope.data.formData[i].other_climb != "") {
 					$scope.isClimbComment = true;
+					$scope.climbComments.push({
+						"name": $scope.data.formData[i].name,
+						"match_number": $scope.data.formData[i].match_number,
+						"other_climb": $scope.data.formData[i].other_climb
+					});
 				}
 			}
 		}, function (response) {
@@ -598,12 +623,12 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 
 
 	$scope.chooseBar = function (value) {
-		if(value <= 1) {
+		if (value <= 1) {
 			value *= 100;
 		}
-		if(value >= 80) {
+		if (value >= 80) {
 			return "progress-bar-success"
-		} else if(value < 80 && value > 40) {
+		} else if (value < 80 && value > 40) {
 			return "progress-bar-warning"
 		} else {
 			return "progress-bar-danger"

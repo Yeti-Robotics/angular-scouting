@@ -17,11 +17,11 @@
 				<h1 class="text-center">{{error}}</h1>
 		</div>
 
-	<!--ROBOT RANKKING  IN AUTO-->
+	<!--Auto data-->
 	<div class="panel panel-default">
 		<div class="panel-heading ">
 			<h3 class="panel-title" data-toggle="collapse" data-target="#collapseAuto" ng-click="autoCollapsed = !autoCollapsed">
-				Robot Ranking in Auto:<span style="float: right" ng-if="!autoCollapsed" class="glyphicon glyphicon-triangle-bottom"></span><span style="float: right" ng-if="autoCollapsed" class="glyphicon glyphicon-triangle-top"></span>
+				Auto Data:<span style="float: right" ng-if="!autoCollapsed" class="glyphicon glyphicon-triangle-bottom"></span><span style="float: right" ng-if="autoCollapsed" class="glyphicon glyphicon-triangle-top"></span>
 			</h3>	
 		</div>
 		<div id="collapseAuto" class="panel-collapse collapse panel-body">
@@ -42,7 +42,7 @@
 							<td>
 								<div class="progress">
 									<div ng-class="chooseBar(data.stats.avg_auto_check)" class="progress-bar progress-bar-striped active" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_auto_check}}%">
-										{{data.stats.avg_auto_check | number:0}} %
+										{{data.stats.avg_auto_check | number:0}}%
 									</div>
 								</div>
 							</td>
@@ -61,11 +61,11 @@
 	</div>
 
 
-	<!--ROBOT RANKKING  IN TELEOP-->
+	<!--Teleop data-->
 	<div class="panel panel-default">
 		<div class="panel-heading ">
 			<h3 class="panel-title" data-toggle="collapse" data-target="#collapseTele" ng-click="teleCollapsed = !teleCollapsed">
-				Robot Ranking in Teleop:<span style="float: right" ng-if="!teleCollapsed" class="glyphicon glyphicon-triangle-bottom"></span><span style="float: right" ng-if="teleCollapsed" class="glyphicon glyphicon-triangle-top"></span>
+				Teleop Data:<span style="float: right" ng-if="!teleCollapsed" class="glyphicon glyphicon-triangle-bottom"></span><span style="float: right" ng-if="teleCollapsed" class="glyphicon glyphicon-triangle-top"></span>
 			</h3>	
 		</div>
 		<div id="collapseTele" class="panel-collapse collapse panel-body">
@@ -96,7 +96,7 @@
 						<td>
 							<div class="progress">
 								<div ng-class="chooseBar(data.stats.climb_accuracy)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.climb_accuracy}}%">
-										{{data.stats.climb_accuracy | number:0}} %
+										{{data.stats.climb_accuracy | number:0}}%
 								</div>
 							</div>
 						</td>
@@ -106,7 +106,7 @@
 						<td>
 							<div class="progress">
 								<div ng-class="chooseBar(data.stats.avg_help_climb)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_help_climb}}%">
-										{{data.stats.avg_help_climb | number:0}} %
+										{{data.stats.avg_help_climb | number:0}}%
 								</div>
 							</div>
 						</td>
@@ -116,7 +116,7 @@
 						<td>
 							<div class="progress">
 								<div ng-class="chooseBar(data.stats.avg_ramp_climb)" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_ramp_climb}}%">
-										{{data.stats.avg_ramp_climb | number:0}} %
+										{{data.stats.avg_ramp_climb | number:0}}%
 								</div>
 							</div>
 						</td>
@@ -126,7 +126,7 @@
 						<td>
 							<div class="progress">
 								<div ng-class="chooseBar(data.stats.avg_tele_defense)" class="progress-bar progress-bar-striped active" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width:{{data.stats.avg_tele_defense}}%">
-										{{data.stats.avg_tele_defense | number:0}} %
+										{{data.stats.avg_tele_defense | number:0}}%
 								</div>
 							</div>
 						</td>
@@ -221,9 +221,9 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr ng-repeat="data in data.formData">
-									<td>{{data.match_number}}</td>
-									<td>{{data.other_climb}} <br/> - {{data.name}}</td>
+								<tr ng-repeat="row in climbComments">
+									<td>{{row.match_number}}</td>
+									<td>{{row.other_climb}} <br/> - {{row.name}}</td>
 								</tr>
 							</tbody>
 						</table>
