@@ -519,7 +519,7 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 app.controller("ListController", function ($rootScope, $scope, $http) {
 	'use strict';
 	$scope.sortType = 'avg_score';
-	$scope.sortDescending = false;
+	$scope.sortDescending = true;
 
 	$http.get('php/getScouterTeams.php').then(function (response) {
 		$scope.teams = response.data;
