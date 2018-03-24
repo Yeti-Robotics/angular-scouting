@@ -1,3 +1,56 @@
+<div id="match-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-label="close">
+                    <span>&times;</span>
+                </button>
+                <h4 class="modal-title">Match Selector</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-show="matches.length > 0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center danger" colspan="3">Red Alliance</th>
+                                    <th class="text-center info" colspan="3">Blue Alliance</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th class="text-center danger">Red 1</th>
+                                    <th class="text-center danger">Red 2</th>
+                                    <th class="text-center danger">Red 3</th>
+                                    <th class="text-center info">Blue 1</th>
+                                    <th class="text-center info">Blue 2</th>
+                                    <th class="text-center info">Blue 3</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="match in matches">
+                                    <td class="text-center">{{match.number}}</td>
+
+                                    <td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[0])">{{match.teams.red[0]}}</td>
+                                    <td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[1])">{{match.teams.red[1]}}</td>
+                                    <td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[2])">{{match.teams.red[2]}}</td>
+
+                                    <td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[0])">{{match.teams.blue[0]}}</td>
+                                    <td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[1])">{{match.teams.blue[1]}}</td>
+                                    <td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[2])">{{match.teams.blue[2]}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="matches.length == 0">
+                    <h4>No matches to display at this time</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container-fluid">
     <h4>Scouting as {{user.name}}</h4>
     <form id="scouting_form" enctype="multipart/form-data" ng-submit="submit()">
@@ -8,15 +61,37 @@
                 <h3 class="panel-title ">Match info</h3>
             </div>
             <div class="panel-body">
-                <div class="form-group">
-                    <label for="teamnumber">Team number:</label>
-                    <input ng-model="formData.teamNumber" class="form-control" type='number' name='teamnumber' id='teamnumber' placeholder='Enter the team number'
-                        required>
+                <div ng-if="!matchesReceived">
+                    <div class="form-group">
+                        <label for="teamnumber">Team number:</label>
+                        <input ng-model="formData.teamNumber" class="form-control" type='number' name='teamnumber' id='teamnumber' placeholder='Enter the team number'
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="matchNumber">Match number:</label>
+                        <input ng-model="formData.matchNumber" type="number" class="form-control" id="matchNumber" placeholder="Enter the match number"
+                            required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="matchNumber">Match number:</label>
-                    <input ng-model="formData.matchNumber" type="number" class="form-control" id="matchNumber" placeholder="Enter the match number"
-                        required>
+                <div ng-if="matchesReceived">
+                    <button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal">Choose a match</button>
+                    <div ng-if="selectedTeam">
+                        <br>
+                        <table class="table table-bordered" style="margin-bottom: 0%">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Match Number</th>
+                                    <th class="text-center">Team Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">{{formData.match_number}}</td>
+                                    <td class="text-center">{{formData.team_number}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -220,11 +295,13 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label for="score">Alliance Score:</label>
-                    <input ng-model="formData.score" type="number" name="score" class="form-control" placeholder="Enter the alliance's score" required>
+                    <input ng-model="formData.score" type="number" name="score" class="form-control" placeholder="Enter the alliance's score"
+                        required>
                 </div>
                 <div class="form-group">
                     <label for="comment">Comments:</label>
-                    <textarea ng-model="formData.comment" name="comment" class="form-control" rows="3" placeholder="Comment on the robot's strategy, failures, human players, power ups used, etc." required></textarea>
+                    <textarea ng-model="formData.comment" name="comment" class="form-control" rows="3" placeholder="Comment on the robot's strategy, failures, human players, power ups used, etc."
+                        required></textarea>
                 </div>
             </div>
         </div>

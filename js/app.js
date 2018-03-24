@@ -218,6 +218,61 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 app.controller('FormController', function ($rootScope, $scope, $http, $window, AccountService) {
 	'use strict';
 
+	$scope.matches = [];
+	$scope.matchesReceived = false;
+	$scope.selectedTeam = false;
+
+	$rootScope.getCurrentSettings(function () {
+		if ($rootScope.settings.validateTeams) {
+			$http.get("php/getFutureMatches.php").then(function (response) {
+				for (var i = 0; i < response.data.length; i++) {
+					$scope.matches.push({
+						teams: {
+							red: [
+								$scope.parseTeamString(response.data[i].alliances.red.team_keys[0]),
+								$scope.parseTeamString(response.data[i].alliances.red.team_keys[2]),
+								$scope.parseTeamString(response.data[i].alliances.red.team_keys[1])
+							],
+							blue: [
+								$scope.parseTeamString(response.data[i].alliances.blue.team_keys[0]),
+								$scope.parseTeamString(response.data[i].alliances.blue.team_keys[1]),
+								$scope.parseTeamString(response.data[i].alliances.blue.team_keys[2])
+							]
+						},
+						number: parseInt(response.data[i].match_number)
+					});
+				}
+				$scope.matches.sort(function (a, b) {
+					a = a.number;
+					b = b.number;
+
+					if (a < b) {
+						return -1;
+					} else if (a > b) {
+						return 1;
+					}
+
+					return 0;
+				});
+				$scope.matchesReceived = true;
+			}, function (response) {
+				displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
+				$scope.matchesReceived = false;
+			});
+		}
+	});
+
+	$scope.parseTeamString = function (teamString) {
+		return parseInt(teamString.slice(3));
+	}
+
+	$scope.selectTeam = function (matchNumber, teamNumber) {
+		$scope.formData.match_number = matchNumber;
+		$scope.formData.team_number = teamNumber;
+		$scope.selectedTeam = true;
+		$("#match-modal").modal('hide');
+	}
+
 	AccountService.validateSession().then(function (response) {
 		$scope.resetForm();
 	}, function (error) {
@@ -240,6 +295,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 			vaultCubes: 0,
 			scouterId: $rootScope.user.id
 		};
+		$("#scouting_form").trigger("reset");
 	};
 
 	$(document).ready(function () {
@@ -248,10 +304,14 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 
 	$scope.submit = function () {
 		if ($('#scouting_form').valid()) {
+			$("body").scrollTop(0);
+			displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
 			$http.post('php/formSubmit.php', $scope.formData)
 				.then(function (data) {
 					displayMessage('Form submitted successfully', 'success');
 					console.log($scope.formData);
+					$scope.matches.shift();
+					$rootScope.getCurrentSettings();
 					$scope.resetForm();
 				}, function (error) {
 					displayMessage('Failed to submit form', 'danger');

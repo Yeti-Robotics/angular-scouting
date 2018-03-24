@@ -6,12 +6,9 @@ $dbpassword = "root";
 $dbname = "scouting";
 
 // TBA API variables
-$eventKey = "2017nccmp";
-$appIdteamNumber = "frc3506";
-$appDescription = "scouting-system";
-$appVersion = "v3.1";
-$TBAAppId = "$appIdteamNumber:$appDescription:$appVersion";
-$TBAapiServer = "https://www.thebluealliance.com/api/v2";
+$eventKey = "2018ncash";
+$TBAAppId = "";
+$TBAapiServer = "https://www.thebluealliance.com/api/v3";
 
 // Admin Account details
 $adminUsername = "admin";

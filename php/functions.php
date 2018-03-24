@@ -1,7 +1,7 @@
 <?php
 
 function getLastMatch($db) {
-	$query = "SELECT DISTINCT match_number FROM scout_data ORDER BY match_number DESC LIMIT 1";
+	$query = "SELECT DISTINCT match_number FROM form_data ORDER BY match_number DESC LIMIT 1";
 	$result = $db->query($query);
 	if ($result) {
 		$lastMatch = 0;
@@ -19,16 +19,15 @@ function getFutureMatches($db) {
 	//$matchResults = getMatchSchedule(); //For server
 	include("../config/config.php");
     $fileName = "../json/{$eventKey}MatchResults.json";
-	$matchResults = json_decode(file_get_contents($fileName), true)["Schedule"]; //For localhost
+	$matchResults = json_decode(file_get_contents($fileName), true); //For localhost
 	$lastMatch = getLastMatch($db);
-	$uncompletedMatchs = array();
+	$uncompletedMatches = array();
 	for ($i = 0; $i < count($matchResults); $i++) {
-		if ($i >= $lastMatch) {
-			$uncompletedMatchs[] = $matchResults[$i];
+		if ($matchResults[$i]["match_number"] >= $lastMatch) {
+			$uncompletedMatches[] = $matchResults[$i];
 		}
 	}
-//	return $uncompletedMatchs;
-	return $matchResults;
+	return $uncompletedMatches;
 }
 
 function getSettings() {
@@ -125,7 +124,7 @@ function updateMatchData() {
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, array (
         "Accept: application/json",
-        "X-TBA-App-Id: $TBAAppId",
+		"X-TBA-App-Id: $TBAAppId",
         "If-Modified-Since: " . date(DATE_RSS, file_exists($fileName) ? filemtime($fileName) : time())
     ));
 

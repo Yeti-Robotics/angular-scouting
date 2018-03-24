@@ -1,5 +1,5 @@
 {
-    "validateTeams": false,
+    "validateTeams": true,
     "enableCasino": true,
     "blue1Closest": true
 }
