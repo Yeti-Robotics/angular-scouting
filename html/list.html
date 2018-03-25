@@ -20,35 +20,39 @@
 						<span ng-show="sortType == 'team_number' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
 						<span ng-show="sortType == 'team_number' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'team_name'; sortDescending = !sortDescending">Team team_name
+					<th ng-click="sortType = 'team_name'; sortDescending = !sortDescending">Team Name
 						<span ng-show="sortType == 'team_name' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
 						<span ng-show="sortType == 'team_name' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'avg_score'; sortDescending = !sortDescending">Average Score
+					<th ng-click="sortType = 'avg_score'; sortDescending = !sortDescending">Avg Score
 						<span ng-show="sortType == 'avg_score' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
 						<span ng-show="sortType == 'avg_score' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'avg_tele_speed'; sortDescending = !sortDescending">Avg Speed (1-5)
+					<th ng-click="sortType = 'avg_tele_speed'; sortDescending = !sortDescending">Avg Speed (1-3)
 						<span ng-show="sortType == 'avg_tele_speed' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
 						<span ng-show="sortType == 'avg_tele_speed' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'avg_climb'; sortDescending = !sortDescending">Climbing Success?
+					<th ng-click="sortType = 'avg_climb'; sortDescending = !sortDescending">Climbing Success
 						<span ng-show="sortType == 'avg_climb' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
 						<span ng-show="sortType == 'avg_climb' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'total_cubes'; sortDescending = !sortDescending">Total Cubes Placed in Teleop
-						<span ng-show="sortType == 'total_cubes' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'total_cubes' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
+					<th ng-click="sortType = 'avg_tele_switch'; sortDescending = !sortDescending">Avg Teleop Switch Cubes
+						<span ng-show="sortType == 'avg_tele_switch' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'avg_tele_switch' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'total_auto_cubes'; sortDescending = !sortDescending">Total Cubes Placed in Auto
+					<th ng-click="sortType = 'avg_tele_scale'; sortDescending = !sortDescending">Avg Teleop Scale Cubes
+						<span ng-show="sortType == 'avg_tele_scale' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'avg_tele_scale' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
+					</th>
+					<th ng-click="sortType = 'total_auto_cubes'; sortDescending = !sortDescending">Total Auto Cubes
 						<span ng-show="sortType == 'total_auto_cubes' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
 						<span ng-show="sortType == 'total_auto_cubes' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-					<th ng-click="sortType = 'total_vault'; sortDescending = !sortDescending">Total Cubes Exchanged to Human Player
-						<span ng-show="sortType == 'total_vault' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'total_vault' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
+					<th ng-click="sortType = 'avg_vault'; sortDescending = !sortDescending">Avg Cubes Exchanged to Human Player
+						<span ng-show="sortType == 'avg_vault' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
+						<span ng-show="sortType == 'avg_vault' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
 					</th>
-				</tr>
+				</tr>	
 			</thead>
 			<tbody>
 				<tr ng-repeat="row in data | orderBy:sortType:sortDescending | filter:filterTeams">
@@ -67,12 +71,12 @@
 					<td>{{row.avg_score}}</td>
 					<td>{{row.avg_tele_speed}}</td>
 					<td>
-						{{row.avg_climb}}
-						<span ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'">%</span>
+						{{row.avg_climb}}<span ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'">%</span>
 					</td>
-					<td>{{row.total_cubes}}</td>
+					<td>{{row.avg_tele_switch}}</td>
+					<td>{{row.avg_tele_scale}}</td>
 					<td>{{row.total_auto_cubes}}</td>
-					<td>{{row.total_vault}}</td>
+					<td>{{row.avg_vault}}</td>
 				</tr>
 			</tbody>
 		</table>

@@ -5,10 +5,11 @@ header('Content-Type: application/json');
 
 $teamNumber = $_GET['teamNumber'];
 
-$query = "SELECT d.team_number, t.team_name, AVG(f.score) as avg_score, f.bar_climb, AVG(f.tele_check) as avg_climb,
-    AVG(f.tele_speed) as avg_tele_speed, SUM(f.switch_cubes + f.enemy_switch_cubes + f.scale_cubes) AS total_cubes,
-    SUM(f.auto_scale +f. auto_switch) AS total_auto_cubes,
-    SUM(f.vault_cubes) AS total_vault
+$query = "SELECT d.team_number, t.team_name, AVG(f.score) as avg_score,
+    AVG(f.tele_speed) as avg_tele_speed, AVG(f.bar_climb) as avg_climb, AVG(f.switch_cubes + f.enemy_switch_cubes) AS avg_tele_switch,
+    AVG(f.scale_cubes) AS avg_tele_scale,
+    SUM(f.auto_scale + f. auto_switch) AS total_auto_cubes,
+    AVG(f.vault_cubes) AS avg_vault
     FROM (SELECT DISTINCT p.team_number FROM pit_comments p
 UNION SELECT DISTINCT f.team_number FROM form_data f) AS d
     LEFT JOIN form_data f on f.team_number = d.team_number

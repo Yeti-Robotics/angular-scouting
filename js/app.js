@@ -599,19 +599,18 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 					$scope.data[i].avg_score = "No match scouting data available, only pit scouting data.";
 					$scope.data[i].avg_tele_speed = "No match scouting data available, only pit scouting data.";
 					$scope.data[i].avg_climb = "No match scouting data available, only pit scouting data.";
-					$scope.data[i].total_cubes = "No match scouting data available, only pit scouting data.";
-					$scope.data[i].total_auto_cubes = "No match scouting data available, only pit scouting data.";
-					$scope.data[i].total_vault = "No match scouting data available, only pit scouting data.";
+					$scope.data[i].avg_tele_switch = "No match scouting data available, only pit scouting data.";
+					$scope.data[i].avg_tele_scale = "No match scouting data available, only pit scouting data.";
+					$scope.data[i].avg_vault = "No match scouting data available, only pit scouting data.";
 				} else {
 					$scope.data[i].team_number = parseInt($scope.data[i].team_number);
-					$scope.data[i].avg_score = parseFloat($scope.data[i].avg_score);
-					$scope.data[i].avg_score = parseFloat($scope.data[i].avg_score.toFixed(2));
-					$scope.data[i].avg_tele_speed = parseInt($scope.data[i].avg_tele_speed);
-					$scope.data[i].avg_climb = parseFloat($scope.data[i].avg_climb) * 100;
-					$scope.data[i].avg_climb = parseFloat($scope.data[i].avg_climb.toFixed(2));
-					$scope.data[i].total_cubes = parseInt($scope.data[i].total_cubes);
+					$scope.data[i].avg_score = parseFloat(parseFloat($scope.data[i].avg_score).toFixed(2));
+					$scope.data[i].avg_tele_speed = parseFloat(parseFloat($scope.data[i].avg_tele_speed).toFixed(2));
+					$scope.data[i].avg_climb = parseFloat(parseFloat($scope.data[i].avg_climb * 100).toFixed(2));
+					$scope.data[i].avg_tele_switch = parseFloat(parseFloat($scope.data[i].avg_tele_switch).toFixed(2));
+					$scope.data[i].avg_tele_scale = parseFloat(parseFloat($scope.data[i].avg_tele_scale).toFixed(2));
 					$scope.data[i].total_auto_cubes = parseInt($scope.data[i].total_auto_cubes);
-					$scope.data[i].total_vault = parseInt($scope.data[i].total_vault);
+					$scope.data[i].avg_vault = parseFloat(parseFloat($scope.data[i].avg_vault).toFixed(2));
 				}
 				$scope.data[i].team_name = $scope.data[i].team_name != null ? $scope.data[i].team_name : "Name unavailable";
 			}
