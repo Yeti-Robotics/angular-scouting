@@ -5,54 +5,55 @@
 		}
 	</style>
 	<div class="form-group">
-		<label for="scoutTeam">Scouted by:</label>
-		<select id="scoutTeam" class="form-control" ng-model="currentTeam" ng-change="loadData(currentTeam.team_number)" ng-options="team_number as (team_number.team_number + ' - ' + team_number.team_name) for team_number in teams track by team_number.team_number">
+		<label for="scoutTeam">Scouted by</label>
+		<select id="scoutTeam" class="form-control custom-select" ng-model="currentTeam" ng-change="loadData(currentTeam.team_number)"
+		 ng-options="team_number as (team_number.team_number + ' - ' + team_number.team_name) for team_number in teams track by team_number.team_number">
 		</select>
 	</div>
 	<div class="form-group">
 		<input type="text" class="form-control" placeholder="Filter by team number or name" ng-model="search">
 	</div>
 	<div class="table-responsive">
-		<table class="table table-hover">
+		<table class="table table-hover table-striped table-bordered">
 			<thead>
 				<tr>
 					<th ng-click="sortType = 'team_number'; sortDescending = !sortDescending">Team
-						<span ng-show="sortType == 'team_number' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'team_number' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
+						<i ng-if="sortType == 'team_number' && sortDescending" class="material-icons">arrow_drop_down</i>
+						<i ng-if="sortType == 'team_number' && !sortDescending" class="material-icons">arrow_drop_up</i>
 					</th>
 					<th ng-click="sortType = 'team_name'; sortDescending = !sortDescending">Team Name
-						<span ng-show="sortType == 'team_name' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'team_name' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
+						<i ng-if="sortType == 'team_name' && sortDescending" class="material-icons">arrow_drop_down</i>
+						<i ng-if="sortType == 'team_name' && !sortDescending" class="material-icons">arrow_drop_up</i>
 					</th>
 					<th ng-click="sortType = 'avg_score'; sortDescending = !sortDescending">Avg Score
-						<span ng-show="sortType == 'avg_score' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'avg_score' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
+						<i ng-if="sortType == 'avg_score' && sortDescending" class="material-icons">arrow_drop_down</i>
+						<i ng-if="sortType == 'avg_score' && !sortDescending" class="material-icons">arrow_drop_up</i>
 					</th>
 					<th ng-click="sortType = 'avg_tele_speed'; sortDescending = !sortDescending">Avg Speed (1-3)
-						<span ng-show="sortType == 'avg_tele_speed' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'avg_tele_speed' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
+						<i ng-if="sortType == 'avg_tele_speed' && sortDescending" class="material-icons">arrow_drop_down</i>
+						<i ng-if="sortType == 'avg_tele_speed' && !sortDescending" class="material-icons">arrow_drop_up</i>
 					</th>
 					<th ng-click="sortType = 'avg_climb'; sortDescending = !sortDescending">Climbing Success
-						<span ng-show="sortType == 'avg_climb' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'avg_climb' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
+						<i ng-if="sortType == 'avg_climb' && sortDescending" class="material-icons">arrow_drop_down</i>
+						<i ng-if="sortType == 'avg_climb' && !sortDescending" class="material-icons">arrow_drop_up</i>
 					</th>
 					<th ng-click="sortType = 'avg_tele_switch'; sortDescending = !sortDescending">Avg Teleop Switch Cubes
-						<span ng-show="sortType == 'avg_tele_switch' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'avg_tele_switch' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
+						<i ng-if="sortType == 'avg_tele_switch' && sortDescending" class="material-icons">arrow_drop_down</i>
+						<i ng-if="sortType == 'avg_tele_switch' && !sortDescending" class="material-icons">arrow_drop_up</i>
 					</th>
 					<th ng-click="sortType = 'avg_tele_scale'; sortDescending = !sortDescending">Avg Teleop Scale Cubes
-						<span ng-show="sortType == 'avg_tele_scale' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'avg_tele_scale' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
+						<i ng-if="sortType == 'avg_tele_scale' && sortDescending" class="material-icons">arrow_drop_down</i>
+						<i ng-if="sortType == 'avg_tele_scale' && !sortDescending" class="material-icons">arrow_drop_up</i>
 					</th>
 					<th ng-click="sortType = 'total_auto_cubes'; sortDescending = !sortDescending">Total Auto Cubes
-						<span ng-show="sortType == 'total_auto_cubes' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'total_auto_cubes' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
+						<i ng-if="sortType == 'total_auto_cubes' && sortDescending" class="material-icons">arrow_drop_down</i>
+						<i ng-if="sortType == 'total_auto_cubes' && !sortDescending" class="material-icons">arrow_drop_up</i>
 					</th>
 					<th ng-click="sortType = 'avg_vault'; sortDescending = !sortDescending">Avg Cubes Exchanged to Human Player
-						<span ng-show="sortType == 'avg_vault' && sortDescending" class="glyphicon glyphicon-triangle-bottom"></span>
-						<span ng-show="sortType == 'avg_vault' && !sortDescending" class="glyphicon glyphicon-triangle-top"></span>
+						<i ng-if="sortType == 'avg_vault' && sortDescending" class="material-icons">arrow_drop_down</i>
+						<i ng-if="sortType == 'avg_vault' && !sortDescending" class="material-icons">arrow_drop_up</i>
 					</th>
-				</tr>	
+				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="row in data | orderBy:sortType:sortDescending | filter:filterTeams">
@@ -71,7 +72,8 @@
 					<td>{{row.avg_score}}</td>
 					<td>{{row.avg_tele_speed}}</td>
 					<td>
-						{{row.avg_climb}}<span ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'">%</span>
+						{{row.avg_climb}}
+						<span ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'">%</span>
 					</td>
 					<td>{{row.avg_tele_switch}}</td>
 					<td>{{row.avg_tele_scale}}</td>

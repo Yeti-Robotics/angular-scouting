@@ -283,7 +283,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 	$scope.resetForm = function () {
 		$scope.formData = {
 			autoCheck: false,
-			autoSpeed: '0',
+			autoSpeed: '1',
 			autoScale: 0,
 			autoSwitch: 0,
 			teleCheck: false,

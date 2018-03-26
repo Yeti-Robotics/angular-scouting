@@ -1,0 +1,3815 @@
+[
+    {
+        "actual_time": 1521903384,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 120,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5854",
+                    "frc5511",
+                    "frc6932"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 397,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5190",
+                    "frc3196",
+                    "frc6639"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm1",
+        "match_number": 1,
+        "post_result_time": 1521903570,
+        "predicted_time": 1521903600,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 15,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 40,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Levitate",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 50,
+                "rp": 0,
+                "tba_gameData": "RLR",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 0,
+                "teleopPoints": 55,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 0,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 0,
+                "totalPoints": 120,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 15
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 18,
+                "autoPoints": 33,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 9,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 65,
+                "endgameRobot1": "Climbing",
+                "endgameRobot2": "Levitate",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 0,
+                "rp": 2,
+                "tba_gameData": "RLR",
+                "techFoulCount": 2,
+                "teleopOwnershipPoints": 269,
+                "teleopPoints": 364,
+                "teleopScaleBoostSec": 10,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 137,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 122,
+                "totalPoints": 397,
+                "vaultBoostPlayed": 2,
+                "vaultBoostTotal": 2,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 1,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 30
+            }
+        },
+        "set_number": 1,
+        "time": 1521903600,
+        "videos": [],
+        "winning_alliance": "red"
+    },
+    {
+        "actual_time": 1521908314,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 147,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6899",
+                    "frc3661",
+                    "frc6908"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 146,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1533",
+                    "frc6888",
+                    "frc6932"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm10",
+        "match_number": 10,
+        "post_result_time": 1521908501,
+        "predicted_time": 1521908355,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 6,
+                "autoPoints": 21,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 3,
+                "endgamePoints": 5,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "None",
+                "endgameRobot3": "None",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 1,
+                "foulPoints": 25,
+                "rp": 3,
+                "tba_gameData": "RLR",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 91,
+                "teleopPoints": 101,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 0,
+                "teleopSwitchBoostSec": 4,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 87,
+                "totalPoints": 147,
+                "vaultBoostPlayed": 1,
+                "vaultBoostTotal": 1,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 0,
+                "vaultPoints": 5
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 15,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 5,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "None",
+                "endgameRobot3": "None",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 5,
+                "rp": 0,
+                "tba_gameData": "RLR",
+                "techFoulCount": 1,
+                "teleopOwnershipPoints": 121,
+                "teleopPoints": 126,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 121,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 0,
+                "totalPoints": 146,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 0,
+                "vaultPoints": 0
+            }
+        },
+        "set_number": 1,
+        "time": 1521907920,
+        "videos": [],
+        "winning_alliance": "blue"
+    },
+    {
+        "actual_time": 1521908744,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 239,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4828",
+                    "frc4935",
+                    "frc5544"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 346,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5679",
+                    "frc2059",
+                    "frc3196"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm11",
+        "match_number": 11,
+        "post_result_time": 1521908934,
+        "predicted_time": 1521908784,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 10,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "None",
+                "autoRunPoints": 10,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 30,
+                "endgameRobot1": "None",
+                "endgameRobot2": "Levitate",
+                "endgameRobot3": "None",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 25,
+                "rp": 0,
+                "tba_gameData": "RLR",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 159,
+                "teleopPoints": 204,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 27,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 132,
+                "totalPoints": 239,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 15
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 20,
+                "autoPoints": 35,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 10,
+                "endgamePoints": 40,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Levitate",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 0,
+                "rp": 3,
+                "tba_gameData": "RLR",
+                "techFoulCount": 1,
+                "teleopOwnershipPoints": 236,
+                "teleopPoints": 311,
+                "teleopScaleBoostSec": 10,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 90,
+                "teleopSwitchBoostSec": 5,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 131,
+                "totalPoints": 346,
+                "vaultBoostPlayed": 3,
+                "vaultBoostTotal": 3,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 1,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 35
+            }
+        },
+        "set_number": 1,
+        "time": 1521908400,
+        "videos": [],
+        "winning_alliance": "red"
+    },
+    {
+        "actual_time": 1521909197,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 455,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6899",
+                    "frc5190",
+                    "frc4561"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 164,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3229",
+                    "frc7270",
+                    "frc3680"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm12",
+        "match_number": 12,
+        "post_result_time": 1521909397,
+        "predicted_time": 1521909302,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 20,
+                "autoPoints": 35,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 10,
+                "endgamePoints": 65,
+                "endgameRobot1": "Levitate",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "Climbing",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 2,
+                "foulPoints": 45,
+                "rp": 3,
+                "tba_gameData": "LRL",
+                "techFoulCount": 2,
+                "teleopOwnershipPoints": 275,
+                "teleopPoints": 375,
+                "teleopScaleBoostSec": 10,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 118,
+                "teleopSwitchBoostSec": 10,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 137,
+                "totalPoints": 455,
+                "vaultBoostPlayed": 3,
+                "vaultBoostTotal": 3,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 1,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 35
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 15,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 35,
+                "endgameRobot1": "Climbing",
+                "endgameRobot2": "None",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 4,
+                "foulPoints": 60,
+                "rp": 0,
+                "tba_gameData": "LRL",
+                "techFoulCount": 1,
+                "teleopOwnershipPoints": 44,
+                "teleopPoints": 89,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 10,
+                "teleopScaleOwnershipSec": 11,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 33,
+                "totalPoints": 164,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 2,
+                "vaultForceTotal": 2,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 0,
+                "vaultPoints": 10
+            }
+        },
+        "set_number": 1,
+        "time": 1521908880,
+        "videos": [],
+        "winning_alliance": "blue"
+    },
+    {
+        "actual_time": 1521909624,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 325,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6908",
+                    "frc5727",
+                    "frc6502"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 161,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6932",
+                    "frc6214",
+                    "frc4828"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm13",
+        "match_number": 13,
+        "post_result_time": 1521909800,
+        "predicted_time": 1521909662,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 15,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 65,
+                "endgameRobot1": "Levitate",
+                "endgameRobot2": "Climbing",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 5,
+                "rp": 2,
+                "tba_gameData": "LRL",
+                "techFoulCount": 1,
+                "teleopOwnershipPoints": 215,
+                "teleopPoints": 305,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 72,
+                "teleopSwitchBoostSec": 10,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 133,
+                "totalPoints": 325,
+                "vaultBoostPlayed": 1,
+                "vaultBoostTotal": 2,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 25
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 10,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "None",
+                "autoRunPoints": 10,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 5,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "None",
+                "endgameRobot3": "None",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 1,
+                "foulPoints": 25,
+                "rp": 0,
+                "tba_gameData": "LRL",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 101,
+                "teleopPoints": 126,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 7,
+                "teleopScaleOwnershipSec": 8,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 93,
+                "totalPoints": 161,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 2,
+                "vaultForceTotal": 3,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 1,
+                "vaultPoints": 20
+            }
+        },
+        "set_number": 1,
+        "time": 1521909360,
+        "videos": [],
+        "winning_alliance": "blue"
+    },
+    {
+        "actual_time": 1521910018,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 212,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6639",
+                    "frc1261",
+                    "frc5854"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 400,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6003",
+                    "frc2059",
+                    "frc6332"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm14",
+        "match_number": 14,
+        "post_result_time": 1521910195,
+        "predicted_time": 1521910081,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 2,
+                "autoPoints": 17,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 1,
+                "endgamePoints": 40,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Levitate",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 0,
+                "rp": 1,
+                "tba_gameData": "LRL",
+                "techFoulCount": 2,
+                "teleopOwnershipPoints": 125,
+                "teleopPoints": 195,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 10,
+                "teleopScaleOwnershipSec": 11,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 10,
+                "teleopSwitchOwnershipSec": 114,
+                "totalPoints": 212,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 3,
+                "vaultForceTotal": 3,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 30
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 10,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "None",
+                "autoRunPoints": 10,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 40,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "Levitate",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 50,
+                "rp": 2,
+                "tba_gameData": "LRL",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 255,
+                "teleopPoints": 340,
+                "teleopScaleBoostSec": 10,
+                "teleopScaleForceSec": 10,
+                "teleopScaleOwnershipSec": 104,
+                "teleopSwitchBoostSec": 10,
+                "teleopSwitchForceSec": 10,
+                "teleopSwitchOwnershipSec": 131,
+                "totalPoints": 400,
+                "vaultBoostPlayed": 3,
+                "vaultBoostTotal": 3,
+                "vaultForcePlayed": 3,
+                "vaultForceTotal": 3,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 45
+            }
+        },
+        "set_number": 1,
+        "time": 1521909840,
+        "videos": [],
+        "winning_alliance": "red"
+    },
+    {
+        "actual_time": 1521914378,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 335,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4767",
+                    "frc3196",
+                    "frc6888"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [
+                    "frc3845"
+                ],
+                "score": 143,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4935",
+                    "frc3845",
+                    "frc1225"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm15",
+        "match_number": 15,
+        "post_result_time": 1521914561,
+        "predicted_time": 1521914283,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 6,
+                "autoPoints": 21,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 3,
+                "endgamePoints": 10,
+                "endgameRobot1": "None",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 50,
+                "rp": 3,
+                "tba_gameData": "LRL",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 249,
+                "teleopPoints": 264,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 112,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 137,
+                "totalPoints": 335,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 1,
+                "vaultPoints": 5
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 5,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "None",
+                "autoRobot2": "None",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 5,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 5,
+                "endgameRobot1": "None",
+                "endgameRobot2": "None",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 0,
+                "rp": 0,
+                "tba_gameData": "LRL",
+                "techFoulCount": 2,
+                "teleopOwnershipPoints": 128,
+                "teleopPoints": 138,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 0,
+                "teleopSwitchBoostSec": 10,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 118,
+                "totalPoints": 143,
+                "vaultBoostPlayed": 1,
+                "vaultBoostTotal": 1,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 0,
+                "vaultPoints": 5
+            }
+        },
+        "set_number": 1,
+        "time": 1521914400,
+        "videos": [],
+        "winning_alliance": "blue"
+    },
+    {
+        "actual_time": 1521914845,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 242,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5919",
+                    "frc1533",
+                    "frc5511"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 265,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc587",
+                    "frc3661",
+                    "frc7265"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm16",
+        "match_number": 16,
+        "post_result_time": 1521915022,
+        "predicted_time": 1521914832,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 18,
+                "autoPoints": 33,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 9,
+                "endgamePoints": 40,
+                "endgameRobot1": "Levitate",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 10,
+                "rp": 1,
+                "tba_gameData": "RRR",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 144,
+                "teleopPoints": 199,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 99,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 45,
+                "totalPoints": 242,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 15
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 22,
+                "autoPoints": 37,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 11,
+                "endgamePoints": 40,
+                "endgameRobot1": "Levitate",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 2,
+                "foulPoints": 0,
+                "rp": 3,
+                "tba_gameData": "RRR",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 158,
+                "teleopPoints": 228,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 10,
+                "teleopScaleOwnershipSec": 11,
+                "teleopSwitchBoostSec": 10,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 137,
+                "totalPoints": 265,
+                "vaultBoostPlayed": 1,
+                "vaultBoostTotal": 1,
+                "vaultForcePlayed": 2,
+                "vaultForceTotal": 2,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 30
+            }
+        },
+        "set_number": 1,
+        "time": 1521914880,
+        "videos": [],
+        "winning_alliance": "red"
+    },
+    {
+        "actual_time": 1521915300,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 401,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5190",
+                    "frc3229",
+                    "frc6502"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 92,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1261",
+                    "frc6899",
+                    "frc6332"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm17",
+        "match_number": 17,
+        "post_result_time": 1521915507,
+        "predicted_time": 1521915301,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 20,
+                "autoPoints": 35,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 10,
+                "endgamePoints": 65,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Climbing",
+                "endgameRobot3": "Levitate",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 5,
+                "rp": 3,
+                "tba_gameData": "LLL",
+                "techFoulCount": 1,
+                "teleopOwnershipPoints": 266,
+                "teleopPoints": 361,
+                "teleopScaleBoostSec": 10,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 119,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 137,
+                "totalPoints": 401,
+                "vaultBoostPlayed": 2,
+                "vaultBoostTotal": 3,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 30
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 6,
+                "autoPoints": 16,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "None",
+                "autoRunPoints": 10,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 3,
+                "endgamePoints": 10,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "None",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 1,
+                "foulPoints": 25,
+                "rp": 0,
+                "tba_gameData": "LLL",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 36,
+                "teleopPoints": 51,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 0,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 10,
+                "teleopSwitchOwnershipSec": 36,
+                "totalPoints": 92,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 1,
+                "vaultForceTotal": 1,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 0,
+                "vaultPoints": 5
+            }
+        },
+        "set_number": 1,
+        "time": 1521915360,
+        "videos": [],
+        "winning_alliance": "blue"
+    },
+    {
+        "actual_time": 1521915753,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 145,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1225",
+                    "frc4828",
+                    "frc7270"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 347,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc7265",
+                    "frc5544",
+                    "frc5511"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm18",
+        "match_number": 18,
+        "post_result_time": 1521915945,
+        "predicted_time": 1521915757,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 5,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "None",
+                "autoRobot2": "None",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 5,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 15,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 0,
+                "rp": 0,
+                "tba_gameData": "LRL",
+                "techFoulCount": 2,
+                "teleopOwnershipPoints": 115,
+                "teleopPoints": 140,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 15,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 100,
+                "totalPoints": 145,
+                "vaultBoostPlayed": 1,
+                "vaultBoostTotal": 1,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 1,
+                "vaultPoints": 10
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 6,
+                "autoPoints": 21,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 3,
+                "endgamePoints": 40,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Levitate",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 50,
+                "rp": 3,
+                "tba_gameData": "LRL",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 191,
+                "teleopPoints": 276,
+                "teleopScaleBoostSec": 10,
+                "teleopScaleForceSec": 10,
+                "teleopScaleOwnershipSec": 104,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 77,
+                "totalPoints": 347,
+                "vaultBoostPlayed": 2,
+                "vaultBoostTotal": 3,
+                "vaultForcePlayed": 2,
+                "vaultForceTotal": 3,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 45
+            }
+        },
+        "set_number": 1,
+        "time": 1521915840,
+        "videos": [],
+        "winning_alliance": "red"
+    },
+    {
+        "actual_time": 1521916247,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 411,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6908",
+                    "frc6639",
+                    "frc4561"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 342,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc2059",
+                    "frc4767",
+                    "frc5919"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm19",
+        "match_number": 19,
+        "post_result_time": null,
+        "predicted_time": 1521916211,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 2,
+                "autoPoints": 17,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 1,
+                "endgamePoints": 35,
+                "endgameRobot1": "Levitate",
+                "endgameRobot2": "None",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 60,
+                "rp": 3,
+                "tba_gameData": "RLR",
+                "techFoulCount": 2,
+                "teleopOwnershipPoints": 274,
+                "teleopPoints": 334,
+                "teleopScaleBoostSec": 10,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 127,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 137,
+                "totalPoints": 411,
+                "vaultBoostPlayed": 2,
+                "vaultBoostTotal": 2,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 25
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 20,
+                "autoPoints": 35,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 10,
+                "endgamePoints": 65,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Levitate",
+                "endgameRobot3": "Climbing",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 2,
+                "foulPoints": 50,
+                "rp": 1,
+                "tba_gameData": "RLR",
+                "techFoulCount": 2,
+                "teleopOwnershipPoints": 147,
+                "teleopPoints": 257,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 0,
+                "teleopSwitchBoostSec": 10,
+                "teleopSwitchForceSec": 10,
+                "teleopSwitchOwnershipSec": 137,
+                "totalPoints": 342,
+                "vaultBoostPlayed": 1,
+                "vaultBoostTotal": 3,
+                "vaultForcePlayed": 1,
+                "vaultForceTotal": 3,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 45
+            }
+        },
+        "set_number": 1,
+        "time": 1521916320,
+        "videos": [],
+        "winning_alliance": "blue"
+    },
+    {
+        "actual_time": 1521903954,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 426,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3229",
+                    "frc2059",
+                    "frc5679"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 191,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5727",
+                    "frc6332",
+                    "frc6888"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm2",
+        "match_number": 2,
+        "post_result_time": 1521904128,
+        "predicted_time": 1521904080,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 20,
+                "autoPoints": 35,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 10,
+                "endgamePoints": 65,
+                "endgameRobot1": "Climbing",
+                "endgameRobot2": "Levitate",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 10,
+                "rp": 3,
+                "tba_gameData": "RLR",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 276,
+                "teleopPoints": 381,
+                "teleopScaleBoostSec": 10,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 119,
+                "teleopSwitchBoostSec": 10,
+                "teleopSwitchForceSec": 3,
+                "teleopSwitchOwnershipSec": 137,
+                "totalPoints": 426,
+                "vaultBoostPlayed": 3,
+                "vaultBoostTotal": 3,
+                "vaultForcePlayed": 1,
+                "vaultForceTotal": 2,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 40
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 24,
+                "autoPoints": 39,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 12,
+                "endgamePoints": 10,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "None",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 2,
+                "foulPoints": 0,
+                "rp": 1,
+                "tba_gameData": "RLR",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 137,
+                "teleopPoints": 152,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 0,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 10,
+                "teleopSwitchOwnershipSec": 137,
+                "totalPoints": 191,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 1,
+                "vaultForceTotal": 1,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 0,
+                "vaultPoints": 5
+            }
+        },
+        "set_number": 1,
+        "time": 1521904080,
+        "videos": [],
+        "winning_alliance": "blue"
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5727",
+                    "frc3845",
+                    "frc587"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6888",
+                    "frc5854",
+                    "frc4935"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm20",
+        "match_number": 20,
+        "post_result_time": null,
+        "predicted_time": 1521916706,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521916800,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5679",
+                    "frc6932",
+                    "frc3680"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1533",
+                    "frc6003",
+                    "frc6214"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm21",
+        "match_number": 21,
+        "post_result_time": null,
+        "predicted_time": 1521917165,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521917280,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3229",
+                    "frc5544",
+                    "frc3661"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6502",
+                    "frc3196",
+                    "frc3845"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm22",
+        "match_number": 22,
+        "post_result_time": null,
+        "predicted_time": 1521917624,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521917760,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc7270",
+                    "frc1261",
+                    "frc2059"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3680",
+                    "frc1225",
+                    "frc5511"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm23",
+        "match_number": 23,
+        "post_result_time": null,
+        "predicted_time": 1521918083,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521918240,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6332",
+                    "frc1533",
+                    "frc4561"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3661",
+                    "frc5919",
+                    "frc3196"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm24",
+        "match_number": 24,
+        "post_result_time": null,
+        "predicted_time": 1521918542,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521918720,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6932",
+                    "frc4828",
+                    "frc6908"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6899",
+                    "frc587",
+                    "frc6639"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm25",
+        "match_number": 25,
+        "post_result_time": null,
+        "predicted_time": 1521919001,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521919200,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5190",
+                    "frc7265",
+                    "frc4935"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5854",
+                    "frc6214",
+                    "frc5679"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm26",
+        "match_number": 26,
+        "post_result_time": null,
+        "predicted_time": 1521919460,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521919680,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6003",
+                    "frc587",
+                    "frc6888"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4767",
+                    "frc5727",
+                    "frc4828"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm27",
+        "match_number": 27,
+        "post_result_time": null,
+        "predicted_time": 1521919919,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521920160,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4561",
+                    "frc5919",
+                    "frc3845"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6214",
+                    "frc5190",
+                    "frc1261"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm28",
+        "match_number": 28,
+        "post_result_time": null,
+        "predicted_time": 1521920378,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521920640,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4767",
+                    "frc4935",
+                    "frc6932"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc2059",
+                    "frc6502",
+                    "frc3661"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm29",
+        "match_number": 29,
+        "post_result_time": null,
+        "predicted_time": 1521920837,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521921120,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": 1521904707,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [
+                    "frc6214"
+                ],
+                "score": 140,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6214",
+                    "frc4767",
+                    "frc1225"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 319,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6899",
+                    "frc4561",
+                    "frc4828"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm3",
+        "match_number": 3,
+        "post_result_time": 1521904885,
+        "predicted_time": 1521904742,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 5,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "None",
+                "autoRobot2": "None",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 5,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 0,
+                "endgameRobot1": "None",
+                "endgameRobot2": "None",
+                "endgameRobot3": "None",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 25,
+                "rp": 0,
+                "tba_gameData": "LRL",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 110,
+                "teleopPoints": 110,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 0,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 110,
+                "totalPoints": 140,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 0,
+                "vaultPoints": 0
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 10,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "None",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 10,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 65,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Climbing",
+                "endgameRobot3": "Levitate",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 0,
+                "rp": 2,
+                "tba_gameData": "LRL",
+                "techFoulCount": 1,
+                "teleopOwnershipPoints": 229,
+                "teleopPoints": 309,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 108,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 121,
+                "totalPoints": 319,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 15
+            }
+        },
+        "set_number": 1,
+        "time": 1521904560,
+        "videos": [],
+        "winning_alliance": "red"
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6332",
+                    "frc6908",
+                    "frc3680"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1225",
+                    "frc5679",
+                    "frc7265"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm30",
+        "match_number": 30,
+        "post_result_time": null,
+        "predicted_time": 1521921296,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521921600,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3196",
+                    "frc6899",
+                    "frc3229"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6003",
+                    "frc5511",
+                    "frc6639"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm31",
+        "match_number": 31,
+        "post_result_time": null,
+        "predicted_time": 1521921755,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521922080,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5854",
+                    "frc1533",
+                    "frc5544"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6888",
+                    "frc7270",
+                    "frc5727"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm32",
+        "match_number": 32,
+        "post_result_time": null,
+        "predicted_time": 1521922214,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521922560,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5679",
+                    "frc6908",
+                    "frc3661"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1261",
+                    "frc3229",
+                    "frc6332"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm33",
+        "match_number": 33,
+        "post_result_time": null,
+        "predicted_time": 1521922673,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521923040,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6932",
+                    "frc1225",
+                    "frc2059"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3196",
+                    "frc4828",
+                    "frc587"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm34",
+        "match_number": 34,
+        "post_result_time": null,
+        "predicted_time": 1521923132,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521923520,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5854",
+                    "frc7265",
+                    "frc3845"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4561",
+                    "frc4935",
+                    "frc6003"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm35",
+        "match_number": 35,
+        "post_result_time": null,
+        "predicted_time": 1521923591,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521924000,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6214",
+                    "frc3680",
+                    "frc5727"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc7270",
+                    "frc6502",
+                    "frc6639"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm36",
+        "match_number": 36,
+        "post_result_time": null,
+        "predicted_time": 1521924050,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521924480,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6888",
+                    "frc5190",
+                    "frc5544"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1533",
+                    "frc6899",
+                    "frc4767"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm37",
+        "match_number": 37,
+        "post_result_time": null,
+        "predicted_time": 1521924509,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521924960,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5919",
+                    "frc3680",
+                    "frc6003"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5511",
+                    "frc3229",
+                    "frc4935"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm38",
+        "match_number": 38,
+        "post_result_time": null,
+        "predicted_time": 1521924968,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521925440,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6639",
+                    "frc3661",
+                    "frc5727"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3845",
+                    "frc6932",
+                    "frc6899"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm39",
+        "match_number": 39,
+        "post_result_time": null,
+        "predicted_time": 1521925427,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521925920,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": 1521905195,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [
+                    "frc3845"
+                ],
+                "score": 20,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3845",
+                    "frc3661",
+                    "frc7270"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 229,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5919",
+                    "frc6502",
+                    "frc4935"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm4",
+        "match_number": 4,
+        "post_result_time": 1521905447,
+        "predicted_time": 1521905288,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 10,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "None",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 10,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 5,
+                "endgameRobot1": "None",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "None",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 7,
+                "foulPoints": 0,
+                "rp": 0,
+                "tba_gameData": "LLL",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 0,
+                "teleopPoints": 10,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 0,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 0,
+                "totalPoints": 20,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 1,
+                "vaultPoints": 5
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 15,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 40,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "Levitate",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 35,
+                "rp": 2,
+                "tba_gameData": "LLL",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 124,
+                "teleopPoints": 179,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 0,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 124,
+                "totalPoints": 229,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 15
+            }
+        },
+        "set_number": 1,
+        "time": 1521905040,
+        "videos": [],
+        "winning_alliance": "red"
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6502",
+                    "frc6214",
+                    "frc5511"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6888",
+                    "frc4561",
+                    "frc2059"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm40",
+        "match_number": 40,
+        "post_result_time": null,
+        "predicted_time": 1521925886,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521926400,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5919",
+                    "frc4828",
+                    "frc1261"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc7270",
+                    "frc5544",
+                    "frc5854"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm41",
+        "match_number": 41,
+        "post_result_time": null,
+        "predicted_time": 1521926345,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521926880,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3196",
+                    "frc1225",
+                    "frc1533"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4767",
+                    "frc5679",
+                    "frc5190"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm42",
+        "match_number": 42,
+        "post_result_time": null,
+        "predicted_time": 1521926804,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521927360,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc587",
+                    "frc6332",
+                    "frc6502"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6908",
+                    "frc7265",
+                    "frc6214"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm43",
+        "match_number": 43,
+        "post_result_time": null,
+        "predicted_time": 1521927263,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521927840,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5511",
+                    "frc6888",
+                    "frc1261"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6639",
+                    "frc3845",
+                    "frc1533"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm44",
+        "match_number": 44,
+        "post_result_time": null,
+        "predicted_time": 1521927722,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521928320,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4935",
+                    "frc3680",
+                    "frc3196"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1225",
+                    "frc6908",
+                    "frc3229"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm45",
+        "match_number": 45,
+        "post_result_time": null,
+        "predicted_time": 1521928181,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521928800,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5544",
+                    "frc587",
+                    "frc4767"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4561",
+                    "frc6932",
+                    "frc5727"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm46",
+        "match_number": 46,
+        "post_result_time": null,
+        "predicted_time": 1521928640,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521929280,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc7270",
+                    "frc6003",
+                    "frc5679"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4828",
+                    "frc5854",
+                    "frc3661"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm47",
+        "match_number": 47,
+        "post_result_time": null,
+        "predicted_time": 1521929099,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521929760,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc7265",
+                    "frc6899",
+                    "frc2059"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5190",
+                    "frc6332",
+                    "frc5919"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm48",
+        "match_number": 48,
+        "post_result_time": null,
+        "predicted_time": 1521929558,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521930240,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4828",
+                    "frc6502",
+                    "frc1533"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4561",
+                    "frc3680",
+                    "frc5854"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm49",
+        "match_number": 49,
+        "post_result_time": null,
+        "predicted_time": 1521930017,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521930720,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": 1521905696,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 84,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1533",
+                    "frc7265",
+                    "frc3680"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 392,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6003",
+                    "frc5544",
+                    "frc6908"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm5",
+        "match_number": 5,
+        "post_result_time": 1521905875,
+        "predicted_time": 1521905762,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 10,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "None",
+                "autoRunPoints": 10,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 15,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 2,
+                "foulPoints": 15,
+                "rp": 0,
+                "tba_gameData": "LRL",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 29,
+                "teleopPoints": 59,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 5,
+                "teleopScaleOwnershipSec": 6,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 23,
+                "totalPoints": 84,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 2,
+                "vaultForceTotal": 3,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 0,
+                "vaultPoints": 15
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 8,
+                "autoPoints": 23,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 4,
+                "endgamePoints": 40,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Levitate",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 3,
+                "foulPoints": 10,
+                "rp": 3,
+                "tba_gameData": "LRL",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 279,
+                "teleopPoints": 359,
+                "teleopScaleBoostSec": 10,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 122,
+                "teleopSwitchBoostSec": 10,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 137,
+                "totalPoints": 392,
+                "vaultBoostPlayed": 3,
+                "vaultBoostTotal": 3,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 2,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 40
+            }
+        },
+        "set_number": 1,
+        "time": 1521905520,
+        "videos": [],
+        "winning_alliance": "red"
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc2059",
+                    "frc6639",
+                    "frc6214"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3661",
+                    "frc5190",
+                    "frc1225"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm50",
+        "match_number": 50,
+        "post_result_time": null,
+        "predicted_time": 1521930476,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521931200,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc7265",
+                    "frc5679",
+                    "frc6888"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5511",
+                    "frc4767",
+                    "frc7270"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm51",
+        "match_number": 51,
+        "post_result_time": null,
+        "predicted_time": 1521930935,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521931680,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4935",
+                    "frc5919",
+                    "frc6899"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc587",
+                    "frc1261",
+                    "frc6003"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm52",
+        "match_number": 52,
+        "post_result_time": null,
+        "predicted_time": 1521931394,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521932160,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3196",
+                    "frc6332",
+                    "frc5544"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3845",
+                    "frc6908",
+                    "frc3229"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm53",
+        "match_number": 53,
+        "post_result_time": null,
+        "predicted_time": 1521986400,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521986400,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5727",
+                    "frc6003",
+                    "frc6899"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6932",
+                    "frc5919",
+                    "frc7265"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm54",
+        "match_number": 54,
+        "post_result_time": null,
+        "predicted_time": 1521986880,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521986880,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3680",
+                    "frc6888",
+                    "frc4828"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3845",
+                    "frc2059",
+                    "frc5679"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm55",
+        "match_number": 55,
+        "post_result_time": null,
+        "predicted_time": 1521987360,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521987360,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5854",
+                    "frc4767",
+                    "frc6332"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1261",
+                    "frc7270",
+                    "frc3196"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm56",
+        "match_number": 56,
+        "post_result_time": null,
+        "predicted_time": 1521987840,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521987840,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5544",
+                    "frc1225",
+                    "frc6502"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3661",
+                    "frc1533",
+                    "frc587"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm57",
+        "match_number": 57,
+        "post_result_time": null,
+        "predicted_time": 1521988320,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521988320,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6639",
+                    "frc5727",
+                    "frc5190"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5511",
+                    "frc4561",
+                    "frc6908"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm58",
+        "match_number": 58,
+        "post_result_time": null,
+        "predicted_time": 1521988800,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521988800,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6214",
+                    "frc3229",
+                    "frc1533"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4935",
+                    "frc6932",
+                    "frc587"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm59",
+        "match_number": 59,
+        "post_result_time": null,
+        "predicted_time": 1521989280,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521989280,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": 1521906407,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 116,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc587",
+                    "frc6214",
+                    "frc7270"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 268,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1261",
+                    "frc5679",
+                    "frc4561"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm6",
+        "match_number": 6,
+        "post_result_time": 1521906586,
+        "predicted_time": 1521906423,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 15,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 5,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "None",
+                "endgameRobot3": "None",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 10,
+                "rp": 0,
+                "tba_gameData": "RLR",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 81,
+                "teleopPoints": 91,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 0,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 10,
+                "teleopSwitchOwnershipSec": 81,
+                "totalPoints": 116,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 1,
+                "vaultForceTotal": 1,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 0,
+                "vaultPoints": 5
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 5,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "None",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "None",
+                "autoRunPoints": 5,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 35,
+                "endgameRobot1": "None",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "Climbing",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 2,
+                "foulPoints": 0,
+                "rp": 2,
+                "tba_gameData": "RLR",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 223,
+                "teleopPoints": 263,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 98,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 125,
+                "totalPoints": 268,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 1,
+                "vaultPoints": 5
+            }
+        },
+        "set_number": 1,
+        "time": 1521906000,
+        "videos": [],
+        "winning_alliance": "red"
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc2059",
+                    "frc5511",
+                    "frc5190"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc4828",
+                    "frc3845",
+                    "frc6003"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm60",
+        "match_number": 60,
+        "post_result_time": null,
+        "predicted_time": 1521989760,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521989760,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3661",
+                    "frc4561",
+                    "frc4767"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc7265",
+                    "frc5727",
+                    "frc3229"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm61",
+        "match_number": 61,
+        "post_result_time": null,
+        "predicted_time": 1521990240,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521990240,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6908",
+                    "frc3196",
+                    "frc5854"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5544",
+                    "frc3680",
+                    "frc6899"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm62",
+        "match_number": 62,
+        "post_result_time": null,
+        "predicted_time": 1521990720,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521990720,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5679",
+                    "frc7270",
+                    "frc5919"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6502",
+                    "frc6639",
+                    "frc6932"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm63",
+        "match_number": 63,
+        "post_result_time": null,
+        "predicted_time": 1521991200,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521991200,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": null,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1261",
+                    "frc4935",
+                    "frc6214"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": -1,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6332",
+                    "frc6888",
+                    "frc1225"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm64",
+        "match_number": 64,
+        "post_result_time": null,
+        "predicted_time": 1521991680,
+        "score_breakdown": null,
+        "set_number": 1,
+        "time": 1521991680,
+        "videos": [],
+        "winning_alliance": ""
+    },
+    {
+        "actual_time": 1521906839,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 169,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc1225",
+                    "frc6639",
+                    "frc4767"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 310,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3229",
+                    "frc5854",
+                    "frc5919"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm7",
+        "match_number": 7,
+        "post_result_time": 1521907017,
+        "predicted_time": 1521906904,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 10,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "None",
+                "autoRunPoints": 10,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 10,
+                "endgameRobot1": "Parking",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "None",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 25,
+                "rp": 0,
+                "tba_gameData": "LLL",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 119,
+                "teleopPoints": 134,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 0,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 10,
+                "teleopSwitchOwnershipSec": 119,
+                "totalPoints": 169,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 1,
+                "vaultForceTotal": 1,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 0,
+                "vaultPoints": 5
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 8,
+                "autoPoints": 23,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 4,
+                "endgamePoints": 40,
+                "endgameRobot1": "Levitate",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 0,
+                "rp": 3,
+                "tba_gameData": "LLL",
+                "techFoulCount": 1,
+                "teleopOwnershipPoints": 222,
+                "teleopPoints": 287,
+                "teleopScaleBoostSec": 10,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 112,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 100,
+                "totalPoints": 310,
+                "vaultBoostPlayed": 2,
+                "vaultBoostTotal": 2,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 25
+            }
+        },
+        "set_number": 1,
+        "time": 1521906480,
+        "videos": [],
+        "winning_alliance": "red"
+    },
+    {
+        "actual_time": 1521907419,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [],
+                "score": 182,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6502",
+                    "frc6003",
+                    "frc7265"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 350,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc5544",
+                    "frc1261",
+                    "frc5727"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm8",
+        "match_number": 8,
+        "post_result_time": 1521907598,
+        "predicted_time": 1521907382,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 15,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 40,
+                "endgameRobot1": "Levitate",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 1,
+                "foulPoints": 0,
+                "rp": 0,
+                "tba_gameData": "LRL",
+                "techFoulCount": 2,
+                "teleopOwnershipPoints": 92,
+                "teleopPoints": 167,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 10,
+                "teleopScaleOwnershipSec": 13,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 79,
+                "totalPoints": 182,
+                "vaultBoostPlayed": 2,
+                "vaultBoostTotal": 2,
+                "vaultForcePlayed": 2,
+                "vaultForceTotal": 2,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 35
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 6,
+                "autoPoints": 21,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 3,
+                "endgamePoints": 60,
+                "endgameRobot1": "None",
+                "endgameRobot2": "Levitate",
+                "endgameRobot3": "Climbing",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 55,
+                "rp": 3,
+                "tba_gameData": "LRL",
+                "techFoulCount": 0,
+                "teleopOwnershipPoints": 199,
+                "teleopPoints": 274,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 110,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 89,
+                "totalPoints": 350,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 15
+            }
+        },
+        "set_number": 1,
+        "time": 1521906960,
+        "videos": [],
+        "winning_alliance": "red"
+    },
+    {
+        "actual_time": 1521907869,
+        "alliances": {
+            "blue": {
+                "dq_team_keys": [
+                    "frc3845"
+                ],
+                "score": 75,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc6332",
+                    "frc5511",
+                    "frc3845"
+                ]
+            },
+            "red": {
+                "dq_team_keys": [],
+                "score": 394,
+                "surrogate_team_keys": [],
+                "team_keys": [
+                    "frc3680",
+                    "frc587",
+                    "frc5190"
+                ]
+            }
+        },
+        "comp_level": "qm",
+        "event_key": "2018ncash",
+        "key": "2018ncash_qm9",
+        "match_number": 9,
+        "post_result_time": 1521908043,
+        "predicted_time": 1521907911,
+        "score_breakdown": {
+            "blue": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 0,
+                "autoPoints": 10,
+                "autoQuestRankingPoint": false,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "None",
+                "autoRunPoints": 10,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": false,
+                "autoSwitchOwnershipSec": 0,
+                "endgamePoints": 5,
+                "endgameRobot1": "None",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "None",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 1,
+                "foulPoints": 25,
+                "rp": 0,
+                "tba_gameData": "RRR",
+                "techFoulCount": 3,
+                "teleopOwnershipPoints": 35,
+                "teleopPoints": 40,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 27,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 8,
+                "totalPoints": 75,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 0,
+                "vaultLevitateTotal": 0,
+                "vaultPoints": 0
+            },
+            "red": {
+                "adjustPoints": 0,
+                "autoOwnershipPoints": 22,
+                "autoPoints": 37,
+                "autoQuestRankingPoint": true,
+                "autoRobot1": "AutoRun",
+                "autoRobot2": "AutoRun",
+                "autoRobot3": "AutoRun",
+                "autoRunPoints": 15,
+                "autoScaleOwnershipSec": 0,
+                "autoSwitchAtZero": true,
+                "autoSwitchOwnershipSec": 11,
+                "endgamePoints": 40,
+                "endgameRobot1": "Levitate",
+                "endgameRobot2": "Parking",
+                "endgameRobot3": "Parking",
+                "faceTheBossRankingPoint": false,
+                "foulCount": 0,
+                "foulPoints": 80,
+                "rp": 3,
+                "tba_gameData": "RRR",
+                "techFoulCount": 1,
+                "teleopOwnershipPoints": 222,
+                "teleopPoints": 277,
+                "teleopScaleBoostSec": 0,
+                "teleopScaleForceSec": 0,
+                "teleopScaleOwnershipSec": 85,
+                "teleopSwitchBoostSec": 0,
+                "teleopSwitchForceSec": 0,
+                "teleopSwitchOwnershipSec": 137,
+                "totalPoints": 394,
+                "vaultBoostPlayed": 0,
+                "vaultBoostTotal": 0,
+                "vaultForcePlayed": 0,
+                "vaultForceTotal": 0,
+                "vaultLevitatePlayed": 3,
+                "vaultLevitateTotal": 3,
+                "vaultPoints": 15
+            }
+        },
+        "set_number": 1,
+        "time": 1521907440,
+        "videos": [],
+        "winning_alliance": "red"
+    }
+]

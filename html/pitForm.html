@@ -1,29 +1,37 @@
 <div class="container-fluid">
-   <h4>Scouting as {{user.name}}</h4>
     <form id="pitForm" enctype="multipart/form-data" ng-submit="submit()">
-        <fieldset>
-           <legend>Info</legend>
-            <div class="form-group">
-				<label for="teamnumber">Team #</label>
-				<input ng-model="pitFormData.teamNumber" class="form-control" type='number' name='teamnumber' id='teamnumber' placeholder='Enter Team Number here' required>
+        <div class="card-columns">
+            <div class="card">
+                <h5 class="card-header">
+                    Info
+                    <br>
+                    <small class="text-muted">Scouting as {{user.name}}</small>
+                </h5>
+                <div class="card-body">
+                    <label for="#teamnumber">Team #</label>
+                    <input ng-model="pitFormData.teamNumber" class="form-control" type='number' id='teamnumber' placeholder='Enter Team Number here'
+                        required>
+                </div>
             </div>
-        </fieldset>
-        <fieldset>
-           <legend>Upload Pictures here</legend>
-            <div class="form-group">
-                <div class="form-group">
+            <div class="card">
+                <h5 class="card-header">Pictures</h5>
+                <div class="card-body">
                     <button class="btn btn-block" type="button" ng-click="addPicture()">Add Picture</button>
-                </div>
-                <div ng-repeat="picture in picNum">
-                    <div picture onchange="angular.element(this).scope().updateDisplay(this.children[0].children[1].children[0], angular.element(this).scope().$index); angular.element(this).scope().unrequireComments()" remove-picture="removePicture(picture)"></div>
+                    <div class="card-columns">
+                        <div ng-repeat="picture in picNum" style="margin-top: 1rem;">
+                            <div picture onchange="angular.element(this).scope().updateDisplay(this.children[0].children[0].children[1].children[0], angular.element(this).scope().$index); angular.element(this).scope().unrequireComments()"
+                                remove-picture="removePicture(picture)"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </fieldset>
-        <fieldset>
-            <legend>Type Your comments here</legend>
-            <textarea ng-model="pitFormData.comment" class="form-control" id="comments" rows="3" cols="40" name='comments' placeholder='Enter comments about the team here'></textarea>
-            <br>
-        </fieldset>
+            <div class="card">
+                <h5 class="card-header">Comments</h5>
+                <div class="div card-body">
+                    <textarea ng-model="pitFormData.comment" class="form-control" id="comments" rows="3" cols="40" name='comments' placeholder='Enter comments about the team here'></textarea>
+                </div>
+            </div>
+        </div>
         <div class="form-group">
             <button class="btn btn-block btn-primary" type="submit">Submit</button>
         </div>

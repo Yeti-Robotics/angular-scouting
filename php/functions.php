@@ -8,7 +8,8 @@ function getLastMatch($db) {
 		if ($row = $result->fetch_array()) {
 			$lastMatch = $row["match_number"];
 		}
-		return $lastMatch;
+        // return $lastMatch;
+        return 0;
     } else {
         header('HTTP/1.1 500 SQL Error', true, 500);
         die ( '{"message":"Failed creating statement"}' );
@@ -1207,7 +1208,7 @@ function getPitComments($db, $team, $scoutingTeam) {
     p.pit_comments AS 'Pit Scouters Comments', 
     s.name AS 'Pit Scouter', 
     UNIX_TIMESTAMP(p.timestamp) AS timestamp,
-    s.team_number AS scoting_team
+    s.team_number AS scouting_team
     FROM pit_comments p
     LEFT JOIN scouters s ON s.id = p.scouter_id
     WHERE p.team_number = ? AND p.pit_comments != '' AND s.team_number = ?";

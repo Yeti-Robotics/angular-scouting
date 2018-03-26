@@ -1,57 +1,56 @@
 <div class="container-fluid">
 	<div class="form-group">
-			<label for="scoutTeam">Scouted by:</label>
-			<select id="scoutTeam"
-					class="form-control"
-					ng-model="currentTeam"
-					ng-change="loadData(currentTeam.team_number)"
-					ng-options="team as (team.team_number + ' - ' + team.team_name) for team in teams track by team.team_number">
-			</select>
+		<label for="scoutTeam">Scouted by</label>
+		<select id="scoutTeam" class="form-control custom-select" ng-model="currentTeam" ng-change="loadData(currentTeam.team_number)"
+		 ng-options="team as (team.team_number + ' - ' + team.team_name) for team in teams track by team.team_number">
+		</select>
 	</div>
-    <div ng-show="error != ''">
+	<div ng-show="error != ''">
 		<h1 class="text-center">{{error}}</h1>
 	</div>
-    <div ng-show="error == ''">
-    	<h2 class="page-header">Team {{teamNumber}}<span ng-show="data.teamInfo.name != null">, {{data.teamInfo.name}}</span>
-		   <br/>
-				<a class="small" ng-href="#/team/{{teamNumber}}">{{name}} match results</a>
-		   <br/>
+	<div ng-show="error == ''">
+		<h2>
+			Team {{teamNumber}}
+			<a class="btn btn-primary" style="float: right" ng-href="#/team/{{teamNumber}}">{{name}} match results</a>
+			<br/>
+			<span ng-show="data.teamInfo.name != null">{{data.teamInfo.name}}</span>
 		</h2>
-    	<div class="container-fluid" ng-show="!noPictures">
-    	    <div class="row" ng-show="pitData.pictures.length > 1">
-    	        <div class="col-xs-4">
-    	            <button type="button" ng-click="previousPicture()" class="pull-left btn btn-link">
-    	                <span class="glyphicon glyphicon-arrow-left"></span> Previous Picture
-    	            </button>
-    	        </div>
-    	        <div class="col-xs-4 col-xs-offset-4">
-    	            <button type="button" ng-click="nextPicture()" class="pull-right btn btn-link">
-    	                Next Picture
-    	                <span class="glyphicon glyphicon-arrow-right"></span>
-    	            </button>
-    	        </div>
-    	    </div>
-    	    <div class="center-block">
-    	        <img id="pitPicture" ng-src="pics/{{teamNumber}}/{{pitData.pictures[picIndex].pictureNumber}}.jpg" class="img-responsive" alt="What? Where's the picture?!?">
-    	        <small>Taken by {{pitData.pictures[picIndex].photographer}} {{pitData.pictures[picIndex].timeStamp}}</small>
-    	    </div>
-    	</div>
-    	<div class="container-fluid" ng-show="noPictures">
-    	    <p class="lead text-danger">No pictures are available of this team's pit</p>
-    	</div>
-    	<br/>
-    	<fieldset>
-    	    <legend>Comments</legend>
-    	    <div class="container-fluid">
-    	        <div class="row" ng-repeat="comment in pitData.comments">
-    	            <p>{{comment.comment}}</p>
-    	            <p>-- {{comment.commenter}}, {{comment.timeStamp}}
-    	                <hr/>
-    	        </div>
-    	    </div>
-    	    <div class="container-fluid" ng-show="noComments">
-    	        <p class="text-danger lead">No comments are available for this team's pit</p>
-    	    </div>
-    	</fieldset>
-    </div>
+		<div class="container-fluid" ng-show="!noPictures">
+			<div class="row" ng-show="pitData.pictures.length > 1">
+				<div class="col-xs-4">
+					<button type="button" ng-click="previousPicture()" class="pull-left btn btn-link">
+						<span class="glyphicon glyphicon-arrow-left"></span> Previous Picture
+					</button>
+				</div>
+				<div class="col-xs-4 col-xs-offset-4">
+					<button type="button" ng-click="nextPicture()" class="pull-right btn btn-link">
+						Next Picture
+						<span class="glyphicon glyphicon-arrow-right"></span>
+					</button>
+				</div>
+			</div>
+			<div class="center-block">
+				<img id="pitPicture" ng-src="pics/{{teamNumber}}/{{pitData.pictures[picIndex].pictureNumber}}.jpg" class="img-responsive"
+				 alt="What? Where's the picture?!?">
+				<small>Taken by {{pitData.pictures[picIndex].photographer}} {{pitData.pictures[picIndex].timeStamp}}</small>
+			</div>
+		</div>
+		<div class="container-fluid" ng-show="noPictures">
+			<p class="lead text-danger">No pictures are available of this team's pit</p>
+		</div>
+		<br/>
+		<fieldset>
+			<legend>Comments</legend>
+			<div class="container-fluid">
+				<div class="row" ng-repeat="comment in pitData.comments">
+					<p>{{comment.comment}}</p>
+					<p>-- {{comment.commenter}}, {{comment.timeStamp}}
+						<hr/>
+				</div>
+			</div>
+			<div class="container-fluid" ng-show="noComments">
+				<p class="text-danger lead">No comments are available for this team's pit</p>
+			</div>
+		</fieldset>
+	</div>
 </div>

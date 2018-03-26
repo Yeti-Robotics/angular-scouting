@@ -10,7 +10,6 @@ if ($teamNumber) {
 	if (checkPitData($db, $teamNumber, $scoutingTeam)) {
 		$response = array();
 
-
 		$result = getPitComments($db, $teamNumber, $scoutingTeam);
 		if ($result) {
 			while ($row = $result->fetch_assoc()) {
@@ -23,7 +22,6 @@ if ($teamNumber) {
 			header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
 			die('{"error": "error getting picComments"}');
 		}
-	
 
 		$result = getPicInfo($db, $teamNumber, $scoutingTeam);
 		if ($result) {
@@ -36,12 +34,9 @@ if ($teamNumber) {
 			die('{"error": "error getting picInfo"}');
 		}
 	
-		
 		$response['teamInfo'] = getTeamInfo($db, $teamNumber);
 		
 		die(json_encode($response));
-
-
 	} else {
 		header('HTTP/1.1 500 Internal Server Error', true, 500);
 		die('{"error": "No Pictures or Comments"}');
@@ -50,4 +45,5 @@ if ($teamNumber) {
     header($_SERVER['SERVER_PROTOCOL'] . '403 No headers', true, 403);
     die('{"error": "Failed to upload points"}');
 }
+
 ?>

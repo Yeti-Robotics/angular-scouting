@@ -1,43 +1,43 @@
 <div id="match-modal" class="modal fade">
-    <div class="modal-dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title">Match Selector</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="close">
                     <span>&times;</span>
                 </button>
-                <h4 class="modal-title">Match Selector</h4>
             </div>
             <div class="modal-body">
                 <div ng-show="matches.length > 0">
                     <div class="table-responsive">
-                        <table class="table table-hover table-bordered">
+                        <table class="table table-hover table-bordered table-sm">
                             <thead>
                                 <tr>
                                     <th class="text-center">#</th>
-                                    <th class="text-center danger" colspan="3">Red Alliance</th>
-                                    <th class="text-center info" colspan="3">Blue Alliance</th>
+                                    <th class="text-center table-danger" colspan="3">Red Alliance</th>
+                                    <th class="text-center table-info" colspan="3">Blue Alliance</th>
                                 </tr>
                                 <tr>
                                     <th></th>
-                                    <th class="text-center danger">Red 1</th>
-                                    <th class="text-center danger">Red 2</th>
-                                    <th class="text-center danger">Red 3</th>
-                                    <th class="text-center info">Blue 1</th>
-                                    <th class="text-center info">Blue 2</th>
-                                    <th class="text-center info">Blue 3</th>
+                                    <th class="text-center table-danger">Red 1</th>
+                                    <th class="text-center table-danger">Red 2</th>
+                                    <th class="text-center table-danger">Red 3</th>
+                                    <th class="text-center table-info">Blue 1</th>
+                                    <th class="text-center table-info">Blue 2</th>
+                                    <th class="text-center table-info">Blue 3</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="match in matches">
                                     <td class="text-center">{{match.number}}</td>
 
-                                    <td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[0])">{{match.teams.red[0]}}</td>
-                                    <td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[1])">{{match.teams.red[1]}}</td>
-                                    <td class="text-center danger" role="button" ng-click="selectTeam(match.number, match.teams.red[2])">{{match.teams.red[2]}}</td>
+                                    <td class="text-center table-danger" role="button" ng-click="selectTeam(match.number, match.teams.red[0])">{{match.teams.red[0]}}</td>
+                                    <td class="text-center table-danger" role="button" ng-click="selectTeam(match.number, match.teams.red[1])">{{match.teams.red[1]}}</td>
+                                    <td class="text-center table-danger" role="button" ng-click="selectTeam(match.number, match.teams.red[2])">{{match.teams.red[2]}}</td>
 
-                                    <td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[0])">{{match.teams.blue[0]}}</td>
-                                    <td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[1])">{{match.teams.blue[1]}}</td>
-                                    <td class="text-center info" role="button" ng-click="selectTeam(match.number, match.teams.blue[2])">{{match.teams.blue[2]}}</td>
+                                    <td class="text-center table-info" role="button" ng-click="selectTeam(match.number, match.teams.blue[0])">{{match.teams.blue[0]}}</td>
+                                    <td class="text-center table-info" role="button" ng-click="selectTeam(match.number, match.teams.blue[1])">{{match.teams.blue[1]}}</td>
+                                    <td class="text-center table-info" role="button" ng-click="selectTeam(match.number, match.teams.blue[2])">{{match.teams.blue[2]}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -52,254 +52,236 @@
 </div>
 
 <div class="container-fluid">
-    <h4>Scouting as {{user.name}}</h4>
     <form id="scouting_form" enctype="multipart/form-data" ng-submit="submit()">
+        <div class="card-columns">
 
-        <!-- Basic information panel: -->
-        <div class="panel panel-default">
-            <div class="panel-heading ">
-                <h3 class="panel-title ">Match info</h3>
-            </div>
-            <div class="panel-body">
-                <div ng-if="!matchesReceived">
-                    <div class="form-group">
-                        <label for="teamnumber">Team number:</label>
-                        <input ng-model="formData.teamNumber" class="form-control" type='number' name='teamnumber' id='teamnumber' placeholder='Enter the team number'
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="matchNumber">Match number:</label>
+            <!-- Basic information panel: -->
+            <div class="card">
+                <h5 class="card-header">
+                    Match info
+                    <br>
+                    <small class="text-muted">Scouting as {{user.name}}</small>
+                </h5>
+                <div class="card-body">
+                    <div ng-if="!matchesReceived">
+                        <div class="form-group">
+                            <label for="teamnumber">Team number</label>
+                            <input ng-model="formData.teamNumber" class="form-control" type='number' name='teamnumber' id='teamnumber' placeholder='Enter the team number'
+                                required>
+                        </div>
+                        <label for="matchNumber">Match number</label>
                         <input ng-model="formData.matchNumber" type="number" class="form-control" id="matchNumber" placeholder="Enter the match number"
                             required>
                     </div>
-                </div>
-                <div ng-if="matchesReceived">
-                    <button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal">Choose a match</button>
-                    <div ng-if="selectedTeam">
-                        <br>
-                        <table class="table table-bordered" style="margin-bottom: 0%">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">Match Number</th>
-                                    <th class="text-center">Team Number</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-center">{{formData.match_number}}</td>
-                                    <td class="text-center">{{formData.team_number}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div ng-if="matchesReceived">
+                        <button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal">Choose a match</button>
+                        <div ng-if="selectedTeam">
+                            <br>
+                            <table class="table table-bordered table-sm" style="margin-bottom: 0%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Match Number</th>
+                                        <th class="text-center">Team Number</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">{{formData.match_number}}</td>
+                                        <td class="text-center">{{formData.team_number}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Autonomous panel: -->
-        <div class="panel panel-default ">
-            <div class="panel-heading ">
-                <h3 class="panel-title ">Autonomous</h3>
-            </div>
-            <div class="panel-body">
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" ng-model="formData.autoCheck">Did the robot cross the Autonomous line?
-                        </label>
+            <!-- Autonomous panel: -->
+            <div class="card">
+                <h5 class="card-header">Autonomous</h5>
+                <div class="card-body">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" ng-model="formData.autoCheck" id="autoCheck">
+                        <label class="custom-control-label" for="autoCheck">Did the robot cross the Autonomous line?</label>
+                    </div>
+                    <div ng-if="formData.autoCheck">
+                        <div class="form-group" style="margin-top: 1rem">
+                            <label for="switchCounter">Cubes placed on alliance scale</label>
+                            <div class="input-group" name="switchCounter">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-dark" type='button' ng-click="decrementAW()">
+                                        <i class="material-icons">remove</i>
+                                    </button>
+                                </div>
+                                <input ng-model="formData.autoSwitch" type="number" id="autoSwitch" class="form-control width100" placeholder="#">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-dark" type='button' ng-click="incrementAW()">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="scaleCounter">Cubes placed on alliance switch</label>
+                            <div class="input-group" name="scaleCounter">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-dark" type='button' ng-click="decrementAS()">
+                                        <i class="material-icons">remove</i>
+                                    </button>
+                                </div>
+                                <input ng-model="formData.autoScale" type="number" id="autoScale" class="form-control width100" placeholder="#">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-dark" type='button' ng-click="incrementAS()">
+                                        <i class="material-icons">add</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="autoSpeed">How fast was the robot in Auto?</label>
+                            <select ng-model="formData.autoSpeed" class="form-control custom-select" name="autoSpeed">
+                                <option value="1">1 (slowest)</option>
+                                <option>2</option>
+                                <option value="3">3 (fastest)</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div ng-if="formData.autoCheck">
+            </div>
+
+            <!-- Teleop Panel: -->
+            <div class="card">
+                <h5 class="card-header">Teleop</h5>
+                <div class="card-body">
                     <div class="form-group">
-                        <label for="switchCounter">Cubes placed on alliance scale:</label>
-                        <div class="input-group" name="switchCounter">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type='button' ng-click="decrementAW()">
-                                    <span class="glyphicon glyphicon-triangle-bottom"></span>
+                        <label for="scaleCubes">Cubes placed on alliance scale</label>
+                        <div class="input-group" name="scaleCubes">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-dark" type='button' ng-click="decrementSC()">
+                                    <i class="material-icons">remove</i>
                                 </button>
-                            </span>
-                            <input ng-model="formData.autoSwitch" type="number" id="autoSwitch" class="form-control width100" placeholder="#">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type='button' ng-click="incrementAW()">
-                                    <span class="glyphicon glyphicon-triangle-top"></span>
+                            </div>
+                            <input ng-model="formData.scaleCubes" type="number" class="form-control">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-dark" type='button' ng-click="incrementSC()">
+                                    <i class="material-icons">add</i>
                                 </button>
-                            </span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="scaleCounter">Cubes placed on alliance switch:</label>
-                        <div class="input-group" name="scaleCounter">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type='button' ng-click="decrementAS()">
-                                    <span class="glyphicon glyphicon-triangle-bottom"></span>
+                        <label for="switchCubes">Cubes placed on alliance switch</label>
+                        <div class="input-group" name="switchCubes">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-dark" type='button' ng-click="decrementWC()">
+                                    <i class="material-icons">remove</i>
                                 </button>
-                            </span>
-                            <input ng-model="formData.autoScale" type="number" id="autoScale" class="form-control width100" placeholder="#">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type='button' ng-click="incrementAS()">
-                                    <span class="glyphicon glyphicon-triangle-top"></span>
+                            </div>
+                            <input ng-model="formData.switchCubes" type="number" class="form-control width100" placeholder="#">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-dark" type='button' ng-click="incrementWC()">
+                                    <i class="material-icons">add</i>
                                 </button>
-                            </span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="autoSpeed">How fast was the robot in Auto?</label>
-                        <select ng-model="formData.autoSpeed" class="form-control" name="autoSpeed">
-                            <option value="0">0</option>
-                            <option>1</option>
+                        <label for="enemySwitchCubes">Cubes placed on enemy switch</label>
+                        <div class="input-group" name="enemySwitchCubes">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-dark" type='button' ng-click="decrementEC()">
+                                    <i class="material-icons">remove</i>
+                                </button>
+                            </div>
+                            <input ng-model="formData.enemySwitchCubes" type="number" class="form-control width100" placeholder="#">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-dark" type='button' ng-click="incrementEC()">
+                                    <i class="material-icons">add</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="vaultCubes">Cubes given to human player</label>
+                        <div class="input-group" name="vaultCubes">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-dark" type='button' ng-click="decrementVC()">
+                                    <i class="material-icons">remove</i>
+                                </button>
+                            </div>
+                            <input ng-model="formData.vaultCubes" type="number" class="form-control width100" placeholder="#">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-dark" type='button' ng-click="incrementVC()">
+                                    <i class="material-icons">add</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cubeRanking">How well did this robot place cubes?</label>
+                        <select ng-model="formData.cubeRanking" class="form-control custom-select" name="cubeRanking">
+                            <option value="1">1 (worst)</option>
                             <option>2</option>
-                            <option value="3">3</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option value="5">5 (best)</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" id="teleDefense" ng-model="formData.teleDefense" type="checkbox">
+                            <label class="custom-control-label" for="teleDefense">Did this robot play defense?</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teleSpeed">How fast was the robot in teleop?</label>
+                        <select ng-model="formData.teleSpeed" class="form-control custom-select" name="teleSpeed">
+                            <option value="1">1 (slowest)</option>
+                            <option>2</option>
+                            <option value="3">3 (fastest)</option>
+                        </select>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" id="teleCheck" ng-model="formData.teleCheck" type="checkbox">
+                        <label class="custom-control-label" for="teleCheck">Did the robot climb or help others climb?</label>
+                    </div>
+                    <div ng-if="formData.teleCheck">
+                        <div class="form-group" style="margin-top: 1rem">
+                            <div class="custom-control custom-checkbox">
+                                <input ng-model="formData.helpClimb" id="helpClimb" class="custom-control-input" type="checkbox">
+                                <label class="custom-control-label" for="helpClimb">Did the robot deploy a ramp?</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input ng-model="formData.rampClimb" id="rampClimb" class="custom-control-input" type="checkbox">
+                                <label class="custom-control-label" for="rampClimb">Did the robot climb a ramp?</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input ng-model="formData.barClimb" id="barClimb" class="custom-control-input" type="checkbox">
+                                <label class="custom-control-label" for="barClimb">Did the robot climb the bar?</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="otherClimb">Other</label>
+                            <textarea ng-model="formData.otherClimb" name="otherClimb" class="form-control" rows="3" placeholder="Any notable information about how the robot climbed the bar, someone's ramp, etc."></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Teleop Panel: -->
-        <div class="panel panel-default ">
-            <div class="panel-heading ">
-                <h3 class="panel-title ">Teleop</h3>
-            </div>
-            <div class="panel-body">
-                <div class="form-group">
-                    <label for="scaleCubes">Cubes placed on alliance scale:</label>
-                    <div class="input-group" name="scaleCubes">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type='button' ng-click="decrementSC()">
-                                <span class="glyphicon glyphicon-triangle-bottom"></span>
-                            </button>
-                        </span>
-                        <input ng-model="formData.scaleCubes" type="number" class="form-control width100" placeholder="#">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type='button' ng-click="incrementSC()">
-                                <span class="glyphicon glyphicon-triangle-top"></span>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="switchCubes">Cubes placed on alliance switch:</label>
-                    <div class="input-group" name="switchCubes">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type='button' ng-click="decrementWC()">
-                                <span class="glyphicon glyphicon-triangle-bottom"></span>
-                            </button>
-                        </span>
-                        <input ng-model="formData.switchCubes" type="number" class="form-control width100" placeholder="#">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type='button' ng-click="incrementWC()">
-                                <span class="glyphicon glyphicon-triangle-top"></span>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="enemySwitchCubes">Cubes placed on enemy switch:</label>
-                    <div class="input-group" name="enemySwitchCubes">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type='button' ng-click="decrementEC()">
-                                <span class="glyphicon glyphicon-triangle-bottom"></span>
-                            </button>
-                        </span>
-                        <input ng-model="formData.enemySwitchCubes" type="number" class="form-control width100" placeholder="#">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type='button' ng-click="incrementEC()">
-                                <span class="glyphicon glyphicon-triangle-top"></span>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="vaultCubes">Cubes given to human player:</label>
-                    <div class="input-group" name="vaultCubes">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type='button' ng-click="decrementVC()">
-                                <span class="glyphicon glyphicon-triangle-bottom"></span>
-                            </button>
-                        </span>
-                        <input ng-model="formData.vaultCubes" type="number" class="form-control width100" placeholder="#">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type='button' ng-click="incrementVC()">
-                                <span class="glyphicon glyphicon-triangle-top"></span>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="cubeRanking">How well did this robot place cubes?</label>
-                    <select ng-model="formData.cubeRanking" class="form-control" name="cubeRanking">
-                        <option value="1">1 (worst)</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option value="5">5 (best)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label>
-                            <input ng-model="formData.teleDefense" type="checkbox">Did this robot play defense?
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="teleSpeed">How fast was the robot in teleop?</label>
-                    <select ng-model="formData.teleSpeed" class="form-control" name="teleSpeed">
-                        <option value="1">1 (slowest)</option>
-                        <option>2</option>
-                        <option value="3">3 (fastest)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label>
-                            <input ng-model="formData.teleCheck" type="checkbox">Did the robot climb or help others climb?
-                        </label>
-                    </div>
-                </div>
-                <div ng-if="formData.teleCheck">
+            <!-- Other Panel: -->
+            <div class="card">
+                <h5 class="card-header">Other</h5>
+                <div class="card-body">
                     <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input ng-model="formData.helpClimb" type="checkbox">Did the robot deploy a ramp?
-                            </label>
-                        </div>
+                        <label for="score">Alliance Score</label>
+                        <input ng-model="formData.score" type="number" name="score" class="form-control" placeholder="Enter the alliance's score"
+                            required>
                     </div>
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input ng-model="formData.rampClimb" type="checkbox">Did the robot climb a ramp?
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input ng-model="formData.barClimb" type="checkbox">Did the robot climb the bar?
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="otherClimb">Other:</label>
-                        <textarea ng-model="formData.otherClimb" name="otherClimb" class="form-control" rows="3" placeholder="Any notable information about how the robot climbed the bar, someone's ramp, etc."></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Other Panel: -->
-        <div class="panel panel-default ">
-            <div class="panel-heading ">
-                <h3 class="panel-title ">Other</h3>
-            </div>
-            <div class="panel-body">
-                <div class="form-group">
-                    <label for="score">Alliance Score:</label>
-                    <input ng-model="formData.score" type="number" name="score" class="form-control" placeholder="Enter the alliance's score"
-                        required>
-                </div>
-                <div class="form-group">
-                    <label for="comment">Comments:</label>
+                    <label for="comment">Comments</label>
                     <textarea ng-model="formData.comment" name="comment" class="form-control" rows="3" placeholder="Comment on the robot's strategy, failures, human players, power ups used, etc."
                         required></textarea>
                 </div>
