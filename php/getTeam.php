@@ -41,10 +41,7 @@ if ($teamNumber) {
 		die('{"error": "Failed to retrive team data, problem with query 2"}');
 	}
 
-	$query = "SELECT AVG(f.auto_speed) AS avg_auto_speed, 
-		AVG(f.tele_speed) AS avg_tele_speed,
-		AVG(f.cube_ranking) AS avg_cube_ranking,
-		SUM(f.switch_cubes) AS total_switch_cubes,
+	$query = "SELECT SUM(f.switch_cubes) AS total_switch_cubes,
 		SUM(f.scale_cubes) AS total_scale_cubes,
 		SUM(f.enemy_switch_cubes) AS total_enemy_switch_cubes,
 		SUM(f.switch_cubes + enemy_switch_cubes + scale_cubes) AS total_cubes,

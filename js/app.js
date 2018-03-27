@@ -267,8 +267,8 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 	}
 
 	$scope.selectTeam = function (matchNumber, teamNumber) {
-		$scope.formData.match_number = matchNumber;
-		$scope.formData.team_number = teamNumber;
+		$scope.formData.matchNumber = matchNumber;
+		$scope.formData.teamNumber = teamNumber;
 		$scope.selectedTeam = true;
 		$("#match-modal").modal('hide');
 	}
@@ -283,18 +283,17 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 	$scope.resetForm = function () {
 		$scope.formData = {
 			autoCheck: false,
-			autoSpeed: '1',
 			autoScale: 0,
 			autoSwitch: 0,
 			teleCheck: false,
-			cubeRanking: '1',
-			teleSpeed: '1',
 			scaleCubes: 0,
 			switchCubes: 0,
 			enemySwitchCubes: 0,
 			vaultCubes: 0,
 			scouterId: $rootScope.user.id
 		};
+		$scope.selectedTeam = false;
+		$("#submitButton").removeAttr("disabled");
 		$("#scouting_form").trigger("reset");
 	};
 
@@ -304,8 +303,9 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 
 	$scope.submit = function () {
 		if ($('#scouting_form').valid()) {
-			$("body").scrollTop(0);
+			$(window).scrollTop(0);
 			displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
+			$("#submitButton").attr("disabled", "disabled");
 			$http.post('php/formSubmit.php', $scope.formData)
 				.then(function (data) {
 					displayMessage('Form submitted successfully', 'success');
@@ -597,7 +597,6 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 			for (var i = 0; i < $scope.data.length; i++) {
 				if ($scope.data[i].avg_score == null) {
 					$scope.data[i].avg_score = "No match scouting data available, only pit scouting data.";
-					$scope.data[i].avg_tele_speed = "No match scouting data available, only pit scouting data.";
 					$scope.data[i].avg_climb = "No match scouting data available, only pit scouting data.";
 					$scope.data[i].avg_tele_switch = "No match scouting data available, only pit scouting data.";
 					$scope.data[i].avg_tele_scale = "No match scouting data available, only pit scouting data.";
@@ -605,7 +604,6 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 				} else {
 					$scope.data[i].team_number = parseInt($scope.data[i].team_number);
 					$scope.data[i].avg_score = parseFloat(parseFloat($scope.data[i].avg_score).toFixed(2));
-					$scope.data[i].avg_tele_speed = parseFloat(parseFloat($scope.data[i].avg_tele_speed).toFixed(2));
 					$scope.data[i].avg_climb = parseFloat(parseFloat($scope.data[i].avg_climb * 100).toFixed(2));
 					$scope.data[i].avg_tele_switch = parseFloat(parseFloat($scope.data[i].avg_tele_switch).toFixed(2));
 					$scope.data[i].avg_tele_scale = parseFloat(parseFloat($scope.data[i].avg_tele_scale).toFixed(2));
@@ -645,6 +643,15 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 	$scope.error = "";
 	$scope.isClimbComment = false;
 	$scope.climbComments = [];
+
+	$(document).ready(function () {
+		$scope.matchCollapsed = true;
+		$scope.teleMatchCollapsed = true;
+		$scope.autoMatchCollapsed = true;
+		$("#collapseMatch").collapse("show");
+		$("#collapseTeleMatch").collapse("show");
+		$("#collapseAutoMatch").collapse("show");
+	});
 
 	$http.get('php/getScouterTeams.php').then(function (response) {
 		$scope.teams = response.data;

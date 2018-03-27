@@ -29,10 +29,6 @@
 						<i ng-if="sortType == 'avg_score' && sortDescending" class="material-icons">arrow_drop_down</i>
 						<i ng-if="sortType == 'avg_score' && !sortDescending" class="material-icons">arrow_drop_up</i>
 					</th>
-					<th ng-click="sortType = 'avg_tele_speed'; sortDescending = !sortDescending">Avg Speed (1-3)
-						<i ng-if="sortType == 'avg_tele_speed' && sortDescending" class="material-icons">arrow_drop_down</i>
-						<i ng-if="sortType == 'avg_tele_speed' && !sortDescending" class="material-icons">arrow_drop_up</i>
-					</th>
 					<th ng-click="sortType = 'avg_climb'; sortDescending = !sortDescending">Climbing Success
 						<i ng-if="sortType == 'avg_climb' && sortDescending" class="material-icons">arrow_drop_down</i>
 						<i ng-if="sortType == 'avg_climb' && !sortDescending" class="material-icons">arrow_drop_up</i>
@@ -49,7 +45,7 @@
 						<i ng-if="sortType == 'total_auto_cubes' && sortDescending" class="material-icons">arrow_drop_down</i>
 						<i ng-if="sortType == 'total_auto_cubes' && !sortDescending" class="material-icons">arrow_drop_up</i>
 					</th>
-					<th ng-click="sortType = 'avg_vault'; sortDescending = !sortDescending">Avg Cubes Exchanged to Human Player
+					<th ng-click="sortType = 'avg_vault'; sortDescending = !sortDescending">Avg Cubes Put in Vault
 						<i ng-if="sortType == 'avg_vault' && sortDescending" class="material-icons">arrow_drop_down</i>
 						<i ng-if="sortType == 'avg_vault' && !sortDescending" class="material-icons">arrow_drop_up</i>
 					</th>
@@ -70,10 +66,8 @@
 						<a href="#/team/{{row.team_number}}">{{row.team_name}}</a>
 					</td>
 					<td>{{row.avg_score}}</td>
-					<td>{{row.avg_tele_speed}}</td>
 					<td>
-						{{row.avg_climb}}
-						<span ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'">%</span>
+						{{row.avg_climb}}<span ng-if="row.avg_score != 'No match scouting data available, only pit scouting data.'">%</span>
 					</td>
 					<td>{{row.avg_tele_switch}}</td>
 					<td>{{row.avg_tele_scale}}</td>

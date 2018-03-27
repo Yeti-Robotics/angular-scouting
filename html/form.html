@@ -63,7 +63,7 @@
                     <small class="text-muted">Scouting as {{user.name}}</small>
                 </h5>
                 <div class="card-body">
-                    <div ng-if="!matchesReceived">
+                    <div ng-if="!settings.validateTeams">
                         <div class="form-group">
                             <label for="teamnumber">Team number</label>
                             <input ng-model="formData.teamNumber" class="form-control" type='number' name='teamnumber' id='teamnumber' placeholder='Enter the team number'
@@ -73,7 +73,7 @@
                         <input ng-model="formData.matchNumber" type="number" class="form-control" id="matchNumber" placeholder="Enter the match number"
                             required>
                     </div>
-                    <div ng-if="matchesReceived">
+                    <div ng-if="settings.validateTeams">
                         <button class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal">Choose a match</button>
                         <div ng-if="selectedTeam">
                             <br>
@@ -86,8 +86,8 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="text-center">{{formData.match_number}}</td>
-                                        <td class="text-center">{{formData.team_number}}</td>
+                                        <td class="text-center">{{formData.matchNumber}}</td>
+                                        <td class="text-center">{{formData.teamNumber}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -104,7 +104,7 @@
                         <input type="checkbox" class="custom-control-input" ng-model="formData.autoCheck" id="autoCheck">
                         <label class="custom-control-label" for="autoCheck">Did the robot cross the Autonomous line?</label>
                     </div>
-                    <div ng-if="formData.autoCheck">
+                    <div>
                         <div class="form-group" style="margin-top: 1rem">
                             <label for="switchCounter">Cubes placed on alliance scale</label>
                             <div class="input-group" name="switchCounter">
@@ -136,14 +136,6 @@
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="autoSpeed">How fast was the robot in Auto?</label>
-                            <select ng-model="formData.autoSpeed" class="form-control custom-select" name="autoSpeed">
-                                <option value="1">1 (slowest)</option>
-                                <option>2</option>
-                                <option value="3">3 (fastest)</option>
-                            </select>
                         </div>
                     </div>
                 </div>
@@ -202,7 +194,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="vaultCubes">Cubes given to human player</label>
+                        <label for="vaultCubes">Cubes put in the vault</label>
                         <div class="input-group" name="vaultCubes">
                             <div class="input-group-prepend">
                                 <button class="btn btn-outline-dark" type='button' ng-click="decrementVC()">
@@ -218,28 +210,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="cubeRanking">How well did this robot place cubes?</label>
-                        <select ng-model="formData.cubeRanking" class="form-control custom-select" name="cubeRanking">
-                            <option value="1">1 (worst)</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option value="5">5 (best)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="teleDefense" ng-model="formData.teleDefense" type="checkbox">
                             <label class="custom-control-label" for="teleDefense">Did this robot play defense?</label>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="teleSpeed">How fast was the robot in teleop?</label>
-                        <select ng-model="formData.teleSpeed" class="form-control custom-select" name="teleSpeed">
-                            <option value="1">1 (slowest)</option>
-                            <option>2</option>
-                            <option value="3">3 (fastest)</option>
-                        </select>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input class="custom-control-input" id="teleCheck" ng-model="formData.teleCheck" type="checkbox">
@@ -282,13 +256,13 @@
                             required>
                     </div>
                     <label for="comment">Comments</label>
-                    <textarea ng-model="formData.comment" name="comment" class="form-control" rows="3" placeholder="Comment on the robot's strategy, failures, human players, power ups used, etc."
+                    <textarea ng-model="formData.comment" name="comment" class="form-control" rows="3" placeholder="Comment on the robot's strategy, failures, human players, power ups used, fouls, etc."
                         required></textarea>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <button class="btn btn-block btn-primary" type="submit">Submit</button>
+            <button id="submitButton" class="btn btn-block btn-primary" type="submit">Submit</button>
         </div>
     </form>
 </div>

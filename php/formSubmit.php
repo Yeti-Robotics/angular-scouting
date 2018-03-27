@@ -7,10 +7,8 @@ $query = "INSERT INTO form_data (
 			auto_check,
 			auto_switch,
 			auto_scale,
-			auto_speed,
 			bar_climb,
 			comment,
-			cube_ranking,
 			enemy_switch_cubes,
 			help_climb,
 			match_number,
@@ -22,18 +20,15 @@ $query = "INSERT INTO form_data (
 			team_number,
 			tele_check,
 			tele_defense,
-			tele_speed,
 			scouter_id,
 			vault_cubes)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $autoCheck = isset($postData['autoCheck']) ? intval($postData['autoCheck']) : '';
 $autoSwitch = isset($postData['autoSwitch']) ? intval($postData['autoSwitch']) : '';
 $autoScale = isset($postData['autoScale']) ? intval($postData['autoScale']) : '';
-$autoSpeed = isset($postData['autoSpeed']) ? $postData['autoSpeed'] : '';
 $barClimb = isset($postData['barClimb']) ? intval($postData['barClimb']) : '';
 $comment = isset($postData['comment']) ? strip_tags($postData['comment']) : '';
-$cubeRanking = isset($postData['cubeRanking']) ? $postData['cubeRanking'] : '';
 $enemySwitchCubes = isset($postData['enemySwitchCubes']) ? $postData['enemySwitchCubes'] : '';
 $helpClimb = isset($postData['helpClimb']) ? intval($postData['helpClimb']) : '';
 $matchNumber = isset($postData['matchNumber']) ? $postData['matchNumber'] : '';
@@ -45,19 +40,16 @@ $switchCubes = isset($postData['switchCubes']) ? $postData['switchCubes'] : '';
 $teamNumber = isset($postData['teamNumber']) ? $postData['teamNumber'] : '';
 $teleCheck = isset($postData['teleCheck']) ? intval($postData['teleCheck']) : '';
 $teleDefense = isset($postData['teleDefense']) ? intval($postData['teleDefense']) : '';
-$teleSpeed = isset($postData['teleSpeed']) ? $postData['teleSpeed'] : '';
 $scouterId = isset($postData['scouterId']) ? intval($postData['scouterId']) : '';
 $vaultCubes = isset($postData['vaultCubes']) ? intval($postData['vaultCubes']) : '';
 
 if($stmt = $db->prepare($query)) {
-	$stmt->bind_param("iiiiisiiiisiiiiiiiiii",
+	$stmt->bind_param("iiiisiiisiiiiiiiii",
 		$autoCheck,
 		$autoSwitch,
 		$autoScale,
-		$autoSpeed,
 		$barClimb,
 		$comment,
-		$cubeRanking,
 		$enemySwitchCubes,
 		$helpClimb,
 		$matchNumber,
@@ -69,7 +61,6 @@ if($stmt = $db->prepare($query)) {
 		$teamNumber,
 		$teleCheck,
 		$teleDefense,
-		$teleSpeed,
 		$scouterId,
 		$vaultCubes
 	);
@@ -83,7 +74,24 @@ if($stmt = $db->prepare($query)) {
 } else {
     header('HTTP/1.1 500 SQL Error', true, 500);
     $db->close();
-	die ( '{"message":"Failed creating statement"}' );
+	die ( "{'message':'Failed creating statement', 'data': {'autoCheck': $autoCheck,
+		'autoSwitch': $autoSwitch,
+		'autoScale': $autoScale,
+		'barClimb': $barClimb,
+		'comment': $comment,
+		'enemySwitchCubes': $enemySwitchCubes,
+		'helpClimb': $helpClimb,
+		'matchNumber': $matchNumber,
+		'otherClimb': $otherClimb,
+		'rampClimb': $rampClimb,
+		'scaleCubes': $scaleCubes,
+		'score': $score,
+		'switchCubes': $switchCubes,
+		'teamNumber': $teamNumber,
+		'teleCheck': $teleCheck,
+		'teleDefense': $teleDefense,
+		'scouterId': $scouterId,
+		'vaultCubes': $vaultCubes}}" );
 }
 
 $db->close();

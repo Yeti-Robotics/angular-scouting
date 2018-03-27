@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.7
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Mar 16, 2018 at 09:52 PM
--- Server version: 10.1.30-MariaDB
--- PHP Version: 5.6.33
+-- Host: 127.0.0.1
+-- Generation Time: Mar 27, 2018 at 11:42 PM
+-- Server version: 10.1.9-MariaDB
+-- PHP Version: 5.6.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -34,10 +32,8 @@ CREATE TABLE `form_data` (
   `auto_check` tinyint(1) NOT NULL DEFAULT '0',
   `auto_switch` int(11) NOT NULL DEFAULT '0',
   `auto_scale` int(11) NOT NULL DEFAULT '0',
-  `auto_speed` int(11) NOT NULL DEFAULT '1',
   `bar_climb` tinyint(1) NOT NULL DEFAULT '0',
   `comment` varchar(500) NOT NULL,
-  `cube_ranking` int(11) NOT NULL,
   `enemy_switch_cubes` int(11) NOT NULL DEFAULT '0',
   `help_climb` tinyint(1) NOT NULL DEFAULT '0',
   `match_number` int(11) NOT NULL,
@@ -49,7 +45,6 @@ CREATE TABLE `form_data` (
   `team_number` int(11) NOT NULL,
   `tele_check` tinyint(1) NOT NULL DEFAULT '0',
   `tele_defense` tinyint(1) NOT NULL DEFAULT '0',
-  `tele_speed` int(11) NOT NULL DEFAULT '1',
   `scouter_id` int(11) NOT NULL,
   `vault_cubes` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -108,6 +103,22 @@ CREATE TABLE `rankings` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `scouters`
+--
+
+DROP TABLE IF EXISTS `scouters`;
+CREATE TABLE `scouters` (
+  `id` int(6) NOT NULL,
+  `name` tinytext NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `pswd` tinytext NOT NULL,
+  `byteCoins` int(11) NOT NULL DEFAULT '200',
+  `team_number` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sessions`
 --
 
@@ -140,7 +151,7 @@ INSERT INTO `team_info` (`team_number`, `team_name`) VALUES
 (25, 'Raider Robotix'),
 (166, 'Chop Shop'),
 (191, 'X-CATS'),
-(238, 'Cruisin\' Crusaders'),
+(238, 'Cruisin'' Crusaders'),
 (287, 'Floyd'),
 (321, 'RoboLancers'),
 (339, 'Kilroy Robotics'),
@@ -198,7 +209,7 @@ INSERT INTO `team_info` (`team_number`, `team_name`) VALUES
 (3402, 'ROBOMonkeys'),
 (3459, 'Team PyroTech'),
 (3506, 'YETI Robotics'),
-(3546, 'Buc\'n\'Gears'),
+(3546, 'Buc''n''Gears'),
 (3618, 'Petoskey Paladins'),
 (3641, 'The Flying Toasters'),
 (3656, 'Dreadbots'),
@@ -311,6 +322,13 @@ ALTER TABLE `pit_pictures`
   ADD PRIMARY KEY (`pit_scout_data_id`);
 
 --
+-- Indexes for table `scouters`
+--
+ALTER TABLE `scouters`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
 -- Indexes for table `team_info`
 --
 ALTER TABLE `team_info`
@@ -337,8 +355,11 @@ ALTER TABLE `pit_comments`
 --
 ALTER TABLE `pit_pictures`
   MODIFY `pit_scout_data_id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
-
+--
+-- AUTO_INCREMENT for table `scouters`
+--
+ALTER TABLE `scouters`
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -4,19 +4,22 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbar-collapse">
-        <ul class="mr-auto navbar-nav">
-            <li class="nav-item" data-toggle="collapse" data-target="#navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item">
                 <a class="nav-link" href="#/scouting">Stand Scouting Form</a>
             </li>
-            <li class="nav-item" data-toggle="collapse" data-target="#navbar-collapse">
+            <li class="nav-item">
                 <a class="nav-link" href="#/pit-scouting">Pit scouting form</a>
             </li>
-            <li class="nav-item" data-toggle="collapse" data-target="#navbar-collapse" ng-show="!loggedIn">
+            <li class="nav-item" ng-show="!loggedIn">
                 <a class="nav-link" href="#/login">Log in</a>
             </li>
-            <li class="nav-item" data-toggle="collapse" data-target="#navbar-collapse" ng-show="loggedIn">
+            <li class="nav-item" ng-show="loggedIn">
                 <a class="nav-link" href="#/logout">Log out</a>
             </li>
         </ul>
     </div>
 </nav>
+
+<div class="alert message-container" id="login-success">
+</div>
