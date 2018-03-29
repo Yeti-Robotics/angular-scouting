@@ -125,7 +125,7 @@ function updateMatchData() {
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, array (
         "Accept: application/json",
-		"X-TBA-App-Id: $TBAAppId",
+		"X-TBA-Auth-Key: $TBAAppId",
         "If-Modified-Since: " . date(DATE_RSS, file_exists($fileName) ? filemtime($fileName) : time())
     ));
 
@@ -167,7 +167,7 @@ function flushSchedule() {
 
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array (
 		"Accept: application/json",
-		"X-TBA-App-Id: $TBAAppId"
+		"X-TBA-Auth-Key: $TBAAppId"
 	));
 
 	$responsejson = curl_exec($ch);
@@ -224,7 +224,7 @@ function updateTeamInfo($db, $teamNumber) {
 
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array (
 		"Accept: application/json",
-		"X-TBA-App-Id: $TBAAppId"
+		"X-TBA-Auth-Key: $TBAAppId"
 	));
 
 	$responsejson = curl_exec($ch) == false ? curl_error($ch) : json_decode(curl_exec($ch), true);
