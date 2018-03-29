@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2018 at 11:42 PM
+-- Generation Time: Mar 28, 2018 at 01:03 AM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -46,7 +46,8 @@ CREATE TABLE `form_data` (
   `tele_check` tinyint(1) NOT NULL DEFAULT '0',
   `tele_defense` tinyint(1) NOT NULL DEFAULT '0',
   `scouter_id` int(11) NOT NULL,
-  `vault_cubes` int(11) NOT NULL DEFAULT '0'
+  `vault_cubes` int(11) NOT NULL DEFAULT '0',
+  `tele_cube_stack` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

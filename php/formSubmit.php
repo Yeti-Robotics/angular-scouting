@@ -21,8 +21,9 @@ $query = "INSERT INTO form_data (
 			tele_check,
 			tele_defense,
 			scouter_id,
-			vault_cubes)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			vault_cubes,
+			tele_cube_stack)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $autoCheck = isset($postData['autoCheck']) ? intval($postData['autoCheck']) : '';
 $autoSwitch = isset($postData['autoSwitch']) ? intval($postData['autoSwitch']) : '';
@@ -42,9 +43,10 @@ $teleCheck = isset($postData['teleCheck']) ? intval($postData['teleCheck']) : ''
 $teleDefense = isset($postData['teleDefense']) ? intval($postData['teleDefense']) : '';
 $scouterId = isset($postData['scouterId']) ? intval($postData['scouterId']) : '';
 $vaultCubes = isset($postData['vaultCubes']) ? intval($postData['vaultCubes']) : '';
+$teleCubeStack = isset($postData['teleCubeStack']) ? intval($postData['teleCubeStack']) : '';
 
 if($stmt = $db->prepare($query)) {
-	$stmt->bind_param("iiiisiiisiiiiiiiii",
+	$stmt->bind_param("iiiisiiisiiiiiiiiii",
 		$autoCheck,
 		$autoSwitch,
 		$autoScale,
@@ -62,7 +64,8 @@ if($stmt = $db->prepare($query)) {
 		$teleCheck,
 		$teleDefense,
 		$scouterId,
-		$vaultCubes
+		$vaultCubes,
+		$teleCubeStack
 	);
     $stmt->execute();
     if ($stmt->error) {
@@ -74,24 +77,7 @@ if($stmt = $db->prepare($query)) {
 } else {
     header('HTTP/1.1 500 SQL Error', true, 500);
     $db->close();
-	die ( "{'message':'Failed creating statement', 'data': {'autoCheck': $autoCheck,
-		'autoSwitch': $autoSwitch,
-		'autoScale': $autoScale,
-		'barClimb': $barClimb,
-		'comment': $comment,
-		'enemySwitchCubes': $enemySwitchCubes,
-		'helpClimb': $helpClimb,
-		'matchNumber': $matchNumber,
-		'otherClimb': $otherClimb,
-		'rampClimb': $rampClimb,
-		'scaleCubes': $scaleCubes,
-		'score': $score,
-		'switchCubes': $switchCubes,
-		'teamNumber': $teamNumber,
-		'teleCheck': $teleCheck,
-		'teleDefense': $teleDefense,
-		'scouterId': $scouterId,
-		'vaultCubes': $vaultCubes}}" );
+	die ( "{'message':'Failed creating statement'}" );
 }
 
 $db->close();

@@ -693,11 +693,11 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 			value *= 100;
 		}
 		if (value >= 80) {
-			return "progress-bar-success"
+			return "bg-success"
 		} else if (value < 80 && value > 40) {
-			return "progress-bar-warning"
+			return "bg-warning"
 		} else {
-			return "progress-bar-danger"
+			return "bg-danger"
 		}
 	}
 

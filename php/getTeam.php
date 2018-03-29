@@ -74,6 +74,27 @@ if ($teamNumber) {
 		die('{"error": "Failed to retrive team data, problem with query 3"}');
 	}
 
+	$query = "SELECT tele_cube_stack
+	FROM form_data f
+	LEFT JOIN scouters s ON s.id = f.scouter_id
+	WHERE f.team_number = ? AND s.team_number = ?
+	ORDER BY tele_cube_stack
+	LIMIT 1
+	";
+	if ($stmt = $db->prepare($query)) {
+		$stmt->bind_param("ii", $teamNumber, $scoutingTeam);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		if ($result) {
+			while($row = $result->fetch_assoc()) {
+				$response['stats']['tele_cube_stack'] = $row['tele_cube_stack'];
+			}
+		}
+	} else {
+		header($_SERVER['SERVER_PROTOCOL'] . '500 SQL Error', true, 500);
+		die('{"error": "Failed to retrive team data, problem with query 4"}');
+	}
+
 	echo(json_encode($response));
 
 } else {
