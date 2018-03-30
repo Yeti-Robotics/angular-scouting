@@ -238,8 +238,8 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 						teams: {
 							red: [
 								$scope.parseTeamString(response.data[i].alliances.red.team_keys[0]),
-								$scope.parseTeamString(response.data[i].alliances.red.team_keys[2]),
-								$scope.parseTeamString(response.data[i].alliances.red.team_keys[1])
+								$scope.parseTeamString(response.data[i].alliances.red.team_keys[1]),
+								$scope.parseTeamString(response.data[i].alliances.red.team_keys[2])
 							],
 							blue: [
 								$scope.parseTeamString(response.data[i].alliances.blue.team_keys[0]),
