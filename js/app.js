@@ -221,6 +221,14 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 	$scope.matches = [];
 	$scope.matchesReceived = false;
 	$scope.selectedTeam = false;
+	$scope.robotPos = {
+		red1: "Red 1",
+		red2: "Red 2",
+		red3: "Red 3",
+		blue1: "Blue 1",
+		blue2: "Blue 2",
+		blue3: "Blue 3"
+	}
 
 	$rootScope.getCurrentSettings(function () {
 		if ($rootScope.settings.validateTeams) {
@@ -266,10 +274,12 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 		return parseInt(teamString.slice(3));
 	}
 
-	$scope.selectTeam = function (matchNumber, teamNumber) {
+	$scope.selectTeam = function (matchNumber, teamNumber, robotPos) {
 		$scope.formData.matchNumber = matchNumber;
 		$scope.formData.teamNumber = teamNumber;
 		$scope.selectedTeam = true;
+		$scope.selectedRobotPos = robotPos;
+
 		$("#match-modal").modal('hide');
 	}
 
