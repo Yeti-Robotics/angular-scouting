@@ -10,8 +10,8 @@
             <h5 class="card-header">Register</h5>
             <div class="card-body">
                 <div class="form-group">
-                    <label class="required" for="teamNumber">Team Number</label>
-                    <select class="form-control" id="teamNumber" ng-model="teamNumber custom-select" required>
+                    <label class="required" for="#teamNumber">Team Number</label>
+                    <select class="form-control custom-select" id="teamNumber" ng-model="teamNumber" required>
                         <option value="">Choose your team</option>
                         <option ng-repeat="team in teams">{{team.teamNumber}} - {{team.name}}</option>
                     </select>
