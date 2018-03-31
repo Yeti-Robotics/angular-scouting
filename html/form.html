@@ -95,6 +95,7 @@
                             </table>
                         </div>
                     </div>
+                    <pre>{{formData.teamNumber | json}}</pre>
                 </div>
             </div>
 
@@ -102,41 +103,39 @@
             <div class="card">
                 <h5 class="card-header">Autonomous</h5>
                 <div class="card-body">
-                    <div class="custom-control custom-checkbox">
+                    <div class="custom-control custom-checkbox form-group">
                         <input type="checkbox" class="custom-control-input" ng-model="formData.autoCheck" id="autoCheck">
                         <label class="custom-control-label" for="autoCheck">Did the robot cross the Autonomous line?</label>
                     </div>
-                    <div>
-                        <div class="form-group" style="margin-top: 1rem">
-                            <label for="switchCounter">Cubes placed on alliance scale</label>
-                            <div class="input-group" name="switchCounter">
-                                <div class="input-group-prepend">
-                                    <button class="btn btn-outline-dark" type='button' ng-click="decrementAW()">
-                                        <i class="material-icons">remove</i>
-                                    </button>
-                                </div>
-                                <input ng-model="formData.autoSwitch" type="number" id="autoSwitch" class="form-control width100" placeholder="#">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-dark" type='button' ng-click="incrementAW()">
-                                        <i class="material-icons">add</i>
-                                    </button>
-                                </div>
+                    <div class="form-group">
+                        <label for="scaleCounter">Cubes placed on alliance switch</label>
+                        <div class="input-group" name="scaleCounter">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-dark" type='button' ng-click="decrementAS()">
+                                    <i class="material-icons">remove</i>
+                                </button>
+                            </div>
+                            <input ng-model="formData.autoScale" type="number" id="autoScale" class="form-control width100" placeholder="#">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-dark" type='button' ng-click="incrementAS()">
+                                    <i class="material-icons">add</i>
+                                </button>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="scaleCounter">Cubes placed on alliance switch</label>
-                            <div class="input-group" name="scaleCounter">
-                                <div class="input-group-prepend">
-                                    <button class="btn btn-outline-dark" type='button' ng-click="decrementAS()">
-                                        <i class="material-icons">remove</i>
-                                    </button>
-                                </div>
-                                <input ng-model="formData.autoScale" type="number" id="autoScale" class="form-control width100" placeholder="#">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-dark" type='button' ng-click="incrementAS()">
-                                        <i class="material-icons">add</i>
-                                    </button>
-                                </div>
+                    </div>
+                    <div>
+                        <label for="switchCounter">Cubes placed on alliance scale</label>
+                        <div class="input-group" name="switchCounter">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-dark" type='button' ng-click="decrementAW()">
+                                    <i class="material-icons">remove</i>
+                                </button>
+                            </div>
+                            <input ng-model="formData.autoSwitch" type="number" id="autoSwitch" class="form-control width100" placeholder="#">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-dark" type='button' ng-click="incrementAW()">
+                                    <i class="material-icons">add</i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -147,6 +146,22 @@
             <div class="card">
                 <h5 class="card-header">Teleop</h5>
                 <div class="card-body">
+                    <div class="form-group">
+                        <label for="switchCubes">Cubes placed on alliance switch</label>
+                        <div class="input-group" name="switchCubes">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-outline-dark" type='button' ng-click="decrementWC()">
+                                    <i class="material-icons">remove</i>
+                                </button>
+                            </div>
+                            <input ng-model="formData.switchCubes" type="number" class="form-control width100" placeholder="#">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-dark" type='button' ng-click="incrementWC()">
+                                    <i class="material-icons">add</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label for="scaleCubes">Cubes placed on alliance scale</label>
                         <div class="input-group" name="scaleCubes">
@@ -167,22 +182,6 @@
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input" id="teleCubeStack" ng-model="formData.teleCubeStack" type="checkbox">
                             <label class="custom-control-label" for="teleCubeStack">Did the robot place a cube on top of another cube in the scale?</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="switchCubes">Cubes placed on alliance switch</label>
-                        <div class="input-group" name="switchCubes">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-outline-dark" type='button' ng-click="decrementWC()">
-                                    <i class="material-icons">remove</i>
-                                </button>
-                            </div>
-                            <input ng-model="formData.switchCubes" type="number" class="form-control width100" placeholder="#">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-dark" type='button' ng-click="incrementWC()">
-                                    <i class="material-icons">add</i>
-                                </button>
-                            </div>
                         </div>
                     </div>
                     <div class="form-group">
