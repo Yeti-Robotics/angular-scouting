@@ -222,13 +222,17 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 	$scope.matchesReceived = false;
 	$scope.selectedTeam = false;
 	$scope.robotPos = {
-		red1: "Red 1",
-		red2: "Red 2",
-		red3: "Red 3",
-		blue1: "Blue 1",
-		blue2: "Blue 2",
-		blue3: "Blue 3"
-	}
+		red: [
+			"Red 1",
+			"Red 2",
+			"Red 3",
+		],
+		blue: [
+			"Blue 1",
+			"Blue 2",
+			"Blue 3"
+		]
+	};
 
 	$rootScope.getCurrentSettings(function () {
 		if ($rootScope.settings.validateTeams) {

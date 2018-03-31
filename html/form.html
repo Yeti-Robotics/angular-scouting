@@ -31,13 +31,13 @@
                                 <tr ng-repeat="match in matches">
                                     <td class="text-center">{{match.number}}</td>
 
-                                    <td class="text-center table-danger" role="button" ng-click="selectTeam(match.number, match.teams.red[0], robotPos.red1)">{{match.teams.red[0]}}</td>
-                                    <td class="text-center table-danger" role="button" ng-click="selectTeam(match.number, match.teams.red[1], robotPos.red2)">{{match.teams.red[1]}}</td>
-                                    <td class="text-center table-danger" role="button" ng-click="selectTeam(match.number, match.teams.red[2], robotPos.red3)">{{match.teams.red[2]}}</td>
+                                    <td class="text-center table-danger" role="button" ng-click="selectTeam(match.number, match.teams.red[0], robotPos.red[0])">{{match.teams.red[0]}}</td>
+                                    <td class="text-center table-danger" role="button" ng-click="selectTeam(match.number, match.teams.red[1], robotPos.red[1])">{{match.teams.red[1]}}</td>
+                                    <td class="text-center table-danger" role="button" ng-click="selectTeam(match.number, match.teams.red[2], robotPos.red[2])">{{match.teams.red[2]}}</td>
 
-                                    <td class="text-center table-info" role="button" ng-click="selectTeam(match.number, match.teams.blue[0], robotPos.blue1)">{{match.teams.blue[0]}}</td>
-                                    <td class="text-center table-info" role="button" ng-click="selectTeam(match.number, match.teams.blue[1], robotPos.blue2)">{{match.teams.blue[1]}}</td>
-                                    <td class="text-center table-info" role="button" ng-click="selectTeam(match.number, match.teams.blue[2], robotPos.blue3)">{{match.teams.blue[2]}}</td>
+                                    <td class="text-center table-info" role="button" ng-click="selectTeam(match.number, match.teams.blue[0], robotPos.blue[0])">{{match.teams.blue[0]}}</td>
+                                    <td class="text-center table-info" role="button" ng-click="selectTeam(match.number, match.teams.blue[1], robotPos.blue[1])">{{match.teams.blue[1]}}</td>
+                                    <td class="text-center table-info" role="button" ng-click="selectTeam(match.number, match.teams.blue[2], robotPos.blue[2])">{{match.teams.blue[2]}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -80,22 +80,21 @@
                             <table class="table table-bordered table-sm" style="margin-bottom: 0%">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">Robot Position</th>
                                         <th class="text-center">Match Number</th>
+                                        <th class="text-center">Robot Position</th>
                                         <th class="text-center">Team Number</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="text-center">{{selectedRobotPos}}</td>
                                         <td class="text-center">{{formData.matchNumber}}</td>
+                                        <td class="text-center">{{selectedRobotPos}}</td>
                                         <td class="text-center">{{formData.teamNumber}}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <pre>{{formData.teamNumber | json}}</pre>
                 </div>
             </div>
 
@@ -258,7 +257,11 @@
                 <h5 class="card-header">Other</h5>
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="score">Alliance Score</label>
+                        <label for="score">
+                            <span ng-if="robotPos.red.indexOf(selectedRobotPos) != -1">Red </span>
+                            <span ng-if="robotPos.blue.indexOf(selectedRobotPos) != -1">Blue </span>
+                            Alliance Score
+                        </label>
                         <input ng-model="formData.score" type="number" name="score" class="form-control" placeholder="Enter the alliance's score"
                             required>
                     </div>

@@ -6,7 +6,7 @@ $dbpassword = "";
 $dbname = "yeti_scouting";
 
 // TBA API variables
-$eventKey = "2018ncash";
+$eventKey = "2018ncwin";
 $TBAAppId = "";
 $TBAapiServer = "https://www.thebluealliance.com/api/v3";
 

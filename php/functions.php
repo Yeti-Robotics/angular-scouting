@@ -8,8 +8,7 @@ function getLastMatch($db) {
 		if ($row = $result->fetch_array()) {
 			$lastMatch = $row["match_number"];
 		}
-        // return $lastMatch;
-        return 0;
+        return $lastMatch;
     } else {
         header('HTTP/1.1 500 SQL Error', true, 500);
         die ( '{"message":"Failed creating statement"}' );
@@ -24,7 +23,7 @@ function getFutureMatches($db) {
 	$lastMatch = getLastMatch($db);
 	$uncompletedMatches = array();
 	for ($i = 0; $i < count($matchResults); $i++) {
-		if ($matchResults[$i]["match_number"] >= $lastMatch) {
+		if ($matchResults[$i]["match_number"] >= $lastMatch + 1) {
 			$uncompletedMatches[] = $matchResults[$i];
 		}
 	}
