@@ -266,6 +266,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 
 					return 0;
 				});
+				console.log($scope.matches);
 				$scope.matchesReceived = true;
 			}, function (response) {
 				displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
@@ -278,13 +279,10 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 		return parseInt(teamString.slice(3));
 	}
 
-	$scope.selectTeam = function (matchNumber, teamNumber, robotPos) {
-		$scope.formData.matchNumber = matchNumber;
-		$scope.formData.teamNumber = teamNumber;
+	$scope.selectTeam = function (teamNumber) {
+		$scope.formData.matchNumber = $scope.matches[0].number;
 		$scope.selectedTeam = true;
-		$scope.selectedRobotPos = robotPos;
-
-		$("#match-modal").modal('hide');
+		$scope.formData.teamNumber = parseInt(teamNumber);
 	}
 
 	AccountService.validateSession().then(function (response) {
