@@ -582,6 +582,7 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
 					$("#errorModal").modal("show");
 				}
 			});
+		console.log($scope.pitData.comments)
 		}, function (response) {
 			$scope.error = response.data.error;
 		});
@@ -713,6 +714,114 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 		}
 	}
 
+});
+
+app.controller("MatchController", function ($scope, $http, $routeParams) {
+	'use strict';
+
+	$(document).ready(function () {
+		$scope.winningAllianceCollapsed = true;
+		$scope.winningteleMatchCollapsed = true;
+		$scope.winningautoMatchCollapsed = true;
+		$("#collapsewinningAlliance").collapse("hide");
+		$("#collapsewinningTeleMatch").collapse("hide");
+		$("#collapsewinningAutoMatch").collapse("hide");
+		$scope.losingAllianceCollapsed = true;
+		$scope.losingteleMatchCollapsed = true;
+		$scope.losingautoMatchCollapsed = true;
+		$("#collapselosingAlliance").collapse("hide");
+		$("#collapselosingTeleMatch").collapse("hide");
+		$("#collapselosingAutoMatch").collapse("hide");
+	});
+
+	$scope.matchNumber = $routeParams.matchNumber;
+	$scope.error = "";
+	$scope.winTeam = [];
+	$scope.loseTeam = [];
+	$scope.scores = [];
+
+	$http.get('php/getScouterTeams.php').then(function (response) {
+		$scope.teams = response.data;
+		if ($scope.teams.length) {
+			$scope.currentTeam = $scope.teams[0];
+			$scope.loadData($scope.currentTeam.team_number);
+		}
+	});
+		
+	$scope.loadData = function (scoutingTeam) {
+		$http.get('php/getMatch.php', {
+			params: { scoutingTeam: scoutingTeam, 
+					  matchNumber: $routeParams.matchNumber}
+		}).then(function (response) {
+			$scope.data = response.data;
+			$scope.scores.splice(0)
+			$scope.winTeam.splice(0);
+			$scope.loseTeam.splice(0);
+			for(var x = 0; x <$scope.data.matches.length; x++){
+			$scope.scores.push(parseInt($scope.data.matches[x].score));
+			}
+
+		
+			for (var i = 0; i < $scope.data.matches.length; i++) {
+				if($scope.data.matches[i].score >= Math.max.apply(Math, $scope.scores)) {
+					$scope.winTeam.push({
+						comment: $scope.data.matches[i].comment,
+						auto_check: $scope.data.matches[i].auto_check,
+						auto_scale: $scope.data.matches[i].auto_scale,
+						auto_switch:$scope.data.matches[i].auto_switch,
+						bar_climb: $scope.data.matches[i].bar_climb,
+						enemy_switch_cubes: $scope.data.matches[i].enemy_switch_cubes,
+						help_climb: $scope.data.matches[i].help_climb,
+						id: $scope.data.matches[i].id,
+						match_number: $scope.data.matches[i].match_number,
+						name: $scope.data.matches[i].name,
+						other_climb: $scope.data.matches[i].other_climb,
+						ramp_climb: $scope.data.matches[i].ramp_climb,
+						scale_cubes: $scope.data.matches[i].scale_cubes,
+						score: $scope.data.matches[i].score,
+						scouter_id: $scope.data.matches[i].scouter_id,
+						scouting_team :$scope.data.matches[i].scouting_team,
+						switch_cubes: $scope.data.matches[i].switch_cubes,
+						team_number: $scope.data.matches[i].team_number,
+						tele_check: $scope.data.matches[i].tele_check,
+						tele_cube_stack: $scope.data.matches[i].tele_cube_stack,
+						tele_defense: $scope.data.matches[i].tele_defense,
+						vault_cubes: $scope.data.matches[i].vault_cubes,
+					});
+				}else {
+					$scope.loseTeam.push({
+						comment: $scope.data.matches[i].comment,
+						auto_check: $scope.data.matches[i].auto_check,
+						auto_scale: $scope.data.matches[i].auto_scale,
+						auto_switch:$scope.data.matches[i].auto_switch,
+						bar_climb: $scope.data.matches[i].bar_climb,
+						enemy_switch_cubes: $scope.data.matches[i].enemy_switch_cubes,
+						help_climb: $scope.data.matches[i].help_climb,
+						id: $scope.data.matches[i].id,
+						match_number: $scope.data.matches[i].match_number,
+						name: $scope.data.matches[i].name,
+						other_climb: $scope.data.matches[i].other_climb,
+						ramp_climb: $scope.data.matches[i].ramp_climb,
+						scale_cubes: $scope.data.matches[i].scale_cubes,
+						score: $scope.data.matches[i].score,
+						scouter_id: $scope.data.matches[i].scouter_id,
+						scouting_team :$scope.data.matches[i].scouting_team,
+						switch_cubes: $scope.data.matches[i].switch_cubes,
+						team_number: $scope.data.matches[i].team_number,
+						tele_check: $scope.data.matches[i].tele_check,
+						tele_cube_stack: $scope.data.matches[i].tele_cube_stack,
+						tele_defense: $scope.data.matches[i].tele_defense,
+						vault_cubes: $scope.data.matches[i].vault_cubes,
+					});
+				}
+			}
+			console.log($scope.data);
+		}, function (response) {
+			$scope.error = response.data.error;
+
+			console.error($scope.error);
+		});
+	};
 });
 
 app.controller("ScouterController", function ($scope, $http, $routeParams) {
@@ -849,6 +958,9 @@ app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
 	}).when("/team/:teamNumber", {
 		templateUrl: 'html/team.html',
 		controller: 'TeamController'
+	}).when("/match/:matchNumber", {
+		templateUrl: 'html/matches.html',
+		controller: 'MatchController'
 	}).when("/pit-scouting", {
 		templateUrl: 'html/pitForm.html',
 		controller: 'PitFormController'

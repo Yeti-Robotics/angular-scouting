@@ -162,7 +162,9 @@
 								</thead>
 								<tbody>
 									<tr ng-repeat="data in data.formData">
-										<td>{{data.match_number}}</td>
+										<td >
+												<a href="#/match/{{data.match_number}}">{{data.match_number}}</a> 
+										</td>
 										<td>{{data.switch_cubes}}</td>
 										<td>{{data.enemy_switch_cubes}}</td>
 										<td>{{data.scale_cubes}}</td>
@@ -202,7 +204,9 @@
 								</thead>
 								<tbody>
 									<tr ng-repeat="data in data.formData">
-										<td>{{data.match_number}}</td>
+										<td>
+												<a href="#/match/{{data.match_number}}">{{data.match_number}}</a> 
+										</td>
 										<td>
 											<i ng-if="data.auto_check" class="material-icons text-success">check</i>
 											<i ng-if="!data.auto_check" class="material-icons text-danger">clear</i>
