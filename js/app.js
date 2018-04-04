@@ -4,985 +4,918 @@ var app;
 app = angular.module('app', ['ngRoute']);
 
 function displayMessage(message, alertType, timeVisible) {
-	var timeVisible = timeVisible == undefined ? 3000 : timeVisible;
-	$('.message-container').html(message).removeClass('alert-success alert-info alert-warning alert-danger').addClass('alert-' + alertType).stop(true).slideDown(500).delay(timeVisible).slideUp(500);
+    var timeVisible = timeVisible == undefined ? 3000 : timeVisible;
+    $('.message-container').html(message).removeClass('alert-success alert-info alert-warning alert-danger').addClass('alert-' + alertType).stop(true).slideDown(500).delay(timeVisible).slideUp(500);
 }
 
 app.run(function ($rootScope, $location, $http, $window, AccountService) {
-	'use strict';
+    'use strict';
 
-	$rootScope.loggedIn = $window.localStorage.token != null;
+    $rootScope.loggedIn = $window.localStorage.token != null;
 
-	$rootScope.user = {
-		username: '',
-		name: '',
-		byteCoins: 0
-	};
+    $rootScope.user = {
+        username: '',
+        name: '',
+        byteCoins: 0
+    };
 
-	$rootScope.getCurrentSettings = function (onSettingsUpdate) {
-		$http.get("php/getSettings.php").then(function (response) {
-			$rootScope.settings = response.data;
-			if (onSettingsUpdate != undefined) {
-				onSettingsUpdate();
-			}
-		}, function (response) {
-			displayMessage("Failed getting current settings.", "danger");
-			$rootScope.settings = null;
-			if (onSettingsUpdate != undefined) {
-				onSettingsUpdate();
-			}
-		});
-	}
+    $rootScope.getCurrentSettings = function (onSettingsUpdate) {
+        $http.get("php/getSettings.php").then(function (response) {
+            $rootScope.settings = response.data;
+            if (onSettingsUpdate != undefined) {
+                onSettingsUpdate();
+            }
+        }, function (response) {
+            displayMessage("Failed getting current settings.", "danger");
+            $rootScope.settings = null;
+            if (onSettingsUpdate != undefined) {
+                onSettingsUpdate();
+            }
+        });
+    }
 
-	$rootScope.getCurrentSettings();
+    $rootScope.getCurrentSettings();
 
 });
 
 app.service("AccountService", function ($http, $q, $window, $rootScope, $location) {
-	'use strict';
+    'use strict';
 
-	this.login = function (username, password) {
-		var deferred = $q.defer();
+    this.login = function (username, password) {
+        var deferred = $q.defer();
 
-		$http.post("php/login.php", {
-			username: username,
-			pswd: password
-		}).then(function (response) {
-			deferred.resolve(response);
-		}, function (response) {
-			deferred.reject(response);
-		});
+        $http.post("php/login.php", {
+            username: username,
+            pswd: password
+        }).then(function (response) {
+            deferred.resolve(response);
+        }, function (response) {
+            deferred.reject(response);
+        });
 
-		return deferred.promise;
-	};
+        return deferred.promise;
+    };
 
-	this.logout = function () {
-		$http.post("php/logout.php", {
-			token: $window.localStorage["token"]
-		}).finally(function (response) {
-			$window.localStorage.removeItem("token");
-			$rootScope.loggedIn = false;
-			$rootScope.user = {
-				username: '',
-				name: '',
-				id: '',
-				byteCoins: 0
-			};
-			$location.path("/login");
-		});
-	}
+    this.logout = function () {
+        $http.post("php/logout.php", {
+            token: $window.localStorage["token"]
+        }).finally(function (response) {
+            $window.localStorage.removeItem("token");
+            $rootScope.loggedIn = false;
+            $rootScope.user = {
+                username: '',
+                name: '',
+                id: '',
+                byteCoins: 0
+            };
+            $location.path("/login");
+        });
+    }
 
-	this.validateSession = function () {
-		var deferred = $q.defer();
+    this.validateSession = function () {
+        var deferred = $q.defer();
 
-		$http.post("php/validateSession.php", {
-			token: $window.localStorage["token"]
-		}).then(function (response) {
-			if (response.data == "false") {
-				deferred.reject(response);
-			} else {
-				deferred.resolve(response);
-				$rootScope.user = response.data;
-			}
-		}, function (response) {
-			deferred.reject(response);
-		});
+        $http.post("php/validateSession.php", {
+            token: $window.localStorage["token"]
+        }).then(function (response) {
+            if (response.data == "false") {
+                deferred.reject(response);
+            } else {
+                deferred.resolve(response);
+                $rootScope.user = response.data;
+            }
+        }, function (response) {
+            deferred.reject(response);
+        });
 
-		return deferred.promise;
-	};
+        return deferred.promise;
+    };
 });
 
 app.controller('LoginController', function (AccountService, $rootScope, $scope, $http, $location, $window) {
-	'use strict';
+    'use strict';
 
-	$(document).ready(function () {
-		$('#loginForm').validate();
-		$('#username').rules("add", {
-			messages: {
-				required: "Username cannot be empty"
-			}
-		});
-		$('#password').rules("add", {
-			messages: {
-				required: "Password cannot be empty"
-			}
-		});
+    $(document).ready(function () {
+        $('#loginForm').validate();
+        $('#username').rules("add", {
+            messages: {
+                required: "Username cannot be empty"
+            }
+        });
+        $('#password').rules("add", {
+            messages: {
+                required: "Password cannot be empty"
+            }
+        });
 
-		var code = "38384040373937396665";
-		var input = "";
-		var timer;
-		$(document).keyup(function (e) {
-			input += e.which;
+        var code = "38384040373937396665";
+        var input = "";
+        var timer;
+        $(document).keyup(function (e) {
+            input += e.which;
 
-			clearTimeout(timer);
-			timer = setTimeout(function () {
-				input = "";
-			}, 500);
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                input = "";
+            }, 500);
 
-			if (input == code) {
-				$scope.scouterUsername = "admin";
-				$scope.scouterPswd = prompt("If you really are who you claim to be, then what's the password?");
-				$scope.login();
-			}
-		});
-	});
+            if (input == code) {
+                $scope.scouterUsername = "admin";
+                $scope.scouterPswd = prompt("If you really are who you claim to be, then what's the password?");
+                $scope.login();
+            }
+        });
+    });
 
-	$scope.login = function () {
-		if (!$rootScope.loggedIn) {
-			AccountService.login($scope.scouterUsername, $scope.scouterPswd).then(function (response) {
-				var result = response.data;
-				console.log(result);
-				$window.localStorage["token"] = result.token;
-				$rootScope.loggedIn = true;
-				if ($scope.scouterUsername == "admin") {
-					$location.path('/admin');
-				} else {
-					$location.path('/scouting');
-				}
-			}, function (response) {
-				$("#loginForm").validate().showErrors({
-					"loginFields": "Invalid username/password"
-				});
-			});
-		}
-	};
+    $scope.login = function () {
+        if (!$rootScope.loggedIn) {
+            AccountService.login($scope.scouterUsername, $scope.scouterPswd).then(function (response) {
+                var result = response.data;
+                console.log(result);
+                $window.localStorage["token"] = result.token;
+                $rootScope.loggedIn = true;
+                if ($scope.scouterUsername == "admin") {
+                    $location.path('/admin');
+                } else {
+                    $location.path('/scouting');
+                }
+            }, function (response) {
+                $("#loginForm").validate().showErrors({
+                    "loginFields": "Invalid username/password"
+                });
+            });
+        }
+    };
 
-	if ($rootScope.loggedIn) {
-		$location.path("/wager");
-	}
+    if ($rootScope.loggedIn) {
+        $location.path("/wager");
+    }
 });
 
 app.controller("LogoutController", function (AccountService, $rootScope, $http, $location, $window) {
-	'use strict';
+    'use strict';
 
-	if ($rootScope.loggedIn) {
-		AccountService.logout();
-	} else {
-		$location.path("/login");
-	}
+    if ($rootScope.loggedIn) {
+        AccountService.logout();
+    } else {
+        $location.path("/login");
+    }
 });
 
 app.controller('RegisterController', function ($scope, $http, $location) {
-	'use strict';
+    'use strict';
 
-	$scope.teams = [
-		{
-			teamNumber: 3506,
-			name: 'Yeti Robotics'
-		},
-		{
-			teamNumber: 4290,
-			name: 'Bots of War'
-		},
-		{
-			teamNumber: 6894,
-			name: 'Iced Java'
-		}
-	];
+    $scope.teams = [
+        {
+            teamNumber: 3506,
+            name: 'Yeti Robotics'
+        },
+        {
+            teamNumber: 4290,
+            name: 'Bots of War'
+        },
+        {
+            teamNumber: 6894,
+            name: 'Iced Java'
+        }
+    ];
 
-	$(document).ready(function () {
-		$("#registerForm").validate({
-			rules: {
-				password: {
-					minlength: 3
-				},
-				confirmPassword: {
-					minlength: 3,
-					equalTo: "#password"
-				}
-			}
-		});
-	});
+    $(document).ready(function () {
+        $("#registerForm").validate({
+            rules: {
+                password: {
+                    minlength: 3
+                },
+                confirmPassword: {
+                    minlength: 3,
+                    equalTo: "#password"
+                }
+            }
+        });
+    });
 
-	$scope.register = function () {
-		if ($('#registerForm').valid()) {
-			console.log('registered');
-			$http.post('php/register.php', {
-				name: $scope.name,
-				username: $scope.username,
-				password: $scope.password,
-				teamNumber: $scope.teamNumber
-			}).then(function (response) {
-				$location.path("/login");
-				console.log(response.data);
-			}, function (response) {
-				console.log(response.data);
-				$("#registerForm").validate().showErrors({
-					"username": "Username already taken"
-				});
-			});
-		}
-	};
+    $scope.register = function () {
+        if ($('#registerForm').valid()) {
+            console.log('registered');
+            $http.post('php/register.php', {
+                name: $scope.name,
+                username: $scope.username,
+                password: $scope.password,
+                teamNumber: $scope.teamNumber
+            }).then(function (response) {
+                $location.path("/login");
+                console.log(response.data);
+            }, function (response) {
+                console.log(response.data);
+                $("#registerForm").validate().showErrors({
+                    "username": "Username already taken"
+                });
+            });
+        }
+    };
 });
 
 app.controller('FormController', function ($rootScope, $scope, $http, $window, AccountService) {
-	'use strict';
+    'use strict';
 
-	$scope.matches = [];
-	$scope.matchesReceived = false;
-	$scope.selectedTeam = false;
-	$scope.robotPos = {
-		red: [
-			"Red 1",
-			"Red 2",
-			"Red 3",
-		],
-		blue: [
-			"Blue 1",
-			"Blue 2",
-			"Blue 3"
-		]
-	};
+    $scope.matches = [];
+    $scope.matchesReceived = false;
+    $scope.selectedTeam = false;
+    $scope.robotPos = {
+        red: [
+            "Red 1",
+            "Red 2",
+            "Red 3",
+        ],
+        blue: [
+            "Blue 1",
+            "Blue 2",
+            "Blue 3"
+        ]
+    };
 
-	$rootScope.getCurrentSettings(function () {
-		if ($rootScope.settings.validateTeams) {
-			$http.get("php/getFutureMatches.php").then(function (response) {
-				for (var i = 0; i < response.data.length; i++) {
-					$scope.matches.push({
-						teams: {
-							red: [
-								$scope.parseTeamString(response.data[i].alliances.red.team_keys[0]),
-								$scope.parseTeamString(response.data[i].alliances.red.team_keys[1]),
-								$scope.parseTeamString(response.data[i].alliances.red.team_keys[2])
-							],
-							blue: [
-								$scope.parseTeamString(response.data[i].alliances.blue.team_keys[0]),
-								$scope.parseTeamString(response.data[i].alliances.blue.team_keys[1]),
-								$scope.parseTeamString(response.data[i].alliances.blue.team_keys[2])
-							]
-						},
-						number: parseInt(response.data[i].match_number)
-					});
-				}
-				$scope.matches.sort(function (a, b) {
-					a = a.number;
-					b = b.number;
+    $rootScope.getCurrentSettings(function () {
+        if ($rootScope.settings.validateTeams) {
+            $http.get("php/getFutureMatches.php").then(function (response) {
+                for (var i = 0; i < response.data.length; i++) {
+                    $scope.matches.push({
+                        teams: {
+                            red: [
+                                $scope.parseTeamString(response.data[i].alliances.red.team_keys[0]),
+                                $scope.parseTeamString(response.data[i].alliances.red.team_keys[1]),
+                                $scope.parseTeamString(response.data[i].alliances.red.team_keys[2])
+                            ],
+                            blue: [
+                                $scope.parseTeamString(response.data[i].alliances.blue.team_keys[0]),
+                                $scope.parseTeamString(response.data[i].alliances.blue.team_keys[1]),
+                                $scope.parseTeamString(response.data[i].alliances.blue.team_keys[2])
+                            ]
+                        },
+                        number: parseInt(response.data[i].match_number)
+                    });
+                }
+                $scope.matches.sort(function (a, b) {
+                    a = a.number;
+                    b = b.number;
 
-					if (a < b) {
-						return -1;
-					} else if (a > b) {
-						return 1;
-					}
+                    if (a < b) {
+                        return -1;
+                    } else if (a > b) {
+                        return 1;
+                    }
 
-					return 0;
-				});
-				console.log($scope.matches);
-				$scope.matchesReceived = true;
-			}, function (response) {
-				displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
-				$scope.matchesReceived = false;
-			});
-		}
-	});
+                    return 0;
+                });
+                console.log($scope.matches);
+                $scope.matchesReceived = true;
+            }, function (response) {
+                displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
+                $scope.matchesReceived = false;
+            });
+        }
+    });
 
-	$scope.parseTeamString = function (teamString) {
-		return parseInt(teamString.slice(3));
-	}
+    $scope.parseTeamString = function (teamString) {
+        return parseInt(teamString.slice(3));
+    }
 
-	$scope.selectTeam = function (teamNumber) {
-		$scope.formData.matchNumber = $scope.matches[0].number;
-		$scope.selectedTeam = true;
-		$scope.formData.teamNumber = parseInt(teamNumber);
-	}
+    $scope.selectTeam = function (teamNumber) {
+        $scope.formData.matchNumber = $scope.matches[0].number;
+        $scope.selectedTeam = true;
+        $scope.formData.teamNumber = parseInt(teamNumber);
+    }
 
-	AccountService.validateSession().then(function (response) {
-		$scope.resetForm();
-	}, function (error) {
-		AccountService.logout();
-		displayMessage('You are logged out', 'warning');
-	});
+    AccountService.validateSession().then(function (response) {
+        $scope.resetForm();
+    }, function (error) {
+        AccountService.logout();
+        displayMessage('You are logged out', 'warning');
+    });
 
-	$scope.resetForm = function () {
-		$scope.formData = {
-			autoCheck: false,
-			autoScale: 0,
-			autoSwitch: 0,
-			teleCheck: false,
-			scaleCubes: 0,
-			switchCubes: 0,
-			enemySwitchCubes: 0,
-			vaultCubes: 0,
-			scouterId: $rootScope.user.id
-		};
-		$scope.selectedTeam = false;
-		$("#submitButton").removeAttr("disabled");
-		$("#scouting_form").trigger("reset");
-	};
+    $scope.resetForm = function () {
+        $scope.formData = {
+            autoCheck: false,
+            autoScale: 0,
+            autoSwitch: 0,
+            teleCheck: false,
+            scaleCubes: 0,
+            switchCubes: 0,
+            enemySwitchCubes: 0,
+            vaultCubes: 0,
+            scouterId: $rootScope.user.id
+        };
+        $scope.selectedTeam = false;
+        $("#submitButton").removeAttr("disabled");
+        $("#scouting_form").trigger("reset");
+    };
 
-	$(document).ready(function () {
-		$scope.validator = $('#scouting_form').validate();
-	});
+    $(document).ready(function () {
+        $scope.validator = $('#scouting_form').validate();
+    });
 
-	$scope.submit = function () {
-		if ($('#scouting_form').valid()) {
-			$(window).scrollTop(0);
-			displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
-			$("#submitButton").attr("disabled", "disabled");
-			$http.post('php/formSubmit.php', $scope.formData)
-				.then(function (data) {
-					displayMessage('Form submitted successfully', 'success');
-					console.log($scope.formData);
-					$scope.matches.shift();
-					$rootScope.getCurrentSettings();
-					$scope.resetForm();
-				}, function (error) {
-					displayMessage('Failed to submit form', 'danger');
-					console.error(error);
-				});
-		}
-	};
+    $scope.submit = function () {
+        if ($('#scouting_form').valid()) {
+            $(window).scrollTop(0);
+            displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
+            $("#submitButton").attr("disabled", "disabled");
+            $http.post('php/formSubmit.php', $scope.formData)
+                .then(function (data) {
+                    displayMessage('Form submitted successfully', 'success');
+                    console.log($scope.formData);
+                    $scope.matches.shift();
+                    $rootScope.getCurrentSettings();
+                    $scope.resetForm();
+                }, function (error) {
+                    displayMessage('Failed to submit form', 'danger');
+                    console.error(error);
+                });
+        }
+    };
 
-	$scope.incrementAS = function () {
-		$scope.formData.autoScale++;
-	};
-	$scope.decrementAS = function () {
-		if ($scope.formData.autoScale > 0) {
-			$scope.formData.autoScale--;
-		}
-	};
-	$scope.incrementAW = function () {
-		$scope.formData.autoSwitch++;
-	};
-	$scope.decrementAW = function () {
-		if ($scope.formData.autoSwitch > 0) {
-			$scope.formData.autoSwitch--;
-		}
-	};
-	$scope.incrementSC = function () {
-		$scope.formData.scaleCubes++;
-	};
-	$scope.decrementSC = function () {
-		if ($scope.formData.scaleCubes > 0) {
-			$scope.formData.scaleCubes--;
-		}
-	};
-	$scope.incrementWC = function () {
-		$scope.formData.switchCubes++;
-	};
-	$scope.decrementWC = function () {
-		if ($scope.formData.switchCubes > 0) {
-			$scope.formData.switchCubes--;
-		}
-	};
-	$scope.incrementEC = function () {
-		$scope.formData.enemySwitchCubes++;
-	};
-	$scope.decrementEC = function () {
-		if ($scope.formData.enemySwitchCubes > 0) {
-			$scope.formData.enemySwitchCubes--;
-		}
-	};
-	$scope.incrementVC = function () {
-		$scope.formData.vaultCubes++;
-	};
-	$scope.decrementVC = function () {
-		if ($scope.formData.vaultCubes > 0) {
-			$scope.formData.vaultCubes--;
-		}
-	};
+    $scope.incrementAS = function () {
+        $scope.formData.autoScale++;
+    };
+    $scope.decrementAS = function () {
+        if ($scope.formData.autoScale > 0) {
+            $scope.formData.autoScale--;
+        }
+    };
+    $scope.incrementAW = function () {
+        $scope.formData.autoSwitch++;
+    };
+    $scope.decrementAW = function () {
+        if ($scope.formData.autoSwitch > 0) {
+            $scope.formData.autoSwitch--;
+        }
+    };
+    $scope.incrementSC = function () {
+        $scope.formData.scaleCubes++;
+    };
+    $scope.decrementSC = function () {
+        if ($scope.formData.scaleCubes > 0) {
+            $scope.formData.scaleCubes--;
+        }
+    };
+    $scope.incrementWC = function () {
+        $scope.formData.switchCubes++;
+    };
+    $scope.decrementWC = function () {
+        if ($scope.formData.switchCubes > 0) {
+            $scope.formData.switchCubes--;
+        }
+    };
+    $scope.incrementEC = function () {
+        $scope.formData.enemySwitchCubes++;
+    };
+    $scope.decrementEC = function () {
+        if ($scope.formData.enemySwitchCubes > 0) {
+            $scope.formData.enemySwitchCubes--;
+        }
+    };
+    $scope.incrementVC = function () {
+        $scope.formData.vaultCubes++;
+    };
+    $scope.decrementVC = function () {
+        if ($scope.formData.vaultCubes > 0) {
+            $scope.formData.vaultCubes--;
+        }
+    };
 
 });
 
 app.controller('PitFormController', function ($rootScope, $scope, $http, $window, AccountService) {
-	'use strict';
+    'use strict';
 
-	AccountService.validateSession().then(function (response) {
-		$scope.resetForm();
-	}, function (error) {
-		AccountService.logout();
-		displayMessage('You are logged out', 'warning');
-	});
+    AccountService.validateSession().then(function (response) {
+        $scope.resetForm();
+    }, function (error) {
+        AccountService.logout();
+        displayMessage('You are logged out', 'warning');
+    });
 
-	$scope.resetForm = function () {
-		$scope.pitFormData = {
-			id: $rootScope.user.id
-		};
-		$scope.pictures = [];
-		$scope.picNum = [];
-	};
+    $scope.resetForm = function () {
+        $scope.pitFormData = {
+            id: $rootScope.user.id
+        };
+        $scope.pictures = [];
+        $scope.picNum = [];
+    };
 
-	$(document).ready(function () {
-		$('#pitForm').validate();
-		console.log('Inititalize validation');
-		if ($(".robotimage").length == 0 && $("#comments").val() == '') {
-			$("#comments").each(function () {
-				$(this).rules("add", {
-					required: true,
-					messages: {
-						required: "You must submit a comment and/or at least one picture."
-					}
-				});
-			});
-		}
-	});
+    $(document).ready(function () {
+        $('#pitForm').validate();
+        console.log('Inititalize validation');
+        if ($(".robotimage").length == 0 && $("#comments").val() == '') {
+            $("#comments").each(function () {
+                $(this).rules("add", {
+                    required: true,
+                    messages: {
+                        required: "You must submit a comment and/or at least one picture."
+                    }
+                });
+            });
+        }
+    });
 
-	$scope.unrequireComments = function () {
-		$("#comments").rules("remove", "required");
-	};
+    $scope.unrequireComments = function () {
+        $("#comments").rules("remove", "required");
+    };
 
-	$scope.updateDisplay = function (picture, rowNum) {
-		var reader = new FileReader();
-		var file = picture.files[0];
-		if ($scope.pictures[rowNum] == null) {
-			$scope.pictures.push(file);
-		} else {
-			$scope.pictures[rowNum] = file;
-		}
-		reader.readAsDataURL(file);
-		reader.onload = function () {
-			$(picture).parent().prev().children().attr("src", reader.result);
-		};
-	};
+    $scope.updateDisplay = function (picture, rowNum) {
+        var reader = new FileReader();
+        var file = picture.files[0];
+        if ($scope.pictures[rowNum] == null) {
+            $scope.pictures.push(file);
+        } else {
+            $scope.pictures[rowNum] = file;
+        }
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            $(picture).parent().prev().children().attr("src", reader.result);
+        };
+    };
 
-	var num = 0;
+    var num = 0;
 
-	$scope.addPicture = function () {
-		$scope.picNum.push(num);
-		num++;
-		console.log($scope.picNum);
-	};
+    $scope.addPicture = function () {
+        $scope.picNum.push(num);
+        num++;
+        console.log($scope.picNum);
+    };
 
-	$scope.removePicture = function (picture) {
-		var rowNum = $scope.picNum.indexOf(picture);
-		$scope.picNum.splice(rowNum, 1);
-		$scope.pictures.splice(rowNum, 1);
-	};
+    $scope.removePicture = function (picture) {
+        var rowNum = $scope.picNum.indexOf(picture);
+        $scope.picNum.splice(rowNum, 1);
+        $scope.pictures.splice(rowNum, 1);
+    };
 
-	$scope.submit = function () {
-		if ($('#pitForm').valid()) {
-			$("body").scrollTop(0);
-			displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
-			console.log("valid");
-			var formData = new FormData();
-			for (var i = 0; i < $scope.pictures.length; i++) {
-				formData.append('files[]', $scope.pictures[i]);
-			}
-			for (var key in $scope.pitFormData) {
-				if ($scope.pitFormData.hasOwnProperty(key)) {
-					formData.append(key, $scope.pitFormData[key]);
-				}
-			}
-			$http.post("php/pitFormSubmit.php", formData, {
-				transformRequest: angular.identity,
-				headers: {
-					'Content-Type': undefined
-				}
-			}).then(function (response) {
-				console.log("submitted");
-				console.log(response.data);
-				$('body').scrollTop(0);
-				$scope.resetForm();
-				displayMessage("<strong>Success!</strong> Now do it again.", "success");
-			}, function (response) {
-				console.log("Error during submission");
-				console.log(response);
-			});
-		} else {
-			console.log("Not valid");
-		}
-	}
+    $scope.submit = function () {
+        if ($('#pitForm').valid()) {
+            $("body").scrollTop(0);
+            displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
+            console.log("valid");
+            var formData = new FormData();
+            for (var i = 0; i < $scope.pictures.length; i++) {
+                formData.append('files[]', $scope.pictures[i]);
+            }
+            for (var key in $scope.pitFormData) {
+                if ($scope.pitFormData.hasOwnProperty(key)) {
+                    formData.append(key, $scope.pitFormData[key]);
+                }
+            }
+            $http.post("php/pitFormSubmit.php", formData, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
+                }
+            }).then(function (response) {
+                console.log("submitted");
+                console.log(response.data);
+                $('body').scrollTop(0);
+                $scope.resetForm();
+                displayMessage("<strong>Success!</strong> Now do it again.", "success");
+            }, function (response) {
+                console.log("Error during submission");
+                console.log(response);
+            });
+        } else {
+            console.log("Not valid");
+        }
+    }
 
 });
 
 app.controller('PitController', function ($scope, $http, $routeParams, $location, $window) {
-	'use strict';
+    'use strict';
 
-	$scope.teamNumber = $routeParams.teamNumber;
+    $scope.teamNumber = $routeParams.teamNumber;
 
-	$scope.error = "";
+    $scope.error = "";
 
-	$scope.teamLink = function () {
-		$('#errorModal').on('hidden.bs.modal', function () {
-			$location.path("/team/" + $scope.teamNumber);
-			$scope.$apply();
-		});
-	}
+    $scope.teamLink = function () {
+        $('#errorModal').on('hidden.bs.modal', function () {
+            $location.path("/team/" + $scope.teamNumber);
+            $scope.$apply();
+        });
+    }
 
-	$scope.pitData = {
-		pictures: [],
-		comments: [],
-		token: $window.localStorage["token"]
-	}
+    $scope.pitData = {
+        pictures: [],
+        comments: [],
+        token: $window.localStorage["token"]
+    }
 
-	$scope.picIndex;
+    $scope.picIndex;
 
-	$scope.noComments = false;
+    $scope.noComments = false;
 
-	$scope.noPictures = false;
+    $scope.noPictures = false;
 
-	$scope.nextPicture = function () {
-		if ($scope.picIndex < ($scope.pitData.pictures.length - 1)) {
-			$scope.picIndex++;
-		} else {
-			$scope.picIndex = 0;
-		}
-	}
+    $scope.nextPicture = function () {
+        if ($scope.picIndex < ($scope.pitData.pictures.length - 1)) {
+            $scope.picIndex++;
+        } else {
+            $scope.picIndex = 0;
+        }
+    }
 
-	$scope.previousPicture = function () {
-		if ($scope.picIndex > 0) {
-			$scope.picIndex--;
-		} else {
-			$scope.picIndex = $scope.pitData.pictures.length - 1;
-		}
-	}
+    $scope.previousPicture = function () {
+        if ($scope.picIndex > 0) {
+            $scope.picIndex--;
+        } else {
+            $scope.picIndex = $scope.pitData.pictures.length - 1;
+        }
+    }
 
-	$http.get('php/getScouterTeams.php').then(function (response) {
-		$scope.teams = response.data;
-		if ($scope.teams.length) {
-			$scope.currentTeam = $scope.teams[0];
-			$scope.loadData($scope.currentTeam.team_number);
-		}
-	});
+    $http.get('php/getScouterTeams.php').then(function (response) {
+        $scope.teams = response.data;
+        if ($scope.teams.length) {
+            $scope.currentTeam = $scope.teams[0];
+            $scope.loadData($scope.currentTeam.team_number);
+        }
+    });
 
-	$scope.loadData = function (scoutingTeam) {
-		$http.get('php/getPitData.php', {
-			params: {
-				teamNumber: $routeParams.teamNumber,
-				scoutingTeam: scoutingTeam
-			}
-		}).then(function (response) {
-			$scope.data = response.data;
+    $scope.loadData = function (scoutingTeam) {
+        $http.get('php/getPitData.php', {
+            params: {
+                teamNumber: $routeParams.teamNumber,
+                scoutingTeam: scoutingTeam
+            }
+        }).then(function (response) {
+            $scope.data = response.data;
 
-			if ($scope.data.teamInfo.name != null) {
-				$scope.name = $scope.data.teamInfo.name + ($scope.data.teamInfo.name[$scope.data.teamInfo.name.length - 1] == "s" ? "'" : "'s");
-			} else {
-				$scope.name = $scope.teamNumber + "'s";
-			}
+            if ($scope.data.teamInfo.name != null) {
+                $scope.name = $scope.data.teamInfo.name + ($scope.data.teamInfo.name[$scope.data.teamInfo.name.length - 1] == "s" ? "'" : "'s");
+            } else {
+                $scope.name = $scope.teamNumber + "'s";
+            }
 
-			if (response.data.commentSection != null) {
-				$scope.noComments = false;
-				$scope.pitData.comments.splice(0);
-				for (var i = 0; i < response.data.commentSection.length; i++) {
-					$scope.pitData.comments.push({
-						comment: response.data.commentSection[i]['Pit Scouters Comments'],
-						commenter: response.data.commentSection[i]['Pit Scouter'],
-						timeStamp: response.data.commentSection[i]['timestamp']
-					});
-				}
-			} else {
-				$scope.noComments = true;
-			}
-			if (response.data.pics != null) {
-				$scope.noPictures = false;
-				$scope.pitData.pictures.splice(0);
-				for (var i = 0; i < response.data.pics.length; i++) {
-					$scope.pitData.pictures.push({
-						pictureNumber: response.data.pics[i]['Picture Number'],
-						photographer: response.data.pics[i]['Pit Scouter'],
-						timeStamp: response.data.pics[i]['timestamp']
-					});
-				}
-				$scope.picIndex = 0;
-			} else {
-				$scope.noPictures = true;
-			}
+            if (response.data.commentSection != null) {
+                $scope.noComments = false;
+                $scope.pitData.comments.splice(0);
+                for (var i = 0; i < response.data.commentSection.length; i++) {
+                    $scope.pitData.comments.push({
+                        comment: response.data.commentSection[i]['Pit Scouters Comments'],
+                        commenter: response.data.commentSection[i]['Pit Scouter'],
+                        timeStamp: response.data.commentSection[i]['timestamp']
+                    });
+                }
+            } else {
+                $scope.noComments = true;
+            }
+            if (response.data.pics != null) {
+                $scope.noPictures = false;
+                $scope.pitData.pictures.splice(0);
+                for (var i = 0; i < response.data.pics.length; i++) {
+                    $scope.pitData.pictures.push({
+                        pictureNumber: response.data.pics[i]['Picture Number'],
+                        photographer: response.data.pics[i]['Pit Scouter'],
+                        timeStamp: response.data.pics[i]['timestamp']
+                    });
+                }
+                $scope.picIndex = 0;
+            } else {
+                $scope.noPictures = true;
+            }
 
-			$(document).ready(function () {
-				if ($scope.noComments && $scope.noPictures) {
-					$("#errorModal").modal("show");
-				}
-			});
-		console.log($scope.pitData.comments)
-		}, function (response) {
-			$scope.error = response.data.error;
-		});
-	};
+            $(document).ready(function () {
+                if ($scope.noComments && $scope.noPictures) {
+                    $("#errorModal").modal("show");
+                }
+            });
+            console.log($scope.pitData.comments)
+        }, function (response) {
+            $scope.error = response.data.error;
+        });
+    };
 });
 
 app.controller("ListController", function ($rootScope, $scope, $http) {
-	'use strict';
-	$scope.sortType = 'avg_score';
-	$scope.sortDescending = true;
+    'use strict';
+    $scope.sortType = 'avg_score';
+    $scope.sortDescending = true;
 
-	$http.get('php/getScouterTeams.php').then(function (response) {
-		$scope.teams = response.data;
-		if ($scope.teams.length) {
-			$scope.currentTeam = $scope.teams[0];
-			$scope.loadData($scope.currentTeam.team_number);
-		}
-	});
+    $http.get('php/getScouterTeams.php').then(function (response) {
+        $scope.teams = response.data;
+        if ($scope.teams.length) {
+            $scope.currentTeam = $scope.teams[0];
+            $scope.loadData($scope.currentTeam.team_number);
+        }
+    });
 
-	$scope.loadData = function (teamNumber) {
-		$http.get('php/list.php', {
-			params: { teamNumber: teamNumber }
-		}).then(function (response) {
-			$scope.data = response.data;
-			for (var i = 0; i < $scope.data.length; i++) {
-				if ($scope.data[i].avg_score == null) {
-					$scope.data[i].avg_score = "No match scouting data available, only pit scouting data.";
-					$scope.data[i].avg_climb = "No match scouting data available, only pit scouting data.";
-					$scope.data[i].avg_tele_switch = "No match scouting data available, only pit scouting data.";
-					$scope.data[i].avg_tele_scale = "No match scouting data available, only pit scouting data.";
-					$scope.data[i].avg_vault = "No match scouting data available, only pit scouting data.";
-				} else {
-					$scope.data[i].team_number = parseInt($scope.data[i].team_number);
-					$scope.data[i].avg_score = parseFloat(parseFloat($scope.data[i].avg_score).toFixed(2));
-					$scope.data[i].avg_climb = parseFloat(parseFloat($scope.data[i].avg_climb * 100).toFixed(2));
-					$scope.data[i].avg_tele_switch = parseFloat(parseFloat($scope.data[i].avg_tele_switch).toFixed(2));
-					$scope.data[i].avg_tele_scale = parseFloat(parseFloat($scope.data[i].avg_tele_scale).toFixed(2));
-					$scope.data[i].total_auto_cubes = parseInt($scope.data[i].total_auto_cubes);
-					$scope.data[i].avg_vault = parseFloat(parseFloat($scope.data[i].avg_vault).toFixed(2));
-				}
-				$scope.data[i].team_name = $scope.data[i].team_name != null ? $scope.data[i].team_name : "Name unavailable";
-			}
+    $scope.loadData = function (teamNumber) {
+        $http.get('php/list.php', {
+            params: { teamNumber: teamNumber }
+        }).then(function (response) {
+            $scope.data = response.data;
+            for (var i = 0; i < $scope.data.length; i++) {
+                if ($scope.data[i].avg_score == null) {
+                    $scope.data[i].avg_score = "No match scouting data available, only pit scouting data.";
+                    $scope.data[i].avg_climb = "No match scouting data available, only pit scouting data.";
+                    $scope.data[i].avg_tele_switch = "No match scouting data available, only pit scouting data.";
+                    $scope.data[i].avg_tele_scale = "No match scouting data available, only pit scouting data.";
+                    $scope.data[i].avg_vault = "No match scouting data available, only pit scouting data.";
+                } else {
+                    $scope.data[i].team_number = parseInt($scope.data[i].team_number);
+                    $scope.data[i].avg_score = parseFloat(parseFloat($scope.data[i].avg_score).toFixed(2));
+                    $scope.data[i].avg_climb = parseFloat(parseFloat($scope.data[i].avg_climb * 100).toFixed(2));
+                    $scope.data[i].avg_tele_switch = parseFloat(parseFloat($scope.data[i].avg_tele_switch).toFixed(2));
+                    $scope.data[i].avg_tele_scale = parseFloat(parseFloat($scope.data[i].avg_tele_scale).toFixed(2));
+                    $scope.data[i].total_auto_cubes = parseInt($scope.data[i].total_auto_cubes);
+                    $scope.data[i].avg_vault = parseFloat(parseFloat($scope.data[i].avg_vault).toFixed(2));
+                }
+                $scope.data[i].team_name = $scope.data[i].team_name != null ? $scope.data[i].team_name : "Name unavailable";
+            }
 
-			console.log($scope.data);
-		});
-	};
+            console.log($scope.data);
+        });
+    };
 
-	$scope.filterTeams = function (value) {
-		var searchRegExp = new RegExp($scope.search, "i");
-		var teamString = value.team_number.toString();
-		return value.team_name != null ? (value.team_name.match(searchRegExp) || teamString.match(searchRegExp)) : teamString.match(searchRegExp);
-	}
+    $scope.filterTeams = function (value) {
+        var searchRegExp = new RegExp($scope.search, "i");
+        var teamString = value.team_number.toString();
+        return value.team_name != null ? (value.team_name.match(searchRegExp) || teamString.match(searchRegExp)) : teamString.match(searchRegExp);
+    }
 });
 
 app.controller("LeaderboardsController", function ($scope, $http) {
-	'use strict';
-	$scope.sortType = 'byteCoins';
-	$scope.sortDesceding = true;
-	$http.get('php/leaderboards.php').then(function (response) {
-		$scope.data = response.data;
-		for (var i = 0; i < $scope.data.length; i++) {
-			$scope.data[i].byteCoins = parseInt($scope.data[i].byteCoins);
-		}
-	});
+    'use strict';
+    $scope.sortType = 'byteCoins';
+    $scope.sortDesceding = true;
+    $http.get('php/leaderboards.php').then(function (response) {
+        $scope.data = response.data;
+        for (var i = 0; i < $scope.data.length; i++) {
+            $scope.data[i].byteCoins = parseInt($scope.data[i].byteCoins);
+        }
+    });
 });
 
 app.controller("TeamController", function ($scope, $http, $routeParams) {
-	'use strict';
+    'use strict';
 
-	$scope.teamNumber = $routeParams.teamNumber;
-	$scope.error = "";
-	$scope.isClimbComment = false;
-	$scope.climbComments = [];
+    $scope.teamNumber = $routeParams.teamNumber;
+    $scope.error = "";
+    $scope.isClimbComment = false;
+    $scope.climbComments = [];
 
-	$(document).ready(function () {
-		$scope.matchCollapsed = true;
-		$scope.teleMatchCollapsed = true;
-		$scope.autoMatchCollapsed = true;
-		$("#collapseMatch").collapse("show");
-		$("#collapseTeleMatch").collapse("show");
-		$("#collapseAutoMatch").collapse("show");
-	});
+    $(document).ready(function () {
+        $scope.matchCollapsed = true;
+        $scope.teleMatchCollapsed = true;
+        $scope.autoMatchCollapsed = true;
+        $("#collapseMatch").collapse("show");
+        $("#collapseTeleMatch").collapse("show");
+        $("#collapseAutoMatch").collapse("show");
+    });
 
-	$http.get('php/getScouterTeams.php').then(function (response) {
-		$scope.teams = response.data;
-		if ($scope.teams.length) {
-			$scope.currentTeam = $scope.teams[0];
-			$scope.loadData($scope.currentTeam.team_number);
-		}
-	});
+    $http.get('php/getScouterTeams.php').then(function (response) {
+        $scope.teams = response.data;
+        if ($scope.teams.length) {
+            $scope.currentTeam = $scope.teams[0];
+            $scope.loadData($scope.currentTeam.team_number);
+        }
+    });
 
-	$scope.loadData = function (scoutingTeam) {
-		$http.get("php/getTeam.php", {
-			params: {
-				teamNumber: $routeParams.teamNumber,
-				scoutingTeam: scoutingTeam
-			}
-		}).then(function (response) {
-			$scope.data = response.data;
-			console.log($scope.data);
+    $scope.loadData = function (scoutingTeam) {
+        $http.get("php/getTeam.php", {
+            params: {
+                teamNumber: $routeParams.teamNumber,
+                scoutingTeam: scoutingTeam
+            }
+        }).then(function (response) {
+            $scope.data = response.data;
+            console.log($scope.data);
 
-			for (var i = 0; i < $scope.data.formData.length; i++) {
-				if ($scope.data.formData[i].other_climb != "") {
-					$scope.isClimbComment = true;
-					$scope.climbComments.push({
-						"name": $scope.data.formData[i].name,
-						"match_number": $scope.data.formData[i].match_number,
-						"other_climb": $scope.data.formData[i].other_climb
-					});
-				}
-			}
-		}, function (response) {
-			$scope.error = response.data.error;
-			console.error($scope.error);
-		});
-	};
+            for (var i = 0; i < $scope.data.formData.length; i++) {
+                if ($scope.data.formData[i].other_climb != "") {
+                    $scope.isClimbComment = true;
+                    $scope.climbComments.push({
+                        "name": $scope.data.formData[i].name,
+                        "match_number": $scope.data.formData[i].match_number,
+                        "other_climb": $scope.data.formData[i].other_climb
+                    });
+                }
+            }
+        }, function (response) {
+            $scope.error = response.data.error;
+            console.error($scope.error);
+        });
+    };
 
 
-	$scope.chooseBar = function (value) {
-		if (value <= 1) {
-			value *= 100;
-		}
-		if (value >= 80) {
-			return "bg-success"
-		} else if (value < 80 && value > 40) {
-			return "bg-warning"
-		} else {
-			return "bg-danger"
-		}
-	}
+    $scope.chooseBar = function (value) {
+        if (value <= 1) {
+            value *= 100;
+        }
+        if (value >= 80) {
+            return "bg-success"
+        } else if (value < 80 && value > 40) {
+            return "bg-warning"
+        } else {
+            return "bg-danger"
+        }
+    }
 
 });
 
 app.controller("MatchController", function ($scope, $http, $routeParams) {
-	'use strict';
+    'use strict';
 
-	$(document).ready(function () {
-		$scope.winningAllianceCollapsed = true;
-		$scope.winningteleMatchCollapsed = true;
-		$scope.winningautoMatchCollapsed = true;
-		$("#collapsewinningAlliance").collapse("hide");
-		$("#collapsewinningTeleMatch").collapse("hide");
-		$("#collapsewinningAutoMatch").collapse("hide");
-		$scope.losingAllianceCollapsed = true;
-		$scope.losingteleMatchCollapsed = true;
-		$scope.losingautoMatchCollapsed = true;
-		$("#collapselosingAlliance").collapse("hide");
-		$("#collapselosingTeleMatch").collapse("hide");
-		$("#collapselosingAutoMatch").collapse("hide");
-	});
+    $(document).ready(function () {
+        $scope.autoCollapsed = false;
+        $scope.teleCollapsed = false;
+        $scope.commentsCollapsed = false;
+        $("#collapseAuto").collapse("show");
+        $("#collapseTele").collapse("show");
+        $("#collapseComments").collapse("show");
+    });
 
-	$scope.matchNumber = $routeParams.matchNumber;
-	$scope.error = "";
-	$scope.winTeam = [];
-	$scope.loseTeam = [];
-	$scope.scores = [];
+    $scope.matchNumber = $routeParams.matchNumber;
+    $scope.error = "";
 
-	$http.get('php/getScouterTeams.php').then(function (response) {
-		$scope.teams = response.data;
-		if ($scope.teams.length) {
-			$scope.currentTeam = $scope.teams[0];
-			$scope.loadData($scope.currentTeam.team_number);
-		}
-	});
-		
-	$scope.loadData = function (scoutingTeam) {
-		$http.get('php/getMatch.php', {
-			params: { scoutingTeam: scoutingTeam, 
-					  matchNumber: $routeParams.matchNumber}
-		}).then(function (response) {
-			$scope.data = response.data;
-			$scope.scores.splice(0)
-			$scope.winTeam.splice(0);
-			$scope.loseTeam.splice(0);
-			for(var x = 0; x <$scope.data.matches.length; x++){
-			$scope.scores.push(parseInt($scope.data.matches[x].score));
-			}
+    $http.get('php/getScouterTeams.php').then(function (response) {
+        $scope.teams = response.data;
+        if ($scope.teams.length) {
+            $scope.currentTeam = $scope.teams[0];
+            $scope.loadData($scope.currentTeam.team_number);
+        }
+    });
 
-		
-			for (var i = 0; i < $scope.data.matches.length; i++) {
-				if($scope.data.matches[i].score >= Math.max.apply(Math, $scope.scores)) {
-					$scope.winTeam.push({
-						comment: $scope.data.matches[i].comment,
-						auto_check: $scope.data.matches[i].auto_check,
-						auto_scale: $scope.data.matches[i].auto_scale,
-						auto_switch:$scope.data.matches[i].auto_switch,
-						bar_climb: $scope.data.matches[i].bar_climb,
-						enemy_switch_cubes: $scope.data.matches[i].enemy_switch_cubes,
-						help_climb: $scope.data.matches[i].help_climb,
-						id: $scope.data.matches[i].id,
-						match_number: $scope.data.matches[i].match_number,
-						name: $scope.data.matches[i].name,
-						other_climb: $scope.data.matches[i].other_climb,
-						ramp_climb: $scope.data.matches[i].ramp_climb,
-						scale_cubes: $scope.data.matches[i].scale_cubes,
-						score: $scope.data.matches[i].score,
-						scouter_id: $scope.data.matches[i].scouter_id,
-						scouting_team :$scope.data.matches[i].scouting_team,
-						switch_cubes: $scope.data.matches[i].switch_cubes,
-						team_number: $scope.data.matches[i].team_number,
-						tele_check: $scope.data.matches[i].tele_check,
-						tele_cube_stack: $scope.data.matches[i].tele_cube_stack,
-						tele_defense: $scope.data.matches[i].tele_defense,
-						vault_cubes: $scope.data.matches[i].vault_cubes,
-					});
-				}else {
-					$scope.loseTeam.push({
-						comment: $scope.data.matches[i].comment,
-						auto_check: $scope.data.matches[i].auto_check,
-						auto_scale: $scope.data.matches[i].auto_scale,
-						auto_switch:$scope.data.matches[i].auto_switch,
-						bar_climb: $scope.data.matches[i].bar_climb,
-						enemy_switch_cubes: $scope.data.matches[i].enemy_switch_cubes,
-						help_climb: $scope.data.matches[i].help_climb,
-						id: $scope.data.matches[i].id,
-						match_number: $scope.data.matches[i].match_number,
-						name: $scope.data.matches[i].name,
-						other_climb: $scope.data.matches[i].other_climb,
-						ramp_climb: $scope.data.matches[i].ramp_climb,
-						scale_cubes: $scope.data.matches[i].scale_cubes,
-						score: $scope.data.matches[i].score,
-						scouter_id: $scope.data.matches[i].scouter_id,
-						scouting_team :$scope.data.matches[i].scouting_team,
-						switch_cubes: $scope.data.matches[i].switch_cubes,
-						team_number: $scope.data.matches[i].team_number,
-						tele_check: $scope.data.matches[i].tele_check,
-						tele_cube_stack: $scope.data.matches[i].tele_cube_stack,
-						tele_defense: $scope.data.matches[i].tele_defense,
-						vault_cubes: $scope.data.matches[i].vault_cubes,
-					});
-				}
-			}
-			console.log($scope.data);
-		}, function (response) {
-			$scope.error = response.data.error;
+    $scope.loadData = function (scoutingTeam) {
+        $http.get('php/getMatch.php', {
+            params: {
+                scoutingTeam: scoutingTeam,
+                matchNumber: $routeParams.matchNumber
+            }
+        }).then(function (response) {
+            $scope.data = response.data;
 
-			console.error($scope.error);
-		});
-	};
+            console.log($scope.data);
+        }, function (response) {
+            $scope.error = response.data.error;
+
+            console.error($scope.error);
+        });
+    };
 });
 
 app.controller("ScouterController", function ($scope, $http, $routeParams) {
-	'use strict';
+    'use strict';
 
-	$scope.scouterId = $routeParams.scouterId;
+    $scope.scouterId = $routeParams.scouterId;
 
-	$scope.error = "";
+    $scope.error = "";
 
-	$scope.commentSection = {
-		comment: []
-	};
+    $scope.commentSection = {
+        comment: []
+    };
 
-	$http.get("php/getScouter.php", {
-		params: {
-			scouterId: $routeParams.scouterId
-		}
-	}).then(function (response) {
-		$scope.data = response.data;
+    $http.get("php/getScouter.php", {
+        params: {
+            scouterId: $routeParams.scouterId
+        }
+    }).then(function (response) {
+        $scope.data = response.data;
 
-		console.log($scope.data)
-	}, function (response) {
-		$scope.error = response.data.error;
-		console.log($scope.error);
-	});
+        console.log($scope.data)
+    }, function (response) {
+        $scope.error = response.data.error;
+        console.log($scope.error);
+    });
 });
 
 app.controller('AdminPageController', function ($rootScope, $scope, $http, $window, $location, AccountService) {
-	'use strict';
+    'use strict';
 
-	AccountService.validateSession().then(function (response) {
-		if ($rootScope.user.username != "admin") {
-			console.log("If you are looking at this, then you probably tried to force your way in here. If you tried to force your way in here, you could probably find the funciton that logged this. But be warned. Our security is more complicated than an if statement, and deeper then some client-side javascript. If you think you can hack this, then Game On. (But seriously don't cause I don't want to deal with incorrect data)");
-			AccountService.logout();
-		}
-	}, function (response) {
-		if ($rootScope.user.username != "admin") {
-			console.log("If you are looking at this, then you probably tried to force your way in here. If you tried to force your way in here, you could probably find the funciton that logged this. But be warned. Our security is more complicated than an if statement, and deeper then some client-side javascript. If you think you can hack this, then Game On. (But seriously don't cause I don't want to deal with incorrect data)");
-			AccountService.logout();
-		}
-	});
+    AccountService.validateSession().then(function (response) {
+        if ($rootScope.user.username != "admin") {
+            console.log("If you are looking at this, then you probably tried to force your way in here. If you tried to force your way in here, you could probably find the funciton that logged this. But be warned. Our security is more complicated than an if statement, and deeper then some client-side javascript. If you think you can hack this, then Game On. (But seriously don't cause I don't want to deal with incorrect data)");
+            AccountService.logout();
+        }
+    }, function (response) {
+        if ($rootScope.user.username != "admin") {
+            console.log("If you are looking at this, then you probably tried to force your way in here. If you tried to force your way in here, you could probably find the funciton that logged this. But be warned. Our security is more complicated than an if statement, and deeper then some client-side javascript. If you think you can hack this, then Game On. (But seriously don't cause I don't want to deal with incorrect data)");
+            AccountService.logout();
+        }
+    });
 
-	$scope.prettySettings = {
-		validateTeams: ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled",
-		enableCasino: ($rootScope.settings.enableCasino == true) ? "Enabled" : "Disabled",
-		blue1Closest: ($rootScope.settings.blue1Closest == true) ? "closest" : "farthest"
-	};
+    $scope.prettySettings = {
+        validateTeams: ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled",
+        enableCasino: ($rootScope.settings.enableCasino == true) ? "Enabled" : "Disabled",
+        blue1Closest: ($rootScope.settings.blue1Closest == true) ? "closest" : "farthest"
+    };
 
-	$scope.updatePrettySettings = function () {
-		$scope.prettySettings.validateTeams = ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled";
-		$scope.prettySettings.enableCasino = ($rootScope.settings.enableCasino == true) ? "Enabled" : "Disabled";
-		$scope.prettySettings.blue1Closest = ($rootScope.settings.blue1Closest == true) ? "closest" : "farthest";
-	};
+    $scope.updatePrettySettings = function () {
+        $scope.prettySettings.validateTeams = ($rootScope.settings.validateTeams == true) ? "Enabled" : "Disabled";
+        $scope.prettySettings.enableCasino = ($rootScope.settings.enableCasino == true) ? "Enabled" : "Disabled";
+        $scope.prettySettings.blue1Closest = ($rootScope.settings.blue1Closest == true) ? "closest" : "farthest";
+    };
 
-	$scope.adminAction = function (pageAction, setting, value) {
-		var post = {
-			token: $window.localStorage["token"],
-			action: pageAction
-		};
-		switch (pageAction) {
-			case 'update_team':
-				post.teamNumber = $scope.teamNumber;
-				break;
-			case 'update_wagers':
-				post.matchNumber = $scope.matchNumber;
-				break;
-			case 'updateSettings':
-				post.setting = setting;
-				post.settingValue = value == 'true' ? true : false;
-				break;
-		}
-		$http.post("php/adminAction.php", post).then(function (response) {
-			$rootScope.getCurrentSettings(function () {
-				$scope.updatePrettySettings();
-			});
-		}, function (response) {
-			console.log("Post response: " + response.data);
-		});
-	}
+    $scope.adminAction = function (pageAction, setting, value) {
+        var post = {
+            token: $window.localStorage["token"],
+            action: pageAction
+        };
+        switch (pageAction) {
+            case 'update_team':
+                post.teamNumber = $scope.teamNumber;
+                break;
+            case 'update_wagers':
+                post.matchNumber = $scope.matchNumber;
+                break;
+            case 'updateSettings':
+                post.setting = setting;
+                post.settingValue = value == 'true' ? true : false;
+                break;
+        }
+        $http.post("php/adminAction.php", post).then(function (response) {
+            $rootScope.getCurrentSettings(function () {
+                $scope.updatePrettySettings();
+            });
+        }, function (response) {
+            console.log("Post response: " + response.data);
+        });
+    }
 });
 
 app.directive('defensesCrossedSelector', function () {
-	'use strict';
-	return {
-		templateUrl: 'html/defenseSelector.html',
-		scope: {
-			defensesCrossed: '=modelTo'
-		}
-	};
+    'use strict';
+    return {
+        templateUrl: 'html/defenseSelector.html',
+        scope: {
+            defensesCrossed: '=modelTo'
+        }
+    };
 });
 
 app.directive('ballsScoredSelector', function () {
-	'use strict';
-	return {
-		templateUrl: 'html/ballsSelector.html',
-		scope: {
-			ballsScored: '=modelTo'
-		}
-	};
+    'use strict';
+    return {
+        templateUrl: 'html/ballsSelector.html',
+        scope: {
+            ballsScored: '=modelTo'
+        }
+    };
 });
 
 app.directive('numberPicker', function () {
-	'use strict';
-	return {
-		templateUrl: 'html/numberPicker.html',
-		scope: {
-			num: '='
-		}
-	}
+    'use strict';
+    return {
+        templateUrl: 'html/numberPicker.html',
+        scope: {
+            num: '='
+        }
+    }
 });
 
 app.directive('picture', function () {
-	'use strict';
-	return {
-		templateUrl: 'html/picture.html',
-		scope: {
-			removePicture: '&'
-		}
-	}
+    'use strict';
+    return {
+        templateUrl: 'html/picture.html',
+        scope: {
+            removePicture: '&'
+        }
+    }
 });
 
 app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
-	'use strict';
+    'use strict';
 
-	$routeProvider.when('/', {
-		templateUrl: 'html/list.html',
-		controller: 'ListController'
-	}).when('/wager', {
-		templateUrl: 'html/casino.html',
-		controller: 'JoeBannanas'
-	}).when("/scouting", {
-		templateUrl: 'html/form.html',
-		controller: 'FormController'
-	}).when("/team/:teamNumber", {
-		templateUrl: 'html/team.html',
-		controller: 'TeamController'
-	}).when("/match/:matchNumber", {
-		templateUrl: 'html/matches.html',
-		controller: 'MatchController'
-	}).when("/pit-scouting", {
-		templateUrl: 'html/pitForm.html',
-		controller: 'PitFormController'
-	}).when("/pit/:teamNumber", {
-		templateUrl: 'html/pit.html',
-		controller: 'PitController'
-	}).when("/login", {
-		templateUrl: 'html/login.html',
-		controller: 'LoginController'
-	}).when("/logout", {
-		templateUrl: 'html/login.html',
-		controller: 'LogoutController'
-	}).when("/register", {
-		templateUrl: 'html/register.html',
-		controller: 'RegisterController'
-	}).when("/scouter/:scouterId", {
-		templateUrl: 'html/scouter.html',
-		controller: 'ScouterController'
-	}).when("/admin", {
-		templateUrl: 'html/admin.html',
-		controller: 'AdminPageController'
-	}).otherwise({
-		redirectTo: '/'
-	});
+    $routeProvider.when('/', {
+        templateUrl: 'html/list.html',
+        controller: 'ListController'
+    }).when('/wager', {
+        templateUrl: 'html/casino.html',
+        controller: 'JoeBannanas'
+    }).when("/scouting", {
+        templateUrl: 'html/form.html',
+        controller: 'FormController'
+    }).when("/team/:teamNumber", {
+        templateUrl: 'html/team.html',
+        controller: 'TeamController'
+    }).when("/match/:matchNumber", {
+        templateUrl: 'html/match.html',
+        controller: 'MatchController'
+    }).when("/pit-scouting", {
+        templateUrl: 'html/pitForm.html',
+        controller: 'PitFormController'
+    }).when("/pit/:teamNumber", {
+        templateUrl: 'html/pit.html',
+        controller: 'PitController'
+    }).when("/login", {
+        templateUrl: 'html/login.html',
+        controller: 'LoginController'
+    }).when("/logout", {
+        templateUrl: 'html/login.html',
+        controller: 'LogoutController'
+    }).when("/register", {
+        templateUrl: 'html/register.html',
+        controller: 'RegisterController'
+    }).when("/scouter/:scouterId", {
+        templateUrl: 'html/scouter.html',
+        controller: 'ScouterController'
+    }).when("/admin", {
+        templateUrl: 'html/admin.html',
+        controller: 'AdminPageController'
+    }).otherwise({
+        redirectTo: '/'
+    });
 }]);
