@@ -1,3 +1,39 @@
+<div id="match-modal" class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Match Selector</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div ng-show="matches.length > 0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Match #</th>
+                                    <th class="text-center">Team</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="match in matches" ng-click="selectTeam(match.number, match.team)">
+                                    <td class="text-center">{{match.number}}</td>
+                                    <td class="text-center" role="button">{{match.team}}</td>   
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div ng-show="fullMatches.length == 0">
+                    <h4>No matches to display at this time</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container-fluid">
     <form id="scouting_form" enctype="multipart/form-data" ng-submit="submit()">
         <div class="card-columns">
@@ -11,21 +47,23 @@
                 </h5>
                 <div class="card-body">
                     <div ng-if="settings.validateTeams">
-                        <div ng-if="!validatorIncorrect">
+                        <div ng-show="!validatorIncorrect">
                             <div class="form-group">
-                                <label for="#robotPos">Select the position you're scouting for</label>
-                                <select id="robotPos" class="form-control custom-select" ng-model="teamNumber" ng-change="selectTeam(teamNumber)">
-                                    <option ng-value="matches[0].teams.red[0]">Red 1</option>
-                                    <option ng-value="matches[0].teams.red[1]">Red 2</option>
-                                    <option ng-value="matches[0].teams.red[2]">Red 3</option>
-                                    <option ng-value="matches[0].teams.blue[0]">Blue 1</option>
-                                    <option ng-value="matches[0].teams.blue[1]">Blue 2</option>
-                                    <option ng-value="matches[0].teams.blue[2]">Blue 3</option>
+                                <label for="selectedRobotPos">Select the position you're scouting for</label>
+                                <select id="selectedRobotPos" class="form-control custom-select" ng-model="selectedRobotPos" ng-change="loadTeams(selectedRobotPos)">
+                                    <option ng-value="'Red 1'">Red 1</option>
+                                    <option ng-value="'Red 2'">Red 2</option>
+                                    <option ng-value="'Red 3'">Red 3</option>
+                                    <option ng-value="'Blue 1'">Blue 1</option>
+                                    <option ng-value="'Blue 2'">Blue 2</option>
+                                    <option ng-value="'Blue 3'">Blue 3</option>
                                 </select>
                             </div>
+                            
+                            <button ng-if="selectedRobotPos" class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal" >Choose a match</button>
 
-                            <div ng-if="selectedTeam" class="form-group">
-                                <table class="table table-bordered table-sm" style="margin-bottom: 0%">
+                            <div ng-show="selectedTeam">
+                                <table class="table table-bordered table-sm" style="margin-bottom: 0%; margin-top: 1rem">
                                     <thead>
                                         <tr>
                                             <th class="text-center">Match Number</th>
@@ -40,20 +78,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                        <div class="custom-control custom-checkbox" ng-show="selectedTeam">
-                            <input type="checkbox" class="custom-control-input" ng-model="validatorIncorrect" id="validatorIncorrect" ng-click="formData.teamNumber = formData.matchNumber = undefined">
-                            <label class="custom-control-label" for="validatorIncorrect">Is this information incorrect?</label>
-                        </div>
-                        <div ng-if="validatorIncorrect">
-                            <div class="form-group" style="margin-top: 1rem">
-                                <label for="teamnumber">Team number</label>
-                                <input ng-model="formData.teamNumber" class="form-control" type='number' name='teamnumber' id='teamnumber' placeholder='Enter the team number'
-                                    required>
-                            </div>
-                            <label for="matchNumber">Match number</label>
-                            <input ng-model="formData.matchNumber" type="number" class="form-control" id="matchNumber" placeholder="Enter the match number"
-                                required>
                         </div>
                     </div>
                 </div>

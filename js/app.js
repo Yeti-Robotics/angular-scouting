@@ -218,7 +218,7 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 app.controller('FormController', function ($rootScope, $scope, $http, $window, AccountService) {
 	'use strict';
 
-	$scope.matches = [];
+	$scope.fullMatches = [];
 	$scope.matchesReceived = false;
 	$scope.selectedTeam = false;
 	$scope.robotPos = {
@@ -233,12 +233,13 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 			"Blue 3"
 		]
 	};
+	$scope.selectedRobotPos = false;
 
 	$rootScope.getCurrentSettings(function () {
 		if ($rootScope.settings.validateTeams) {
 			$http.get("php/getFutureMatches.php").then(function (response) {
 				for (var i = 0; i < response.data.length; i++) {
-					$scope.matches.push({
+					$scope.fullMatches.push({
 						teams: {
 							red: [
 								$scope.parseTeamString(response.data[i].alliances.red.team_keys[0]),
@@ -254,7 +255,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 						number: parseInt(response.data[i].match_number)
 					});
 				}
-				$scope.matches.sort(function (a, b) {
+				$scope.fullMatches.sort(function (a, b) {
 					a = a.number;
 					b = b.number;
 
@@ -266,7 +267,7 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 
 					return 0;
 				});
-				console.log($scope.matches);
+				console.log($scope.fullMatches);
 				$scope.matchesReceived = true;
 			}, function (response) {
 				displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
@@ -279,10 +280,65 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 		return parseInt(teamString.slice(3));
 	}
 
-	$scope.selectTeam = function (teamNumber) {
-		$scope.formData.matchNumber = $scope.matches[0].number;
+	$scope.selectTeam = function (matchNumber, teamNumber) {
+		$scope.formData.matchNumber = matchNumber;
 		$scope.selectedTeam = true;
 		$scope.formData.teamNumber = parseInt(teamNumber);
+		$("#match-modal").modal('hide');
+	};
+
+	$scope.loadTeams = function (selectedRobotPos) {
+		$scope.matches = [];
+		switch (selectedRobotPos) {
+			case "Red 1":
+				for (var i = 0; i < $scope.fullMatches.length; i++) {
+					$scope.matches.push({
+						team: $scope.fullMatches[i].teams.red[0],
+						number: $scope.fullMatches[i].number
+					});
+				}
+				break;
+			case "Red 2":
+				for (var i = 0; i < $scope.fullMatches.length; i++) {
+					$scope.matches.push({
+						team: $scope.fullMatches[i].teams.red[1],
+						number: $scope.fullMatches[i].number
+					});
+				}
+				break;
+			case "Red 3":
+				for (var i = 0; i < $scope.fullMatches.length; i++) {
+					$scope.matches.push({
+						team: $scope.fullMatches[i].teams.red[2],
+						number: $scope.fullMatches[i].number
+					});
+				}
+				break;
+			case "Blue 1":
+				for (var i = 0; i < $scope.fullMatches.length; i++) {
+					$scope.matches.push({
+						team: $scope.fullMatches[i].teams.blue[0],
+						number: $scope.fullMatches[i].number
+					});
+				}
+				break;
+			case "Blue 2":
+				for (var i = 0; i < $scope.fullMatches.length; i++) {
+					$scope.matches.push({
+						team: $scope.fullMatches[i].teams.blue[1],
+						number: $scope.fullMatches[i].number
+					});
+				}
+				break;
+			case "Blue 3":
+				for (var i = 0; i < $scope.fullMatches.length; i++) {
+					$scope.matches.push({
+						team: $scope.fullMatches[i].teams.blue[2],
+						number: $scope.fullMatches[i].number
+					});
+				}
+				break;
+		}
 	}
 
 	AccountService.validateSession().then(function (response) {
