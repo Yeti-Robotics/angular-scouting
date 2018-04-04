@@ -25,11 +25,15 @@
                                         <thead>
                                                 <tr>
                                                 <th>Score:</th>
+                                                <th>comment:</th>
+                                                <th>Scouter:</th>
                                                 </tr>
                                         </thead>
                                         <tbody>
                                                 <tr ng-repeat="data in winTeam">  
-                                                <td>{{data.score}} -- {{data.name}}</td>    
+                                                <td>{{data.score}}</td>
+                                                <td>{{data.comment}} | For: {{data.team_number}}</td> 
+                                                <td>- {{data.name}}</td>  
                                                 </tr>
                                         </tbody>
                                 </table>
@@ -129,11 +133,15 @@
                                         <thead>
                                                 <tr>
                                                 <th>Score:</th>
+                                                <th>comment:</th>
+                                                <th>Scouter:</th>
                                                 </tr>
                                         </thead>
                                         <tbody>
                                                 <tr ng-repeat="data in loseTeam">  
-                                                <td>{{data.score}} -- {{data.name}}</td>    
+                                                <td>{{data.score}}</td>
+                                                <td>{{data.comment}} | For: {{data.team_number}}</td> 
+                                                <td>- {{data.name}}</td>  
                                                 </tr>
                                         </tbody>
                                 </table>
