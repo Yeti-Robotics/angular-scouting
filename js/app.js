@@ -196,7 +196,6 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 
     $scope.register = function () {
         if ($('#registerForm').valid()) {
-            console.log('registered');
             $http.post('php/register.php', {
                 name: $scope.name,
                 username: $scope.username,
@@ -458,7 +457,6 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
 
     $(document).ready(function () {
         $('#pitForm').validate();
-        console.log('Inititalize validation');
         if ($(".robotimage").length == 0 && $("#comments").val() == '') {
             $("#comments").each(function () {
                 $(this).rules("add", {
@@ -494,7 +492,6 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
     $scope.addPicture = function () {
         $scope.picNum.push(num);
         num++;
-        console.log($scope.picNum);
     };
 
     $scope.removePicture = function (picture) {
@@ -507,7 +504,6 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
         if ($('#pitForm').valid()) {
             $("body").scrollTop(0);
             displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
-            console.log("valid");
             var formData = new FormData();
             for (var i = 0; i < $scope.pictures.length; i++) {
                 formData.append('files[]', $scope.pictures[i]);
@@ -523,7 +519,6 @@ app.controller('PitFormController', function ($rootScope, $scope, $http, $window
                     'Content-Type': undefined
                 }
             }).then(function (response) {
-                console.log("submitted");
                 console.log(response.data);
                 $('body').scrollTop(0);
                 $scope.resetForm();
@@ -637,7 +632,6 @@ app.controller('PitController', function ($scope, $http, $routeParams, $location
                     $("#errorModal").modal("show");
                 }
             });
-            console.log($scope.pitData.comments)
         }, function (response) {
             $scope.error = response.data.error;
         });
@@ -726,7 +720,6 @@ app.controller("MatchListCntroller", function ($scope, $http, $location) {
     };
 
     $scope.filterMatches = function (value) {
-        console.log(value);
         var searchRegExp = new RegExp($scope.search, "i");
         var red1 = value.alliances.red.team_keys[0].toString();
         var red2 = value.alliances.red.team_keys[1].toString();
@@ -938,8 +931,8 @@ app.controller('AdminPageController', function ($rootScope, $scope, $http, $wind
             $rootScope.getCurrentSettings(function () {
                 $scope.updatePrettySettings();
             });
-        }, function (response) {
-            console.log("Post response: " + response.data);
+        }, function (error) {
+            console.log(error);
         });
     }
 });
