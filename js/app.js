@@ -637,6 +637,59 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
     }
 });
 
+app.controller("MatchListCntroller", function ($scope, $http, $location) {
+    $http.get('php/matchList.php').then(function (response) {
+        $scope.matches = response.data;
+
+        $scope.matches.sort(function (a, b) {
+            a = a.match_number;
+            b = b.match_number;
+
+            if (a < b) {
+                return -1;
+            } else if (a > b) {
+                return 1;
+            }
+
+            return 0;
+        });
+
+        for (var i = 0; i < $scope.matches.length; i++) {
+            for (var j = 0; j < 3; j++) {
+                $scope.matches[i].alliances.red.team_keys[j] = parseInt($scope.matches[i].alliances.red.team_keys[j].slice(3));
+            }
+            for (var j = 0; j < 3; j++) {
+                $scope.matches[i].alliances.blue.team_keys[j] = parseInt($scope.matches[i].alliances.blue.team_keys[j].slice(3));
+            }
+        }
+
+        console.log($scope.matches);
+    });
+
+    $scope.goToMatch = function (matchNumber) {
+        $location.path("/match/" + matchNumber);
+    };
+
+    $scope.filterMatches = function (value) {
+        console.log(value);
+        var searchRegExp = new RegExp($scope.search, "i");
+        var red1 = value.alliances.red.team_keys[0].toString();
+        var red2 = value.alliances.red.team_keys[1].toString();
+        var red3 = value.alliances.red.team_keys[2].toString();
+        var blue1 = value.alliances.blue.team_keys[0].toString();
+        var blue2 = value.alliances.blue.team_keys[1].toString();
+        var blue3 = value.alliances.blue.team_keys[2].toString();
+        var matchNumber = value.match_number.toString();
+        return matchNumber.match(searchRegExp) ||
+            red1.match(searchRegExp) ||
+            red2.match(searchRegExp) ||
+            red3.match(searchRegExp) ||
+            blue1.match(searchRegExp) ||
+            blue2.match(searchRegExp) ||
+            blue3.match(searchRegExp);
+    };
+});
+
 app.controller("LeaderboardsController", function ($scope, $http) {
     'use strict';
     $scope.sortType = 'byteCoins';
@@ -894,6 +947,9 @@ app.config(['$routeProvider', function ($routeProvider, $locationProvider) {
     }).when("/match/:matchNumber", {
         templateUrl: 'html/match.html',
         controller: 'MatchController'
+    }).when("/match-list", {
+        templateUrl: 'html/matchList.html',
+        controller: 'MatchListCntroller'
     }).when("/pit-scouting", {
         templateUrl: 'html/pitForm.html',
         controller: 'PitFormController'

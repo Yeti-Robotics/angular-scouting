@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="form-group">
         <label for="scoutTeam">Scouted by:</label>
-        <select id="scoutTeam" class="form-control" ng-model="currentTeam" ng-change="loadData(currentTeam.team_number)" ng-options="team as (team.team_number + ' - ' + team.team_name) for team in teams track by team.team_number">
+        <select id="scoutTeam" class="form-control custom-select" ng-model="currentTeam" ng-change="loadData(currentTeam.team_number)" ng-options="team as (team.team_number + ' - ' + team.team_name) for team in teams track by team.team_number">
         </select>
     </div>
     <div ng-if="error != ''">
