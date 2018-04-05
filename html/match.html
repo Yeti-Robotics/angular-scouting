@@ -1,0 +1,174 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <label for="scoutTeam">Scouted by:</label>
+        <select id="scoutTeam" class="form-control custom-select" ng-model="currentTeam" ng-change="loadData(currentTeam.team_number)" ng-options="team as (team.team_number + ' - ' + team.team_name) for team in teams track by team.team_number">
+        </select>
+    </div>
+    <div ng-if="error != ''">
+        <h1 class="text-center">{{error}}</h1>
+    </div>
+    <div class="card" ng-if="error == ''">
+        <h5 class="card-header">Match {{matchNumber}}</h5>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center" colspan="3">Teams</th>
+                            <th class="text-center">Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="table-danger">
+                            <td class="text-center" ng-repeat="team in data.teamPerformances.red">{{team.team_number}}</td>
+
+                            <td class="text-center">{{data.teamPerformances.red[0].score}}</td>
+                        </tr>
+                        <tr class="table-info">
+                            <td class="text-center" ng-repeat="team in data.teamPerformances.blue">{{team.team_number}}</td>
+
+                            <td class="text-center">{{data.teamPerformances.blue[0].score}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-columns">
+                <!-- AUTO -->
+                <div class="card">
+                    <h5 class="card-header" data-toggle="collapse" data-target="#collapseAuto" ng-click="autoCollapsed = !autoCollapsed">
+                        Auto
+                        <i style="float: right" ng-if="!autoCollapsed" class="material-icons">arrow_drop_up</i>
+                        <i style="float: right" ng-if="autoCollapsed" class="material-icons">arrow_drop_down</i>
+                    </h5>
+                    <div id="collapseAuto" class="card-body table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Team</th>
+                                    <th>Crossed Auto Line</th>
+                                    <th>Switch Cubes</th>
+                                    <th>Scale cubes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-danger" ng-repeat="data in data.teamPerformances.red">
+                                    <td>
+                                        <a href="#/team_number/{{data.team_number}}">{{data.team_number}}</a>
+                                    </td>
+                                    <td>
+                                        <i ng-if="data.auto_check" class="material-icons text-success">check</i>
+                                        <i ng-if="!data.auto_check" class="material-icons text-danger">clear</i>
+                                    </td>
+                                    <td>{{data.auto_switch}}</td>
+                                    <td>{{data.auto_scale}}</td>
+                                </tr>
+                                <tr class="table-info" ng-repeat="data in data.teamPerformances.blue">
+                                    <td>
+                                        <a href="#/team_number/{{data.team_number}}">{{data.team_number}}</a>
+                                    </td>
+                                    <td>
+                                        <i ng-if="data.auto_check" class="material-icons text-success">check</i>
+                                        <i ng-if="!data.auto_check" class="material-icons text-danger">clear</i>
+                                    </td>
+                                    <td>{{data.auto_switch}}</td>
+                                    <td>{{data.auto_scale}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- TELEOP -->
+                <div class="card">
+                    <h5 class="card-header" data-toggle="collapse" data-target="#collapseTele" ng-click="teleCollapsed = !teleCollapsed">
+                        Teleop
+                        <i style="float: right" ng-if="!teleCollapsed" class="material-icons">arrow_drop_up</i>
+                        <i style="float: right" ng-if="teleCollapsed" class="material-icons">arrow_drop_down</i>
+                    </h5>
+                    <div id="collapseTele" class="card-body table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Team</th>
+                                    <th>Alliance Switch Cubes</th>
+                                    <th>Enemy Switch Cubes</th>
+                                    <th>Scale cubes</th>
+                                    <th>Cubes Put in Vault</th>
+                                    <th>Climbed</th>
+                                    <th>Deployed a Ramp</th>
+                                    <th>Played Defense</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-danger" ng-repeat="data in data.teamPerformances.red">
+                                    <td>
+                                        <a href="#/team/{{data.team_number}}">{{data.team_number}}</a>
+                                    </td>
+                                    <td>{{data.switch_cubes}}</td>
+                                    <td>{{data.enemy_switch_cubes}}</td>
+                                    <td>{{data.scale_cubes}}</td>
+                                    <td>{{data.vault_cubes}}</td>
+                                    <td>
+                                        <i ng-if="data.bar_climb" class="material-icons text-success">check</i>
+                                        <i ng-if="!data.bar_climb" class="material-icons text-danger">clear</i>
+                                    </td>
+                                    <td>
+                                        <i ng-if="data.help_climb" class="material-icons text-success">check</i>
+                                        <i ng-if="!data.help_climb" class="material-icons text-danger">clear</i>
+                                    </td>
+                                    <td>
+                                        <i ng-if="data.tele_defense" class="material-icons text-success">check</i>
+                                        <i ng-if="!data.tele_defense" class="material-icons text-danger">clear</i>
+                                    </td>
+                                </tr>
+                                <tr class="table-info" ng-repeat="data in data.teamPerformances.blue">
+                                    <td>
+                                        <a href="#/team/{{data.team_number}}">{{data.team_number}}</a>
+                                    </td>
+                                    <td>{{data.switch_cubes}}</td>
+                                    <td>{{data.enemy_switch_cubes}}</td>
+                                    <td>{{data.scale_cubes}}</td>
+                                    <td>{{data.vault_cubes}}</td>
+                                    <td>
+                                        <i ng-if="data.bar_climb" class="material-icons text-success">check</i>
+                                        <i ng-if="!data.bar_climb" class="material-icons text-danger">clear</i>
+                                    </td>
+                                    <td>
+                                        <i ng-if="data.help_climb" class="material-icons text-success">check</i>
+                                        <i ng-if="!data.help_climb" class="material-icons text-danger">clear</i>
+                                    </td>
+                                    <td>
+                                        <i ng-if="data.tele_defense" class="material-icons text-success">check</i>
+                                        <i ng-if="!data.tele_defense" class="material-icons text-danger">clear</i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- COMMENTS -->
+                <div class="card">
+                    <h5 class="card-header" data-toggle="collapse" data-target="#collapseComments" ng-click="commentsCollapsed = !commentsCollapsed">
+                        Comments
+                        <i style="float: right" ng-if="commentsCollapsed" class="material-icons">arrow_drop_up</i>
+                        <i style="float: right" ng-if="!commentsCollapsed" class="material-icons">arrow_drop_down</i>
+                    </h5>
+                    <div id="collapseComments" class="card-body collapse">
+                        <div class="card">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item bg-light-red" ng-repeat="team in data.teamPerformances.red">
+                                    {{team.comment}}
+                                    <footer class="blockquote-footer">{{team.name}}</footer>
+                                </li>
+                                <li class="list-group-item bg-light-blue" ng-repeat="team in data.teamPerformances.blue">
+                                    {{team.comment}}
+                                    <footer class="blockquote-footer">{{team.name}}</footer>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

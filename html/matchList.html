@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Filter by match or team number" ng-model="search">
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>Match</th>
+                    <th colspan="3">Red Alliance</th>
+                    <th colspan="3">Blue Alliance</th>
+                    <th colspan="2">Scores</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="match in matches | filter:filterMatches" ng-click="goToMatch(match.match_number)">
+                    <td>{{match.match_number}}</td>
+                    <td class="table-danger" ng-repeat="team in match.alliances.red.team_keys">{{team}}</td>
+                    <td class="table-danger" ng-repeat="team in match.alliances.blue.team_keys">{{team}}</td>
+                    <td class="table-danger">{{match.alliances.red.score}}</td>
+                    <td class="table-info">{{match.alliances.blue.score}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

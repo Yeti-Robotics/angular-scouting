@@ -72,3 +72,11 @@ label.required::after {
 .navbar {
   margin-bottom: 20px;
 }
+
+.bg-light-red {
+    background-color: #f5c6cb;
+}
+
+.bg-light-blue {
+    background-color: #bee5eb;
+}

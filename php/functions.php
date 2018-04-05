@@ -13,7 +13,7 @@ function getLastMatch($db) {
         header('HTTP/1.1 500 SQL Error', true, 500);
         die ( '{"message":"Failed creating statement"}' );
     }
-}
+}   
 
 function getFutureMatches($db) {
 	//$matchResults = getMatchSchedule(); //For server
