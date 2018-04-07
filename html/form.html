@@ -20,7 +20,7 @@
                             <tbody>
                                 <tr ng-repeat="match in matches" ng-click="selectTeam(match.number, match.team)">
                                     <td class="text-center">{{match.number}}</td>
-                                    <td class="text-center" role="button">{{match.team}}</td>   
+                                    <td class="text-center" role="button">{{match.team}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -46,21 +46,26 @@
                     <small class="text-muted">Scouting as {{user.name}}</small>
                 </h5>
                 <div class="card-body">
+                    <div ng-if="!settings.validateTeams">
+                        <div class="form-group">
+                            <label for="teamNumber">Team number</label>
+                            <input ng-model="formData.teamNumber" class="form-control" type='number' name='teamNumber' id='teamNumber' placeholder='Enter the team number'
+                                required>
+                        </div>
+                        <label for="matchNumber">Match number</label>
+                        <input ng-model="formData.matchNumber" type="number" class="form-control" id="matchNumber" placeholder="Enter the match number"
+                            required>
+                    </div>
                     <div ng-if="settings.validateTeams">
                         <div ng-show="!validatorIncorrect">
                             <div class="form-group">
                                 <label for="selectedRobotPos">Select the position you're scouting for</label>
-                                <select id="selectedRobotPos" class="form-control custom-select" ng-model="selectedRobotPos" ng-change="loadTeams(selectedRobotPos)">
-                                    <option ng-value="'Red 1'">Red 1</option>
-                                    <option ng-value="'Red 2'">Red 2</option>
-                                    <option ng-value="'Red 3'">Red 3</option>
-                                    <option ng-value="'Blue 1'">Blue 1</option>
-                                    <option ng-value="'Blue 2'">Blue 2</option>
-                                    <option ng-value="'Blue 3'">Blue 3</option>
+                                <select required id="selectedRobotPos" class="form-control custom-select" name="selectedRobotPos" ng-model="selectedRobotPos" ng-change="loadTeams(selectedRobotPos)" ng-options="selectedRobotPos for selectedRobotPos in robotPos">
+                                    <option style="display:none" value="">Select a robot position</option>
                                 </select>
                             </div>
-                            
-                            <button ng-if="selectedRobotPos" class="btn btn-block btn-primary" type="button" data-toggle="modal" data-target="#match-modal" >Choose a match</button>
+
+                            <button ng-if="selectedRobotPos" class="btn btn-block btn-primary" id="matchChooser" name="matchChooser" type="button" data-toggle="modal" data-target="#match-modal">Choose a match</button>
 
                             <div ng-show="selectedTeam">
                                 <table class="table table-bordered table-sm" style="margin-bottom: 0%; margin-top: 1rem">
@@ -92,35 +97,33 @@
                         <label class="custom-control-label" for="autoCheck">Did the robot cross the Autonomous line?</label>
                     </div>
                     <div class="form-group">
-                        <label for="scaleCounter">Cubes placed on alliance switch</label>
-                        <div class="input-group" name="scaleCounter">
-                            <div class="input-group-prepend">
-                                <button class="btn btn-outline-dark" type='button' ng-click="decrementAS()">
-                                    <i class="material-icons">remove</i>
-                                </button>
-                            </div>
-                            <input ng-model="formData.autoScale" type="number" id="autoScale" class="form-control width100" placeholder="#">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-dark" type='button' ng-click="incrementAS()">
-                                    <i class="material-icons">add</i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <label for="switchCounter">Cubes placed on alliance scale</label>
+                        <label for="switchCounter">Cubes placed on alliance switch</label>
                         <div class="input-group" name="switchCounter">
                             <div class="input-group-prepend">
                                 <button class="btn btn-outline-dark" type='button' ng-click="decrementAW()">
                                     <i class="material-icons">remove</i>
                                 </button>
                             </div>
-                            <input ng-model="formData.autoSwitch" type="number" id="autoSwitch" class="form-control width100" placeholder="#">
+                            <input ng-model="formData.autoSwitch" type="number" id="autoSwitch" class="form-control width100">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-dark" type='button' ng-click="incrementAW()">
                                     <i class="material-icons">add</i>
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                    <label for="scaleCounter">Cubes placed on alliance scale</label>
+                    <div class="input-group" name="scaleCounter">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-outline-dark" type='button' ng-click="decrementAS()">
+                                <i class="material-icons">remove</i>
+                            </button>
+                        </div>
+                        <input ng-model="formData.autoScale" type="number" id="autoScale" class="form-control">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-dark" type='button' ng-click="incrementAS()">
+                                <i class="material-icons">add</i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -138,7 +141,7 @@
                                     <i class="material-icons">remove</i>
                                 </button>
                             </div>
-                            <input ng-model="formData.switchCubes" type="number" class="form-control width100" placeholder="#">
+                            <input ng-model="formData.switchCubes" type="number" class="form-control width100">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-dark" type='button' ng-click="incrementWC()">
                                     <i class="material-icons">add</i>
@@ -176,7 +179,7 @@
                                     <i class="material-icons">remove</i>
                                 </button>
                             </div>
-                            <input ng-model="formData.enemySwitchCubes" type="number" class="form-control width100" placeholder="#">
+                            <input ng-model="formData.enemySwitchCubes" type="number" class="form-control width100">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-dark" type='button' ng-click="incrementEC()">
                                     <i class="material-icons">add</i>
@@ -192,7 +195,7 @@
                                     <i class="material-icons">remove</i>
                                 </button>
                             </div>
-                            <input ng-model="formData.vaultCubes" type="number" class="form-control width100" placeholder="#">
+                            <input ng-model="formData.vaultCubes" type="number" class="form-control width100">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-dark" type='button' ng-click="incrementVC()">
                                     <i class="material-icons">add</i>
@@ -243,11 +246,9 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label for="score">
-                            <span ng-if="robotPos.red.indexOf(selectedRobotPos) != -1">Red </span>
-                            <span ng-if="robotPos.blue.indexOf(selectedRobotPos) != -1">Blue </span>
-                            Alliance Score
+                            Score
                         </label>
-                        <input ng-model="formData.score" type="number" name="score" class="form-control" placeholder="Enter the alliance's score"
+                        <input ng-model="formData.score" type="number" id="score" name="score" class="form-control" placeholder="Enter the alliance's score"
                             required>
                     </div>
                     <label for="comment">Comments</label>

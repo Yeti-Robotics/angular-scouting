@@ -220,19 +220,15 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 	$scope.fullMatches = [];
 	$scope.matchesReceived = false;
 	$scope.selectedTeam = false;
-	$scope.robotPos = {
-		red: [
+	$scope.robotPos = [
 			"Red 1",
 			"Red 2",
 			"Red 3",
-		],
-		blue: [
 			"Blue 1",
 			"Blue 2",
 			"Blue 3"
-		]
-	};
-	$scope.selectedRobotPos = false;
+    ];
+    $scope.selectedRobotPos = "";
 
 	$rootScope.getCurrentSettings(function () {
 		if ($rootScope.settings.validateTeams) {
@@ -283,7 +279,8 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 		$scope.formData.matchNumber = matchNumber;
 		$scope.selectedTeam = true;
 		$scope.formData.teamNumber = parseInt(teamNumber);
-		$("#match-modal").modal('hide');
+        $("#match-modal").modal('hide');
+        $scope.resetMatchChooser();
 	};
 
 	$scope.loadTeams = function (selectedRobotPos) {
@@ -361,15 +358,39 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 		};
 		$scope.selectedTeam = false;
 		$("#submitButton").removeAttr("disabled");
-		$("#scouting_form").trigger("reset");
-	};
+        $("#scouting_form").trigger("reset");
+        $scope.resetMatchChooser();
+    };
 
+    $scope.resetMatchChooser = function () {
+        $("#matchChooser").removeClass("btn-danger").addClass("btn-primary");
+        $("#matchChooser-error").remove();
+    };
+    
 	$(document).ready(function () {
-		$scope.validator = $('#scouting_form').validate();
+        $scope.validator = $('#scouting_form').validate();
+
+        $("[required]").each(function (i) {
+            $(this).siblings("label").addClass("required");
+        });
+
+        $("#selectedRobotPos").rules("add", {
+            required: true,
+            messages: {
+                required: "You must select a position to scout."
+            }
+        });
+
+        $("#score").rules("add", {
+            min: 0,
+            messages: {
+                min: "You can't have a negative score!"
+            }
+        })
 	});
 
 	$scope.submit = function () {
-		if ($('#scouting_form').valid()) {
+        if ($('#scouting_form').valid() && $scope.formData.matchNumber != undefined) {
 			$(window).scrollTop(0);
 			displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
 			$("#submitButton").attr("disabled", "disabled");
@@ -384,7 +405,11 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
 					displayMessage('Failed to submit form', 'danger');
 					console.error(error);
 				});
-		}
+		} else {
+            if ($scope.formData.matchNumber == undefined) {
+                $("#matchChooser").removeClass("btn-primary").addClass("btn-danger").after("<label id=\"matchChooser-error\" style=\"color: red\">You must choose a match.</label>");
+            }
+        }
 	};
 
 	$scope.incrementAS = function () {
@@ -735,6 +760,162 @@ app.controller("MatchListCntroller", function ($scope, $http, $location) {
             blue1.match(searchRegExp) ||
             blue2.match(searchRegExp) ||
             blue3.match(searchRegExp);
+    };
+});
+
+app.controller("JoeBannanas", function ($rootScope, $scope, $http, $window) {
+    'use strict';
+
+    $scope.refreshByteCoins = function () {
+        $http.post("php/getByteCoins.php", {
+            token: $window.sessionStorage["token"]
+        }).then(function (response) {
+            $rootScope.user.byteCoins = $scope.byteCoins = response.data;
+            $("#byteCoinsWagered").slider('setAttribute', 'max', parseInt($scope.byteCoins) + 1);
+        }, function (response) {
+            displayMessage("Could not properly get your number of Byte Coins. Please log in and try again", "danger");
+        });
+    };
+
+    $scope.refreshByteCoins();
+
+    $scope.manuallyEnterByteCoins = false;
+
+    $scope.toggleManualByteCoins = function () {
+        $scope.manuallyEnterByteCoins = !$scope.manuallyEnterByteCoins;
+    }
+
+    $scope.selectedMatch = false;
+
+    $scope.selectMatch = function (match) {
+        $scope.selectedMatch = {
+            number: match.matchNumber,
+            red: [
+                match.Teams[0].teamNumber,
+                match.Teams[1].teamNumber,
+                match.Teams[2].teamNumber
+            ],
+            blue: [
+                match.Teams[3].teamNumber,
+                match.Teams[4].teamNumber,
+                match.Teams[5].teamNumber
+            ]
+        };
+        $scope.currentWager.matchPredicted = match.matchNumber;
+        $("#match-modal").modal('hide');
+    }
+
+    $scope.reportSuccess = function (wager) {
+        $scope.refreshByteCoins();
+    };
+
+    $scope.reportError = function (error) {
+        $scope.lastError = error;
+    };
+    $scope.generateMatchs = function () {
+        $http.get("php/currentWageringMatches.php").then(function (response) {
+            $scope.Schedule = response.data["Schedule"];
+            console.log($scope.Schedule);
+        }, function (response) {
+            displayMessage("Failed to get match data", "danger");
+        });
+    }
+    $scope.generateMatchs();
+
+    $scope.toOptionLabel = function (teams) {
+        return teams[0].teamNumber + "-" + teams[1].teamNumber + "-" +
+            teams[2].teamNumber + " vs " + teams[3].teamNumber + "-" +
+            teams[4].teamNumber + "-" + teams[5].teamNumber;
+    };
+
+    $scope.resetForm = function () {
+        console.log($("#confirm-wager-modal").modal('hide'));
+        $("#byteCoinsWagered").slider('setValue', 0);
+        $scope.selectedMatch = false;
+        $scope.currentWager = {
+            wagerType: '',
+            wageredByteCoins: 0,
+            alliancePredicted: '',
+            matchPredicted: 0,
+            withenPoints: 0,
+            minPointsPredicted: 0,
+            getMultiplier: function () {
+                if (this.wagerType === "alliance") {
+                    return 2;
+                } else if (this.wagerType === "closeMatch") {
+                    return 5 - (parseInt(this.withenPoints, 10) / (12.5));
+                } else if (this.wagerType === "points") {
+                    return (parseInt(this.minPointsPredicted, 10) / 110) + (parseInt(this.minPointsPredicted, 10) / 350);
+                } else {
+                    return 0;
+                }
+            },
+            getValue: function () {
+                return Math.floor(this.wageredByteCoins * this.getMultiplier());
+            }
+        }
+    };
+
+    $(document).ready(function () {
+        $scope.resetForm();
+    });
+
+    $scope.changeWager = function (wagerType) {
+        $scope.currentWager.wagerType = wagerType;
+    };
+    //Templates
+    $scope.allianceWager = {
+        alliancePredicted: '',
+        matchPredicted: 0
+    };
+    $scope.closeMatchWager = {
+        withenPoints: 0, //People will get points if the scored points are less then the number set here (for predicting close games)
+        matchPredicted: 0
+    };
+    $scope.pointsWager = {
+        alliancePredicted: '',
+        minPointsPredicted: 0, //only applies to allinaces, negative if less than
+        matchPredicted: 0
+    };
+
+    $scope.sendWager = function () {
+        $("#confirm-wager-modal").modal('hide');
+        $rootScope.validateLogin();
+        var postObject = {};
+        if ($scope.currentWager.wagerType === "alliance" && $scope.currentWager.alliancePredicted && $scope.currentWager.matchPredicted) {
+            postObject = {
+                token: $window.sessionStorage["token"],
+                wagerType: "alliance",
+                wageredByteCoins: $scope.currentWager.wageredByteCoins,
+                matchPredicted: $scope.currentWager.matchPredicted,
+                alliancePredicted: $scope.currentWager.alliancePredicted
+            };
+        } else if ($scope.currentWager.wagerType === "closeMatch" && $scope.currentWager.withenPoints && $scope.currentWager.matchPredicted) {
+            postObject = {
+                token: $window.sessionStorage["token"],
+                wagerType: "closeMatch",
+                wageredByteCoins: $scope.currentWager.wageredByteCoins,
+                matchPredicted: $scope.currentWager.matchPredicted,
+                withenPoints: $scope.currentWager.withenPoints
+            };
+        } else if ($scope.currentWager.wagerType === "points" && $scope.currentWager.minPointsPredicted && $scope.currentWager.matchPredicted) {
+            postObject = {
+                token: $window.sessionStorage["token"],
+                wagerType: "points",
+                wageredByteCoins: $scope.currentWager.wageredByteCoins,
+                matchPredicted: $scope.currentWager.matchPredicted,
+                alliancePredicted: $scope.currentWager.alliancePredicted,
+                withenPoints: $scope.currentWager.minPointsPredicted
+            };
+        } else {
+            displayMessage("Incorrect wager format. Did you fill all of the fields?", "danger");
+        }
+        $http.post("php/wager.php", postObject).then(function (response) {
+            $scope.reportSuccess(response.data.message);
+            $scope.resetForm();
+        }, function (response) {
+            displayMessage("Failed to send Wager", "danger");
+        });
     };
 });
 
