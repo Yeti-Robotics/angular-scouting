@@ -91,7 +91,7 @@ function checkPitData($db, $teamNumber, $scoutingTeam) {
 }
 
 function checkTeamData($db, $teamNumber) {
-	$query = "SELECT * FROM `scout_data` WHERE team_number = ?";
+	$query = "SELECT * FROM `team_info` WHERE team_number = ?";
 
     if ($stmt = $db->prepare($query)) {
         $stmt->bind_param("i", $teamNumber);

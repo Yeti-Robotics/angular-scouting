@@ -141,7 +141,8 @@ app.controller('LoginController', function (AccountService, $rootScope, $scope, 
                 }
             }, function (response) {
                 $("#loginForm").validate().showErrors({
-                    "loginFields": "Invalid username/password"
+                    "username": "Invalid username/password",
+                    "password": "Invalid username/password"
                 });
             });
         }
@@ -215,149 +216,149 @@ app.controller('RegisterController', function ($scope, $http, $location) {
 });
 
 app.controller('FormController', function ($rootScope, $scope, $http, $window, AccountService) {
-	'use strict';
+    'use strict';
 
-	$scope.fullMatches = [];
-	$scope.matchesReceived = false;
-	$scope.selectedTeam = false;
-	$scope.robotPos = [
-			"Red 1",
-			"Red 2",
-			"Red 3",
-			"Blue 1",
-			"Blue 2",
-			"Blue 3"
+    $scope.fullMatches = [];
+    $scope.matchesReceived = false;
+    $scope.selectedTeam = false;
+    $scope.robotPos = [
+        "Red 1",
+        "Red 2",
+        "Red 3",
+        "Blue 1",
+        "Blue 2",
+        "Blue 3"
     ];
     $scope.selectedRobotPos = "";
 
-	$rootScope.getCurrentSettings(function () {
-		if ($rootScope.settings.validateTeams) {
-			$http.get("php/getFutureMatches.php").then(function (response) {
-				for (var i = 0; i < response.data.length; i++) {
-					$scope.fullMatches.push({
-						teams: {
-							red: [
-								$scope.parseTeamString(response.data[i].alliances.red.team_keys[0]),
-								$scope.parseTeamString(response.data[i].alliances.red.team_keys[1]),
-								$scope.parseTeamString(response.data[i].alliances.red.team_keys[2])
-							],
-							blue: [
-								$scope.parseTeamString(response.data[i].alliances.blue.team_keys[0]),
-								$scope.parseTeamString(response.data[i].alliances.blue.team_keys[1]),
-								$scope.parseTeamString(response.data[i].alliances.blue.team_keys[2])
-							]
-						},
-						number: parseInt(response.data[i].match_number)
-					});
-				}
-				$scope.fullMatches.sort(function (a, b) {
-					a = a.number;
-					b = b.number;
+    $rootScope.getCurrentSettings(function () {
+        if ($rootScope.settings.validateTeams) {
+            $http.get("php/getFutureMatches.php").then(function (response) {
+                for (var i = 0; i < response.data.length; i++) {
+                    $scope.fullMatches.push({
+                        teams: {
+                            red: [
+                                $scope.parseTeamString(response.data[i].alliances.red.team_keys[0]),
+                                $scope.parseTeamString(response.data[i].alliances.red.team_keys[1]),
+                                $scope.parseTeamString(response.data[i].alliances.red.team_keys[2])
+                            ],
+                            blue: [
+                                $scope.parseTeamString(response.data[i].alliances.blue.team_keys[0]),
+                                $scope.parseTeamString(response.data[i].alliances.blue.team_keys[1]),
+                                $scope.parseTeamString(response.data[i].alliances.blue.team_keys[2])
+                            ]
+                        },
+                        number: parseInt(response.data[i].match_number)
+                    });
+                }
+                $scope.fullMatches.sort(function (a, b) {
+                    a = a.number;
+                    b = b.number;
 
-					if (a < b) {
-						return -1;
-					} else if (a > b) {
-						return 1;
-					}
+                    if (a < b) {
+                        return -1;
+                    } else if (a > b) {
+                        return 1;
+                    }
 
-					return 0;
-				});
-				console.log($scope.fullMatches);
-				$scope.matchesReceived = true;
-			}, function (response) {
-				displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
-				$scope.matchesReceived = false;
-			});
-		}
-	});
+                    return 0;
+                });
+                console.log($scope.fullMatches);
+                $scope.matchesReceived = true;
+            }, function (response) {
+                displayMessage("Uh oh! Something went wrong with getting the future matches, looks like you'll have to enter the info manually. Try again later.", "danger");
+                $scope.matchesReceived = false;
+            });
+        }
+    });
 
-	$scope.parseTeamString = function (teamString) {
-		return parseInt(teamString.slice(3));
-	}
+    $scope.parseTeamString = function (teamString) {
+        return parseInt(teamString.slice(3));
+    }
 
-	$scope.selectTeam = function (matchNumber, teamNumber) {
-		$scope.formData.matchNumber = matchNumber;
-		$scope.selectedTeam = true;
-		$scope.formData.teamNumber = parseInt(teamNumber);
+    $scope.selectTeam = function (matchNumber, teamNumber) {
+        $scope.formData.matchNumber = matchNumber;
+        $scope.selectedTeam = true;
+        $scope.formData.teamNumber = parseInt(teamNumber);
         $("#match-modal").modal('hide');
         $scope.resetMatchChooser();
-	};
+    };
 
-	$scope.loadTeams = function (selectedRobotPos) {
-		$scope.matches = [];
-		switch (selectedRobotPos) {
-			case "Red 1":
-				for (var i = 0; i < $scope.fullMatches.length; i++) {
-					$scope.matches.push({
-						team: $scope.fullMatches[i].teams.red[0],
-						number: $scope.fullMatches[i].number
-					});
-				}
-				break;
-			case "Red 2":
-				for (var i = 0; i < $scope.fullMatches.length; i++) {
-					$scope.matches.push({
-						team: $scope.fullMatches[i].teams.red[1],
-						number: $scope.fullMatches[i].number
-					});
-				}
-				break;
-			case "Red 3":
-				for (var i = 0; i < $scope.fullMatches.length; i++) {
-					$scope.matches.push({
-						team: $scope.fullMatches[i].teams.red[2],
-						number: $scope.fullMatches[i].number
-					});
-				}
-				break;
-			case "Blue 1":
-				for (var i = 0; i < $scope.fullMatches.length; i++) {
-					$scope.matches.push({
-						team: $scope.fullMatches[i].teams.blue[0],
-						number: $scope.fullMatches[i].number
-					});
-				}
-				break;
-			case "Blue 2":
-				for (var i = 0; i < $scope.fullMatches.length; i++) {
-					$scope.matches.push({
-						team: $scope.fullMatches[i].teams.blue[1],
-						number: $scope.fullMatches[i].number
-					});
-				}
-				break;
-			case "Blue 3":
-				for (var i = 0; i < $scope.fullMatches.length; i++) {
-					$scope.matches.push({
-						team: $scope.fullMatches[i].teams.blue[2],
-						number: $scope.fullMatches[i].number
-					});
-				}
-				break;
-		}
-	}
+    $scope.loadTeams = function (selectedRobotPos) {
+        $scope.matches = [];
+        switch (selectedRobotPos) {
+            case "Red 1":
+                for (var i = 0; i < $scope.fullMatches.length; i++) {
+                    $scope.matches.push({
+                        team: $scope.fullMatches[i].teams.red[0],
+                        number: $scope.fullMatches[i].number
+                    });
+                }
+                break;
+            case "Red 2":
+                for (var i = 0; i < $scope.fullMatches.length; i++) {
+                    $scope.matches.push({
+                        team: $scope.fullMatches[i].teams.red[1],
+                        number: $scope.fullMatches[i].number
+                    });
+                }
+                break;
+            case "Red 3":
+                for (var i = 0; i < $scope.fullMatches.length; i++) {
+                    $scope.matches.push({
+                        team: $scope.fullMatches[i].teams.red[2],
+                        number: $scope.fullMatches[i].number
+                    });
+                }
+                break;
+            case "Blue 1":
+                for (var i = 0; i < $scope.fullMatches.length; i++) {
+                    $scope.matches.push({
+                        team: $scope.fullMatches[i].teams.blue[0],
+                        number: $scope.fullMatches[i].number
+                    });
+                }
+                break;
+            case "Blue 2":
+                for (var i = 0; i < $scope.fullMatches.length; i++) {
+                    $scope.matches.push({
+                        team: $scope.fullMatches[i].teams.blue[1],
+                        number: $scope.fullMatches[i].number
+                    });
+                }
+                break;
+            case "Blue 3":
+                for (var i = 0; i < $scope.fullMatches.length; i++) {
+                    $scope.matches.push({
+                        team: $scope.fullMatches[i].teams.blue[2],
+                        number: $scope.fullMatches[i].number
+                    });
+                }
+                break;
+        }
+    }
 
-	AccountService.validateSession().then(function (response) {
-		$scope.resetForm();
-	}, function (error) {
-		AccountService.logout();
-		displayMessage('You are logged out', 'warning');
-	});
+    AccountService.validateSession().then(function (response) {
+        $scope.resetForm();
+    }, function (error) {
+        AccountService.logout();
+        displayMessage('You are logged out', 'warning');
+    });
 
-	$scope.resetForm = function () {
-		$scope.formData = {
-			autoCheck: false,
-			autoScale: 0,
-			autoSwitch: 0,
-			teleCheck: false,
-			scaleCubes: 0,
-			switchCubes: 0,
-			enemySwitchCubes: 0,
-			vaultCubes: 0,
-			scouterId: $rootScope.user.id
-		};
-		$scope.selectedTeam = false;
-		$("#submitButton").removeAttr("disabled");
+    $scope.resetForm = function () {
+        $scope.formData = {
+            autoCheck: false,
+            autoScale: 0,
+            autoSwitch: 0,
+            teleCheck: false,
+            scaleCubes: 0,
+            switchCubes: 0,
+            enemySwitchCubes: 0,
+            vaultCubes: 0,
+            scouterId: $rootScope.user.id
+        };
+        $scope.selectedTeam = false;
+        $("#submitButton").removeAttr("disabled");
         $("#scouting_form").trigger("reset");
         $scope.resetMatchChooser();
     };
@@ -366,8 +367,8 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
         $("#matchChooser").removeClass("btn-danger").addClass("btn-primary");
         $("#matchChooser-error").remove();
     };
-    
-	$(document).ready(function () {
+
+    $(document).ready(function () {
         $scope.validator = $('#scouting_form').validate();
 
         $("[required]").each(function (i) {
@@ -387,79 +388,79 @@ app.controller('FormController', function ($rootScope, $scope, $http, $window, A
                 min: "You can't have a negative score!"
             }
         })
-	});
+    });
 
-	$scope.submit = function () {
+    $scope.submit = function () {
         if ($('#scouting_form').valid() && $scope.formData.matchNumber != undefined) {
-			$(window).scrollTop(0);
-			displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
-			$("#submitButton").attr("disabled", "disabled");
-			$http.post('php/formSubmit.php', $scope.formData)
-				.then(function (data) {
-					displayMessage('Form submitted successfully', 'success');
-					console.log($scope.formData);
-					$scope.matches.shift();
-					$rootScope.getCurrentSettings();
-					$scope.resetForm();
-				}, function (error) {
-					displayMessage('Failed to submit form', 'danger');
-					console.error(error);
-				});
-		} else {
-            if ($scope.formData.matchNumber == undefined) {
+            $(window).scrollTop(0);
+            displayMessage("<strong>Hold up...</strong> Your data is being uploaded now...", "info");
+            $("#submitButton").attr("disabled", "disabled");
+            $http.post('php/formSubmit.php', $scope.formData)
+                .then(function (data) {
+                    displayMessage('Form submitted successfully', 'success');
+                    console.log($scope.formData);
+                    $scope.matches.shift();
+                    $rootScope.getCurrentSettings();
+                    $scope.resetForm();
+                }, function (error) {
+                    displayMessage('Failed to submit form', 'danger');
+                    console.error(error);
+                });
+        } else {
+            if ($scope.formData.matchNumber == undefined && $("#matchChooser").siblings("label").length < 1) {
                 $("#matchChooser").removeClass("btn-primary").addClass("btn-danger").after("<label id=\"matchChooser-error\" style=\"color: red\">You must choose a match.</label>");
             }
         }
-	};
+    };
 
-	$scope.incrementAS = function () {
-		$scope.formData.autoScale++;
-	};
-	$scope.decrementAS = function () {
-		if ($scope.formData.autoScale > 0) {
-			$scope.formData.autoScale--;
-		}
-	};
-	$scope.incrementAW = function () {
-		$scope.formData.autoSwitch++;
-	};
-	$scope.decrementAW = function () {
-		if ($scope.formData.autoSwitch > 0) {
-			$scope.formData.autoSwitch--;
-		}
-	};
-	$scope.incrementSC = function () {
-		$scope.formData.scaleCubes++;
-	};
-	$scope.decrementSC = function () {
-		if ($scope.formData.scaleCubes > 0) {
-			$scope.formData.scaleCubes--;
-		}
-	};
-	$scope.incrementWC = function () {
-		$scope.formData.switchCubes++;
-	};
-	$scope.decrementWC = function () {
-		if ($scope.formData.switchCubes > 0) {
-			$scope.formData.switchCubes--;
-		}
-	};
-	$scope.incrementEC = function () {
-		$scope.formData.enemySwitchCubes++;
-	};
-	$scope.decrementEC = function () {
-		if ($scope.formData.enemySwitchCubes > 0) {
-			$scope.formData.enemySwitchCubes--;
-		}
-	};
-	$scope.incrementVC = function () {
-		$scope.formData.vaultCubes++;
-	};
-	$scope.decrementVC = function () {
-		if ($scope.formData.vaultCubes > 0) {
-			$scope.formData.vaultCubes--;
-		}
-	};
+    $scope.incrementAS = function () {
+        $scope.formData.autoScale++;
+    };
+    $scope.decrementAS = function () {
+        if ($scope.formData.autoScale > 0) {
+            $scope.formData.autoScale--;
+        }
+    };
+    $scope.incrementAW = function () {
+        $scope.formData.autoSwitch++;
+    };
+    $scope.decrementAW = function () {
+        if ($scope.formData.autoSwitch > 0) {
+            $scope.formData.autoSwitch--;
+        }
+    };
+    $scope.incrementSC = function () {
+        $scope.formData.scaleCubes++;
+    };
+    $scope.decrementSC = function () {
+        if ($scope.formData.scaleCubes > 0) {
+            $scope.formData.scaleCubes--;
+        }
+    };
+    $scope.incrementWC = function () {
+        $scope.formData.switchCubes++;
+    };
+    $scope.decrementWC = function () {
+        if ($scope.formData.switchCubes > 0) {
+            $scope.formData.switchCubes--;
+        }
+    };
+    $scope.incrementEC = function () {
+        $scope.formData.enemySwitchCubes++;
+    };
+    $scope.decrementEC = function () {
+        if ($scope.formData.enemySwitchCubes > 0) {
+            $scope.formData.enemySwitchCubes--;
+        }
+    };
+    $scope.incrementVC = function () {
+        $scope.formData.vaultCubes++;
+    };
+    $scope.decrementVC = function () {
+        if ($scope.formData.vaultCubes > 0) {
+            $scope.formData.vaultCubes--;
+        }
+    };
 });
 
 app.controller('PitFormController', function ($rootScope, $scope, $http, $window, AccountService) {

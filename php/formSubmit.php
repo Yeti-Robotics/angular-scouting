@@ -73,6 +73,9 @@ if($stmt = $db->prepare($query)) {
         $db->close();
 	    die('{"message":"'.$stmt->error.'"}');
     }
+    if (!checkTeamData($db, $teamNumber)) {
+        updateTeamInfo($db, $teamNumber);
+    }
 	$insert_id = $stmt->insert_id;
 } else {
     header('HTTP/1.1 500 SQL Error', true, 500);
