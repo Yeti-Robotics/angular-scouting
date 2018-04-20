@@ -54,7 +54,7 @@
                             <tbody>
                                 <tr class="table-danger" ng-repeat="data in data.teamPerformances.red">
                                     <td>
-                                        <a href="#/team_number/{{data.team_number}}">{{data.team_number}}</a>
+                                        <a href="#/team/{{data.team_number}}">{{data.team_number}}</a>
                                     </td>
                                     <td>
                                         <i ng-if="data.auto_check" class="material-icons text-success">check</i>
@@ -65,7 +65,7 @@
                                 </tr>
                                 <tr class="table-info" ng-repeat="data in data.teamPerformances.blue">
                                     <td>
-                                        <a href="#/team_number/{{data.team_number}}">{{data.team_number}}</a>
+                                        <a href="#/team/{{data.team_number}}">{{data.team_number}}</a>
                                     </td>
                                     <td>
                                         <i ng-if="data.auto_check" class="material-icons text-success">check</i>
@@ -158,11 +158,11 @@
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item bg-light-red" ng-repeat="team in data.teamPerformances.red">
                                     {{team.comment}}
-                                    <footer class="blockquote-footer">{{team.name}}</footer>
+                                    <footer class="blockquote-footer">{{team.name}}, <a href="#/team/{{team.team_number}}">team {{team.team_number}}</a></footer>
                                 </li>
                                 <li class="list-group-item bg-light-blue" ng-repeat="team in data.teamPerformances.blue">
                                     {{team.comment}}
-                                    <footer class="blockquote-footer">{{team.name}}</footer>
+                                    <footer class="blockquote-footer">{{team.name}}, <a href="#/team/{{team.team_number}}">team {{team.team_number}}</a></footer>
                                 </li>
                             </ul>
                         </div>
