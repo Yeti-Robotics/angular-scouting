@@ -23,7 +23,7 @@ function getFutureMatches($db) {
 	$lastMatch = getLastMatch($db);
 	$uncompletedMatches = array();
 	for ($i = 0; $i < count($matchResults); $i++) {
-		if ($matchResults[$i]["match_number"] >= $lastMatch + 1) {
+		if ($matchResults[$i]["match_number"] >= $lastMatch + 1 && $matchResults[$i]["comp_level"] == "qm") {
 			$uncompletedMatches[] = $matchResults[$i];
 		}
 	}
