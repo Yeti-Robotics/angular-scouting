@@ -319,7 +319,7 @@ function deleteToken($db, $token, $username) {
 }
 
 function getSessionUser($db, $token) {
-    $query = "SELECT name, sessions.id AS id, username, byteCoins FROM sessions LEFT JOIN scouters ON sessions.id = scouters.id WHERE token = ?";
+    $query = "SELECT name, sessions.id AS id, username, byteCoins, team_number FROM sessions LEFT JOIN scouters ON sessions.id = scouters.id WHERE token = ?";
     if (validateToken($db, $token)) {
         if($stmt = $db->prepare($query)) {
             $stmt->bind_param("s", $token);
@@ -330,7 +330,8 @@ function getSessionUser($db, $token) {
 					"name" => $row["name"],
 					"username" => $row["username"],
 					"byteCoins" => $row["byteCoins"],
-                    "id" => $row["id"]
+                    "id" => $row["id"],
+                    "teamNumber" => $row["team_number"]
 				];
             }
         } else {

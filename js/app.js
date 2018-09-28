@@ -16,7 +16,8 @@ app.run(function ($rootScope, $location, $http, $window, AccountService) {
     $rootScope.user = {
         username: '',
         name: '',
-        byteCoins: 0
+        byteCoins: 0,
+        teamNumber: 3506
     };
 
     $rootScope.getCurrentSettings = function (onSettingsUpdate) {
@@ -33,6 +34,17 @@ app.run(function ($rootScope, $location, $http, $window, AccountService) {
             }
         });
     }
+
+    AccountService.validateSession().then(function (response) {
+        $rootScope.user = response.data;
+    }, function () {
+        $rootScope.user = {
+            username: '',
+            name: '',
+            byteCoins: 0,
+            teamNumber: 3506
+        };
+    });
 
     $rootScope.getCurrentSettings();
 
@@ -66,7 +78,8 @@ app.service("AccountService", function ($http, $q, $window, $rootScope, $locatio
                 username: '',
                 name: '',
                 id: '',
-                byteCoins: 0
+                byteCoins: 0,
+                teamNumber: 3506
             };
             $location.path("/login");
         });
@@ -83,6 +96,7 @@ app.service("AccountService", function ($http, $q, $window, $rootScope, $locatio
             } else {
                 deferred.resolve(response);
                 $rootScope.user = response.data;
+                console.log($rootScope.user);
             }
         }, function (response) {
             deferred.reject(response);
@@ -671,10 +685,22 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 
     $http.get('php/getScouterTeams.php').then(function (response) {
         $scope.teams = response.data;
-        if ($scope.teams.length) {
-            $scope.currentTeam = $scope.teams[0];
-            $scope.loadData($scope.currentTeam.team_number);
+        
+        if ($scope.teams.filter(function (e) {
+            console.log(e.team_number == $rootScope.user.teamNumber);
+            return e.team_number == $rootScope.user.teamNumber;
+        }).length) {
+            $scope.currentTeam = $scope.teams.find(function (e) {
+                return e.team_number == $rootScope.user.teamNumber;
+            });
+            console.log($scope.currentTeam);
+        } else {
+            $scope.currentTeam = $scope.teams.find(function (e) {
+                return e.team_number == 3506;
+            });
+            console.log($scope.currentTeam);
         }
+        $scope.loadData($scope.currentTeam.team_number);
     });
 
     $scope.loadData = function (teamNumber) {
@@ -942,7 +968,7 @@ app.controller("LeaderboardsController", function ($scope, $http) {
     });
 });
 
-app.controller("TeamController", function ($scope, $http, $routeParams) {
+app.controller("TeamController", function ($rootScope, $scope, $http, $routeParams) {
     'use strict';
 
     $scope.teamNumber = $routeParams.teamNumber;
@@ -961,10 +987,23 @@ app.controller("TeamController", function ($scope, $http, $routeParams) {
 
     $http.get('php/getScouterTeams.php').then(function (response) {
         $scope.teams = response.data;
-        if ($scope.teams.length) {
-            $scope.currentTeam = $scope.teams[0];
-            $scope.loadData($scope.currentTeam.team_number);
+        console.log($rootScope.user);
+
+        if ($scope.teams.filter(function (e) {
+            console.log(e.team_number == $rootScope.user.teamNumber);
+            return e.team_number == $rootScope.user.teamNumber;
+        }).length) {
+            $scope.currentTeam = $scope.teams.find(function (e) {
+                return e.team_number == $rootScope.user.teamNumber;
+            });
+            console.log($scope.currentTeam);
+        } else {
+            $scope.currentTeam = $scope.teams.find(function (e) {
+                return e.team_number == 3506;
+            });
+            console.log($scope.currentTeam);
         }
+        $scope.loadData($scope.currentTeam.team_number);
     });
 
     $scope.loadData = function (scoutingTeam) {
