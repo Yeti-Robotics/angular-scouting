@@ -3,8 +3,13 @@ include ("connect.php");
 include ("functions.php");
 header('Content-Type: application/json');
 
-$matches = array_slice(getMatchSchedule(), 0, getLastMatch($db));
+$matches = getMatchSchedule();
+$lastMatch = getLastMatch($db);
+$qualMatches = array();
 
-die(json_encode($matches));
+die(json_encode([
+    "matches" => $matches,
+    "lastMatch" => $lastMatch
+]));
 
 ?>

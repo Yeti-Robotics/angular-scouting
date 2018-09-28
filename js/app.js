@@ -714,7 +714,17 @@ app.controller("ListController", function ($rootScope, $scope, $http) {
 
 app.controller("MatchListCntroller", function ($scope, $http, $location) {
     $http.get('php/matchList.php').then(function (response) {
-        $scope.matches = response.data;
+        $scope.matches = response.data.matches;
+        var lastMatch = response.data.lastMatch;
+        var qualMatches = [];
+
+        for (var i = 0; i < $scope.matches.length; i++) {
+            if ($scope.matches[i]["match_number"] <= lastMatch + 1 && $scope.matches[i]["comp_level"] == "qm") {
+                qualMatches.push($scope.matches[i]);
+            }
+        }
+
+        $scope.matches = qualMatches;
 
         $scope.matches.sort(function (a, b) {
             a = a.match_number;
